@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- IME metadata shown in Android Settings > Language & Input -->
+<input-method xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="com.hkmixedkeyboard.settings.SettingsActivity"
+    android:isDefault="false">
+    <!-- The active scheme (速成 / 粵拼) is switched on-keyboard via the ⌨ key, not
+         through system subtypes, so a single subtype is declared. -->
+    <subtype
+        android:label="@string/subtype_quick"
+        android:imeSubtypeLocale="zh-HK"
+        android:imeSubtypeMode="keyboard"
+        android:isDefault="true" />
+</input-method>

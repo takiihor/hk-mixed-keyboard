@@ -1,0 +1,54 @@
+HK Mixed Keyboard — Open Source Notices / 開源授權與資料來源
+============================================================
+
+This application bundles dictionary and frequency data derived from the
+third-party open-source projects listed below. Each project's data remains
+under its own license. We gratefully acknowledge these sources.
+
+本應用程式內置的輸入碼、詞庫及字頻資料，衍生自下列開源項目。各項資料
+均依其原有授權條款發佈。謹此致謝。
+
+
+1. RIME — Cangjie 5 input table (cangjie5.base)
+------------------------------------------------
+Used for: 速成 / 倉頡 input codes (hk_core_chars, phrases).
+Project:  https://github.com/rime/rime-cangjie
+License:  GNU General Public License v3.0 (GPL-3.0)
+          https://www.gnu.org/licenses/gpl-3.0.html
+
+
+2. RIME — Essay frequency data (essay.txt)
+------------------------------------------
+Used for: candidate ranking / 字詞頻率排序.
+Project:  https://github.com/rime/rime-essay
+License:  GNU General Public License v3.0 (GPL-3.0)
+          https://www.gnu.org/licenses/gpl-3.0.html
+
+
+3. CC-CEDICT — Chinese-English dictionary
+-----------------------------------------
+Used for: English → Chinese meaning assist (english_assist).
+Project:  https://www.mdbg.net/chinese/dictionary?page=cc-cedict
+License:  Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
+          https://creativecommons.org/licenses/by-sa/4.0/
+
+
+4. rime-cantonese — Jyutping dictionary (jyut6ping3)
+----------------------------------------------------
+Used for: 粵拼 input (jyutping).
+Project:  https://github.com/rime/rime-cantonese
+License:  Creative Commons Attribution 4.0 (CC BY 4.0) and
+          Open Data Commons Open Database License (ODbL) 1.0
+          https://creativecommons.org/licenses/by/4.0/
+          https://opendatacommons.org/licenses/odbl/1-0/
+
+
+Modifications
+-------------
+The above data sets were filtered, re-ranked by frequency, reformatted to CSV,
+and in some cases supplemented with curated entries. The derived dictionary
+files distributed with this app remain subject to the licenses above, including
+their attribution and (where applicable) share-alike / open-database terms.
+
+衍生詞庫檔案經篩選、重新排序、轉為 CSV 格式並補充部分人工條目，仍受上述
+授權條款約束（包括署名及相應的相同方式分享 / 開放資料庫條款）。

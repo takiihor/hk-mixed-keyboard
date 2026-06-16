@@ -1,0 +1,145 @@
+{
+  "_comment": "Gate 1 test cases for Prototype 0 — Decode Contract Harness",
+  "_spec": "HK_Mixed_Keyboard_app_development_guide_v1.5.md §7.6",
+  "scheme": "QUICK",
+  "cases": [
+    {
+      "buffer": "hap",
+      "expected": {
+        "cnExactParsed": false,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": true,
+        "enIsWord": false,
+        "enStrongPrefix": true,
+        "enAutocomplete": "happy",
+        "notes": "3-letter buffer; Quick code is 2 letters; 'ha' is a Quick prefix. Also strong EN prefix → happy."
+      }
+    },
+    {
+      "buffer": "send",
+      "expected": {
+        "cnExactParsed": false,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": false,
+        "enIsWord": true,
+        "enStrongPrefix": false,
+        "notes": "Common English verb; no Quick code match; should commit as EN_LITERAL on Space."
+      }
+    },
+    {
+      "buffer": "ok",
+      "expected": {
+        "cnExactParsed": true,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": false,
+        "enIsWord": true,
+        "enStrongPrefix": false,
+        "notes": "Collision case: 'ok' has Quick character match AND is on SHORT_WHITELIST. tieBreak favours EN_LITERAL."
+      }
+    },
+    {
+      "buffer": "go",
+      "expected": {
+        "cnExactParsed": true,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": false,
+        "enIsWord": true,
+        "enStrongPrefix": false,
+        "notes": "Collision case: 'go' has Quick match (在) AND is an English word. tieBreak required."
+      }
+    },
+    {
+      "buffer": "mtr",
+      "expected": {
+        "cnExactParsed": false,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": true,
+        "enIsWord": true,
+        "enStrongPrefix": false,
+        "enCanonical": "MTR",
+        "notes": "SHORT_WHITELIST: mtr → MTR. Prefix-only Chinese; commit as canonical EN_LITERAL."
+      }
+    },
+    {
+      "buffer": "我",
+      "expected": {
+        "cnExactParsed": true,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": false,
+        "candidateCode": "qo",
+        "candidateType": "CHAR",
+        "isHkCore": false,
+        "notes": "Direct Chinese character input. Quick code QO (手人). Confirms reverse-lookup capability."
+      }
+    },
+    {
+      "buffer": "你",
+      "expected": {
+        "cnExactParsed": true,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": false,
+        "candidateCode": "oi",
+        "candidateType": "CHAR",
+        "isHkCore": false
+      }
+    },
+    {
+      "buffer": "唔",
+      "expected": {
+        "cnExactParsed": true,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": false,
+        "candidateCode": "ro",
+        "candidateType": "CHAR",
+        "isHkCore": true,
+        "notes": "HK core Cantonese negative particle. Must rank first in candidates."
+      }
+    },
+    {
+      "buffer": "嘅",
+      "expected": {
+        "cnExactParsed": true,
+        "cnHasPhraseMatch": false,
+        "cnPrefixParsed": false,
+        "candidateCode": "rv",
+        "candidateType": "CHAR",
+        "isHkCore": true,
+        "notes": "HK core possessive particle. Quick code RV (口女)."
+      }
+    },
+    {
+      "buffer": "唔該",
+      "expected": {
+        "cnExactParsed": false,
+        "cnHasPhraseMatch": true,
+        "cnPrefixParsed": false,
+        "candidateCode": "roio",
+        "candidateType": "PHRASE",
+        "isHkCore": true,
+        "notes": "HK core phrase 'thank you / excuse me'. Quick phrase code = Quick(唔)+Quick(該)."
+      }
+    },
+    {
+      "buffer": "我哋",
+      "expected": {
+        "cnExactParsed": false,
+        "cnHasPhraseMatch": true,
+        "cnPrefixParsed": false,
+        "candidateCode": "qorp",
+        "candidateType": "PHRASE",
+        "isHkCore": true,
+        "notes": "HK Cantonese 'we/us'. Quick phrase code = Quick(我)+Quick(哋)."
+      }
+    }
+  ],
+  "gate1_criteria": {
+    "cnExactParsed_derivable": true,
+    "cnHasPhraseMatch_derivable": true,
+    "cnPrefixParsed_derivable": true,
+    "candidate_source_schema_identifiable": true,
+    "candidate_type_identifiable": true,
+    "quick_scheme_works": true,
+    "cangjie_scheme_loadable": true,
+    "prefix_only_not_auto_committable": true
+  }
+}

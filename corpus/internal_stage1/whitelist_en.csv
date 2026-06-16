@@ -1,0 +1,45 @@
+# English whitelist — Stage 1
+# Fields: word, canonical
+# canonical: empty means use as-is
+word,canonical
+ok,
+no,
+go,
+hi,
+pm,
+am,
+ai,
+it,
+hr,
+cv,
+id,
+ot,
+dm,
+ig,
+fb,
+tg,
+qr,QR
+kpi,KPI
+pdf,PDF
+doc,
+ppt,
+tax,
+mtr,MTR
+fps,FPS
+mpf,MPF
+hk,HK
+hkd,HKD
+usd,USD
+wfh,WFH
+ipo,IPO
+esg,ESG
+csr,CSR
+pr,PR
+it,IT
+hr,HR
+ui,UI
+ux,UX
+api,API
+url,URL
+app,
+wifi,WiFi

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── Gboard-style dark theme ──────────────────────────────────────── -->
+
+    <!-- Keyboard / candidate background (fills the gaps between keys) -->
+    <color name="keyboard_bg">#202124</color>
+
+    <!-- Key colours -->
+    <color name="key_bg">#3C4043</color>            <!-- letter / number keys -->
+    <color name="key_bg_special">#26282A</color>    <!-- shift, backspace, ?123, emoji -->
+    <color name="key_bg_space">#303134</color>      <!-- space bar -->
+    <color name="key_bg_pressed">#5F6368</color>    <!-- pressed pop -->
+    <color name="key_bg_enter">#1B9E83</color>      <!-- enter / action key (teal) -->
+
+    <color name="key_label">#E8EAED</color>         <!-- main glyph (Cangjie root) -->
+    <color name="key_radical">#9AA0A6</color>       <!-- small latin hint, top-right -->
+    <color name="key_label_enter">#FFFFFF</color>   <!-- enter glyph -->
+    <color name="key_border">#00000000</color>      <!-- borderless (unused) -->
+
+    <!-- Candidate bar -->
+    <color name="cand_bg">#202124</color>
+    <color name="cand_text">#E8EAED</color>
+    <color name="cand_text_hk">#8AB4F8</color>      <!-- HK core candidates in blue -->
+    <color name="cand_separator">#3C4043</color>
+
+    <!-- Key press popup bubble (white on dark, like Gboard) -->
+    <color name="key_popup_bg">#FFFFFF</color>
+    <color name="key_popup_label">#202124</color>
+
+    <!-- Safe keyboard mode -->
+    <color name="safe_mode_bg">#3A2E12</color>
+    <color name="safe_mode_text">#F5C26B</color>
+</resources>

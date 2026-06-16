@@ -1,0 +1,86 @@
+Privacy Policy — HK Mixed Keyboard
+私隱政策 — HK Mixed Keyboard
+
+Last updated: 2026-06-16
+
+
+繁體中文
+========
+
+HK Mixed Keyboard（「本應用程式」）是一款 Android 輸入法（鍵盤）。我們
+非常重視您的私隱。
+
+摘要
+----
+本應用程式不會收集、傳送或分享任何個人資料。它沒有網絡存取權限，亦不含
+任何分析、廣告或追蹤程式碼。
+
+本應用程式處理的內容
+--------------------
+• 您輸入的文字 — 作為輸入法，本應用程式必須處理您輸入的按鍵以產生候選
+  字詞。所有處理只在您的裝置上、於記憶體中進行，輸入文字絕不會離開您的
+  裝置。
+• 個人詞庫 / 學習詞語 — 為改善建議，可能將您新增或常用的詞語儲存於裝置
+  本機資料庫中，此資料絕不會離開您的裝置。您可隨時於設定中檢視、編輯、
+  匯出及刪除。
+• 設定 — 您的偏好設定只儲存於裝置本機。
+
+敏感欄位
+--------
+在密碼或其他敏感欄位輸入時，本應用程式進入「安全模式」：不顯示候選字，
+亦不會學習或儲存該輸入。
+
+資料分享與網絡存取
+------------------
+• 不要求網絡權限，亦不會建立任何網絡連線。沒有任何資料上傳。
+• 不含廣告或第三方分析 SDK。
+• 已停用雲端備份，個人詞庫不會複製到雲端備份服務。
+
+權限
+----
+• 震動 (VIBRATE) — 僅用於可選的按鍵震動回饋。
+
+聯絡
+----
+私隱查詢請聯絡：mehlw2011@gmail.com
+
+
+English
+=======
+
+HK Mixed Keyboard ("the app") is an Android input method (keyboard). We take
+your privacy seriously.
+
+Summary
+-------
+The app does not collect, transmit, or share any personal data. It has no
+internet access and contains no analytics, advertising, or tracking code.
+
+What the app processes
+----------------------
+• Text you type — As an input method, the app processes keystrokes to produce
+  candidates. This happens entirely on your device, in memory. Typed text is
+  never sent off the device.
+• Personal dictionary / learned words — Stored only in a local database on your
+  device to improve suggestions; never leaves your device. You can view, edit,
+  export, and delete it from settings at any time.
+• Settings — Your preferences are stored locally on your device.
+
+Sensitive fields
+----------------
+In password or other sensitive fields the app enters "safe mode": no candidates
+are shown and nothing is learned or stored.
+
+Data sharing and network access
+-------------------------------
+• No internet permission and no network connections. Nothing is uploaded.
+• No advertising or third-party analytics SDKs.
+• Cloud backup is disabled, so the personal dictionary is not backed up.
+
+Permissions
+-----------
+• VIBRATE — used only for optional key-press haptic feedback.
+
+Contact
+-------
+Privacy questions: mehlw2011@gmail.com

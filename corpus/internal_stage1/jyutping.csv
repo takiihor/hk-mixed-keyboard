@@ -1,0 +1,56 @@
+# Jyutping romanization → Chinese character corpus — Stage 2
+# Fields: jyutping,chinese,freq
+# jyutping: lowercase Jyutping syllable (Yale-adjacent, no tone numbers)
+# chinese: character(s) for that sound
+# freq: HK-chat-weighted frequency [0.0–1.0]
+# Multiple rows per syllable = homophones (ranked by freq)
+jyutping,chinese,freq
+chong,衝,0.850
+chong,沖,0.820
+chong,充,0.800
+chong,崇,0.770
+ngo,我,0.950
+nei,你,0.945
+keoi,佢,0.940
+mou,冇,0.920
+ge,嘅,0.918
+dei,啲,0.915
+zo,咗,0.910
+hai,喺,0.905
+je,嘢,0.900
+hai2,係,0.895
+gwo,過,0.890
+dou,都,0.885
+wui,會,0.880
+zung,仲,0.875
+sik,識,0.870
+gong,講,0.865
+waa,話,0.860
+jat,一,0.855
+ji,二,0.850
+saam,三,0.845
+sei,四,0.840
+ng,五,0.835
+luk,六,0.830
+cat,七,0.825
+baat,八,0.820
+gau,九,0.815
+sap,十,0.810
+baak,百,0.805
+cin,千,0.800
+maai,買,0.820
+maai2,賣,0.815
+sik2,食,0.810
+jam,飲,0.808
+faan,返,0.805
+heoi,去,0.800
+lai,嚟,0.798
+tung,同,0.795
+ping,平,0.790
+gwai,貴,0.788
+leng,靚,0.785
+hou,好,0.780
+m4,唔,0.978
+aa,呀,0.770
+lo,囉,0.768
+wo,喎,0.765

@@ -1,0 +1,92 @@
+{
+  "_comment": "Gate 2 test cases for Prototype 1 — Commit Rule Harness",
+  "_spec": "HK_Mixed_Keyboard_app_development_guide_v1.5.md §14, §15, §22",
+  "profiles": {
+    "cold": "no user memory, default settings",
+    "warm": "seeded: 我哋×5 CN, ok×5 EN, mtr×5 EN, send×5 EN"
+  },
+  "groups": {
+    "A_hk_core": {
+      "profile": "cold",
+      "cases": [
+        {"buffer": "qirv",   "event": "Space", "expected": "我嘅",   "notes": "phrase commit"},
+        {"buffer": "onrp",   "event": "Space", "expected": "你哋",   "notes": "phrase commit"},
+        {"buffer": "ogrp",   "event": "Space", "expected": "佢哋",   "notes": "phrase commit"},
+        {"buffer": "rrio",   "event": "Space", "expected": "唔該",   "notes": "phrase commit"},
+        {"buffer": "bmbnnr", "event": "Space", "expected": "冇問題", "notes": "phrase commit"},
+        {"buffer": "bgbm",   "event": "Space", "expected": "有冇",   "notes": "phrase commit"},
+        {"buffer": "rudm",   "event": "Space", "expected": "咗未",   "notes": "phrase commit"},
+        {"buffer": "rhnt",   "event": "Space", "expected": "喺邊",   "notes": "phrase commit"},
+        {"buffer": "raor",   "event": "Space", "expected": "嗰個",   "notes": "phrase commit"},
+        {"buffer": "rtre",   "event": "Space", "expected": "啲嘢",   "notes": "phrase commit"}
+      ]
+    },
+    "B_mixed_english": {
+      "profile": "cold",
+      "cases": [
+        {"buffer": "send",    "event": "Space", "expected": "send",    "notes": "pure English, no CN match"},
+        {"buffer": "confirm", "event": "Space", "expected": "confirm", "notes": "pure English"},
+        {"buffer": "reply",   "event": "Space", "expected": "reply",   "notes": "pure English"},
+        {"buffer": "check",   "event": "Space", "expected": "check",   "notes": "pure English"},
+        {"buffer": "email",   "event": "Space", "expected": "email",   "notes": "pure English"},
+        {"buffer": "call",    "event": "Space", "expected": "call",    "notes": "pure English"},
+        {"buffer": "file",    "event": "Space", "expected": "file",    "notes": "pure English"},
+        {"buffer": "meeting", "event": "Space", "expected": "meeting", "notes": "pure English"}
+      ]
+    },
+    "C_whitelist_collisions": {
+      "profile": "cold",
+      "cases": [
+        {"buffer": "ok",  "event": "Space", "expected": "ok",  "notes": "SHORT_WHITELIST; CN match 仗 not HK core"},
+        {"buffer": "go",  "event": "Space", "expected": "go",  "notes": "enIsWord + CN match; not HK core → EN"},
+        {"buffer": "mtr", "event": "Space", "expected": "MTR", "notes": "SHORT_WHITELIST; canonical casing"},
+        {"buffer": "fps", "event": "Space", "expected": "FPS", "notes": "canonical casing"},
+        {"buffer": "mpf", "event": "Space", "expected": "MPF", "notes": "canonical casing"},
+        {"buffer": "pdf", "event": "Space", "expected": "PDF", "notes": "canonical casing"},
+        {"buffer": "hkd", "event": "Space", "expected": "HKD", "notes": "canonical casing"},
+        {"buffer": "usd", "event": "Space", "expected": "USD", "notes": "canonical casing"}
+      ]
+    },
+    "D_phrase_first": {
+      "profile": "cold",
+      "cases": [
+        {"buffer": "rrio",     "event": "Space", "expected": "唔該",   "notes": "phrase > single char"},
+        {"buffer": "rroi",     "event": "Space", "expected": "唔係",   "notes": "phrase"},
+        {"buffer": "rrvd",     "event": "Space", "expected": "唔好",   "notes": "phrase"},
+        {"buffer": "onrp",     "event": "Space", "expected": "你哋",   "notes": "phrase"},
+        {"buffer": "qirp",     "event": "Space", "expected": "我哋",   "notes": "phrase"},
+        {"buffer": "bmbnnr",   "event": "Space", "expected": "冇問題", "notes": "phrase"},
+        {"buffer": "ynrrynvi", "event": "Space", "expected": "可唔可以","notes": "phrase"},
+        {"buffer": "yurt",     "event": "Space", "expected": "遲啲",   "notes": "phrase"},
+        {"buffer": "hiri",     "event": "Space", "expected": "等陣",   "notes": "phrase"}
+      ]
+    },
+    "E_privacy": {
+      "profile": "sensitive",
+      "cases": [
+        {"buffer": "rr", "event": "CandidateTap(唔)", "expected_memory_write": false, "notes": "no learning in sensitive field"},
+        {"buffer": "rr", "event": "Space",            "expected_memory_write": false, "notes": "no learning on Space"},
+        {"buffer": "send", "event": "Enter",          "expected_memory_write": false, "notes": "no learning on Enter"},
+        {"buffer": "rr", "event": "CandidateTap(唔)", "expected_bar_empty": true,     "notes": "candidate bar cleared"},
+        {"buffer": "rr", "event": "CandidateTap(唔)", "expected_prev_committed": null, "notes": "prevCommitted stays null"}
+      ]
+    }
+  },
+  "gate2_criteria": {
+    "space_miscommit_rate_max": "2%",
+    "en_literal_preservation_min": "99%",
+    "backspace_correction_rate_max": "5%",
+    "sensitive_memory_violation": 0,
+    "sensitive_candidate_leakage": 0,
+    "accidental_single_choice_override": false
+  },
+  "result": {
+    "total_cases": 35,
+    "passed": 35,
+    "failed": 0,
+    "miscommit_rate": "0.0%",
+    "en_literal_preservation": "100%",
+    "sensitive_violations": 0,
+    "gate2": "PASSED"
+  }
+}

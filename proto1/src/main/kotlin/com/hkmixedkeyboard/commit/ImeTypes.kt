@@ -1,0 +1,64 @@
+package com.hkmixedkeyboard.commit
+
+import com.hkmixedkeyboard.decoder.DecodeCandidate
+
+enum class ImeState { IDLE, COMPOSING, PREDICTING }
+
+enum class EnterPolicy { ALWAYS_PASS_THROUGH, COMMIT_THEN_SWALLOW, COMMIT_AND_SEND }
+
+enum class SpaceMode { SMART_COMMIT, ALWAYS_SPACE }
+
+data class ImeContext(
+    val scheme: com.hkmixedkeyboard.decoder.Scheme = com.hkmixedkeyboard.decoder.Scheme.QUICK,
+    val isSensitiveField: Boolean = false,
+    val enterPolicy: EnterPolicy = EnterPolicy.COMMIT_THEN_SWALLOW,
+    val spaceMode: SpaceMode = SpaceMode.SMART_COMMIT
+)
+
+data class AutoCommitRecord(val text: String, val originalBuffer: String)
+
+data class ImeStateData(
+    val buffer: String = "",
+    val lastAutoCommit: AutoCommitRecord? = null,
+    val prevCommitted: String? = null,
+    val imeState: ImeState = ImeState.IDLE
+) {
+    fun withBuffer(b: String) = copy(buffer = b, imeState = if (b.isEmpty()) ImeState.IDLE else ImeState.COMPOSING)
+    fun idle() = copy(buffer = "", lastAutoCommit = null, imeState = ImeState.IDLE)
+    fun predicting(committed: String) = copy(buffer = "", imeState = ImeState.PREDICTING, prevCommitted = committed)
+}
+
+sealed class ImeEvent {
+    data class KeyPress(val letter: String) : ImeEvent()
+    data class CandidateTap(val candidate: DecodeCandidate) : ImeEvent()
+    data object Space : ImeEvent()
+    data object Backspace : ImeEvent()
+    data class Punctuation(val p: String) : ImeEvent()
+    data object Enter : ImeEvent()
+}
+
+data class MemoryWriteDecision(
+    val shouldWrite: Boolean,
+    val candidate: DecodeCandidate? = null
+)
+
+data class CommitOutput(
+    val committedText: String?,           // text sent to app (null if nothing committed)
+    val deletedBefore: Int = 0,           // chars deleted before cursor (backspace revert)
+    val newState: ImeStateData,
+    val candidateBar: List<DecodeCandidate>,
+    val memoryWrite: MemoryWriteDecision,
+    val swallowEnter: Boolean = false     // true when Enter policy = COMMIT_THEN_SWALLOW
+)
+
+// Constants from spec §14.5
+object Thresholds {
+    const val MAX_BUFFER_LEN = 20
+    const val USER_MEM_OVERRIDE_MIN_COUNT = 3
+    const val USER_MEM_OVERRIDE_MIN_CONF = 0.80
+    const val CN_RATIO_THRESHOLD = 0.65
+    const val EN_RATIO_THRESHOLD = 0.35
+}
+
+val SENTENCE_TERMINATORS = setOf("。", "？", "！", "?!", "？！", ".")
+val NON_RESET_PUNCTUATION = setOf("，", "、", ":", "；")

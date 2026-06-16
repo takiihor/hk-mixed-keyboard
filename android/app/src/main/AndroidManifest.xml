@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light">
+
+        <!-- IME Service — core Gate 3 requirement -->
+        <service
+            android:name=".ime.HkImeService"
+            android:label="@string/ime_label"
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <!-- Settings — accessible from Android IME settings and launcher -->
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/settings_label"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Custom word management -->
+        <activity
+            android:name=".settings.CustomWordActivity"
+            android:label="自訂詞庫"
+            android:exported="false" />
+
+        <!-- Dictionary export / import -->
+        <activity
+            android:name=".settings.DictionaryExportActivity"
+            android:label="匯出 / 匯入詞庫"
+            android:exported="false" />
+
+        <!-- Open-source data attributions (NOTICE) -->
+        <activity
+            android:name=".settings.OpenSourceLicensesActivity"
+            android:label="@string/licenses_label"
+            android:exported="false" />
+
+        <!-- Privacy policy (in-app copy) -->
+        <activity
+            android:name=".settings.PrivacyPolicyActivity"
+            android:label="@string/privacy_policy_label"
+            android:exported="false" />
+
+    </application>
+
+</manifest>
