@@ -6,13 +6,10 @@ enum class ImeState { IDLE, COMPOSING, PREDICTING }
 
 enum class EnterPolicy { ALWAYS_PASS_THROUGH, COMMIT_THEN_SWALLOW, COMMIT_AND_SEND }
 
-enum class SpaceMode { SMART_COMMIT, ALWAYS_SPACE }
-
 data class ImeContext(
     val scheme: com.hkmixedkeyboard.decoder.Scheme = com.hkmixedkeyboard.decoder.Scheme.QUICK,
     val isSensitiveField: Boolean = false,
     val enterPolicy: EnterPolicy = EnterPolicy.COMMIT_THEN_SWALLOW,
-    val spaceMode: SpaceMode = SpaceMode.SMART_COMMIT,
     val jyutpingPrimary: Boolean = false
 )
 
@@ -47,7 +44,6 @@ data class CommitOutput(
     val committedText: String?,           // text sent to app (null if nothing committed)
     val deletedBefore: Int = 0,           // chars deleted before cursor (backspace revert)
     val newState: ImeStateData,
-    val candidateBar: List<DecodeCandidate>,
     val memoryWrite: MemoryWriteDecision,
     val swallowEnter: Boolean = false     // true when Enter policy = COMMIT_THEN_SWALLOW
 )

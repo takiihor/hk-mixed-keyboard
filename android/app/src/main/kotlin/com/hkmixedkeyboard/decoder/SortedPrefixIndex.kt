@@ -3,6 +3,14 @@ package com.hkmixedkeyboard.decoder
 class SortedPrefixIndex(keys: Collection<String>) {
     private val sortedKeys = keys.distinct().sorted()
 
+    // True if any key starts with [prefix]. O(log n) and allocation-free — replaces
+    // materializing the set of every prefix of every key just to answer this.
+    fun hasPrefix(prefix: String): Boolean {
+        if (prefix.isEmpty()) return false
+        val index = lowerBound(prefix)
+        return index < sortedKeys.size && sortedKeys[index].startsWith(prefix)
+    }
+
     fun matching(prefix: String, limit: Int = Int.MAX_VALUE): List<String> {
         if (prefix.isEmpty() || limit <= 0) return emptyList()
         val result = ArrayList<String>(minOf(limit, 16))

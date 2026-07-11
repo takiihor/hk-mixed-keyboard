@@ -71,4 +71,17 @@ class KeyboardLayoutTest {
         assertEquals(0.85f, KeyboardLayout.rows.first().heightWeight)
         assertEquals(1f, KeyboardLayout.rows[1].heightWeight)
     }
+
+    @Test
+    fun `input view minimum height includes candidate bar and keyboard`() {
+        val density = 2f
+        assertEquals(
+            (56f * KeyboardLayout.totalHeightWeight * density).toInt(),
+            KeyboardLayout.keyboardHeightPx(density)
+        )
+        assertEquals(
+            (56f * (KeyboardLayout.totalHeightWeight + 1f) * density).toInt(),
+            KeyboardLayout.inputViewMinHeightPx(density)
+        )
+    }
 }

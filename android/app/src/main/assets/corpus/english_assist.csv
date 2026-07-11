@@ -303,7 +303,7 @@ accompany,陪同,0.5428
 accompany,送人,0.5277
 accompany,護送,0.523
 accompanying,隨同,0.503
-accomplice,團伙,0.5301
+accomplice,團夥,0.5301
 accomplice,共犯,0.4878
 accomplice,同謀,0.4864
 accomplice,同黨,0.486
@@ -384,7 +384,7 @@ acetate,醋酸,0.5069
 acetidin,醋酸乙酯,0.4137
 acetylene,乙炔,0.4917
 achaia,亞該亞,0.4364
-ache,酸痛,0.5342
+ache,痠痛,0.5342
 ache,作痛,0.4935
 ache,發痛,0.4846
 ache,痛,0.4017
@@ -860,7 +860,7 @@ affirm,肯定,0.6906
 affix,粘貼,0.5721
 afflicted,悝,0.3408
 affliction,苦因,0.4758
-affliction,閔凶,0.4579
+affliction,閔兇,0.4579
 affluent,富有,0.588
 affluent,寬鬆,0.5828
 affluent,豐裕,0.4869
@@ -1170,7 +1170,6 @@ aligned,結盟,0.514
 alignment,對位,0.5505
 alignment,隊列,0.5306
 alignment,連珠,0.4926
-alike,仿佛,0.637
 alike,彷彿,0.637
 alike,相似,0.6199
 alike,同類,0.588
@@ -1232,7 +1231,7 @@ alleviate,緩和,0.5368
 alleviate,紓解,0.4849
 alley,小巷,0.5159
 alley,巷子,0.512
-alley,胡同,0.5057
+alley,衚衕,0.5057
 alley,小徑,0.5046
 alley,街巷,0.4995
 alley,巷弄,0.4801
@@ -1257,7 +1256,7 @@ allow,允許,0.6386
 allow,許可,0.564
 allow,任由,0.5351
 allow,容許,0.5141
-allow,准許,0.5064
+allow,準許,0.5064
 allow,應許,0.4889
 allowance,補貼,0.6147
 allowance,補助,0.5524
@@ -1641,7 +1640,7 @@ anecdote,掌故,0.4874
 anecdote,軼聞,0.4858
 anemia,貧血,0.5246
 anemia,血虧,0.4788
-anemia,貧血症,0.4531
+anemia,貧血癥,0.4531
 anemometer,風標,0.4817
 anemometer,風速計,0.4576
 anemometer,定風針,0.4135
@@ -1744,8 +1743,8 @@ annotation,附註,0.4935
 annotation,評註,0.4875
 annotation,註,0.3835
 announce,發布,0.6693
-announce,宣布,0.6307
-announce,公布,0.6205
+announce,宣佈,0.6307
+announce,公佈,0.6205
 announce,披露,0.564
 announce,通報,0.5557
 announce,通告,0.5348
@@ -2123,7 +2122,7 @@ applaud,叫好,0.5177
 applaud,彩,0.3819
 applaud,抃,0.3368
 applause,掌聲,0.5396
-applause,采聲,0.4643
+applause,採聲,0.4643
 applause,彩,0.3819
 apple,蘋果,0.6776
 appliance,用具,0.516
@@ -2346,9 +2345,9 @@ area,區域,0.6644
 area,一塊,0.6358
 area,一方,0.6169
 area,地域,0.5813
-arena,舞臺,0.6194
+arena,舞台,0.6194
 arena,場館,0.5263
-arena,擂臺,0.5134
+arena,擂台,0.5134
 arena,競技場,0.4975
 arena,巨蛋,0.4898
 argentina,阿根廷,0.5464
@@ -3260,7 +3259,7 @@ backbone,支柱,0.5257
 backbone,志氣,0.5145
 backbone,中堅,0.5064
 backbone,脊骨,0.4865
-backbone,脊梁,0.4767
+backbone,脊樑,0.4767
 backdrop,背景,0.6757
 backdrop,烘托,0.513
 backdrop,幃幕,0.4752
@@ -3290,8 +3289,8 @@ backpack,背囊,0.4882
 backpack,雙肩包,0.4771
 backpack,挎兜,0.4489
 backpacker,驢友,0.5164
-backpacker,背包客,0.4606
-backpacking,背包遊,0.4512
+backpacker,揹包客,0.4606
+backpacking,揹包遊,0.4512
 backscatter,反散射,0.433
 backside,反面,0.5381
 backstab,背刺,0.4959
@@ -3383,8 +3382,8 @@ balance,結存,0.4836
 balance,餘存,0.473
 balance,平衡態,0.4516
 balanced,均衡,0.5988
-balcony,陽臺,0.5827
-balcony,露臺,0.5061
+balcony,陽台,0.5827
+balcony,露台,0.5061
 bald,光光,0.512
 bald,光禿禿,0.4622
 bald,痜,0.3295
@@ -4765,7 +4764,7 @@ boat,航,0.372
 boat,舟,0.3684
 boat,舺,0.3378
 boating,划船,0.5321
-boatman,船夫,0.4888
+boatman,船伕,0.4888
 boatman,船工,0.4868
 boatman,船家,0.4858
 boatman,艄公,0.483
@@ -4923,7 +4922,7 @@ boot,行李箱,0.4843
 boot-licking,馬屁,0.5108
 boot-licking,溜鬚拍馬,0.4128
 boot-licking,掇臀捧屁,0.3729
-booth,展臺,0.5222
+booth,展台,0.5222
 booth,包間,0.5089
 booth,攤子,0.5078
 booth,檔口,0.4912
@@ -5515,7 +5514,7 @@ broker,牙子,0.4869
 broker,掮客,0.4832
 broker,仲介,0.4756
 brokerage,回扣,0.5201
-brokerage,佣錢,0.4625
+brokerage,傭錢,0.4625
 brokering,證券經營,0.4115
 bromhidrosis,腋臭,0.4956
 bromhidrosis,狐臭,0.4955
@@ -5655,7 +5654,7 @@ buff,淺黃色,0.4602
 buffer,緩衝,0.5512
 buffet,自助餐,0.4818
 buffet,快餐部,0.4433
-buffeted,挨揍,0.4788
+buffeted,捱揍,0.4788
 buffoon,活寶,0.4994
 buffoon,丑角,0.4865
 buffoonery,插科打諢,0.4135
@@ -5926,7 +5925,7 @@ button,扣,0.3814
 button,鈕,0.3716
 buttonhole,釦眼,0.4789
 butyrolactone,丁內酯,0.4481
-buxom,丰,0.3512
+buxom,豐,0.3512
 buy,購買,0.6896
 buy,入手,0.6379
 buy,選購,0.6093
@@ -5985,7 +5984,7 @@ cable,纜線,0.4851
 cable,纜索,0.4836
 cable,橡皮線,0.4307
 caboose,守車,0.477
-cache,祕藏,0.4852
+cache,秘藏,0.4852
 cache,堅壁,0.4821
 cacophonous,鬧,0.3951
 cactus,仙人掌,0.4798
@@ -6130,7 +6129,7 @@ camp,野營,0.4943
 camp,紮營,0.4906
 camp,宿營,0.489
 campaign,運動,0.6993
-campaign,征戰,0.5319
+campaign,徵戰,0.5319
 campaign,造勢,0.5126
 campaign,遊說,0.51
 campaign,役,0.3571
@@ -6185,8 +6184,8 @@ candle,蠟,0.3602
 candle,燭,0.3558
 candlelight,燭光,0.5133
 candlestand,燭架,0.4548
-candlestick,燭臺,0.4917
-candlestick,蠟臺,0.4735
+candlestick,燭台,0.4917
+candlestick,蠟台,0.4735
 candy,糖果,0.5326
 candy,糖,0.3847
 candyfloss,棉花糖,0.478
@@ -6945,7 +6944,7 @@ chaotic,雜亂,0.544
 chaotic,攘攘,0.494
 chaotic,亂掉,0.4781
 chaotic,亂糟糟,0.4703
-chap,家伙,0.5804
+chap,傢伙,0.5804
 chap,坼,0.3422
 chap,皸,0.3358
 chapel,教堂,0.5744
@@ -7110,7 +7109,7 @@ cheerful,歡暢,0.4907
 cheerful,寬暢,0.482
 cheerfully,欣然,0.518
 cheering,吶喊,0.5376
-cheering,采聲,0.4643
+cheering,採聲,0.4643
 cheerleader,啦啦隊長,0.4115
 cheerless,鬱鬱寡歡,0.4171
 cheers,歡聲,0.4951
@@ -7162,7 +7161,7 @@ chest,籠子,0.5188
 chest,胸膛,0.5171
 chest,胸脯,0.5096
 chestnut,栗子,0.5466
-chestnut,栗,0.3573
+chestnut,慄,0.3573
 chevrolet,雪佛蘭,0.4768
 chew,咀嚼,0.5218
 chew,咬嚼,0.474
@@ -7200,7 +7199,7 @@ child,小朋友,0.5746
 child,小孩子,0.5655
 child,子弟,0.5351
 childcare,保育,0.4998
-childcare,托兒,0.4891
+childcare,託兒,0.4891
 childcare,托育,0.4599
 childhood,童年,0.5971
 childhood,兒時,0.528
@@ -7405,7 +7404,6 @@ cinematographer,攝影師,0.5732
 cinnabar,硃砂,0.4921
 cinnabar,丹砂,0.4818
 cinnabar,辰砂,0.4768
-cinnabar,朱砂,0.4661
 cinnabar,丹,0.3839
 cipher,密碼,0.6428
 ciphertext,密文,0.4932
@@ -7438,7 +7436,7 @@ circumcision,包皮環切,0.4155
 circumference,圓周,0.4918
 circumference,周徑,0.4753
 circumference,周,0.4112
-circumfluence,回流,0.5267
+circumfluence,迴流,0.5267
 circumspect,飭,0.3478
 circumstance,條件,0.6814
 circumstance,境遇,0.5302
@@ -7688,9 +7686,9 @@ cliff,山崖,0.5026
 cliff,峭壁,0.5014
 cliff,崖壁,0.4882
 cliff,崖岸,0.4706
-cliff,岩,0.3783
+cliff,巖,0.3783
 cliff,崖,0.3623
-cliff-hanging,扣人心弦,0.3867
+cliff-hanging,扣人心絃,0.3867
 cliff-ledge,磴,0.3431
 climate,水土,0.5087
 climate,候,0.3688
@@ -7808,7 +7806,7 @@ clover,蓿,0.3418
 clown,小丑,0.6083
 clown,活寶,0.4994
 clown,丑角,0.4865
-clown,丑,0.3849
+clown,醜,0.3849
 clownfish,小丑魚,0.4579
 cloying,生厭,0.4892
 cloying,粘纏,0.4594
@@ -8106,7 +8104,7 @@ colloid,膠粒,0.4847
 collude,串通,0.5024
 collude,勾連,0.4823
 collude,通同,0.4741
-collude,伙同,0.4528
+collude,夥同,0.4528
 collude,勾,0.3734
 collusion,勾連,0.4823
 cologne,香水,0.5628
@@ -8127,7 +8125,7 @@ color,彩色,0.5652
 color,設色,0.4852
 color,色,0.4058
 color,顏,0.3775
-color,采,0.3715
+color,採,0.3715
 color-blind,色盲,0.4996
 colorado,科羅拉多,0.4175
 coloration,色彩,0.6477
@@ -8296,7 +8294,7 @@ commodity,商品,0.6616
 commodity,貨物,0.5767
 commodity,貨,0.4061
 commodity,品,0.3964
-commodore,准將,0.4889
+commodore,準將,0.4889
 common,一般,0.7384
 common,普通,0.6943
 common,普遍,0.6585
@@ -8358,7 +8356,7 @@ compact,凝練,0.4899
 compact,微縮,0.4894
 compact,粉盒,0.489
 compactor,壓縮機,0.4863
-companion,伙伴,0.5941
+companion,夥伴,0.5941
 companion,同伴,0.5708
 companion,伴侶,0.5633
 companion,良友,0.4905
@@ -8527,7 +8525,7 @@ complexion,容顏,0.5218
 complexion,面色,0.5176
 complexion,氣色,0.5042
 complexion,臉相,0.4766
-complexion,采,0.3715
+complexion,採,0.3715
 complexity,複雜性,0.5137
 compliance,合規,0.5685
 compliance,遵行,0.4858
@@ -8636,7 +8634,7 @@ compute,計,0.3848
 computer,電腦,0.6745
 computer,計算機,0.6075
 comrade,同志,0.6192
-comrade,伙伴,0.5941
+comrade,夥伴,0.5941
 comrade,同伴,0.5708
 comrade,弟兄,0.5247
 comrade,同袍,0.4852
@@ -8864,7 +8862,7 @@ confidentially,私底下,0.4823
 configuration,配置,0.6644
 configuration,位形,0.4725
 confine,限制,0.6688
-confine,局限,0.5751
+confine,侷限,0.5751
 confine,禁錮,0.5098
 confine,關,0.4147
 confine,圈,0.3915
@@ -9159,8 +9157,8 @@ constantly,恆常,0.4832
 constellation,星座,0.5573
 constellation,宿,0.3668
 constipated,大便乾燥,0.4131
-constipation,祕結,0.4836
-constipation,大便祕結,0.4122
+constipation,秘結,0.4836
+constipation,大便秘結,0.4122
 constipation,痞,0.3519
 constituency,選民,0.5275
 constituency,選區,0.5087
@@ -10292,7 +10290,7 @@ crocodile,鱷,0.3494
 croissant,牛角包,0.4468
 croissant,羊角包,0.4395
 cronies,三朋四友,0.4027
-crony,團伙,0.5301
+crony,團夥,0.5301
 crony,黨徒,0.4788
 crookbacked,僂,0.343
 crooked,彎曲,0.5771
@@ -10449,9 +10447,9 @@ crust,結殼,0.4788
 crustacean,甲殼類,0.4527
 crustacean,甲殼動物,0.4096
 crusting,結殼,0.4788
-crutch,拐杖,0.4798
+crutch,枴杖,0.4798
 crutch,枴,0.352
-crutches,拐杖,0.4798
+crutches,枴杖,0.4798
 crux,關鍵,0.6675
 crux,點子,0.5516
 crux,基本點,0.4586
@@ -11105,7 +11103,7 @@ decagram,十克,0.476
 decagram,公錢,0.462
 decalcomania,貼花,0.4881
 decaliter,公斗,0.4608
-decaliter,斗,0.3664
+decaliter,鬥,0.3664
 decameter,公丈,0.4349
 decant,淘選,0.4624
 decant,潷,0.3444
@@ -11140,7 +11138,7 @@ deceitful,機詐,0.4663
 deceitful,譎,0.3442
 deceive,欺騙,0.5894
 deceive,糊弄,0.5419
-deceive,蒙蔽,0.5145
+deceive,矇蔽,0.5145
 deceive,行騙,0.503
 deceive,矇騙,0.4986
 deceive,矇混,0.4892
@@ -11195,7 +11193,7 @@ declaration,表白,0.5683
 declaration,宣言,0.5296
 declaration,聲名,0.5074
 declaration,聲言,0.4853
-declare,宣布,0.6307
+declare,宣佈,0.6307
 declare,聲明,0.5989
 declare,陳述,0.5697
 declare,宣告,0.5349
@@ -11682,7 +11680,7 @@ denounce,譴責,0.5489
 denounce,控訴,0.5282
 denounce,聲討,0.5103
 denounced,挨鬥,0.4729
-dense,濃郁,0.5848
+dense,濃鬱,0.5848
 dense,濃厚,0.5411
 dense,濃重,0.5179
 dense,密密,0.5037
@@ -12212,7 +12210,7 @@ dialectical,辯證,0.5288
 dialectics,辯證法,0.4747
 dialog,會話,0.5267
 dialogue,對話,0.6429
-dialogue,臺詞,0.6145
+dialogue,台詞,0.6145
 dialysis,透析,0.5125
 dialysis,滲析,0.4828
 diameter,直徑,0.5794
@@ -12506,7 +12504,7 @@ dirge,悲歌,0.4931
 dirge,哭腔,0.4892
 dirge,哀歌,0.4858
 dirge,哀辭,0.4632
-dirge,挽歌,0.4545
+dirge,輓歌,0.4545
 dirigible,飛船,0.5984
 dirt,污垢,0.5207
 dirt,泥垢,0.4741
@@ -12591,7 +12589,7 @@ disavow,抵賴,0.4874
 disavow,打賴,0.463
 disband,解散,0.566
 disband,遣散,0.4876
-disband,散伙,0.451
+disband,散夥,0.451
 disband,散攤子,0.4245
 disc,碟片,0.5133
 discard,拋棄,0.5989
@@ -12756,7 +12754,7 @@ disgust,惡心,0.5957
 disgust,生厭,0.4892
 disgusting,可憎,0.4888
 disgusting,下作,0.4869
-disgusting,腌臢,0.4729
+disgusting,醃臢,0.4729
 disgusting,惹人厭,0.4535
 disgusting,臭不可聞,0.4092
 dish,盤子,0.5563
@@ -12816,7 +12814,7 @@ disloyalty,異心,0.4846
 dismal,慘淡,0.5262
 dismal,悲涼,0.516
 dismal,淒,0.3492
-dismal,凄,0.3206
+dismal,悽,0.3206
 dismantle,拆開,0.5459
 dismantle,拆除,0.5406
 dismantle,拆卸,0.5104
@@ -12855,7 +12853,7 @@ disorderly,混亂,0.6143
 disorderly,無序,0.5264
 disorderly,錯落,0.5023
 disorderly,攘攘,0.494
-disorderly,闌干,0.4858
+disorderly,闌幹,0.4858
 disorderly,枉攘,0.4362
 disorganized,渙散,0.4995
 disorganized,支離,0.4956
@@ -13109,7 +13107,7 @@ district,區,0.4316
 distrust,疑惑,0.6037
 distrust,信不過,0.458
 disturb,影響,0.7295
-disturb,干擾,0.6062
+disturb,幹擾,0.6062
 disturb,困擾,0.6
 disturb,騷擾,0.5644
 disturb,打擾,0.5626
@@ -13179,8 +13177,8 @@ divination,卜筮,0.4818
 divination,命理學,0.4526
 divine,神聖,0.5496
 divine,占卜,0.5111
-divine,卜占,0.4566
-divine,占,0.3639
+divine,卜佔,0.4566
+divine,佔,0.3639
 divine,乩,0.3454
 diving,潛泳,0.4791
 divinity,神性,0.5083
@@ -13276,7 +13274,7 @@ dogmatic,教條,0.5054
 dogmatic,武斷,0.5011
 dogmatic,一意孤行,0.4241
 dogmatism,教條主義,0.4141
-dolerite,輝綠岩,0.4484
+dolerite,輝綠巖,0.4484
 doll,娃娃,0.5692
 doll,玩偶,0.5112
 doll,公仔,0.5093
@@ -13425,7 +13423,7 @@ downcast,萎靡不振,0.4167
 downcast,灰心喪氣,0.4145
 downcast,悴,0.3455
 downfall,沉淪,0.5235
-downfall,倒臺,0.4868
+downfall,倒台,0.4868
 downgrade,降格,0.4849
 downhearted,感傷,0.5197
 downhearted,心灰意冷,0.428
@@ -13741,7 +13739,7 @@ duchy,公國,0.4914
 duck,鶩,0.3476
 duckweed,浮萍,0.5001
 duckweed,萍,0.3734
-duckweed,苹,0.3465
+duckweed,蘋,0.3465
 duckweed,薸,0.3384
 duct,導管,0.5116
 ductability,延展性,0.4578
@@ -13925,7 +13923,7 @@ each,各自,0.6208
 each,各,0.4344
 each,每,0.4253
 each,歷,0.3651
-each,咸,0.3579
+each,鹹,0.3579
 eager,急切,0.5232
 eager,心切,0.5051
 eager,殷切,0.5021
@@ -14055,7 +14053,7 @@ echo,反響,0.5332
 echo,迴盪,0.5128
 echo,回聲,0.5094
 echo,迴響,0.5078
-echo,回音,0.4765
+echo,迴音,0.4765
 echolocation,回聲定位,0.4055
 eclectic,折中,0.5037
 eclecticism,折衷主義,0.4079
@@ -14300,7 +14298,7 @@ elegy,悲歌,0.4931
 elegy,哀歌,0.4858
 elegy,輓詩,0.4721
 elegy,挽辭,0.4581
-elegy,挽歌,0.4545
+elegy,輓歌,0.4545
 element,因素,0.6758
 element,成分,0.6445
 element,單元,0.5978
@@ -14533,10 +14531,10 @@ employ,聘用,0.5251
 employ,僱用,0.5132
 employee,員工,0.6782
 employee,職工,0.5916
-employee,雇員,0.5128
+employee,僱員,0.5128
 employee,從業人員,0.4775
 employee,打工仔,0.4735
-employer,雇主,0.5479
+employer,僱主,0.5479
 employment,就業,0.6693
 employment,業,0.3994
 emporium,商場,0.5877
@@ -14779,7 +14777,7 @@ enhance,長,0.4295
 enigma,謎團,0.5086
 enigma,神奧,0.4703
 enigmatic,謎樣,0.4858
-enigmatic,神祕莫測,0.4171
+enigmatic,神秘莫測,0.4171
 enigmatic,難以捉摸,0.417
 enigmatic,莫測高深,0.411
 enigmatic,佹,0.3431
@@ -14846,7 +14844,7 @@ enraged,怫然,0.4707
 enraged,氣沖沖,0.4583
 enraged,氣哼哼,0.4543
 enraged,髮指眥裂,0.3912
-enraptured,如癡如醉,0.4182
+enraptured,如痴如醉,0.4182
 enraptured,心醉神迷,0.4117
 enrich,豐富,0.6687
 enrich,充實,0.573
@@ -15449,7 +15447,7 @@ everybody,各位,0.6652
 everybody,每個人,0.6107
 everybody,每人,0.5764
 everybody,一體,0.5747
-everybody,大伙,0.5295
+everybody,大夥,0.5295
 everybody,男女老幼,0.4145
 everyday,經常,0.6963
 everyday,日常,0.669
@@ -15639,7 +15637,7 @@ excitable,神經質,0.4787
 excitable,應激性,0.4566
 excite,刺激,0.6454
 excite,激動,0.601
-excite,扣人心弦,0.3867
+excite,扣人心絃,0.3867
 excite,激,0.364
 excite,聳,0.3558
 excited,活躍,0.6146
@@ -15655,7 +15653,7 @@ excitement,興,0.3899
 exciting,刺激性,0.4916
 exciting,帶勁,0.4894
 exciting,令人振奮,0.4169
-exciting,扣人心弦,0.3867
+exciting,扣人心絃,0.3867
 exclaim,嘆,0.3647
 exclamation,叫喊,0.5074
 exclamation,嘆詞,0.4758
@@ -15690,7 +15688,6 @@ excruciating,萬分痛苦,0.4063
 exculpate,開脫,0.5013
 exculpate,開脫罪責,0.4046
 excursion,遠足,0.4899
-excuse,借口,0.5816
 excuse,藉口,0.5816
 excuse,原諒,0.567
 excuse,說辭,0.536
@@ -15836,11 +15833,11 @@ expedient,權,0.4001
 expedite,加速,0.6383
 expedite,加急,0.5016
 expedite,催,0.3835
-expedition,征戰,0.5319
-expedition,長征,0.5309
+expedition,徵戰,0.5319
+expedition,長徵,0.5309
 expedition,征程,0.5125
 expedition,科考隊,0.4549
-expedition,征,0.3492
+expedition,徵,0.3492
 expel,驅逐,0.5223
 expel,驅除,0.5038
 expel,除名,0.4936
@@ -16276,7 +16273,7 @@ fade,減色,0.4782
 fade,落色,0.4716
 fade,走色,0.4649
 faded,泛白,0.4883
-faded,菸,0.3694
+faded,煙,0.3694
 fahrenheit,華氏,0.4897
 fail,失效,0.5665
 fail,落空,0.5108
@@ -16390,7 +16387,7 @@ famine,飢餓,0.5489
 famine,饑荒,0.527
 famine,災荒,0.4851
 famine,糧荒,0.4796
-famine,凶,0.3585
+famine,兇,0.3585
 famished,挨餓,0.483
 famished,忍飢挨餓,0.4116
 famished,惄,0.3328
@@ -16518,7 +16515,7 @@ fast,快速,0.6792
 fast,迅速,0.6505
 fast,快捷,0.5504
 fast,禁食,0.491
-fast,辟穀,0.4879
+fast,闢穀,0.4879
 fast,斷食,0.4878
 fast-acting,速效,0.4928
 fast-forward,快轉,0.4822
@@ -16711,7 +16708,7 @@ fellmonger,皮革商,0.4358
 felloe,渠,0.3648
 fellow,同伴,0.5708
 fellow,漢子,0.5434
-fellow,伙計,0.4918
+fellow,夥計,0.4918
 fellowship,友誼,0.5657
 fellowship,聯誼,0.5121
 fellowship,團契,0.4846
@@ -16802,7 +16799,7 @@ festoon,花彩,0.4767
 fetch,拿來,0.6211
 fetch,取,0.4212
 fetch,払,0.3384
-fetid,膻,0.3384
+fetid,羶,0.3384
 fetishism,拜物教,0.4512
 fetlock,踠,0.3308
 fetter,束縛,0.5798
@@ -16978,7 +16975,7 @@ filthy,骯髒,0.5249
 filthy,齷齪,0.5201
 filthy,污穢,0.5019
 filthy,髒污,0.4866
-filthy,腌臢,0.4729
+filthy,醃臢,0.4729
 filthy,惡濁,0.472
 filtrate,濾液,0.4911
 filtrate,濾餅,0.48
@@ -17224,7 +17221,7 @@ flagellum,鞭毛,0.482
 flagellum,鞭節,0.4615
 flagging,淡薄,0.5096
 flagpole,旗杆,0.5001
-flagpole,杠,0.3497
+flagpole,槓,0.3497
 flagrant,悍然,0.4876
 flagrantly,橫加,0.4857
 flagship,旗艦,0.5808
@@ -17567,7 +17564,7 @@ flutter,舞動,0.5178
 flutter,飄揚,0.5125
 flutter,招展,0.4936
 flutter,撲騰,0.4897
-flutter,撲棱,0.4793
+flutter,撲稜,0.4793
 fluttering,蕩蕩,0.4992
 flux,通量,0.4899
 flux,助熔劑,0.4486
@@ -17686,7 +17683,7 @@ foolish,三八,0.5124
 foolish,傻冒,0.4967
 foolish,傻氣,0.4909
 foolish,傻帽,0.4849
-foolish,癡傻,0.4839
+foolish,痴傻,0.4839
 foolish,呆傻,0.4818
 foolishly,瞎,0.3812
 foolishness,傻氣,0.4909
@@ -17700,7 +17697,7 @@ foot-binding,裹腳,0.4809
 footbag,沙包,0.4911
 football,足球,0.6375
 footboard,踏板,0.529
-footbridge,杠,0.3497
+footbridge,槓,0.3497
 footbridge,榷,0.3451
 foothills,山麓,0.4914
 foothold,據點,0.5195
@@ -17738,10 +17735,10 @@ foraminifera,有孔蟲,0.4485
 foray,冒險,0.6006
 forbear,留情,0.5069
 forbid,禁止,0.6168
-forbid,不准,0.5823
+forbid,不準,0.5823
 forbid,煞住,0.4738
 forbid,禁,0.3764
-forbidden,不准許,0.4533
+forbidden,不準許,0.4533
 forbidding,森,0.3812
 force,力量,0.6827
 force,部隊,0.6148
@@ -17781,7 +17778,7 @@ forefathers,祖輩,0.5006
 forefront,前沿,0.5643
 forefront,第一線,0.484
 foreground,前景,0.6155
-foreground,前臺,0.579
+foreground,前台,0.579
 forehead,額頭,0.5476
 forehead,腦門,0.5079
 forehead,前額,0.5006
@@ -18410,7 +18407,7 @@ full,飽滿,0.5817
 full,充實,0.573
 full,滿滿,0.5683
 full,實足,0.4835
-full-bodied,濃郁,0.5848
+full-bodied,濃鬱,0.5848
 full-bodied,豐腴,0.4902
 full-length,拖地,0.5019
 full-stack,全棧,0.4904
@@ -18427,7 +18424,7 @@ fumes,煙霧,0.5273
 fumigate,燻蒸,0.5167
 fumigate,煙燻,0.5022
 fumigate,薰,0.3689
-fumigate,熏,0.3476
+fumigate,燻,0.3476
 fuming,氣鼓鼓,0.4575
 fun,意思,0.6737
 fun,娛樂,0.606
@@ -18500,7 +18497,7 @@ furnish,提供,0.7083
 furnish,供給,0.5696
 furnish,具,0.3835
 furnishings,陳設,0.5021
-furniture,家具,0.6389
+furniture,傢俱,0.6389
 furrow,溝槽,0.489
 furrow,犁溝,0.4732
 furrow,墒,0.3499
@@ -18518,7 +18515,7 @@ furthermore,此外,0.6651
 furthermore,況且,0.6024
 furthermore,並,0.4514
 furthest,最遠,0.5124
-furtive,詭祕,0.4916
+furtive,詭秘,0.4916
 furtive,鬼鬼祟祟,0.4169
 furtive,賊頭賊腦,0.4076
 furtive,鬼頭鬼腦,0.4073
@@ -18630,7 +18627,7 @@ gamete,配子,0.4846
 gamete,性細胞,0.4575
 gamma,珈,0.3501
 gamma-,丙型,0.4884
-gamy,膻,0.3384
+gamy,羶,0.3384
 gang,幫派,0.5259
 gang,幫子,0.4922
 gang,幫,0.4352
@@ -18752,7 +18749,7 @@ gaudy,花哨,0.5317
 gaudy,刺目,0.4894
 gaudy,花俏,0.487
 gaudy,花花綠綠,0.4251
-gaudy,花不棱登,0.3865
+gaudy,花不稜登,0.3865
 gauge,測量,0.6125
 gauge,目測,0.5498
 gauge,量表,0.5065
@@ -19290,7 +19287,7 @@ god,天王,0.5405
 god,老天,0.5352
 god,神靈,0.529
 god,天神,0.5206
-god-forsaken,蒙昧,0.4394
+god-forsaken,矇昧,0.4394
 god-forsaken,渺無人煙,0.4077
 goddamn,天殺的,0.4569
 goddamn,殺千刀,0.4535
@@ -19399,7 +19396,7 @@ gory,血淋淋,0.4732
 gosling,小鵝,0.483
 gospel,福音,0.5421
 gospel,福音書,0.4541
-gossamer,游絲,0.4545
+gossamer,遊絲,0.4545
 gossip,說話,0.6575
 gossip,聊天,0.6391
 gossip,口語,0.6187
@@ -19539,14 +19536,14 @@ grandson,外孫子,0.4491
 grandson,孫,0.3993
 grandstand,作秀,0.5106
 granduncle,舅爺,0.483
-granite,花崗岩,0.4763
+granite,花崗巖,0.4763
 granite,花崗石,0.4626
 granny,阿婆,0.5095
 granny,阿奶,0.4773
 grant,發放,0.5847
 grant,發給,0.5816
 grant,賜予,0.512
-grant,准許,0.5064
+grant,準許,0.5064
 grant,准予,0.5021
 grant,給以,0.492
 granule,粒子,0.6035
@@ -20114,7 +20111,7 @@ hairpin,釵,0.3541
 hairpin,簪,0.3497
 hairsbreadth,分毫,0.4913
 hairspray,定型水,0.4486
-hairspring,游絲,0.4545
+hairspring,遊絲,0.4545
 hairstyle,髮型,0.5779
 hairstyle,髮式,0.4874
 hairtail,帶魚,0.5014
@@ -20529,7 +20526,7 @@ haze,靄,0.3483
 haze,霾,0.348
 hazelnut,榛子,0.4904
 hazelnut,榛果,0.4797
-hazelnut,榛栗,0.4579
+hazelnut,榛慄,0.4579
 hazelnut,榛實,0.457
 hazy,微茫,0.4819
 hazy,霧濛濛,0.4579
@@ -20668,7 +20665,7 @@ heartless,負心,0.492
 heartless,寡情,0.4813
 heartrending,悽愴,0.4817
 heartrending,扎心,0.4779
-heartstrings,心弦,0.4502
+heartstrings,心絃,0.4502
 heartwarming,治癒,0.5999
 heartwarming,暖烘烘,0.4549
 heartwarming,治癒系,0.4348
@@ -21131,7 +21128,6 @@ hiss,嘶,0.35
 histamine,組織胺,0.4552
 histogram,分佈圖,0.4717
 histogram,直方圖,0.4714
-histogram,分布圖,0.4683
 histology,組織學,0.4624
 historian,史家,0.4925
 historian,史官,0.492
@@ -21162,7 +21158,7 @@ hitherto,爾來,0.4753
 hiv,愛滋病毒,0.4057
 hives,蕁麻疹,0.479
 hoard,貯藏,0.5114
-hoard,祕藏,0.4852
+hoard,秘藏,0.4852
 hoard,居奇,0.4832
 hoard,攢,0.3693
 hoard,囤,0.3516
@@ -21174,7 +21170,7 @@ hoarse,喑啞,0.4825
 hoarse,粗啞,0.4751
 hoarse,嘶啞聲,0.433
 hoarse,沙,0.3933
-hob,爐臺,0.4794
+hob,爐台,0.4794
 hobble,蹣跚,0.503
 hobble,一瘸一拐,0.4164
 hobby,興趣,0.6496
@@ -21346,7 +21342,7 @@ hoodlum,混蛋,0.5282
 hoodlum,無賴,0.5251
 hoodlum,光棍,0.5234
 hoodlum,混子,0.5212
-hoodwink,蒙蔽,0.5145
+hoodwink,矇蔽,0.5145
 hoodwink,誘騙,0.5001
 hoodwink,矇騙,0.4986
 hoodwink,矇混,0.4892
@@ -21736,7 +21732,7 @@ husband,老頭,0.585
 husband,老兒,0.4893
 husband,夫,0.3859
 husband,丈,0.3579
-hush,吁,0.3404
+hush,籲,0.3404
 husk,穎,0.3699
 husk,碾,0.353
 husk,糠,0.3514
@@ -22001,7 +21997,7 @@ illegitimate,非婚生,0.4523
 illicit,違禁,0.5028
 illiterate,文盲,0.5183
 illiterate,不識字,0.4604
-illiterate,蒙昧,0.4394
+illiterate,矇昧,0.4394
 illness,病症,0.5417
 illness,病患,0.5057
 illness,症候,0.4912
@@ -22421,7 +22417,7 @@ inaugurate,揭牌,0.5022
 inauguration,就職典禮,0.4164
 inauspicious,不祥,0.506
 inauspicious,不吉,0.4854
-inauspicious,凶,0.3585
+inauspicious,兇,0.3585
 inborn,先天,0.5609
 inbox,收件箱,0.4724
 inbreeding,近親繁殖,0.4097
@@ -22441,7 +22437,7 @@ incarnate,體現,0.6546
 incarnation,化身,0.5626
 incautious,不慎,0.5446
 incense,香氣,0.5913
-incense,熏香,0.4365
+incense,薰香,0.4365
 incentive,激勵,0.6013
 incentive,誘因,0.5146
 incentive,獎酬,0.4734
@@ -22621,7 +22617,7 @@ indecent,淫猥,0.4698
 indecision,猶豫不決,0.43
 indecisive,優柔,0.4926
 indecisive,惺忪,0.4907
-indecisive,拿不准,0.4562
+indecisive,拿不準,0.4562
 indecisive,優柔寡斷,0.4249
 indecisive,搖擺不定,0.4173
 indecisive,朝三暮四,0.4146
@@ -22853,10 +22849,10 @@ infantry,步兵,0.5584
 infantryman,步兵,0.5584
 infatuate,迷住,0.5021
 infatuated,痴迷,0.5343
-infatuated,情癡,0.4875
+infatuated,情痴,0.4875
 infatuated,迷瞪,0.4788
 infatuated,心馳神往,0.4151
-infatuation,癡情,0.5225
+infatuation,痴情,0.5225
 infect,感染,0.6325
 infect,傳染,0.539
 infect,濡染,0.4784
@@ -23438,7 +23434,7 @@ intend,有意,0.5781
 intense,強烈,0.6399
 intense,厲害,0.6348
 intense,緊張,0.6216
-intense,濃郁,0.5848
+intense,濃鬱,0.5848
 intense,猛烈,0.5327
 intense,尖銳,0.5312
 intensify,強化,0.6246
@@ -23538,7 +23534,7 @@ interests,權益,0.5995
 interface,接口,0.6208
 interface,端口,0.5805
 interface,搭界,0.4839
-interfere,干擾,0.6062
+interfere,幹擾,0.6062
 interfere,干涉,0.5681
 interfere,作梗,0.4853
 interfere,攙和,0.4809
@@ -23547,7 +23543,7 @@ interfere,插,0.3919
 interference,干涉,0.5681
 interference,插手,0.5128
 interference,雜訊,0.4796
-interferon,干擾素,0.4715
+interferon,幹擾素,0.4715
 intergenerational,代際,0.455
 interim,臨時,0.6108
 interim,過渡,0.5867
@@ -23686,10 +23682,10 @@ interval,間隙,0.5524
 interval,空當,0.4877
 interval,區隔,0.4875
 interval,際,0.3624
-intervene,干預,0.5971
+intervene,幹預,0.5971
 intervene,介入,0.5877
 intervene,排解,0.5017
-intervention,干預,0.5971
+intervention,幹預,0.5971
 interview,面試,0.6919
 interview,採訪,0.6096
 interview,訪談,0.571
@@ -24618,7 +24614,7 @@ knack,訣竅,0.5169
 knack,花頭,0.4973
 knack,門,0.4197
 knag,樶,0.3406
-knapsack,背包,0.5863
+knapsack,揹包,0.5863
 knapsack,背囊,0.4882
 knead,搓揉,0.4882
 knead,揉,0.3684
@@ -24786,7 +24782,7 @@ lactobacillus,乳桿菌,0.4223
 lactone,內酯,0.4917
 lactose,乳糖,0.4923
 lacuna,腔隙,0.4826
-lad,小伙子,0.5405
+lad,小夥子,0.5405
 ladder,梯子,0.5244
 ladder,扶梯,0.4918
 ladder-shaped,梯形,0.5027
@@ -24864,7 +24860,7 @@ lamppost,燈柱,0.4849
 lamppost,電線杆,0.4737
 lamppost,電線桿,0.4315
 lampshade,燈罩,0.4919
-lampstand,燈臺,0.4833
+lampstand,燈台,0.4833
 lampwick,燈心,0.4771
 lan,區域網絡,0.4105
 lan,區域網路,0.4016
@@ -24885,7 +24881,7 @@ land-based,陸基,0.4846
 land-based,陸棲,0.4735
 landfall,靠岸,0.491
 landform,地形,0.5742
-landing,樓梯臺,0.4095
+landing,樓梯台,0.4095
 landing-stage,棧橋,0.4908
 landlady,女房東,0.4551
 landline,座機,0.52
@@ -24914,7 +24910,7 @@ landslide,泥石流,0.4763
 landslip,滑坡,0.5188
 landslip,山崩,0.4904
 lane,小路,0.5294
-lane,胡同,0.5057
+lane,衚衕,0.5057
 lane,弄堂,0.4911
 lane,巷弄,0.4801
 lane,里巷,0.4799
@@ -25059,7 +25055,7 @@ launch,開展,0.63
 launch,發射,0.6137
 launch,發動,0.5886
 launch,彈射,0.4913
-launchpad,發射臺,0.4566
+launchpad,發射台,0.4566
 launder,洗濯,0.4813
 launderability,耐洗滌性,0.3935
 laundry,洗衣,0.5232
@@ -25229,7 +25225,7 @@ lecher,好色之徒,0.4134
 lecherous,好色,0.5239
 lecherous,發騷,0.4936
 lecherous,色迷,0.4886
-lectern,講臺,0.519
+lectern,講台,0.519
 lectern,講桌,0.482
 lectin,凝集素,0.4558
 lecture,報告,0.6474
@@ -25589,7 +25585,7 @@ limit,限制,0.6688
 limit,範圍,0.6591
 limit,極限,0.6169
 limit,限定,0.5799
-limit,局限,0.5751
+limit,侷限,0.5751
 limit,盡頭,0.5554
 limitation,限度,0.5262
 limitation,時效,0.5129
@@ -25698,8 +25694,8 @@ listless,悵惘,0.4887
 listless,頹喪,0.4869
 listless,憊懶,0.4766
 listless,頹萎,0.4602
-listless,無精打采,0.4248
-listless,沒精打采,0.4137
+listless,無精打採,0.4248
+listless,沒精打採,0.4137
 litchi,荔,0.3526
 liter,公升,0.4917
 liter,升,0.3815
@@ -25975,7 +25971,7 @@ loom,機杼,0.4807
 loom,織布機,0.4557
 loong,龍,0.4115
 loop,循環,0.633
-loop,回路,0.5187
+loop,迴路,0.5187
 loop,環路,0.5067
 loop,圈,0.3915
 loop,環,0.3883
@@ -26458,7 +26454,7 @@ main,重頭,0.4925
 mainland,大陸,0.6283
 mainstay,支柱,0.5257
 mainstay,歸依,0.4882
-mainstay,臺柱,0.4848
+mainstay,台柱,0.4848
 mainstay,主力軍,0.4759
 mainstay,主心骨,0.4596
 mainstay,中流砥柱,0.418
@@ -26570,7 +26566,7 @@ malpractice,弊病,0.5047
 malpractice,陋習,0.5016
 malpractice,流弊,0.4811
 malpractice,蠹弊,0.4412
-malpractice,玩忽職守,0.418
+malpractice,翫忽職守,0.418
 malt,麥芽,0.525
 malta,馬耳他,0.4619
 maltose,飴糖,0.4833
@@ -26967,7 +26963,7 @@ matchmaker,牽線人,0.4476
 matchmaking,婚介,0.5085
 mate,伴侶,0.5633
 mate,配對,0.5247
-mate,伙計,0.4918
+mate,夥計,0.4918
 mate,交尾,0.4874
 mate,頭路,0.4849
 mate,偶,0.4309
@@ -27145,7 +27141,7 @@ mechanism,機,0.4315
 mechanize,機械化,0.4861
 medal,勛章,0.5129
 medal,獎章,0.5052
-meddle,干預,0.5971
+meddle,幹預,0.5971
 meddle,干涉,0.5681
 meddle,伸手,0.5533
 meddle,插手,0.5128
@@ -27408,7 +27404,7 @@ merriment,狂歡,0.5482
 merry,僖,0.3466
 merry-go-round,輪轉機,0.4488
 merry-go-round,旋轉木馬,0.4185
-mesa,臺地,0.4889
+mesa,台地,0.4889
 mesa,崮,0.3465
 mesh,網格,0.5628
 mesh,網眼,0.4922
@@ -27416,7 +27412,7 @@ mesh,網孔,0.4866
 mesh,網目,0.4804
 mesh,目,0.3806
 mesmerism,催眠術,0.4593
-mesmerized,如癡如醉,0.4182
+mesmerized,如痴如醉,0.4182
 meson,介子,0.4895
 mesopotamia,兩河,0.4904
 mesopotamia,兩河流域,0.4124
@@ -27612,7 +27608,7 @@ midway,中路,0.5721
 midway,半路,0.5193
 midway,半途,0.4947
 midwest,中西部,0.4798
-midwife,老娘,0.5336
+midwife,老孃,0.5336
 midwife,產婆,0.4793
 midwife,助產士,0.4551
 midwife,接生婆,0.4529
@@ -27699,7 +27695,7 @@ million,兆,0.376
 millionaire,富翁,0.5256
 millionaire,萬貫,0.492
 millionaire,闊佬,0.4803
-millionaire,巨富,0.4493
+millionaire,鉅富,0.4493
 millionaire,百萬富翁,0.4349
 millionaire,大富大貴,0.416
 millipede,百足,0.483
@@ -27868,7 +27864,7 @@ misery,酸辛,0.4777
 misfortune,不幸,0.5876
 misfortune,厄運,0.5211
 misfortune,變故,0.5137
-misfortune,霉運,0.4903
+misfortune,黴運,0.4903
 misfortune,急難,0.4845
 misfortune,壞運,0.4723
 misgivings,疑惑,0.6037
@@ -28153,7 +28149,7 @@ monarch,君主,0.5721
 monarch,帝王,0.5703
 monarch,國君,0.5167
 monarch,君,0.3973
-monarch,辟,0.3483
+monarch,闢,0.3483
 monarchy,君主制,0.4551
 monarchy,君主國,0.4462
 monarchy,君主政體,0.4046
@@ -28221,7 +28217,7 @@ monolith,巨石,0.5116
 monomania,偏執狂,0.4606
 monoplane,單翼飛機,0.3927
 monopolize,壟斷,0.6094
-monopolize,獨占,0.5627
+monopolize,獨佔,0.5627
 monopolize,把持,0.5095
 monopolize,獨霸,0.5003
 monopolize,獨攬,0.4904
@@ -28390,7 +28386,7 @@ mother,孺人,0.4771
 mother-daughter,母女,0.5195
 mother-in-law,婆婆,0.5689
 mother-in-law,阿婆,0.5095
-mother-in-law,丈母娘,0.4811
+mother-in-law,丈母孃,0.4811
 mother-in-law,丈母,0.4753
 mother-of-pearl,珠母,0.4692
 mother-of-pearl,瑤,0.3652
@@ -28574,7 +28570,7 @@ mudslide,滑坡,0.5188
 mudslide,泥石流,0.4763
 mudslide,土石流,0.4492
 mudstone,泥岩,0.4824
-mudstone,泥質頁岩,0.3875
+mudstone,泥質頁巖,0.3875
 muffin,鬆餅,0.4853
 muffin,小鬆糕,0.426
 muffled,沉悶,0.5236
@@ -28820,11 +28816,11 @@ mysterious,奧妙,0.5075
 mysterious,玄妙,0.5007
 mysterious,幽微,0.482
 mysterious,藐藐,0.4729
-mystery,奧祕,0.5155
+mystery,奧秘,0.5155
 mystery,疑團,0.4893
 mystery,啞謎,0.4827
-mystery,神祕莫測,0.4171
-mystic,怪祕,0.4439
+mystery,神秘莫測,0.4171
+mystic,怪秘,0.4439
 mystical,神奇,0.5835
 mystical,神異,0.4847
 mysticeti,鬚鯨,0.4751
@@ -28991,7 +28987,7 @@ naughty,調皮搗蛋,0.4164
 naughty,頑,0.3504
 nausea,惡心,0.5957
 nauseating,惡心,0.5957
-nauseating,腌臢,0.4729
+nauseating,醃臢,0.4729
 nautilus,鸚鵡螺,0.4537
 navassa,納瓦薩,0.435
 navel,肚臍,0.5058
@@ -29321,7 +29317,7 @@ nickname,綽號,0.5163
 nickname,花名,0.4894
 nickname,渾號,0.4657
 nickname,混名,0.4649
-nicotine,菸鹼,0.4861
+nicotine,煙鹼,0.4861
 niece,甥女,0.475
 nifty,小巧,0.5434
 nifty,給力,0.5299
@@ -29856,7 +29852,7 @@ obscure,冷僻,0.4842
 obscure,窈窈,0.4687
 obsequies,葬儀,0.4806
 observations,觀感,0.5708
-observatory,觀象臺,0.4544
+observatory,觀象台,0.4544
 observe,觀察,0.66
 observe,觀測,0.5977
 observe,體察,0.49
@@ -29945,7 +29941,7 @@ occupy,佔用,0.5754
 occupy,佔有,0.5686
 occupy,據有,0.4926
 occupy,據,0.4174
-occupy,占,0.3639
+occupy,佔,0.3639
 occur,發生,0.6796
 occur,發案,0.488
 occur,出,0.4484
@@ -30142,7 +30138,7 @@ ominous,不祥,0.506
 ominous,不吉,0.4854
 ominous,蹇滯,0.4617
 ominous,不吉利,0.4606
-ominous,凶,0.3585
+ominous,兇,0.3585
 omission,省略,0.5374
 omission,脫漏,0.4704
 omission,脫誤,0.4631
@@ -30549,7 +30545,7 @@ otolaryngology,耳鼻咽喉,0.4192
 otolith,耳石,0.4752
 otter,水獺,0.4843
 otter,獺,0.3457
-otto,奧托,0.4904
+otto,奧託,0.4904
 ottoman,墩子,0.4885
 ouch,哎喲,0.5199
 ought,活該,0.5534
@@ -30951,10 +30947,10 @@ pad,襯墊,0.4882
 pad,墊,0.3711
 padauk,紅木,0.5218
 padding,水分,0.5987
-paddle,划槳,0.4837
+paddle,劃槳,0.4837
 paddle,划子,0.4748
 paddle,槳,0.3522
-paddle,划,0.3393
+paddle,劃,0.3393
 paddleboard,衝浪板,0.4538
 paddy,水稻,0.5397
 paddy,稻穀,0.5078
@@ -31057,12 +31053,12 @@ paleomagnetism,古地磁,0.4467
 palestine,巴勒斯坦,0.4421
 palette,調色板,0.4591
 palette,調色盤,0.4549
-palindrome,回文,0.4341
+palindrome,迴文,0.4341
 paling,圍籬,0.4768
 paling,柵條,0.471
 palisade,栫,0.3404
 pall,生厭,0.4892
-pallet,托盤,0.5192
+pallet,託盤,0.5192
 pallet,棧板,0.4853
 palliasse,草墊子,0.4433
 pallor,青白,0.4959
@@ -31344,11 +31340,11 @@ partition,分隔,0.5162
 partition,隔板,0.5026
 partition,分治,0.4857
 partner,對象,0.6586
-partner,伙伴,0.5941
+partner,夥伴,0.5941
 partner,搭檔,0.565
 partner,伴侶,0.5633
 partner,拍檔,0.4959
-partner,伙計,0.4918
+partner,夥計,0.4918
 partnership,共享計劃,0.4143
 partridge,鷓鴣,0.491
 partridge,鴣,0.3438
@@ -31484,7 +31480,7 @@ patient,病者,0.4903
 patient,病員,0.489
 patient,病號,0.4889
 patio,院子,0.5317
-patio,露臺,0.5061
+patio,露台,0.5061
 patio,門廊,0.4855
 patois,土話,0.4871
 patois,土語,0.4838
@@ -31532,7 +31528,7 @@ pavement,便道,0.4903
 pavilion,亭子,0.5044
 pavilion,樓閣,0.4949
 pavilion,涼亭,0.4927
-pavilion,亭臺,0.4914
+pavilion,亭台,0.4914
 pavilion,亭閣,0.4858
 pavilion,樓子,0.483
 paving,鋪面,0.5029
@@ -31607,7 +31603,7 @@ pebble,卵石,0.49
 pebble,鵝卵石,0.4634
 pebble,河卵石,0.4507
 pebbles,礫石,0.4868
-peck,斗,0.3664
+peck,鬥,0.3664
 peck,啄,0.3518
 pectin,果膠,0.4909
 peculiar,奇特,0.5456
@@ -31700,7 +31696,7 @@ peg,銷子,0.4894
 peg,木釘,0.4733
 peg,橛,0.3435
 peg,楬,0.3335
-pegmatite,偉晶岩,0.4463
+pegmatite,偉晶巖,0.4463
 pejorative,輕蔑,0.5049
 pekinese,獅子狗,0.4522
 pekinese,哈,0.448
@@ -31888,7 +31884,7 @@ perfume,香水,0.5628
 perfume,芬芳,0.5204
 perfume,香液,0.4708
 perfume,芬,0.3735
-perfume,熏,0.3476
+perfume,燻,0.3476
 perfunctory,敷衍,0.5467
 perfunctory,含糊,0.5177
 perfunctory,苟且,0.491
@@ -31961,7 +31957,7 @@ permit,許可,0.564
 permit,執照,0.5261
 permit,容許,0.5141
 permit,許可證,0.5117
-permit,准許,0.5064
+permit,準許,0.5064
 permute,置換,0.5404
 pernicious,害人,0.522
 peroxide,過氧化,0.4637
@@ -32061,7 +32057,7 @@ pertinent,相關,0.7002
 pertinent,中肯,0.5077
 pertinent,貼題,0.4686
 perturb,擾亂,0.5231
-perturbation,干擾,0.6062
+perturbation,幹擾,0.6062
 perturbed,憤懣,0.49
 pertussis,百日咳,0.4579
 peruse,披閱,0.4739
@@ -32406,9 +32402,9 @@ pillage,攫奪,0.4649
 pillar,柱子,0.5421
 pillar,支柱,0.5257
 pillar,柱石,0.4858
-pillar,臺柱,0.4848
+pillar,台柱,0.4848
 pillar,主心骨,0.4596
-pillar,頂梁柱,0.4494
+pillar,頂樑柱,0.4494
 pillion,後座,0.5108
 pillow,枕頭,0.5489
 pillow,葄,0.3297
@@ -32600,7 +32596,6 @@ plaice,歐蝶魚,0.4057
 plaid,格子呢,0.4459
 plaid,格子花呢,0.3989
 plain,平原,0.5537
-plain,明了,0.5301
 plain,明瞭,0.5301
 plain,樸實,0.5272
 plain,質樸,0.5159
@@ -32677,12 +32672,12 @@ plate,碟,0.3788
 plate,鋈,0.347
 plateau,高原,0.5461
 plateful,滿盤,0.4856
-platform,平臺,0.7231
-platform,講臺,0.519
+platform,平台,0.7231
+platform,講台,0.519
 platform,載具,0.5023
 platform,棧橋,0.4908
 platform,政綱,0.4815
-platform,主席臺,0.4749
+platform,主席台,0.4749
 platinum,白金,0.5501
 platinum,鉑金,0.5324
 platitude,陳腐,0.4868
@@ -32900,7 +32895,7 @@ pockmark,痘痕,0.4841
 pockmark,痘痂,0.4578
 pockmark,白麻子,0.4323
 pod,蒴,0.3397
-podium,講臺,0.519
+podium,講台,0.519
 podium,講桌,0.482
 poem,詩歌,0.6001
 poem,詩篇,0.5069
@@ -33138,7 +33133,7 @@ populous,人口稠密,0.4123
 porcelain,瓷器,0.5196
 porcelain,磁,0.363
 porcelain,瓷,0.3628
-porch,陽臺,0.5827
+porch,陽台,0.5827
 porch,廊,0.3578
 porcupine,豪豬,0.4873
 pore,毛孔,0.5409
@@ -33803,7 +33798,6 @@ pretentious,浮華,0.5074
 pretentious,拿喬,0.471
 pretentious,裝腔作勢,0.4157
 pretest,預試,0.4742
-pretext,借口,0.5816
 pretext,藉口,0.5816
 pretext,說辭,0.536
 pretext,盾牌,0.5334
@@ -34006,7 +34000,7 @@ processing,製程,0.5042
 procession,隊伍,0.6222
 procession,遊行,0.5302
 processor,處理器,0.5369
-proclaim,宣布,0.6307
+proclaim,宣佈,0.6307
 proclaim,聲稱,0.5788
 proclaim,頒布,0.5362
 proclaim,宣告,0.5349
@@ -34094,7 +34088,7 @@ profit,獲利,0.5763
 profitable,有益,0.5446
 profitable,有利可圖,0.4228
 profitable,裨,0.3452
-profitable,划,0.3393
+profitable,劃,0.3393
 profiteer,投機,0.5678
 profiteer,奸商,0.5147
 profiteer,倒把,0.488
@@ -34144,7 +34138,7 @@ progressive,與時俱進,0.4449
 progressively,逐步,0.6139
 progressivism,進步主義,0.4041
 prohibit,禁止,0.6168
-prohibit,不准,0.5823
+prohibit,不準,0.5823
 prohibit,取締,0.5205
 prohibit,禁制,0.4948
 prohibit,查禁,0.4849
@@ -34307,7 +34301,7 @@ property,財產,0.6037
 property,物業,0.5682
 prophecy,預言,0.5773
 prophecy,讖語,0.4808
-prophesy,卜占,0.4566
+prophesy,卜佔,0.4566
 prophet,預言家,0.4839
 prophylactic,預防,0.6111
 prophylactic,預防性,0.4619
@@ -34357,7 +34351,7 @@ propriety,體統,0.486
 propriety,禮,0.3829
 propyl,丙,0.3651
 propylaeum,朝門,0.4773
-proscenium,前臺,0.579
+proscenium,前台,0.579
 prosecute,起訴,0.5953
 prosecute,追訴,0.4878
 prosecution,檢方,0.5028
@@ -34591,7 +34585,7 @@ publish,推出,0.6482
 publish,發表,0.6416
 publish,出版,0.6343
 publish,發行,0.6317
-publish,公布,0.6205
+publish,公佈,0.6205
 publish,披露,0.564
 publisher,發行人,0.4918
 publisher,發行商,0.4808
@@ -34867,7 +34861,7 @@ quay,船埠,0.4662
 queen,女王,0.5862
 queen,王后,0.527
 queen,娘娘,0.5247
-queen,后,0.3872
+queen,後,0.3872
 queer,不對,0.6332
 queer,奇特,0.5456
 queer,蹊蹺,0.5057
@@ -35417,7 +35411,6 @@ reality,真事,0.4903
 realizable,行得通,0.4574
 realization,體認,0.4861
 realize,實現,0.702
-realize,了解,0.6931
 realize,瞭解,0.6931
 realize,認知,0.6683
 realize,明白,0.6523
@@ -35839,8 +35832,8 @@ reflections,感想,0.5479
 reflectivity,反照率,0.4445
 reflector,反射鏡,0.4582
 reflex,反射作用,0.4084
-refluence,回流,0.5267
-reflux,回流,0.5267
+refluence,迴流,0.5267
+reflux,迴流,0.5267
 reforest,綠化,0.5479
 reforestation,重新造林,0.3911
 reform,改革,0.619
@@ -36698,7 +36691,7 @@ response,對答,0.488
 responsibility,責任,0.6436
 responsibility,職責,0.5835
 responsibility,擔子,0.5088
-responsibility,干係,0.5001
+responsibility,幹係,0.5001
 responsibility,職守,0.4946
 responsibility,事權,0.4876
 responsible,自覺,0.5715
@@ -36735,7 +36728,7 @@ restoration,規復,0.4651
 restore,恢復,0.6444
 restore,修復,0.6178
 restore,復,0.3597
-restrain,克制,0.5841
+restrain,剋制,0.5841
 restrain,羈絆,0.5429
 restrain,遏制,0.5386
 restrain,拘束,0.5078
@@ -36746,7 +36739,7 @@ restrained,蘊藉,0.4835
 restrained,拘牽,0.463
 restrained,有節制,0.4589
 restrained,泥,0.38
-restraint,克制,0.5841
+restraint,剋制,0.5841
 restraint,羈絆,0.5429
 restraint,畏忌,0.474
 restrict,限制,0.6688
@@ -36864,7 +36857,7 @@ return,回來,0.6901
 return,回去,0.6585
 return,歸來,0.5654
 return,重回,0.5449
-return,回路,0.5187
+return,迴路,0.5187
 return,迴轉,0.5104
 retypeset,重排,0.4872
 reunion,重逢,0.5178
@@ -37008,7 +37001,7 @@ rhombus,菱形,0.5029
 rhotic,日化,0.5034
 rhyme,押韻,0.5247
 rhyme,韻腳,0.4841
-rhyme,叶韻,0.4793
+rhyme,葉韻,0.4793
 rhyme,尾韻,0.467
 rhyme,協韻,0.4658
 rhyme,韻,0.3718
@@ -37037,7 +37030,7 @@ ribs,骨子,0.4983
 rice,水稻,0.5397
 rich,豐富,0.6687
 rich,富有,0.588
-rich,濃郁,0.5848
+rich,濃鬱,0.5848
 rich,富人,0.5794
 rich,充實,0.573
 rich,有錢人,0.5376
@@ -37129,7 +37122,7 @@ rime,霧凇,0.4872
 rind,皮,0.3973
 ring,圈子,0.6196
 ring,鈴聲,0.5518
-ring,擂臺,0.5134
+ring,擂台,0.5134
 ring,籃圈,0.4839
 ring,圈,0.3915
 ring,環,0.3883
@@ -37353,7 +37346,7 @@ roof,房頂,0.5078
 roof,屋面,0.5067
 roof,頂蓋,0.4908
 roof,頂板,0.4896
-rooftop,天臺,0.5208
+rooftop,天台,0.5208
 rookie,菜鳥,0.5621
 room,空間,0.7034
 room,房子,0.6558
@@ -37392,8 +37385,8 @@ rose,玫瑰花,0.4884
 rosebud,薔薇花蕾,0.3912
 rosewood,紅木,0.5218
 rosin,松香,0.492
-rostrum,講臺,0.519
-rostrum,主席臺,0.4749
+rostrum,講台,0.519
+rostrum,主席台,0.4749
 rostrum,壇,0.3678
 rosy,紅潤,0.5123
 rosy,透紅,0.4901
@@ -37487,7 +37480,7 @@ row,一排,0.5374
 row,橫隊,0.4783
 row,排,0.4008
 row,搖,0.3718
-row,划,0.3393
+row,劃,0.3393
 rowboat,划子,0.4748
 rowing,划船,0.5321
 royal,皇家,0.5498
@@ -37518,7 +37511,7 @@ rubella,風疹,0.489
 rubella,德國麻疹,0.4004
 rubric,名目,0.5036
 ruby,紅寶石,0.4755
-rucksack,背包,0.5863
+rucksack,揹包,0.5863
 rucksack,背囊,0.4882
 ruckus,咋呼,0.4825
 rudder,船舵,0.4764
@@ -37576,7 +37569,7 @@ ruler,當權者,0.4671
 ruler,執政者,0.458
 ruler,主宰者,0.4579
 ruler,君,0.3973
-ruler,后,0.3872
+ruler,後,0.3872
 rules,規定,0.6647
 rules,條例,0.5491
 rules,章程,0.5285
@@ -37845,7 +37838,7 @@ salvage,打撈,0.5128
 salvation,救贖,0.5577
 salvation,救世,0.4963
 salvation,救恩,0.4866
-salver,托盤,0.5192
+salver,託盤,0.5192
 salvo,禮炮,0.4923
 salvo,排射,0.4608
 salzburg,薩爾茨堡,0.4144
@@ -38001,7 +37994,7 @@ sauce,調味汁,0.4552
 saucepan,燉鍋,0.4849
 saucepan,煲,0.3634
 saucer,碟子,0.5133
-saucer,杯托,0.4785
+saucer,杯託,0.4785
 saucy,討俏,0.4458
 saudi,沙特,0.5476
 sauerkraut,德國酸菜,0.3851
@@ -38205,7 +38198,7 @@ scenery,景色,0.5611
 scenery,山水,0.5452
 scenery,景物,0.5176
 scenery,風物,0.4911
-scenery,景致,0.4689
+scenery,景緻,0.4689
 scent,氣味,0.5727
 scent,馥,0.3503
 scepter,權杖,0.4928
@@ -38590,7 +38583,7 @@ secrecy,保密性,0.4599
 secret,機密,0.5276
 secret,私密,0.5223
 secret,訣竅,0.5169
-secret,奧祕,0.5155
+secret,奧秘,0.5155
 secret,隱密,0.4893
 secret,隱衷,0.4769
 secretariat,文書,0.5805
@@ -38603,7 +38596,7 @@ secretary-general,幹事長,0.4552
 secrete,分泌,0.5801
 secretion,分泌,0.5801
 secretion,分泌物,0.484
-secretive,詭祕,0.4916
+secretive,詭秘,0.4916
 secretive,鬼祟,0.4905
 secretive,鬼鬼祟祟,0.4169
 secretly,偷偷,0.6063
@@ -38689,13 +38682,11 @@ seek,找尋,0.5358
 seek,探尋,0.5341
 seek,謀求,0.523
 seem,顯得,0.6429
-seem,仿佛,0.637
 seem,彷彿,0.637
 seem,看似,0.635
 seem,好似,0.5669
 seem,見得,0.5155
 seemingly,似乎,0.6796
-seemingly,仿佛,0.637
 seemingly,彷彿,0.637
 seemingly,看起來,0.6307
 seemingly,髣,0.3336
@@ -38761,7 +38752,7 @@ self-confidence,自信心,0.5051
 self-contained,自備,0.5101
 self-contempt,自輕自賤,0.4072
 self-contradictory,自相矛盾,0.4253
-self-control,克制,0.5841
+self-control,剋制,0.5841
 self-control,自制,0.567
 self-control,自控,0.5097
 self-control,自制力,0.502
@@ -39016,7 +39007,7 @@ separatist,分離分子,0.3974
 september,九月,0.5435
 september,九月份,0.4748
 septic,化膿性,0.4622
-septicaemia,敗血症,0.4615
+septicaemia,敗血癥,0.4615
 sequel,續作,0.5412
 sequel,續集,0.5349
 sequel,後傳,0.4963
@@ -39076,7 +39067,7 @@ serum,血清,0.529
 servant,用人,0.5443
 servant,僕人,0.518
 servant,傭人,0.5011
-servant,伙計,0.4918
+servant,夥計,0.4918
 servant,奴僕,0.4907
 servant,僕役,0.485
 servants,隸圉,0.4349
@@ -39250,7 +39241,7 @@ shake,晃動,0.5353
 shakespeare,莎翁,0.4868
 shaky,活動,0.695
 shaky,飄,0.3835
-shale,頁岩,0.4908
+shale,頁巖,0.4908
 shale,泥岩,0.4824
 shall,就要,0.6797
 shall,將要,0.5531
@@ -39917,7 +39908,6 @@ silviculture,森林培育,0.4079
 simaroubaceae,樗,0.3435
 similar,同樣,0.7095
 similar,類似,0.6838
-similar,仿佛,0.637
 similar,彷彿,0.637
 similar,相似,0.6199
 similar,同類,0.588
@@ -40606,7 +40596,7 @@ smoke,煙霧,0.5273
 smoke,雲煙,0.5064
 smoke,煙氣,0.5061
 smoke,煙燻,0.5022
-smoke,熏製,0.4811
+smoke,燻製,0.4811
 smoke,煙霾,0.4625
 smokescreen,煙幕,0.4864
 smokescreen,障眼法,0.4581
@@ -41033,7 +41023,7 @@ sorceress,師娘,0.4464
 sorcery,妖術,0.4931
 sorcery,邪術,0.4844
 sordid,齷濁,0.4341
-sore,酸疼,0.462
+sore,痠疼,0.462
 sore,疼,0.3943
 sore,酸,0.3863
 sore,瘡,0.3542
@@ -41408,7 +41398,7 @@ spindle,轉動軸,0.4483
 spindle,筳,0.334
 spindrift,浪花,0.5131
 spine,骨力,0.4815
-spine,脊梁,0.4767
+spine,脊樑,0.4767
 spine,背骨,0.4752
 spineless,麵,0.3571
 spinneret,噴絲頭,0.4416
@@ -41758,9 +41748,9 @@ stag,麌,0.3322
 stag,噳,0.3301
 stage,階段,0.6902
 stage,地步,0.598
-stage,前臺,0.579
-stage,戲臺,0.4916
-stage,臺,0.4122
+stage,前台,0.579
+stage,戲台,0.4916
+stage,台,0.4122
 stage,期,0.411
 stagger,蹣跚,0.503
 stagger,踉蹌,0.5003
@@ -41852,7 +41842,7 @@ stand,支架,0.5586
 stand,站立,0.5554
 stand,立足,0.5453
 stand,架子,0.5436
-stand,展臺,0.5222
+stand,展台,0.5222
 stand-in,替身,0.5228
 standard,水平,0.7055
 standard,標準,0.6989
@@ -41958,7 +41948,7 @@ station,駐地,0.5158
 station,駐紮,0.5096
 station,屯駐,0.4772
 station,站,0.4181
-station,臺,0.4122
+station,台,0.4122
 stationary,靜止,0.5443
 stationed,紮營,0.4906
 stationer,文具商,0.4356
@@ -42099,7 +42089,7 @@ stepladder,梯子,0.5244
 stepmother,繼母,0.5018
 stepmother,後母,0.4881
 steppe,畯,0.3362
-steps,臺階,0.5701
+steps,台階,0.5701
 stepson,繼子,0.4842
 stepson,假子,0.4685
 stereo,音響設備,0.419
@@ -42233,7 +42223,7 @@ stipulate,訂明,0.4765
 stipulation,約定,0.6109
 stipulation,訂定,0.4846
 stipulations,規定,0.6647
-stipule,托葉,0.4804
+stipule,託葉,0.4804
 stir,攪拌,0.5603
 stir,撥動,0.5022
 stir,攪動,0.5015
@@ -42260,7 +42250,7 @@ stock,股份,0.6107
 stock,庫存,0.5863
 stock,存貨,0.5262
 stock,備貨,0.4993
-stock,槍托,0.4877
+stock,槍託,0.4877
 stockade,寨,0.3662
 stockade,梐,0.3278
 stockholder,股東,0.6328
@@ -42328,7 +42318,7 @@ stoppage,暫停,0.5875
 stopper,楔子,0.4951
 stopwatch,碼表,0.4878
 stopwatch,停表,0.4748
-stopwatch,秒表,0.4455
+stopwatch,秒錶,0.4455
 storage,存儲,0.62
 storage,儲存,0.5873
 storage,貯物,0.4755
@@ -42592,11 +42582,11 @@ stroll,逛,0.3903
 stroller,嬰兒車,0.4637
 stroller,娃娃車,0.4415
 stromatolite,疊層石,0.4449
-stromatolite,疊層岩,0.4163
+stromatolite,疊層巖,0.4163
 strong,強烈,0.6399
 strong,強勢,0.6071
 strong,扎實,0.5985
-strong,濃郁,0.5848
+strong,濃鬱,0.5848
 strong,堅強,0.5744
 strong,強勁,0.5611
 strong-minded,要強,0.551
@@ -42919,7 +42909,7 @@ subsystem,分系統,0.4567
 subsystem,支系統,0.4331
 subterranean,地下,0.5917
 subterranean,地底,0.4938
-subtext,潛臺詞,0.4798
+subtext,潛台詞,0.4798
 subtitles,字幕,0.5922
 subtle,細膩,0.6119
 subtle,細微,0.5537
@@ -43446,7 +43436,7 @@ surrender,繳械,0.4882
 surrender,投誠,0.4864
 surrender,繳槍,0.4826
 surreptitious,悄悄,0.5647
-surreptitious,詭祕,0.4916
+surreptitious,詭秘,0.4916
 surreptitious,偷摸,0.4829
 surreptitious,魆,0.333
 surreptitiously,暗中,0.5253
@@ -43659,7 +43649,7 @@ swim,游泳,0.5883
 swim,游水,0.5005
 swim,泅水,0.4761
 swim,鳧水,0.4712
-swim,游,0.385
+swim,遊,0.385
 swim,泳,0.359
 swimming,游泳,0.5883
 swimming,泳,0.359
@@ -43831,7 +43821,7 @@ tableau,畫面,0.6796
 tablecloth,桌布,0.4984
 tablecloth,檯布,0.4882
 tablecloth,桌巾,0.4729
-tableland,臺地,0.4889
+tableland,台地,0.4889
 tablespoon,湯匙,0.5064
 tabletop,桌面,0.5911
 tabletop,檯面,0.54
@@ -43902,7 +43892,7 @@ tailor-make,量身定做,0.4298
 tails,燕尾服,0.4573
 tailwater,尾水,0.4847
 taint,污點,0.5133
-taiwan,臺灣,0.6382
+taiwan,台灣,0.6382
 take,接下來,0.6343
 take,採取,0.6226
 take,攻克,0.557
@@ -44386,10 +44376,10 @@ terminus,總站,0.517
 terminus,終點站,0.4774
 termite,白蟻,0.5022
 termite,蛀,0.3464
-terrace,平臺,0.7231
-terrace,露臺,0.5061
-terrace,樓臺,0.4931
-terrace,臺,0.4122
+terrace,平台,0.7231
+terrace,露台,0.5061
+terrace,樓台,0.4931
+terrace,台,0.4122
 terrace,陔,0.3434
 terraced,梯形,0.5027
 terracing,梯田,0.5021
@@ -44768,10 +44758,10 @@ thrifty,省儉,0.4687
 thrifty,做人家,0.4533
 thrifty,儉,0.3545
 thrill,快感,0.5782
-thrill,扣人心弦,0.3867
+thrill,扣人心絃,0.3867
 thriller,驚悚,0.5366
 thrilling,刺激性,0.4916
-thrilling,扣人心弦,0.3867
+thrilling,扣人心絃,0.3867
 thrive,興盛,0.5084
 thriving,發燒,0.5736
 thriving,興旺,0.5163
@@ -45113,7 +45103,7 @@ toe,腳趾,0.5274
 toe,指頭,0.5184
 toe,腳趾頭,0.4665
 toe,趾,0.3525
-toefl,托福,0.5789
+toefl,託福,0.5789
 toenail,趾甲,0.4849
 toenail,腳指甲,0.4531
 toes,足尖,0.4854
@@ -45396,7 +45386,7 @@ tourist,旅遊客,0.4425
 tourmaline,碧璽,0.4883
 tourmaline,電氣石,0.4628
 tournament,比武,0.5121
-tout,托兒,0.4891
+tout,託兒,0.4891
 tout,拉生意,0.4496
 tow,牽引,0.5245
 tow,拖動,0.517
@@ -45417,7 +45407,7 @@ towel,巾,0.3569
 tower,層樓,0.5139
 tower,屹立,0.5095
 tower,矗立,0.5084
-tower,樓臺,0.4931
+tower,樓台,0.4931
 tower,高塔,0.4906
 tower,塔,0.3911
 towering,突兀,0.557
@@ -45749,7 +45739,7 @@ traverse,橫越,0.4835
 trawl,拖網,0.4811
 trawlnet,拖網,0.4811
 tray,盤子,0.5563
-tray,托盤,0.5192
+tray,託盤,0.5192
 tray,盤,0.4125
 tray,屜,0.3466
 treacherous,陰險,0.5164
@@ -46388,7 +46378,7 @@ ubiquitous,普及,0.6191
 ubiquitous,到處可見,0.4156
 ubiquity,普遍性,0.4773
 udder,乳房,0.5534
-uganda,烏干達,0.4603
+uganda,烏幹達,0.4603
 ugly,難看,0.5632
 ugly,醜陋,0.551
 ugly,醜惡,0.5164
@@ -46543,7 +46533,7 @@ uncertainty,未知數,0.4773
 unchanging,不易,0.6154
 uncharged,不帶電,0.4506
 uncivilized,野蠻,0.5342
-uncivilized,蒙昧,0.4394
+uncivilized,矇昧,0.4394
 uncle,大大,0.6096
 uncle,大爺,0.5926
 uncle,伯伯,0.5175
@@ -46622,7 +46612,7 @@ unctuous,油滑,0.4847
 unctuous,膩,0.3705
 uncultivated,荒,0.3647
 uncultured,放縱,0.529
-uncultured,蒙昧,0.4394
+uncultured,矇昧,0.4394
 undamaged,完好無損,0.4186
 undecided,未定,0.5124
 undecorated,不加修飾,0.411
@@ -46695,7 +46685,6 @@ underside,下方,0.6003
 underside,下邊,0.5446
 undersized,矮小,0.5062
 understand,理解,0.7204
-understand,了解,0.6931
 understand,瞭解,0.6931
 understand,明白,0.6523
 understand,懂得,0.5915
@@ -46794,7 +46783,7 @@ uneven,不平,0.5248
 uneven,不均,0.5065
 uneven,參差,0.5024
 uneven,錯落,0.5023
-uneven,闌干,0.4858
+uneven,闌幹,0.4858
 uneven,參差不齊,0.4448
 unexpected,突然,0.6863
 unexpected,意外,0.6165
@@ -46826,7 +46815,7 @@ unfamiliar,眼生,0.4792
 unfamiliar,生,0.4266
 unfathomable,叵測,0.4908
 unfathomable,不可思議,0.4736
-unfathomable,神祕莫測,0.4171
+unfathomable,神秘莫測,0.4171
 unfathomable,莫測高深,0.411
 unfathomable,不可端倪,0.3907
 unfavorable,不利,0.5838
@@ -47453,7 +47442,7 @@ urine,尿,0.3787
 url,網址,0.5935
 url,網頁地址,0.4197
 urn,骨罈,0.4493
-urn,瓮,0.3437
+urn,甕,0.3437
 urology,泌尿外科,0.4225
 urticaria,風疹,0.489
 urticaria,蕁麻疹,0.479
@@ -48410,7 +48399,7 @@ wait,伺,0.3484
 waiter,服務員,0.5403
 waiter,小二,0.5121
 waiter,侍者,0.5011
-waiter,伙計,0.4918
+waiter,夥計,0.4918
 waiter,茶房,0.4822
 waiter,跑堂兒的,0.3926
 waitress,服務員,0.5403
@@ -48584,7 +48573,7 @@ wash,洗濯,0.4813
 wash,清滌,0.4667
 wash-resistant,耐洗,0.4813
 washbasin,水池,0.5184
-washbasin,臺盆,0.4908
+washbasin,台盆,0.4908
 washboard,搓板,0.4803
 washboard,洗衣板,0.4491
 washbowl,臉盆,0.5055
@@ -48742,7 +48731,7 @@ wealthy,富,0.3907
 wean,斷奶,0.5087
 wean,斷乳,0.482
 weapon,武器,0.6509
-weapon,家伙,0.5804
+weapon,傢伙,0.5804
 weapon,器械,0.5738
 weapon,械,0.3537
 weaponry,兵器,0.5592
@@ -48765,7 +48754,7 @@ wearily,疲勞,0.5747
 weariness,疲勞,0.5747
 weary,疲勞,0.5747
 weary,疲乏,0.5022
-weary,困倦,0.4627
+weary,睏倦,0.4627
 weary,累,0.4173
 weary,倦,0.357
 weary,疲,0.3549
@@ -48984,8 +48973,8 @@ wheel,轉輪,0.4914
 wheel,車輪子,0.4495
 wheel-rut,轢,0.3376
 wheelbarrow,小車,0.5332
-wheelbarrow,斗車,0.4881
-wheelbarrow,車斗,0.4807
+wheelbarrow,鬥車,0.4881
+wheelbarrow,車鬥,0.4807
 wheelbarrow,手推車,0.4655
 wheelbarrow,獨輪車,0.4566
 wheelbarrow,軖,0.322
@@ -49185,7 +49174,7 @@ widespread,普遍,0.6585
 widespread,普及,0.6191
 widespread,廣大,0.6106
 widespread,廣泛,0.6025
-widespread,咸,0.3579
+widespread,鹹,0.3579
 widow,寡婦,0.511
 widow,孤孀,0.4655
 widow,遺妻,0.4517
@@ -49303,7 +49292,7 @@ window,窗扇,0.4823
 window,風窗,0.4822
 window,窗,0.3785
 window-shop,逛街,0.5626
-windowsill,窗臺,0.5156
+windowsill,窗台,0.5156
 windpipe,氣管,0.5127
 windpipe,嗓門,0.5046
 windshield,風擋,0.4923
@@ -49423,7 +49412,7 @@ withered,枯萎,0.5133
 withered,乾枯,0.5064
 withered,枯乾,0.4843
 withered,蔫頭耷腦,0.401
-withered,菸,0.3694
+withered,煙,0.3694
 withhold,扣繳,0.4908
 withhold,扣發,0.4843
 withhold,扣壓,0.4823
@@ -49931,11 +49920,11 @@ young,幼稚,0.5648
 young,年少,0.5406
 young,年幼,0.5305
 young,幼小,0.5119
-youngest,么,0.4095
+youngest,麼,0.4095
 youngest,屘,0.3308
 youngster,少年,0.6437
 youngster,年輕人,0.6207
-youngster,小伙子,0.5405
+youngster,小夥子,0.5405
 youngster,小年輕,0.477
 youngster,小屁孩,0.4751
 youngster,小青年,0.4703

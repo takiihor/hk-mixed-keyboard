@@ -71,11 +71,14 @@ fun assistCandidates(buffer: String, candidates: List<DecodeCandidate>) =
 
 // ── Controller factory ────────────────────────────────────────────────────
 
+// `classify` is retained for call-site compatibility but no longer affects the
+// controller: Space/punctuation now always commit the literal buffer, so commits
+// don't consult the classifier (candidate selection happens in the bar instead).
 fun makeCtrl(
     memory: UserMemory = UserMemory(),
     ctx: ImeContext = ImeContext(),
-    classify: (String) -> ClassifyResult = { unknown(it) }
-) = CommitController(memory, classify, ctx)
+    @Suppress("UNUSED_PARAMETER") classify: (String) -> ClassifyResult = { unknown(it) }
+) = CommitController(memory, ctx)
 
 // ── Corpus CSV readers (file-system, no Android Context needed) ───────────
 

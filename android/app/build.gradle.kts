@@ -19,7 +19,7 @@ kapt {
 // A short, human-readable note about this build, surfaced in the Settings screen
 // (and the APK filename) so the installed version is unmistakable. Edit this line
 // whenever you want the note to describe the latest change.
- val buildRemark = "New app icon; 2-letter Space stays English; 0ms decode; bigger key hit-area"
+ val buildRemark = "HK corpus cleanup: simplified chars removed, 爲→為 variant fix, memory purge"
 
 // ── Auto-incrementing version ───────────────────────────────────────────────
 // version.properties holds versionMinor/buildNumber/buildTime. Every time an
@@ -33,21 +33,38 @@ val versionProps = Properties().apply {
 }
 
 // Signing secrets, kept out of version control (see keystore.properties.sample).
+// Prefer HKKBD_* environment variables so release/upload keys can live outside
+// the repo. keystore.properties remains supported for local one-machine builds.
 val keystorePropsFile = file("keystore.properties")
 val keystoreProps = Properties().apply {
     if (keystorePropsFile.exists()) keystorePropsFile.inputStream().use { load(it) }
 }
+val releaseStorePath = System.getenv("HKKBD_STORE_FILE") ?: keystoreProps.getProperty("storeFile")
+val releaseStorePassword = System.getenv("HKKBD_STORE_PASSWORD") ?: keystoreProps.getProperty("storePassword")
+val releaseKeyAlias = System.getenv("HKKBD_KEY_ALIAS") ?: keystoreProps.getProperty("keyAlias")
+val releaseKeyPassword = System.getenv("HKKBD_KEY_PASSWORD") ?: keystoreProps.getProperty("keyPassword")
+val hasReleaseSigning = listOf(
+    releaseStorePath,
+    releaseStorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword
+).all { !it.isNullOrBlank() }
 var versionMinor = (versionProps.getProperty("versionMinor") ?: "7").toInt()
 var buildNumber = (versionProps.getProperty("buildNumber") ?: "0").toInt()
 var buildTime = versionProps.getProperty("buildTime") ?: "unknown"
 
-// Only bump on a *release* assemble/bundle so local debug builds and test runs
-// don't churn the public version or dirty the tracked version.properties file.
-val isReleaseBuildInvocation = gradle.startParameter.taskNames.any { taskName ->
+// Bump only when explicitly requested on a release APK/AAB/install build:
+//   ./gradlew bundleRelease -PversionedBuild=true
+// This keeps repeated verification and test APK builds from changing the store
+// version after the release number has been selected.
+val shouldVersionBuild = providers.gradleProperty("versionedBuild")
+    .map { it.equals("true", ignoreCase = true) }
+    .getOrElse(false)
+val isVersionedBuildInvocation = gradle.startParameter.taskNames.any { taskName ->
     taskName.contains("Release", ignoreCase = true) &&
         listOf("assemble", "bundle", "install").any { taskName.contains(it, ignoreCase = true) }
 }
-if (isReleaseBuildInvocation) {
+if (shouldVersionBuild && isVersionedBuildInvocation) {
     versionMinor += 1
     buildNumber += 1
     buildTime = SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date())
@@ -69,7 +86,8 @@ val appVersionName = "0.$versionMinor.0"
       defaultConfig {
         applicationId = "com.hkmixedkeyboard"
         minSdk = 26
-        targetSdk = 35
+        // Play policy: new apps/updates must target API 36 from 2026-08-31.
+        targetSdk = 36
         versionCode = buildNumber
         versionName = appVersionName
 
@@ -90,15 +108,12 @@ val appVersionName = "0.$versionMinor.0"
 
     signingConfigs {
         create("release") {
-            // Secrets are read from keystore.properties (git-ignored) or the
-            // environment — never hard-coded in source. See keystore.properties.sample.
-            storeFile = file(keystoreProps.getProperty("storeFile") ?: "release.keystore")
-            storePassword = keystoreProps.getProperty("storePassword")
-                ?: System.getenv("HKKBD_STORE_PASSWORD") ?: ""
-            keyAlias = keystoreProps.getProperty("keyAlias")
-                ?: System.getenv("HKKBD_KEY_ALIAS") ?: "hkmixedkeyboard"
-            keyPassword = keystoreProps.getProperty("keyPassword")
-                ?: System.getenv("HKKBD_KEY_PASSWORD") ?: ""
+            if (hasReleaseSigning) {
+                storeFile = file(releaseStorePath!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
             // Enable all signature schemes for maximum device/OEM compatibility.
             // v1 (JAR) is required by some older / OEM ROMs that reject v2-only APKs.
             enableV1Signing = true
@@ -114,9 +129,6 @@ val appVersionName = "0.$versionMinor.0"
           // Enable perf tracing in debug builds by default.
           buildConfigField("boolean", "PERF_TRACING", "true")
           buildConfigField("boolean", "DECODE_COALESCE", "false")
-          // Sign debug with the release config too so v1 signing is present
-          // (max compatibility for sideloading during testing).
-          signingConfig = signingConfigs.getByName("release")
 
           // Stronger, crisp haptics for debug without lengthening (avoid overlap)
           buildConfigField("float", "HAPTIC_INTENSITY", "1.0f")
@@ -130,7 +142,9 @@ val appVersionName = "0.$versionMinor.0"
           buildConfigField("boolean", "SHOW_DEBUG_PANEL", "false")
           buildConfigField("boolean", "PERF_TRACING", "false")
           buildConfigField("boolean", "DECODE_COALESCE", "false")
-          signingConfig = signingConfigs.getByName("release")
+          if (hasReleaseSigning) {
+            signingConfig = signingConfigs.getByName("release")
+          }
         }
       }
 
@@ -144,6 +158,18 @@ val appVersionName = "0.$versionMinor.0"
     buildFeatures {
         buildConfig = true
         viewBinding = true
+    }
+
+    lint {
+        // These are release-process choices, not app-store correctness failures:
+        // target 35 satisfies current Google Play policy, and dependency/KSP
+        // upgrades should be handled as separate compatibility work.
+        disable += setOf(
+            "OldTargetApi",
+            "AndroidGradlePluginVersion",
+            "GradleDependency",
+            "KaptUsageInsteadOfKsp"
+        )
     }
 
     // Stamp the auto-incrementing version into the APK filename, e.g.

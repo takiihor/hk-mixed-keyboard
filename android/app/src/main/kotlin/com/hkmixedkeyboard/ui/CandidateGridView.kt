@@ -13,7 +13,6 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.hkmixedkeyboard.R
-import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
 
 class CandidateGridView(private val context: Context) {
@@ -54,8 +53,7 @@ class CandidateGridView(private val context: Context) {
         }
 
         candidates.forEach { cand ->
-            val color = if (cand.isHkCore || cand.type == CandidateType.PHRASE ||
-                cand.type == CandidateType.MIXED_PHRASE) colorHk else colorNorm
+            val color = if (CandidateVisualPolicy.isPriority(cand)) colorHk else colorNorm
             val cell = TextView(context).apply {
                 text = cand.text
                 setTextColor(color)

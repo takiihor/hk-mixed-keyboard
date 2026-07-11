@@ -13,6 +13,11 @@ interface CustomWordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entry: CustomWordEntity)
 
+    // Room wraps a list @Insert in a single transaction, so importing a dictionary is
+    // one commit instead of one per row.
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(entries: List<CustomWordEntity>)
+
     @Query("DELETE FROM custom_words WHERE id = :id")
     suspend fun delete(id: Int)
 

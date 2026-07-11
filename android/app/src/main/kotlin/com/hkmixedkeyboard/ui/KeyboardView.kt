@@ -66,6 +66,10 @@ class KeyboardView @JvmOverloads constructor(
         const val KEY_QUESTION = KeyboardLayout.KEY_QUESTION
         const val KEY_EXCLAIM = KeyboardLayout.KEY_EXCLAIM
         private const val LATENCY_LOG_TAG = "HkIme.Latency"
+        // Hoisted out of isSpecial() so onDraw doesn't allocate a Set per key per frame.
+        private val SPECIAL_KEYS = setOf(
+            KEY_BACKSPACE, KEY_SHIFT, KEY_ENTER, KEY_EMOJI, KEY_SYMBOL, KEY_MODE
+        )
     }
 
     private data class KeyCell(
@@ -77,7 +81,14 @@ class KeyboardView @JvmOverloads constructor(
     )
 
     private val cells = mutableListOf<KeyCell>()
-    private var pressedKey: KeyCell? = null
+    // Per-pointer press tracking. A single shared "pressed key" dropped characters
+    // during fast two-finger typing (rollover): the second finger's DOWN overwrote
+    // the first finger's key before its UP could emit it. Mapping pointerId → cell
+    // lets every finger resolve and emit independently.
+    private val pointerCells = android.util.SparseArray<KeyCell>()
+    // Pointer that owns the active single-finger gesture (backspace auto-repeat,
+    // 符/？！ long-press, or the space-bar cursor swipe); -1 when none is active.
+    private var gesturePointerId = -1
     private val holdController = HoldActionController(
         object : HoldActionController.Scheduler {
             private val handler = Handler(Looper.getMainLooper())
@@ -144,6 +155,18 @@ class KeyboardView @JvmOverloads constructor(
         buildCells(w.toFloat(), h.toFloat())
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val desiredHeight = KeyboardLayout.keyboardHeightPx(resources.displayMetrics.density)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
+        val measuredHeight = when (heightMode) {
+            MeasureSpec.EXACTLY -> heightSize
+            MeasureSpec.AT_MOST -> minOf(desiredHeight, heightSize).coerceAtLeast(suggestedMinimumHeight)
+            else -> desiredHeight.coerceAtLeast(suggestedMinimumHeight)
+        }
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), measuredHeight)
+    }
+
     private fun buildCells(w: Float, h: Float) {
         cells.clear()
         for (cell in KeyboardLayout.buildCells(w, h)) {
@@ -173,7 +196,7 @@ class KeyboardView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         for (cell in cells) {
             val label = cell.def.label
-            val pressed = cell == pressedKey
+            val pressed = isPressed(cell)
             val isEnter = label == KEY_ENTER
             val bg = when {
                 pressed -> colorPressedBg
@@ -225,10 +248,18 @@ class KeyboardView @JvmOverloads constructor(
             }
         }
 
-        // Draw popup bubble on top of everything else.
-        pressedKey?.let { cell ->
+        // Draw popup bubbles on top of everything else — one per pressed finger.
+        for (i in 0 until pointerCells.size()) {
+            val cell = pointerCells.valueAt(i)
             if (shouldShowPopup(cell.def.label)) drawKeyPopup(canvas, cell)
         }
+    }
+
+    private fun isPressed(cell: KeyCell): Boolean {
+        for (i in 0 until pointerCells.size()) {
+            if (pointerCells.valueAt(i) == cell) return true
+        }
+        return false
     }
 
     private fun shouldShowPopup(label: String): Boolean =
@@ -263,91 +294,129 @@ class KeyboardView @JvmOverloads constructor(
                     android.util.Log.d(LATENCY_LOG_TAG, "touch_received ns=" + SystemClock.elapsedRealtimeNanos())
                 }
                 val idx = event.actionIndex
-                val cell = cellForDown(event.getX(idx), event.getY(idx))
-                pressedKey = cell
-                if (cell != null) haptic()
+                onPointerDown(event.getPointerId(idx), event.getX(idx), event.getY(idx))
                 invalidate()
                 performClick()
-                when (cell?.def?.label) {
-                    KEY_BACKSPACE -> holdController.pressRepeating {
-                        emitKey(KEY_BACKSPACE)
-                    }
-                    KEY_SYMBOL -> holdController.pressLong(
-                        tap = { emitKey(KEY_SYMBOL) },
-                        longPress = { keyListener?.onKeyLongPress(KEY_SYMBOL) }
-                    )
-                    KEY_QUESTION -> holdController.pressLong(
-                        tap = { emitKey(KEY_QUESTION) },
-                        longPress = {
-                            keyListener?.onKeyLongPress(KEY_QUESTION)
-                            emitKey(KEY_EXCLAIM)
-                        }
-                    )
-                    KEY_SPACE -> {
-                        spaceSwipeActive = true
-                        spaceSwipeStartX = event.getX(idx)
-                        spaceSwipeLastStep = 0
-                    }
-                    null -> Unit
-                    else -> if (KeyTouchPolicy.emitsOnPress(cell.def.label)) {
-                        emitKey(cell.def.label)
-                    }
-                }
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> {
                 val idx = event.actionIndex
-                val current = pressedKey
-                val x = event.getX(idx)
-                val y = event.getY(idx)
-                if (current != null && current.hitRect.contains(x, y)) {
-                    when (current.def.label) {
-                        KEY_BACKSPACE, KEY_QUESTION, KEY_SYMBOL -> holdController.release()
-                        KEY_SPACE -> {
-                            val wasSwiped = spaceSwipeLastStep != 0
-                            spaceSwipeActive = false
-                            spaceSwipeLastStep = 0
-                            if (!wasSwiped) emitKey(KEY_SPACE)
-                        }
-                        else -> if (KeyTouchPolicy.emitsOnRelease(current.def.label)) {
-                            emitKey(current.def.label)
-                        }
-                    }
-                } else {
-                    holdController.cancel()
-                    spaceSwipeActive = false
-                    spaceSwipeLastStep = 0
-                }
-                pressedKey = null
+                onPointerUp(event.getPointerId(idx), event.getX(idx), event.getY(idx))
                 invalidate()
             }
             MotionEvent.ACTION_MOVE -> {
-                val current = pressedKey
-                if (current != null) {
-                    if (current.def.label == KEY_SPACE && spaceSwipeActive) {
-                        val dx = event.x - spaceSwipeStartX
-                        val currentStep = (dx / cursorStepPx).toInt()
-                        val delta = currentStep - spaceSwipeLastStep
-                        if (delta != 0) {
-                            spaceSwipeLastStep = currentStep
-                            val dir = if (delta > 0) 1 else -1
-                            repeat(kotlin.math.abs(delta)) { keyListener?.onSpaceSwipe(dir) }
-                        }
-                    } else if (!current.hitRect.contains(event.x, event.y)) {
-                        holdController.cancel()
-                        pressedKey = null
-                        invalidate()
-                    }
+                // A MOVE batches every active pointer; advance each one independently.
+                for (i in 0 until event.pointerCount) {
+                    onPointerMove(event.getPointerId(i), event.getX(i), event.getY(i))
                 }
             }
             MotionEvent.ACTION_CANCEL -> {
                 holdController.cancel()
-                spaceSwipeActive = false
-                spaceSwipeLastStep = 0
-                pressedKey = null
+                resetSwipe()
+                gesturePointerId = -1
+                pointerCells.clear()
                 invalidate()
             }
         }
         return true
+    }
+
+    private fun onPointerDown(pointerId: Int, x: Float, y: Float) {
+        val cell = cellForDown(x, y) ?: return
+        pointerCells.put(pointerId, cell)
+        haptic()
+        val label = cell.def.label
+        if (isGestureKey(label)) {
+            // Backspace repeat, 符/？！ long-press and the space swipe are inherently
+            // single-finger; let only the first such finger drive the shared gesture.
+            if (gesturePointerId == -1) {
+                gesturePointerId = pointerId
+                beginGesture(label, x)
+            }
+        } else if (KeyTouchPolicy.emitsOnPress(label)) {
+            emitKey(label)
+        }
+    }
+
+    private fun onPointerUp(pointerId: Int, x: Float, y: Float) {
+        val cell = pointerCells.get(pointerId) ?: return
+        pointerCells.remove(pointerId)
+        val label = cell.def.label
+        val inside = cell.hitRect.contains(x, y)
+        if (pointerId == gesturePointerId) {
+            when (label) {
+                KEY_BACKSPACE, KEY_QUESTION, KEY_SYMBOL, KEY_MODE ->
+                    if (inside) holdController.release() else holdController.cancel()
+                KEY_SPACE -> {
+                    val wasSwiped = spaceSwipeLastStep != 0
+                    resetSwipe()
+                    if (inside && !wasSwiped) emitKey(KEY_SPACE)
+                }
+            }
+            gesturePointerId = -1
+        } else if (inside && KeyTouchPolicy.emitsOnRelease(label)) {
+            emitKey(label)
+        }
+    }
+
+    private fun onPointerMove(pointerId: Int, x: Float, y: Float) {
+        val cell = pointerCells.get(pointerId) ?: return
+        if (pointerId == gesturePointerId && cell.def.label == KEY_SPACE && spaceSwipeActive) {
+            val dx = x - spaceSwipeStartX
+            val currentStep = (dx / cursorStepPx).toInt()
+            val delta = currentStep - spaceSwipeLastStep
+            if (delta != 0) {
+                spaceSwipeLastStep = currentStep
+                val dir = if (delta > 0) 1 else -1
+                repeat(kotlin.math.abs(delta)) { keyListener?.onSpaceSwipe(dir) }
+            }
+            return
+        }
+        // Finger slid off the key it pressed: drop it (and cancel a gesture it owned).
+        if (!cell.hitRect.contains(x, y)) {
+            if (pointerId == gesturePointerId) {
+                holdController.cancel()
+                resetSwipe()
+                gesturePointerId = -1
+            }
+            pointerCells.remove(pointerId)
+            invalidate()
+        }
+    }
+
+    private fun isGestureKey(label: String): Boolean =
+        label == KEY_BACKSPACE || label == KEY_SYMBOL ||
+            label == KEY_QUESTION || label == KEY_SPACE || label == KEY_MODE
+
+    private fun beginGesture(label: String, x: Float) {
+        when (label) {
+            KEY_BACKSPACE -> holdController.pressRepeating { emitKey(KEY_BACKSPACE) }
+            KEY_SYMBOL -> holdController.pressLong(
+                tap = { emitKey(KEY_SYMBOL) },
+                longPress = { keyListener?.onKeyLongPress(KEY_SYMBOL) }
+            )
+            KEY_QUESTION -> holdController.pressLong(
+                tap = { emitKey(KEY_QUESTION) },
+                longPress = {
+                    keyListener?.onKeyLongPress(KEY_QUESTION)
+                    emitKey(KEY_EXCLAIM)
+                }
+            )
+            // Tap = scheme switch (速成 ↔ 粵拼); long-press = 繁/簡 output toggle.
+            KEY_MODE -> holdController.pressLong(
+                tap = { emitKey(KEY_MODE) },
+                longPress = { keyListener?.onKeyLongPress(KEY_MODE) }
+            )
+            KEY_SPACE -> {
+                spaceSwipeActive = true
+                spaceSwipeStartX = x
+                spaceSwipeLastStep = 0
+            }
+        }
+    }
+
+    private fun resetSwipe() {
+        spaceSwipeActive = false
+        spaceSwipeLastStep = 0
     }
 
     override fun performClick(): Boolean { super.performClick(); return true }
@@ -415,7 +484,5 @@ class KeyboardView @JvmOverloads constructor(
     private fun isLetter(label: String): Boolean =
         label.length == 1 && label[0] in 'A'..'Z'
 
-    private fun isSpecial(label: String) = label in setOf(
-        KEY_BACKSPACE, KEY_SHIFT, KEY_ENTER, KEY_EMOJI, KEY_SYMBOL, KEY_MODE
-    )
+    private fun isSpecial(label: String) = label in SPECIAL_KEYS
 }

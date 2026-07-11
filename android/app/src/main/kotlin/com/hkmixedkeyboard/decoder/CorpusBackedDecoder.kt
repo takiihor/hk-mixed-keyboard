@@ -46,7 +46,7 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
             }
             // Prefix matches (incremental: a still-incomplete code that begins a
             // dictionary key, including concatenated phrase keys like "hoenggong").
-            if (corpus.jyutpingPrefixSet.contains(lower)) {
+            if (corpus.jyutpingPrefixIndex.hasPrefix(lower)) {
                 val pref = corpus.jyutpingPrefixIndex.matching(lower, limit = 24)
                     .flatMap { corpus.jyutpingIndex[it].orEmpty() }
                 if (pref.isNotEmpty()) {
@@ -112,7 +112,7 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         // English assist — prefix completions. Run even when there is an exact
         // match so typing "disc" surfaces discuss→討論 alongside the exact
         // disc→碟片 (English autocomplete → Chinese meaning).
-        if (lower.length >= 3 && corpus.englishAssistPrefixSet.contains(lower)) {
+        if (lower.length >= 3 && corpus.englishAssistPrefixIndex.hasPrefix(lower)) {
             corpus.englishAssistPrefixIndex.matching(lower, limit = 24)
                 .asSequence()
                 .filter { it != lower }
@@ -127,7 +127,7 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         }
 
         // Jyutping — prefix (only if no exact Jyutping match)
-        if (!corpus.jyutpingIndex.containsKey(lower) && corpus.jyutpingPrefixSet.contains(lower)) {
+        if (!corpus.jyutpingIndex.containsKey(lower) && corpus.jyutpingPrefixIndex.hasPrefix(lower)) {
             corpus.jyutpingPrefixIndex.matching(lower, limit = 24)
                 .flatMapTo(result) { corpus.jyutpingIndex[it].orEmpty() }
         }
@@ -174,14 +174,14 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
             DecodeCandidate(text, lower, SourceSchema.JYUTPING, CandidateType.PHRASE,
                 freq.also { freq -= 0.01 }, false)
         }
-        // isExactCode=true + PHRASE type ⇒ cnHasPhraseMatch, so Space commits the
-        // composed phrase (see DecodeResult / CommitController.selectSpaceCommitTarget).
+        // isExactCode=true + PHRASE type ⇒ cnHasPhraseMatch, so the composed phrase
+        // surfaces as the top candidate in the bar (one tap to commit).
         return DecodeResult(lower, Scheme.JYUTPING, lower.length, true, false, candidates)
     }
 
     private fun decodeCjkDirect(buffer: String, scheme: Scheme): DecodeResult {
         if (buffer.length == 1) {
-            val charEntry = corpus.chars.firstOrNull { it.char == buffer }
+            val charEntry = corpus.charByText[buffer]
             if (charEntry != null) {
                 return DecodeResult(buffer, scheme, 1, true, false, listOf(
                     DecodeCandidate(charEntry.char, charEntry.quickCode,
@@ -189,7 +189,7 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
                 ))
             }
         }
-        val phraseEntry = corpus.phrases.firstOrNull { it.phrase == buffer }
+        val phraseEntry = corpus.phraseByText[buffer]
         if (phraseEntry != null) {
             return DecodeResult(buffer, scheme, buffer.length, true, false, listOf(
                 DecodeCandidate(phraseEntry.phrase, phraseEntry.quickCode,

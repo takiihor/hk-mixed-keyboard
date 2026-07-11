@@ -125,19 +125,4 @@ class SafeModeTest {
 
         assertNull("Safe mode: prevCommitted must not be set", out.newState.prevCommitted)
     }
-
-    // ── 5. Safe mode candidate bar is empty on commit ─────────────────────
-
-    @Test
-    fun `In safe field candidate bar is empty after commit`() {
-        val mock溝通 = cnChar("溝通", "communication")
-        val ctrl = makeCtrl(ctx = safeCtx, classify = { buf ->
-            assistCandidates(buf, listOf(mock溝通))
-        })
-        val state = ImeStateData(buffer = "communication", imeState = ImeState.COMPOSING)
-        val out = ctrl.onCandidateTap(mock溝通, state)
-
-        assertTrue("Safe mode: candidate bar must be empty after commit",
-            out.candidateBar.isEmpty())
-    }
 }

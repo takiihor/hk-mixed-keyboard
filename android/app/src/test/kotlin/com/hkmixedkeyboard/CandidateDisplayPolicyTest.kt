@@ -104,4 +104,58 @@ class CandidateDisplayPolicyTest {
         assertEquals(1, result.count { it.text == "communication" })
         assertEquals(0.4, result.first().frequency, 0.0)
     }
+
+    @Test
+    fun `expanded candidate limit keeps lower ranked quick candidates`() {
+        val decoded = (1..20).map { i ->
+            cnChar("候$i", "or", freq = (100 - i).toDouble())
+        }
+
+        val bar = policy.order(
+            buffer = "or",
+            learned = emptyList(),
+            english = emptyList(),
+            decoded = decoded,
+            literal = enLiteralCand("or"),
+            limit = CandidateDisplayPolicy.BAR_LIMIT
+        )
+        val expanded = policy.order(
+            buffer = "or",
+            learned = emptyList(),
+            english = emptyList(),
+            decoded = decoded,
+            literal = enLiteralCand("or"),
+            limit = CandidateDisplayPolicy.EXPANDED_LIMIT
+        )
+
+        assertEquals(false, bar.any { it.text == "候16" })
+        assertEquals(true, expanded.any { it.text == "候16" })
+    }
+
+    @Test
+    fun `next character predictions promote learned choices`() {
+        val result = policy.orderPredictions(
+            learned = listOf(MemorySuggestion(cnChar("估", "我"), 3)),
+            decoded = listOf(
+                cnChar("哋", "我", freq = 0.95),
+                cnChar("估", "我", freq = 0.1)
+            )
+        )
+
+        assertEquals(listOf("估", "哋"), result.take(2).map { it.text })
+    }
+
+    @Test
+    fun `learned Chinese candidate is marked as user memory and ranked first`() {
+        val result = policy.order(
+            buffer = "or",
+            learned = listOf(MemorySuggestion(cnChar("估", "or", isHkCore = false), 3)),
+            english = emptyList(),
+            decoded = listOf(cnChar("嗰", "or", isHkCore = false, freq = 0.95)),
+            literal = enLiteralCand("or")
+        )
+
+        assertEquals("估", result.first().text)
+        assertEquals(SourceSchema.USER_MEMORY, result.first().sourceSchema)
+    }
 }

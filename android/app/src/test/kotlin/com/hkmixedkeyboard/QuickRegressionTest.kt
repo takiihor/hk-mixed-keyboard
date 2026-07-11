@@ -151,6 +151,14 @@ class QuickRegressionTest {
         assertEquals("我嘅", phraseCand!!.text)
     }
 
+    @Test
+    fun `orjd includes 估字 phrase`() {
+        val result = classifier.classify("orjd", Scheme.QUICK)
+        assertTrue("'orjd' must produce phrase candidates", result.cnCandidates.isNotEmpty())
+        assertTrue("Missing HK phrase 估字 for Quick code 'orjd'",
+            result.cnCandidates.any { it.text == "估字" && it.type == CandidateType.PHRASE })
+    }
+
     // ── Phrases rank above single chars ────────────────────────────────────
 
     @Test

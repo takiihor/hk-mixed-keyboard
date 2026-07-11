@@ -1,5 +1,6 @@
 # HK phrase corpus — generated from rime-essay frequency + Cangjie5 codes
 # quick_code = concatenated per-character Quick codes (first+last Cangjie letter each)
+# HK-normalized: simplified residue converted via curated s2hk (names/HK-usage rows exempt); quick codes recomputed; duplicates merged.
 # Fields: phrase, quick_code, freq, hk_core
 phrase,quick_code,freq,hk_core
 就是,yuao,0.800000,0
@@ -9,7 +10,7 @@ phrase,quick_code,freq,hk_core
 所以,hlvo,0.786673,0
 可以,mrvo,0.781045,0
 我們,hion,0.780453,0
-因爲,wkbf,0.779820,0
+因為,wkif,0.779820,0
 如果,vrwd,0.776442,0
 自己,husu,0.775939,0
 的時候,hiaiok,0.773860,0
@@ -36,7 +37,7 @@ phrase,quick_code,freq,hk_core
 那麼,slii,0.738427,0
 還有,yvkb,0.737956,0
 公司,cisr,0.737744,0
-爲什麼,bfojii,0.736015,0
+為什麼,ifojii,0.736015,0
 的話,hiyr,0.734756,0
 選擇,ycqj,0.732934,0
 不是,mfao,0.732346,0
@@ -53,7 +54,7 @@ phrase,quick_code,freq,hk_core
 工作,mmos,0.721275,0
 學習,hdsa,0.721232,0
 當然,fwbf,0.720998,0
-作爲,osbf,0.720421,0
+作為,osif,0.720421,0
 一樣,mde,0.720383,0
 中國,lwm,0.720286,0
 產品,ymrr,0.720011,0
@@ -126,7 +127,7 @@ phrase,quick_code,freq,hk_core
 用戶,bqhs,0.692307,0
 項目,mcbu,0.692265,0
 要求,mvie,0.692105,0
-爲了,bfnn,0.691932,0
+為了,ifnn,0.691932,0
 不同,mfbr,0.690906,0
 兩個,moor,0.690618,0
 以後,vohe,0.690490,0
@@ -151,14 +152,14 @@ phrase,quick_code,freq,hk_core
 就會,yuoa,0.686646,0
 不要,mfmv,0.686331,0
 價格,ocdr,0.686229,0
-平臺,mjgg,0.686157,0
+平台,mjir,0.686157,0
 應該,ipyo,0.686037,0
 出現,uumu,0.685946,0
 由於,lwyy,0.685793,0
 市場,ybgh,0.684916,0
 不會,mfoa,0.684710,0
 你們,ofon,0.684632,0
-成爲,isbf,0.684519,0
+成為,isif,0.684519,0
 之間,ioaa,0.684129,0
 也有,pdkb,0.683793,0
 功能,msip,0.683774,0
@@ -169,7 +170,6 @@ phrase,quick_code,freq,hk_core
 理解,mgnq,0.682577,0
 主要,ygmv,0.682473,0
 國內,wmob,0.682249,0
-于是,mdao,0.682219,0
 於是,yyao,0.682219,0
 有些,kbym,0.681995,0
 發展,nesv,0.681821,0
@@ -191,7 +191,7 @@ phrase,quick_code,freq,hk_core
 也會,pdoa,0.676964,0
 希望,kbyg,0.676949,0
 世界,ptwl,0.676929,0
-認爲,ypbf,0.676327,0
+認為,ypif,0.676327,0
 上的,ymhi,0.676208,0
 是否,aomr,0.675989,0
 具體,bcbt,0.675809,0
@@ -369,7 +369,7 @@ phrase,quick_code,freq,hk_core
 擁有,qgkb,0.649824,0
 必須,phhc,0.649807,0
 風險,hino,0.649553,0
-行爲,hnbf,0.649499,0
+行為,hnif,0.649499,0
 動作,hsos,0.649481,0
 活動,erhs,0.649355,0
 決定,ekjo,0.649137,0
@@ -446,7 +446,7 @@ phrase,quick_code,freq,hk_core
 適合,ybor,0.643579,0
 肯定,ybjo,0.643516,0
 文化,ykop,0.643480,0
-是因爲,aowkbf,0.643417,0
+是因為,aowkif,0.643417,0
 第一次,hhmio,0.643143,0
 技能,qeip,0.643138,0
 人物,ohh,0.643132,0
@@ -488,7 +488,6 @@ phrase,quick_code,freq,hk_core
 才是,dhao,0.640421,0
 一年,moq,0.640287,0
 對比,tipp,0.640277,0
-老板,jpde,0.640166,0
 老闆,jpar,0.640166,0
 討論,yiyb,0.640059,0
 不用,mfbq,0.640015,0
@@ -566,7 +565,7 @@ phrase,quick_code,freq,hk_core
 還可以,yvmrvo,0.633614,0
 就算,yuht,0.633567,0
 觀點,tuwr,0.633527,0
-觀衆,tuho,0.633431,0
+觀眾,tuwo,0.633431,0
 照片,afll,0.633365,0
 力量,ksag,0.633235,0
 一切,mph,0.633224,0
@@ -660,7 +659,7 @@ phrase,quick_code,freq,hk_core
 我自己,hihusu,0.626589,0
 題目,acbu,0.626511,0
 所謂,hlyb,0.626498,0
-我認爲,hiypbf,0.626472,0
+我認為,hiypif,0.626472,0
 蘋果,tcwd,0.626462,0
 測試,enym,0.626299,0
 不一樣,mfmde,0.626167,0
@@ -732,7 +731,7 @@ phrase,quick_code,freq,hk_core
 女生,vhm,0.622305,0
 導演,yiec,0.622275,0
 不到,mfmn,0.622195,0
-作爲一個,osbfmor,0.622188,0
+作為一個,osifmor,0.622188,0
 策略,hbwr,0.622091,0
 或許,imyj,0.622079,0
 習慣,sapc,0.621979,0
@@ -753,7 +752,6 @@ phrase,quick_code,freq,hk_core
 還會,yvoa,0.621086,0
 無論是,ofybao,0.621050,0
 給大家,vrkjo,0.620922,0
-制作,hnos,0.620807,0
 製作,hvos,0.620807,0
 小說,ncyu,0.620780,0
 如下,vrmy,0.620760,0
@@ -779,7 +777,7 @@ phrase,quick_code,freq,hk_core
 某些,tdym,0.619647,0
 流量,euag,0.619623,0
 設定,yejo,0.619611,0
-以爲,vobf,0.619579,0
+以為,voif,0.619579,0
 主動,yghs,0.619557,0
 拿到,oqmn,0.619450,0
 論文,ybyk,0.619405,0
@@ -796,7 +794,7 @@ phrase,quick_code,freq,hk_core
 簡單的,harjhi,0.618619,0
 做出,okuu,0.618463,0
 負責,ncqc,0.618426,0
-喫飯,rkoe,0.618388,0
+吃飯,rnoe,0.618388,0
 保護,odye,0.618292,0
 其次,tcio,0.618218,0
 搜索,qejf,0.618215,0
@@ -836,7 +834,7 @@ phrase,quick_code,freq,hk_core
 強大,nik,0.616142,0
 宇宙,jdjw,0.616063,0
 女性,vpm,0.616026,0
-爲主,bfyg,0.616014,0
+為主,ifyg,0.616014,0
 老婆,jpev,0.616008,0
 實在,jckg,0.615977,0
 背後,lbhe,0.615950,0
@@ -873,7 +871,7 @@ phrase,quick_code,freq,hk_core
 每一個,oimor,0.614677,0
 否則,mrbn,0.614587,0
 思想,wpdp,0.614490,0
-剛纔,bnvi,0.614444,0
+剛才,bndh,0.614444,0
 認知,ypor,0.614339,0
 去了,ginn,0.614327,0
 網上,vvym,0.614190,0
@@ -937,7 +935,7 @@ phrase,quick_code,freq,hk_core
 儘管,othr,0.611572,0
 下載,myjj,0.611570,0
 排名,qynr,0.611473,0
-公衆號,cihorn,0.611426,0
+公眾號,ciworn,0.611426,0
 球隊,meno,0.611395,0
 我說,hiyu,0.611333,0
 設置,yewm,0.611318,0
@@ -1111,7 +1109,7 @@ phrase,quick_code,freq,hk_core
 推廣,qgic,0.602447,0
 這點,yrwr,0.602408,0
 好好,vdvd,0.602292,0
-大衆,kho,0.602171,0
+大眾,kwo,0.602171,0
 範圍,huwq,0.602166,0
 參加,ihkr,0.602124,0
 剛剛,bnbn,0.602119,0
@@ -1126,7 +1124,7 @@ phrase,quick_code,freq,hk_core
 就開始,yuatvr,0.601943,0
 還沒有,yveekb,0.601938,0
 內心,obp,0.601871,0
-成爲了,isbfnn,0.601861,0
+成為了,isifnn,0.601861,0
 更大,mkk,0.601759,0
 說了,yunn,0.601722,0
 多個,nior,0.601717,0
@@ -1161,7 +1159,7 @@ phrase,quick_code,freq,hk_core
 心理,pmg,0.600824,0
 可以在,mrvokg,0.600821,0
 對你,tiof,0.600761,0
-分爲,chbf,0.600735,0
+分為,chif,0.600735,0
 偶爾,obmk,0.600715,0
 高考,yrjs,0.600680,0
 分數,chlk,0.600659,0
@@ -1246,7 +1244,7 @@ phrase,quick_code,freq,hk_core
 同事,brjn,0.597072,0
 屬性,sipm,0.596964,0
 女兒,vhu,0.596867,0
-華爲,tjbf,0.596864,0
+華為,tjif,0.596864,0
 徹底,hkim,0.596840,0
 也在,pdkg,0.596799,0
 地區,gdsr,0.596702,0
@@ -1259,7 +1257,7 @@ phrase,quick_code,freq,hk_core
 展示,svmf,0.596498,0
 消息,ebhp,0.596466,0
 認真,ypjc,0.596403,0
-爲何,bfor,0.596322,0
+為何,ifor,0.596322,0
 只需要,rcmlmv,0.596311,0
 一直在,mjmkg,0.596297,0
 體現,btmu,0.596262,0
@@ -1308,7 +1306,7 @@ phrase,quick_code,freq,hk_core
 可以通過,mrvoybyr,0.594329,0
 再加上,mbkrym,0.594233,0
 沒事,eejn,0.594222,0
-是爲了,aobfnn,0.594166,0
+是為了,aoifnn,0.594166,0
 他說,odyu,0.594120,0
 下去,mygi,0.594112,0
 很快,hvpk,0.594055,0
@@ -1331,7 +1329,7 @@ phrase,quick_code,freq,hk_core
 不喜歡,mfgrto,0.593469,0
 指標,qadf,0.593380,0
 缺乏,okho,0.593380,0
-爲例,bfon,0.593372,0
+為例,ifon,0.593372,0
 屏幕,sttb,0.593355,0
 明白,abha,0.593338,0
 可以用,mrvobq,0.593280,0
@@ -1371,7 +1369,7 @@ phrase,quick_code,freq,hk_core
 也沒,pdee,0.591858,0
 人體,obt,0.591846,0
 瘋狂,kikg,0.591826,0
-爲什麼要,bfojiimv,0.591758,0
+為什麼要,ifojiimv,0.591758,0
 一個是,morao,0.591729,0
 到現在,mnmukg,0.591688,0
 安裝,jvvv,0.591658,0
@@ -1460,7 +1458,7 @@ phrase,quick_code,freq,hk_core
 皇帝,hgyb,0.588266,0
 感到,ipmn,0.588210,0
 沒想到,eedpmn,0.588200,0
-爲啥,bfrr,0.588197,0
+為啥,ifrr,0.588197,0
 只不過,rcmfyr,0.588179,0
 大致,kmk,0.588166,0
 家長,josv,0.588166,0
@@ -1606,7 +1604,7 @@ phrase,quick_code,freq,hk_core
 樓主,dvyg,0.582750,0
 了嗎,nnrf,0.582733,0
 共同,tcbr,0.582730,0
-因爲他,wkbfod,0.582713,0
+因為他,wkifod,0.582713,0
 最新,aeyl,0.582709,0
 好處,vdyn,0.582685,0
 回憶,wrpp,0.582678,0
@@ -1694,10 +1692,10 @@ phrase,quick_code,freq,hk_core
 這篇,yrhb,0.579898,0
 這邊,yrys,0.579880,0
 賬戶,bvhs,0.579826,0
-因爲我,wkbfhi,0.579819,0
+因為我,wkifhi,0.579819,0
 大神,kil,0.579794,0
 情節,pbhl,0.579794,0
-稱爲,hbbf,0.579787,0
+稱為,hbif,0.579787,0
 暫時,jaai,0.579747,0
 智能,oaip,0.579744,0
 上了,ymnn,0.579718,0
@@ -1863,7 +1861,7 @@ phrase,quick_code,freq,hk_core
 讓他們,yvodon,0.575459,0
 職位,saot,0.575440,0
 客服,jrbe,0.575409,0
-個人認爲,oroypbf,0.575386,0
+個人認為,oroypif,0.575386,0
 允許,iuyj,0.575355,0
 意見,ypbu,0.575351,0
 是啊,aorr,0.575300,0
@@ -1882,7 +1880,7 @@ phrase,quick_code,freq,hk_core
 已經是,suvmao,0.574958,0
 加速,kryl,0.574943,0
 飛機,nodi,0.574943,0
-臺灣,ggen,0.574841,0
+台灣,iren,0.574841,0
 有多,kbni,0.574747,0
 兩者,moja,0.574736,0
 維護,vgye,0.574720,0
@@ -1918,7 +1916,7 @@ phrase,quick_code,freq,hk_core
 所以說,hlvoyu,0.573853,0
 梅西,dymw,0.573825,0
 就這樣,yuyrde,0.573813,0
-喫的,rkhi,0.573797,0
+吃的,rnhi,0.573797,0
 在家,kgjo,0.573722,0
 互動,mmhs,0.573714,0
 正確,mmmg,0.573662,0
@@ -1938,7 +1936,6 @@ phrase,quick_code,freq,hk_core
 提問,qoar,0.573274,0
 會在,oakg,0.573226,0
 查看,dmhu,0.573190,0
-仿佛,oson,0.573186,0
 彷彿,hshn,0.573186,0
 順序,lcin,0.573037,0
 一定會,mjooa,0.573021,0
@@ -2051,7 +2048,7 @@ phrase,quick_code,freq,hk_core
 覆蓋,mett,0.570146,0
 參數,ihlk,0.570116,0
 貸款,ocgo,0.570116,0
-較爲,jkbf,0.570116,0
+較為,jkif,0.570116,0
 唯一的,rgmhi,0.570112,0
 實驗室,jcsojg,0.570086,0
 哈哈哈,rrrrrr,0.570082,0
@@ -2082,7 +2079,7 @@ phrase,quick_code,freq,hk_core
 有多少,kbnifh,0.569359,0
 你想,ofdp,0.569307,0
 大數據,klkqo,0.569282,0
-喫了,rknn,0.569273,0
+吃了,rnnn,0.569273,0
 億美元,optkmu,0.569269,0
 比較大,ppjkk,0.569260,0
 類似於,fcooyy,0.569256,0
@@ -2091,13 +2088,12 @@ phrase,quick_code,freq,hk_core
 材質,dhhc,0.569191,0
 金屬,csi,0.569191,0
 賣家,gcjo,0.569127,0
-被稱爲,lehbbf,0.569110,0
+被稱為,lehbif,0.569110,0
 有一種,kbmhg,0.569075,0
 便是,okao,0.569041,0
 沒什麼,eeojii,0.569032,0
 佈局,obsr,0.568998,0
-布局,kbsr,0.568998,0
-更爲,mkbf,0.568890,0
+更為,mkif,0.568890,0
 有所,kbhl,0.568890,0
 軍隊,bjno,0.568886,0
 回歸,wrhb,0.568856,0
@@ -2163,7 +2159,7 @@ phrase,quick_code,freq,hk_core
 其它,tcjp,0.567258,0
 及其,netc,0.567223,0
 微軟,hkjo,0.567218,0
-最爲,aebf,0.567205,0
+最為,aeif,0.567205,0
 權利,dghn,0.567129,0
 無數,oflk,0.567089,0
 你會發現,ofoanemu,0.567076,0
@@ -2177,7 +2173,6 @@ phrase,quick_code,freq,hk_core
 那天,slmk,0.566933,0
 人說,oyu,0.566907,0
 分佈,chob,0.566871,0
-分布,chkb,0.566871,0
 可以看出,mrvohuuu,0.566871,0
 以來,vodo,0.566795,0
 小時候,ncaiok,0.566768,0
@@ -2193,7 +2188,7 @@ phrase,quick_code,freq,hk_core
 創意,onyp,0.566508,0
 指出,qauu,0.566463,0
 而非,mlly,0.566463,0
-衆多,honi,0.566418,0
+眾多,woni,0.566418,0
 佔比,orpp,0.566355,0
 幾次,viio,0.566346,0
 道路,yurr,0.566333,0
@@ -2271,7 +2266,6 @@ phrase,quick_code,freq,hk_core
 權力,dgks,0.564980,0
 上升,ymht,0.564966,0
 宣佈,jmob,0.564933,0
-宣布,jmkb,0.564933,0
 大廠,kik,0.564874,0
 早已,ajsu,0.564850,0
 發音,neya,0.564809,0
@@ -2311,7 +2305,7 @@ phrase,quick_code,freq,hk_core
 域名,gmnr,0.563732,0
 面積,mlhc,0.563713,0
 自信,huor,0.563708,0
-因爲你,wkbfof,0.563703,0
+因為你,wkifof,0.563703,0
 狀況,vkeu,0.563703,0
 最強,aeni,0.563699,0
 尺寸,sodi,0.563680,0
@@ -2372,7 +2366,6 @@ phrase,quick_code,freq,hk_core
 演出,ecuu,0.562404,0
 到達,mnyq,0.562394,0
 慾望,cpyg,0.562394,0
-欲望,coyg,0.562394,0
 但也,ompd,0.562351,0
 能讓,ipyv,0.562322,0
 保存,odkd,0.562313,0
@@ -2440,7 +2433,7 @@ phrase,quick_code,freq,hk_core
 現有,mukb,0.560953,0
 芯片,tpll,0.560953,0
 就需要,yumlmv,0.560933,0
-因爲它,wkbfjp,0.560898,0
+因為它,wkifjp,0.560898,0
 正面,mmml,0.560829,0
 雜志,yggp,0.560819,0
 雜誌,ygyp,0.560819,0
@@ -2493,7 +2486,7 @@ phrase,quick_code,freq,hk_core
 發生了,nehmnn,0.559571,0
 取決於,seekyy,0.559561,0
 越多,gvni,0.559556,0
-一臺,mgg,0.559490,0
+一台,mir,0.559490,0
 一系列,mhfmn,0.559475,0
 多麼,niii,0.559475,0
 可以考慮,mrvojsyp,0.559465,0
@@ -2719,7 +2712,7 @@ phrase,quick_code,freq,hk_core
 很久,hvno,0.554941,0
 進而,ygml,0.554930,0
 星期,amtb,0.554908,0
-爲自己,bfhusu,0.554892,0
+為自己,ifhusu,0.554892,0
 釋放,hjyk,0.554854,0
 顧客,hcjr,0.554832,0
 多數,nilk,0.554810,0
@@ -2864,7 +2857,6 @@ phrase,quick_code,freq,hk_core
 擔任,qrog,0.551645,0
 是沒有,aoeekb,0.551640,0
 公佈,ciob,0.551634,0
-公布,cikb,0.551634,0
 和你,hrof,0.551628,0
 一個個,moror,0.551611,0
 全新,ogyl,0.551565,0
@@ -2898,7 +2890,7 @@ phrase,quick_code,freq,hk_core
 混合,epor,0.550950,0
 進口,ygr,0.550950,0
 抱着,qutu,0.550938,0
-爲什麼不,bfojiimf,0.550932,0
+為什麼不,ifojiimf,0.550932,0
 存儲,kdoa,0.550915,0
 希望能,kbygip,0.550897,0
 勢力,gsks,0.550874,0
@@ -2940,7 +2932,7 @@ phrase,quick_code,freq,hk_core
 投行,qehn,0.550240,0
 之上,ioym,0.550187,0
 看你,huof,0.550181,0
-舞臺,oqgg,0.550175,0
+舞台,oqir,0.550175,0
 生活中,hmerl,0.550087,0
 左右的,kmkrhi,0.550057,0
 餐廳,yvip,0.549992,0
@@ -3011,7 +3003,6 @@ phrase,quick_code,freq,hk_core
 這個東西,yrordwmw,0.548626,0
 其餘,tcod,0.548614,0
 抱怨,qunp,0.548583,0
-借助,oabs,0.548529,0
 藉助,tabs,0.548529,0
 取消,seeb,0.548523,0
 眼中,bvl,0.548498,0
@@ -3027,7 +3018,7 @@ phrase,quick_code,freq,hk_core
 少了,fhnn,0.548407,0
 綠色,venu,0.548401,0
 選擇題,ycqjac,0.548316,0
-爲你,bfof,0.548261,0
+為你,ifof,0.548261,0
 多大,nik,0.548255,0
 梳理,dumg,0.548231,0
 火箭,fhn,0.548224,0
@@ -3053,7 +3044,7 @@ phrase,quick_code,freq,hk_core
 正義,mmti,0.547912,0
 題型,acmg,0.547894,0
 好友,vdke,0.547882,0
-小衆,ncho,0.547882,0
+小眾,ncwo,0.547882,0
 轉型,jimg,0.547869,0
 法院,einu,0.547863,0
 藝術家,tihnjo,0.547857,0
@@ -3079,7 +3070,7 @@ phrase,quick_code,freq,hk_core
 還是會,yvaooa,0.547463,0
 人士,ojm,0.547451,0
 對自己的,tihusuhi,0.547426,0
-稱之爲,hbiobf,0.547389,0
+稱之為,hbioif,0.547389,0
 不止,mfym,0.547370,0
 替代,qaop,0.547327,0
 一門,man,0.547302,0
@@ -3136,7 +3127,7 @@ phrase,quick_code,freq,hk_core
 巴薩,autm,0.546472,0
 在意,kgyp,0.546466,0
 溫暖,etae,0.546466,0
-就是因爲,yuaowkbf,0.546459,0
+就是因為,yuaowkif,0.546459,0
 前端,tnyb,0.546447,0
 們的,onhi,0.546428,0
 這裏面,yryvml,0.546422,0
@@ -3146,7 +3137,7 @@ phrase,quick_code,freq,hk_core
 意外,ypny,0.546390,0
 重慶,hgie,0.546390,0
 退出,yvuu,0.546384,0
-後臺,hegg,0.546352,0
+後台,heir,0.546352,0
 這樣做,yrdeok,0.546346,0
 食品,ovrr,0.546334,0
 劃分,lnch,0.546315,0
@@ -3182,7 +3173,6 @@ phrase,quick_code,freq,hk_core
 集體,odbt,0.545700,0
 合並,ortc,0.545694,0
 合併,orot,0.545694,0
-合并,ortt,0.545694,0
 筆記本,hqyudm,0.545688,0
 就是這樣,yuaoyrde,0.545662,0
 這方面,yrysml,0.545656,0
@@ -3191,7 +3181,7 @@ phrase,quick_code,freq,hk_core
 網頁,vvmc,0.545598,0
 疑問,poar,0.545560,0
 驅動,srhs,0.545560,0
-理解爲,mgnqbf,0.545541,0
+理解為,mgnqif,0.545541,0
 噪音,rdya,0.545509,0
 存款,kdgo,0.545471,0
 探討,qdyi,0.545471,0
@@ -3214,7 +3204,6 @@ phrase,quick_code,freq,hk_core
 從小,honc,0.545202,0
 一類,mfc,0.545182,0
 說出,yuuu,0.545125,0
-纔是,viao,0.545099,0
 前景,tnaf,0.545086,0
 天涯,mkeg,0.545080,0
 兼職,tcsa,0.545015,0
@@ -3262,7 +3251,7 @@ phrase,quick_code,freq,hk_core
 尷尬,ktkl,0.544133,0
 打的,qnhi,0.544087,0
 明年,aboq,0.544087,0
-羣衆,sqho,0.544087,0
+羣眾,sqwo,0.544087,0
 超市,gryb,0.544074,0
 不怎麼,mfopii,0.544068,0
 部隊,ylno,0.544068,0
@@ -3285,7 +3274,7 @@ phrase,quick_code,freq,hk_core
 經歷過,vmmmyr,0.543746,0
 會對,oati,0.543720,0
 走到,gomn,0.543707,0
-臺詞,ggyr,0.543661,0
+台詞,iryr,0.543661,0
 投放,qeyk,0.543647,0
 陣容,njjr,0.543621,0
 敘事,okjn,0.543614,0
@@ -3303,7 +3292,6 @@ phrase,quick_code,freq,hk_core
 軌道,jnyu,0.543423,0
 作出,osuu,0.543403,0
 損傷,qcoh,0.543403,0
-剛才,bndh,0.543363,0
 發力,neks,0.543363,0
 爭議,bdyi,0.543330,0
 上市公司,ymybcisr,0.543324,0
@@ -3339,7 +3327,7 @@ phrase,quick_code,freq,hk_core
 可以看,mrvohu,0.542851,0
 地面,gdml,0.542831,0
 目的是,buhiao,0.542818,0
-祕密,ihju,0.542785,0
+秘密,hhju,0.542785,0
 一顆,mwc,0.542765,0
 都已經,jlsuvm,0.542765,0
 使用了,okbqnn,0.542758,0
@@ -3349,7 +3337,6 @@ phrase,quick_code,freq,hk_core
 語音,yrya,0.542718,0
 殺人,keo,0.542684,0
 審核,jwdo,0.542671,0
-審覈,jwmk,0.542671,0
 演唱會,ecraoa,0.542671,0
 尋求,siie,0.542637,0
 發射,nehi,0.542631,0
@@ -3366,7 +3353,7 @@ phrase,quick_code,freq,hk_core
 平常,mjfb,0.542449,0
 身材,hhdh,0.542409,0
 到時候,mnaiok,0.542389,0
-爲此,bfyp,0.542389,0
+為此,ifyp,0.542389,0
 出口,uur,0.542375,0
 通道,ybyu,0.542369,0
 關閉,atah,0.542362,0
@@ -3415,7 +3402,7 @@ phrase,quick_code,freq,hk_core
 入口,ohr,0.541549,0
 留言,hwyr,0.541549,0
 我用,hibq,0.541494,0
-爲什麼會,bfojiioa,0.541487,0
+為什麼會,ifojiioa,0.541487,0
 召開,srat,0.541426,0
 別說,rnyu,0.541405,0
 出自,uuhu,0.541378,0
@@ -3534,7 +3521,7 @@ phrase,quick_code,freq,hk_core
 受傷,beoh,0.539310,0
 不滿,mfeb,0.539303,0
 超人,gro,0.539295,0
-神祕,ilih,0.539288,0
+神秘,ilhh,0.539288,0
 設立,yeyt,0.539274,0
 特效,hiyk,0.539253,0
 我有,hikb,0.539246,0
@@ -3631,7 +3618,7 @@ phrase,quick_code,freq,hk_core
 動機,hsdi,0.537555,0
 不了解,mfnnnq,0.537541,0
 不瞭解,mfbfnq,0.537541,0
-就是爲了,yuaobfnn,0.537504,0
+就是為了,yuaoifnn,0.537504,0
 抑鬱症,qldhkm,0.537497,0
 神經,ilvm,0.537497,0
 體積,bthc,0.537475,0
@@ -3655,14 +3642,13 @@ phrase,quick_code,freq,hk_core
 精英,fbtk,0.537204,0
 任何人,ogoro,0.537197,0
 佔據,orqo,0.537197,0
-占據,yrqo,0.537197,0
 有一點,kbmwr,0.537167,0
-好喫,vdrk,0.537086,0
+好吃,vdrn,0.537086,0
 有助於,kbbsyy,0.537072,0
 壟斷,ygvl,0.537057,0
 就不要,yumfmv,0.537050,0
 美的,tkhi,0.537050,0
-你以爲,ofvobf,0.537035,0
+你以為,ofvoif,0.537035,0
 拿到了,oqmnnn,0.537035,0
 這項,yrmc,0.537035,0
 充電,yumu,0.537027,0
@@ -3705,7 +3691,7 @@ phrase,quick_code,freq,hk_core
 一度,mie,0.536517,0
 中有,lkb,0.536517,0
 線條,veod,0.536517,0
-民衆,rpho,0.536488,0
+民眾,rpwo,0.536488,0
 不就,mfyu,0.536458,0
 每一次,oimio,0.536458,0
 是很,aohv,0.536450,0
@@ -3758,7 +3744,7 @@ phrase,quick_code,freq,hk_core
 就不能,yumfip,0.535529,0
 有能力,kbipks,0.535514,0
 一本書,mdmla,0.535484,0
-極爲,dmbf,0.535476,0
+極為,dmif,0.535476,0
 比特幣,pphifb,0.535438,0
 達成,yqis,0.535416,0
 後果,hewd,0.535393,0
@@ -3954,7 +3940,7 @@ phrase,quick_code,freq,hk_core
 債務,ocns,0.532470,0
 從未,hojd,0.532462,0
 做到了,okmnnn,0.532454,0
-受衆,beho,0.532446,0
+受眾,bewo,0.532446,0
 反抗,heqn,0.532438,0
 標記,dfyu,0.532406,0
 打出,qnuu,0.532391,0
@@ -4002,7 +3988,7 @@ phrase,quick_code,freq,hk_core
 一般人,mheo,0.531871,0
 在裏面,kgyvml,0.531855,0
 是最,aoae,0.531855,0
-爲了讓,bfnnyv,0.531847,0
+為了讓,ifnnyv,0.531847,0
 相對來說,dutidoyu,0.531831,0
 清除,ebnd,0.531815,0
 知道自己,oryuhusu,0.531815,0
@@ -4163,10 +4149,10 @@ phrase,quick_code,freq,hk_core
 就在於,yukgyy,0.529321,0
 萬美元,tbtkmu,0.529321,0
 進入了,ygohnn,0.529321,0
-衆所周知,hohlbror,0.529296,0
+眾所周知,wohlbror,0.529296,0
 考了,jsnn,0.529288,0
 粒子,ftnd,0.529279,0
-衆人,hoo,0.529279,0
+眾人,woo,0.529279,0
 反駁,hesk,0.529254,0
 裁判,jvfn,0.529254,0
 傳遞,oiyn,0.529246,0
@@ -4175,7 +4161,7 @@ phrase,quick_code,freq,hk_core
 會把,oaqu,0.529187,0
 生氣,hmod,0.529137,0
 特意,hiyp,0.529120,0
-身爲,hhbf,0.529111,0
+身為,hhif,0.529111,0
 跳槽,roda,0.529103,0
 收益率,vkttyj,0.529095,0
 風景,hiaf,0.529086,0
@@ -4299,7 +4285,7 @@ phrase,quick_code,freq,hk_core
 他和,odhr,0.527224,0
 自己做,husuok,0.527215,0
 一代,mop,0.527207,0
-成爲一個,isbfmor,0.527198,0
+成為一個,isifmor,0.527198,0
 我就不,hiyumf,0.527198,0
 任天堂,ogmkfg,0.527189,0
 只好,rcvd,0.527189,0
@@ -4359,7 +4345,6 @@ phrase,quick_code,freq,hk_core
 加快,krpk,0.526508,0
 專用,jibq,0.526500,0
 考核,jsdo,0.526500,0
-考覈,jsmk,0.526500,0
 和諧,hrya,0.526464,0
 基礎知識,tgmoorya,0.526403,0
 昨晚,asau,0.526403,0
@@ -4447,7 +4432,7 @@ phrase,quick_code,freq,hk_core
 實際上是,jcnfymao,0.525347,0
 抽象,qwno,0.525338,0
 在這種,kgyrhg,0.525329,0
-因爲是,wkbfao,0.525311,0
+因為是,wkifao,0.525311,0
 不少人,mffho,0.525275,0
 近年來,yloqdo,0.525248,0
 騎士,srjm,0.525248,0
@@ -4482,7 +4467,7 @@ phrase,quick_code,freq,hk_core
 困擾,wdqe,0.524762,0
 憑什麼,ipojii,0.524762,0
 開會,atoa,0.524762,0
-平臺上,mjggym,0.524753,0
+平台上,mjirym,0.524753,0
 滿分,ebch,0.524744,0
 總共,vptc,0.524744,0
 試驗,ymso,0.524735,0
@@ -4499,7 +4484,6 @@ phrase,quick_code,freq,hk_core
 畫畫,lmlm,0.524644,0
 最後一個,aehemor,0.524617,0
 下週,myyr,0.524590,0
-治愈,erop,0.524572,0
 治癒,erkp,0.524572,0
 風味,hird,0.524572,0
 二手,mmq,0.524554,0
@@ -4583,7 +4567,7 @@ phrase,quick_code,freq,hk_core
 填寫,gcjf,0.523418,0
 好奇,vdkr,0.523418,0
 阿里巴巴,nrwgauau,0.523399,0
-茅臺,thgg,0.523390,0
+茅台,thir,0.523390,0
 一個好的,morvdhi,0.523381,0
 住在,ogkg,0.523371,0
 可以幫助,mrvogbbs,0.523371,0
@@ -4662,7 +4646,6 @@ phrase,quick_code,freq,hk_core
 進展,ygsv,0.522486,0
 這樣的人,yrdehio,0.522448,0
 離開了,ygatnn,0.522448,0
-先后,huhr,0.522439,0
 先後,huhe,0.522439,0
 說你,yuof,0.522420,0
 還有人,yvkbo,0.522420,0
@@ -4812,7 +4795,7 @@ phrase,quick_code,freq,hk_core
 簽約,hovi,0.520577,0
 堪稱,gvhb,0.520518,0
 體制,bthn,0.520518,0
-視爲,iubf,0.520509,0
+視為,iuif,0.520509,0
 班主任,mgygog,0.520499,0
 試着,ymtu,0.520489,0
 插入,qxoh,0.520470,0
@@ -4836,7 +4819,7 @@ phrase,quick_code,freq,hk_core
 不是一個,mfaomor,0.520285,0
 奮鬥,kwln,0.520275,0
 寫出來,jfuudo,0.520275,0
-變爲,vkbf,0.520275,0
+變為,vkif,0.520275,0
 讀了,ycnn,0.520266,0
 鑑於,ctyy,0.520266,0
 鑒於,scyy,0.520266,0
@@ -4895,7 +4878,7 @@ phrase,quick_code,freq,hk_core
 做什麼,okojii,0.519628,0
 祝福,iuiw,0.519628,0
 有事,kbjn,0.519579,0
-爲什麼說,bfojiiyu,0.519569,0
+為什麼說,ifojiiyu,0.519569,0
 商人,yro,0.519559,0
 廢話,ieyr,0.519559,0
 想知道,dporyu,0.519559,0
@@ -4920,10 +4903,10 @@ phrase,quick_code,freq,hk_core
 誰的,yghi,0.519322,0
 考前,jstn,0.519283,0
 課堂,ydfg,0.519273,0
-認爲是,ypbfao,0.519263,0
+認為是,ypifao,0.519263,0
 內涵,obee,0.519253,0
 評判,yjfn,0.519233,0
-轉化爲,jiopbf,0.519183,0
+轉化為,jiopif,0.519183,0
 不見,mfbu,0.519163,0
 這意味着,yryprdtu,0.519163,0
 剩餘,hnod,0.519144,0
@@ -4992,7 +4975,7 @@ phrase,quick_code,freq,hk_core
 江蘇,emtd,0.518323,0
 上看,ymhu,0.518313,0
 試卷,ymfu,0.518313,0
-這是因爲,yraowkbf,0.518313,0
+這是因為,yraowkif,0.518313,0
 告知,hror,0.518303,0
 只剩下,rchnmy,0.518293,0
 攝像頭,qjoomc,0.518283,0
@@ -5002,7 +4985,7 @@ phrase,quick_code,freq,hk_core
 多看,nihu,0.518243,0
 液體,ekbt,0.518243,0
 就用,yubq,0.518212,0
-爲他,bfod,0.518212,0
+為他,ifod,0.518212,0
 挺好,qgvd,0.518202,0
 已經開始,suvmatvr,0.518182,0
 基地,tggd,0.518172,0
@@ -5092,7 +5075,6 @@ phrase,quick_code,freq,hk_core
 不小心,mfncp,0.517287,0
 匯總,sgvp,0.517287,0
 彙總,vdvp,0.517287,0
-纔會,vioa,0.517287,0
 下屬,mysi,0.517266,0
 顯卡,acyy,0.517266,0
 誤解,yknq,0.517246,0
@@ -5116,7 +5098,6 @@ phrase,quick_code,freq,hk_core
 開口,atr,0.517020,0
 禮物,ithh,0.516979,0
 沉澱,enee,0.516968,0
-伙伴,ofoq,0.516958,0
 夥伴,wnoq,0.516958,0
 掌控,fqqm,0.516907,0
 是多少,aonifh,0.516896,0
@@ -5181,7 +5162,7 @@ phrase,quick_code,freq,hk_core
 服用,bebq,0.516295,0
 構造,dbyr,0.516284,0
 入學,ohhd,0.516274,0
-你認爲,ofypbf,0.516264,0
+你認為,ofypif,0.516264,0
 錘子,cmnd,0.516264,0
 眼淚,bvek,0.516253,0
 這麼大,yriik,0.516253,0
@@ -5228,7 +5209,7 @@ phrase,quick_code,freq,hk_core
 遊戲裏,ydyiyv,0.515845,0
 闡述,ajyd,0.515824,0
 世界裏,ptwlyv,0.515803,0
-名爲,nrbf,0.515761,0
+名為,nrif,0.515761,0
 智力,oaks,0.515761,0
 爭論,bdyb,0.515761,0
 單個,rjor,0.515751,0
@@ -5287,7 +5268,7 @@ phrase,quick_code,freq,hk_core
 電動車,muhsjj,0.515307,0
 香味,hard,0.515307,0
 開源,atef,0.515297,0
-作爲一名,osbfmnr,0.515265,0
+作為一名,osifmnr,0.515265,0
 樓下,dvmy,0.515254,0
 秦國,qdwm,0.515254,0
 養老,tvjp,0.515254,0
@@ -5295,7 +5276,7 @@ phrase,quick_code,freq,hk_core
 說出來,yuuudo,0.515201,0
 開通,atyb,0.515201,0
 比如你,ppvrof,0.515191,0
-改爲,skbf,0.515180,0
+改為,skif,0.515180,0
 火車,fjj,0.515180,0
 衝動,hnhs,0.515148,0
 時長,aisv,0.515127,0
@@ -5367,7 +5348,7 @@ phrase,quick_code,freq,hk_core
 我見過,hibuyr,0.514292,0
 音樂人,yavdo,0.514281,0
 有任何,kbogor,0.514260,0
-公衆,ciho,0.514249,0
+公眾,ciwo,0.514249,0
 分手,chq,0.514249,0
 教你,jkof,0.514227,0
 原版,mfle,0.514206,0
@@ -5378,13 +5359,13 @@ phrase,quick_code,freq,hk_core
 佳能,ogip,0.514109,0
 比較容易,ppjkjrah,0.514098,0
 兩大,mok,0.514076,0
-已經成爲,suvmisbf,0.514076,0
+已經成為,suvmisif,0.514076,0
 身份證,hhohyt,0.514076,0
 廣場,icgh,0.514065,0
 場合,ghor,0.514055,0
 命名,olnr,0.514044,0
 其實我,tcjchi,0.514033,0
-出臺,uugg,0.514033,0
+出台,uuir,0.514033,0
 保額,odjc,0.514022,0
 至此,mgyp,0.514001,0
 妥協,bvjs,0.513990,0
@@ -5533,7 +5514,7 @@ phrase,quick_code,freq,hk_core
 您好,opvd,0.512465,0
 星巴克,amauju,0.512443,0
 廉價,icoc,0.512409,0
-爲大家,bfkjo,0.512387,0
+為大家,ifkjo,0.512387,0
 頭像,mcoo,0.512387,0
 但現在,ommukg,0.512376,0
 瑜伽,mnor,0.512354,0
@@ -5551,7 +5532,7 @@ phrase,quick_code,freq,hk_core
 不屬於,mfsiyy,0.512175,0
 月球,bme,0.512164,0
 注意事項,egypjnmc,0.512164,0
-正是因爲,mmaowkbf,0.512119,0
+正是因為,mmaowkif,0.512119,0
 結束了,vrdlnn,0.512119,0
 下單,myrj,0.512097,0
 情景,pbaf,0.512086,0
@@ -5561,7 +5542,7 @@ phrase,quick_code,freq,hk_core
 重疾險,hgkkno,0.512030,0
 民主,rpyg,0.512008,0
 資深,iced,0.511974,0
-認爲自己,ypbfhusu,0.511952,0
+認為自己,ypifhusu,0.511952,0
 你怎麼,ofopii,0.511918,0
 也可,pdmr,0.511895,0
 告訴他,hryyod,0.511884,0
@@ -5634,15 +5615,14 @@ phrase,quick_code,freq,hk_core
 稅收,huvk,0.511071,0
 談到,yfmn,0.511071,0
 那麼多人,sliinio,0.511071,0
-注定,egjo,0.511048,0
-盯着,bntu,0.511048,0
 註定,ygjo,0.511048,0
+盯着,bntu,0.511048,0
 再比如,mbppvr,0.511037,0
 多謝,niyi,0.511037,0
 這個概念,yrorduop,0.511037,0
 強的,nihi,0.511003,0
 雲南,mijj,0.510991,0
-我以爲,hivobf,0.510980,0
+我以為,hivoif,0.510980,0
 班級,mgve,0.510968,0
 美學,tkhd,0.510957,0
 聽不懂,spmfpg,0.510957,0
@@ -5657,7 +5637,7 @@ phrase,quick_code,freq,hk_core
 品類,rrfc,0.510866,0
 行星,hnam,0.510866,0
 欺騙,tosb,0.510854,0
-只是爲了,rcaobfnn,0.510797,0
+只是為了,rcaoifnn,0.510797,0
 夠用,nrbq,0.510797,0
 他能,odip,0.510774,0
 版主,leyg,0.510774,0
@@ -5832,7 +5812,7 @@ phrase,quick_code,freq,hk_core
 昨日,asa,0.509270,0
 說明瞭,yuabbf,0.509246,0
 一模一樣,mdkmde,0.509199,0
-爲代表,bfopqv,0.509199,0
+為代表,ifopqv,0.509199,0
 困惑,wdip,0.509188,0
 興起,hcgu,0.509176,0
 再一次,mbmio,0.509152,0
@@ -5867,7 +5847,7 @@ phrase,quick_code,freq,hk_core
 放了,yknn,0.508740,0
 懲罰,hpwn,0.508716,0
 清單,ebrj,0.508716,0
-因爲沒有,wkbfeekb,0.508704,0
+因為沒有,wkifeekb,0.508704,0
 依舊是,ovtxao,0.508692,0
 寵物,jphh,0.508669,0
 是最好的,aoaevdhi,0.508657,0
@@ -5957,7 +5937,6 @@ phrase,quick_code,freq,hk_core
 協助,jsbs,0.507750,0
 唱的,rahi,0.507750,0
 是基於,aotgyy,0.507750,0
-向往,hrhg,0.507726,0
 嚮往,vrhg,0.507726,0
 教育部,jkybyl,0.507726,0
 漫威,eeiv,0.507726,0
@@ -6057,10 +6036,9 @@ phrase,quick_code,freq,hk_core
 拍了,qann,0.506841,0
 代謝,opyi,0.506817,0
 防水,nse,0.506817,0
-听听,rlrl,0.506780,0
+聽聽,spsp,0.506780,0
 意圖,ypww,0.506780,0
 編碼,vbmf,0.506780,0
-聽聽,spsp,0.506780,0
 安靜,jvqd,0.506756,0
 體現了,btmunn,0.506756,0
 亂七八糟,bujuhofa,0.506731,0
@@ -6089,7 +6067,7 @@ phrase,quick_code,freq,hk_core
 着急,tunp,0.506461,0
 乾的,jnhi,0.506449,0
 殺手,keq,0.506437,0
-均爲,gmbf,0.506412,0
+均為,gmif,0.506412,0
 新浪,ylev,0.506412,0
 特別喜歡,hirngrto,0.506412,0
 被我,lehi,0.506412,0
@@ -6106,7 +6084,7 @@ phrase,quick_code,freq,hk_core
 目標是,budfao,0.506363,0
 俗稱,orhb,0.506351,0
 終結,vyvr,0.506351,0
-聽衆,spho,0.506351,0
+聽眾,spwo,0.506351,0
 懷念,pvop,0.506326,0
 莫名,tknr,0.506326,0
 面子,mlnd,0.506326,0
@@ -6132,7 +6110,7 @@ phrase,quick_code,freq,hk_core
 漫長,eesv,0.506166,0
 唯有,rgkb,0.506153,0
 看電影,humuah,0.506153,0
-不喫,mfrk,0.506141,0
+不吃,mfrn,0.506141,0
 無腦,ofbw,0.506141,0
 凡是,hiao,0.506129,0
 幾款,vigo,0.506129,0
@@ -6167,7 +6145,7 @@ phrase,quick_code,freq,hk_core
 這種問題,yrhgarac,0.505856,0
 或者其他,imjatcod,0.505844,0
 很開心,hvatp,0.505831,0
-喫到,rkmn,0.505819,0
+吃到,rnmn,0.505819,0
 來實現,dojcmu,0.505807,0
 休閑,odad,0.505745,0
 休閒,odab,0.505745,0
@@ -6201,7 +6179,7 @@ phrase,quick_code,freq,hk_core
 就是這個,yuaoyror,0.505495,0
 分辨率,chyjyj,0.505483,0
 在其,kgtc,0.505483,0
-但因爲,omwkbf,0.505470,0
+但因為,omwkif,0.505470,0
 魅族,hdyk,0.505470,0
 本金,dmc,0.505458,0
 達不到,yqmfmn,0.505458,0
@@ -6228,14 +6206,14 @@ phrase,quick_code,freq,hk_core
 致力於,mkksyy,0.505295,0
 中原,lmf,0.505283,0
 一眼,mbv,0.505258,0
-喫藥,rktd,0.505258,0
+吃藥,rntd,0.505258,0
 更別說,mkrnyu,0.505245,0
 前鋒,tncj,0.505220,0
 應付,ipoi,0.505220,0
 轉身,jihh,0.505220,0
 中途,lyd,0.505207,0
 摸索,qkjf,0.505195,0
-會成爲,oaisbf,0.505182,0
+會成為,oaisif,0.505182,0
 晉升,maht,0.505170,0
 豪華,yotj,0.505157,0
 卻在,clkg,0.505145,0
@@ -6249,15 +6227,12 @@ phrase,quick_code,freq,hk_core
 小編,ncvb,0.505094,0
 接觸的,qvnihi,0.505094,0
 你所,ofhl,0.505082,0
-纔有,vikb,0.505082,0
 奢侈品,kaonrr,0.505069,0
 寬度,jiie,0.505069,0
 看一看,humhu,0.505069,0
 老頭,jpmc,0.505069,0
-僵尸,oms,0.505057,0
-國內外,wmobny,0.505057,0
-殭尸,mms,0.505057,0
 殭屍,mmsp,0.505057,0
+國內外,wmobny,0.505057,0
 準備的,ejobhi,0.505057,0
 國務院,wmnsnu,0.505031,0
 戰役,rihe,0.505031,0
@@ -6396,7 +6371,7 @@ phrase,quick_code,freq,hk_core
 日前,atn,0.503939,0
 究竟是,jnyuao,0.503939,0
 或多或少,imniimfh,0.503926,0
-不是爲了,mfaobfnn,0.503913,0
+不是為了,mfaoifnn,0.503913,0
 假裝,oevv,0.503913,0
 榜單,dsrj,0.503913,0
 讀過,ycyr,0.503913,0
@@ -6446,7 +6421,7 @@ phrase,quick_code,freq,hk_core
 大四,kwc,0.503540,0
 最小,aenc,0.503540,0
 居住,srog,0.503528,0
-爲止,bfym,0.503515,0
+為止,ifym,0.503515,0
 經費,vmlc,0.503515,0
 對中國,tilwm,0.503502,0
 願望,mcyg,0.503502,0
@@ -6478,7 +6453,6 @@ phrase,quick_code,freq,hk_core
 體能,btip,0.503295,0
 大了,knn,0.503282,0
 佈置,obwm,0.503269,0
-布置,kbwm,0.503269,0
 衛生間,hnhmaa,0.503269,0
 讀到,ycmn,0.503269,0
 地理,gdmg,0.503256,0
@@ -6550,7 +6524,7 @@ phrase,quick_code,freq,hk_core
 商量,yrag,0.502617,0
 統計學,vuyjhd,0.502617,0
 處罰,ynwn,0.502604,0
-不是因爲,mfaowkbf,0.502591,0
+不是因為,mfaowkif,0.502591,0
 火鍋,fcr,0.502591,0
 琢磨,moir,0.502578,0
 死的,mphi,0.502565,0
@@ -6567,7 +6541,7 @@ phrase,quick_code,freq,hk_core
 震動,mvhs,0.502473,0
 響應,vaip,0.502460,0
 演示,ecmf,0.502433,0
-喫過,rkyr,0.502407,0
+吃過,rnyr,0.502407,0
 的錢,hici,0.502354,0
 下雨,mymy,0.502341,0
 提名,qonr,0.502341,0
@@ -6605,7 +6579,7 @@ phrase,quick_code,freq,hk_core
 證實,ytjc,0.502051,0
 約翰,vijm,0.502038,0
 過敏,yrok,0.502024,0
-陽臺,nhgg,0.502024,0
+陽台,nhir,0.502024,0
 顆粒,wcft,0.502024,0
 三觀,mmtu,0.502011,0
 主演,ygec,0.502011,0
@@ -6678,7 +6652,7 @@ phrase,quick_code,freq,hk_core
 難過,tgyr,0.501479,0
 刷牙,snmh,0.501466,0
 半個,fqor,0.501466,0
-因爲有,wkbfkb,0.501466,0
+因為有,wkifkb,0.501466,0
 週一,yrm,0.501466,0
 強迫,niya,0.501453,0
 直線,jmve,0.501453,0
@@ -6699,12 +6673,12 @@ phrase,quick_code,freq,hk_core
 玉米,mifd,0.501346,0
 資本主義,icdmygti,0.501346,0
 誰是,ygao,0.501319,0
-因爲她,wkbfvd,0.501305,0
+因為她,wkifvd,0.501305,0
 近代,ylop,0.501305,0
 老年人,jpoqo,0.501292,0
 分紅,chvm,0.501265,0
 寫着,jftu,0.501265,0
-爲我們,bfhion,0.501252,0
+為我們,ifhion,0.501252,0
 諮詢師,yryahb,0.501252,0
 一小時,mncai,0.501238,0
 集成,odis,0.501238,0
@@ -6733,7 +6707,7 @@ phrase,quick_code,freq,hk_core
 出頭,uumc,0.501064,0
 長達,svyq,0.501064,0
 每一個人,oimoro,0.501050,0
-但是因爲,omaowkbf,0.501037,0
+但是因為,omaowkif,0.501037,0
 姐妹,vmvd,0.501037,0
 手腕,qbu,0.501023,0
 必然是,phbfao,0.501010,0
@@ -6776,10 +6750,9 @@ phrase,quick_code,freq,hk_core
 僅供參考,omocihjs,0.500686,0
 掛鉤,qycr,0.500672,0
 飽滿,oueb,0.500672,0
-約爲,vibf,0.500645,0
+約為,viif,0.500645,0
 好朋友,vdbbke,0.500632,0
 婦女,vbv,0.500632,0
-借口,oar,0.500618,0
 藉口,tar,0.500618,0
 一身,mhh,0.500605,0
 後世,hept,0.500605,0
@@ -6841,7 +6814,7 @@ phrase,quick_code,freq,hk_core
 一同,mbr,0.500115,0
 在自己,kghusu,0.500115,0
 奇怪的,krpghi,0.500101,0
-喫完,rkju,0.500087,0
+吃完,rnju,0.500087,0
 度過,ieyr,0.500087,0
 情人,pbo,0.500074,0
 全網,ogvv,0.500060,0
@@ -6861,7 +6834,7 @@ phrase,quick_code,freq,hk_core
 房東,hsdw,0.499978,0
 神仙,ilou,0.499978,0
 剎車,knjj,0.499950,0
-分別爲,chrnbf,0.499937,0
+分別為,chrnif,0.499937,0
 日常生活,afbhmer,0.499937,0
 全年,ogoq,0.499923,0
 兩側,moon,0.499923,0
@@ -6981,11 +6954,10 @@ phrase,quick_code,freq,hk_core
 不良,mfiv,0.498928,0
 列出,mnuu,0.498928,0
 剛畢業,bnwjtd,0.498928,0
-家伙,joof,0.498928,0
 酸奶,mevs,0.498928,0
 雖然沒有,rgbfeekb,0.498928,0
 並將,tcvi,0.498914,0
-他認爲,odypbf,0.498914,0
+他認為,odypif,0.498914,0
 銷售額,cborjc,0.498914,0
 導出,yiuu,0.498900,0
 是呀,aorh,0.498900,0
@@ -7008,7 +6980,7 @@ phrase,quick_code,freq,hk_core
 相差,dutm,0.498746,0
 間隔,aanb,0.498746,0
 驗證碼,soytmf,0.498746,0
-只是因爲,rcaowkbf,0.498732,0
+只是因為,rcaowkif,0.498732,0
 星際,amnf,0.498704,0
 柔和,ndhr,0.498704,0
 額度,jcie,0.498704,0
@@ -7086,7 +7058,6 @@ phrase,quick_code,freq,hk_core
 可選,mryc,0.498170,0
 三是,mmao,0.498156,0
 佔領,oroc,0.498142,0
-占領,yroc,0.498142,0
 幹啥,jjrr,0.498142,0
 是啥,aorr,0.498142,0
 沒得,eehi,0.498142,0
@@ -7123,7 +7094,7 @@ phrase,quick_code,freq,hk_core
 爆款,fego,0.497830,0
 一對,mti,0.497816,0
 發病,nekb,0.497816,0
-衆籌,hohi,0.497802,0
+眾籌,wohi,0.497802,0
 呈現出,rgmuuu,0.497788,0
 開戶,aths,0.497788,0
 緊急,sfnp,0.497773,0
@@ -7173,7 +7144,7 @@ phrase,quick_code,freq,hk_core
 接納,qvvb,0.497388,0
 書上,laym,0.497388,0
 往後,hghe,0.497374,0
-爲了避免,bfnnyjnu,0.497374,0
+為了避免,ifnnyjnu,0.497374,0
 緊接着,sfqvtu,0.497374,0
 鎖定,ccjo,0.497374,0
 不要再,mfmvmb,0.497360,0
@@ -7213,7 +7184,7 @@ phrase,quick_code,freq,hk_core
 歐盟,soat,0.497145,0
 應聘,ipss,0.497130,0
 精選,fbyc,0.497130,0
-前臺,tngg,0.497116,0
+前台,tnir,0.497116,0
 就來,yudo,0.497102,0
 網文,vvyk,0.497087,0
 十幾,jvi,0.497073,0
@@ -7308,7 +7279,6 @@ phrase,quick_code,freq,hk_core
 背叛,lbfe,0.496364,0
 教訓,jkyl,0.496349,0
 是否會,aomroa,0.496349,0
-小伙子,ncofnd,0.496335,0
 小夥子,ncwnnd,0.496335,0
 之旅,ioyv,0.496320,0
 那個時代,sloraiop,0.496320,0
@@ -7321,7 +7291,7 @@ phrase,quick_code,freq,hk_core
 助力,bsks,0.496218,0
 還是得,yvaohi,0.496218,0
 航空,hnjm,0.496204,0
-是爲,aobf,0.496189,0
+是為,aoif,0.496189,0
 補丁,lbmn,0.496189,0
 太差,kitm,0.496160,0
 而且在,mlbmkg,0.496160,0
@@ -7337,7 +7307,7 @@ phrase,quick_code,freq,hk_core
 交付,ykoi,0.496072,0
 不多說,mfniyu,0.496058,0
 你如果,ofvrwd,0.496058,0
-也是因爲,pdaowkbf,0.496043,0
+也是因為,pdaowkif,0.496043,0
 就一直,yumjm,0.496028,0
 絕對不是,vutimfao,0.496014,0
 自閉症,huahkm,0.496014,0
@@ -7416,7 +7386,7 @@ phrase,quick_code,freq,hk_core
 失控,hoqm,0.495396,0
 描繪,qwva,0.495381,0
 燃料,fffj,0.495366,0
-白癡,hako,0.495366,0
+白痴,hakr,0.495366,0
 真實性,jcjcpm,0.495366,0
 這麼高,yriiyr,0.495366,0
 找你,qiof,0.495351,0
@@ -7566,7 +7536,7 @@ phrase,quick_code,freq,hk_core
 冬季,hyhd,0.494125,0
 把她,quvd,0.494125,0
 董事長,tgjnsv,0.494125,0
-電視臺,muiugg,0.494125,0
+電視台,muiuir,0.494125,0
 降價,nqoc,0.494110,0
 也將,pdvi,0.494095,0
 是把,aoqu,0.494095,0
@@ -7592,7 +7562,7 @@ phrase,quick_code,freq,hk_core
 深刻的,edynhi,0.493943,0
 高了,yrnn,0.493943,0
 幹掉,jjqj,0.493928,0
-一衆,mho,0.493913,0
+一眾,mwo,0.493913,0
 侵刪,oebn,0.493913,0
 前方,tnys,0.493913,0
 文件夾,ykoqko,0.493913,0
@@ -7701,7 +7671,7 @@ phrase,quick_code,freq,hk_core
 十二,jmm,0.493073,0
 家居,josr,0.493073,0
 思維方式,wpvgysim,0.493058,0
-爲人,bfo,0.493058,0
+為人,ifo,0.493058,0
 在不斷,kgmfvl,0.493042,0
 要從,mvho,0.493027,0
 完全不同,juogmfbr,0.493012,0
@@ -7777,7 +7747,6 @@ phrase,quick_code,freq,hk_core
 小遊戲,ncydyi,0.492470,0
 筆畫,hqlm,0.492455,0
 佔用,orbq,0.492439,0
-占用,yrbq,0.492439,0
 錯覺,cahu,0.492439,0
 星空,amjm,0.492424,0
 肯定有,ybjokb,0.492424,0
@@ -7830,7 +7799,7 @@ phrase,quick_code,freq,hk_core
 損壞,qcgv,0.492065,0
 東南亞,dwjjmm,0.492065,0
 局勢,srgs,0.492034,0
-爲什麼呢,bfojiirp,0.492018,0
+為什麼呢,ifojiirp,0.492018,0
 不爽,mfkk,0.492002,0
 住宅,ogjp,0.492002,0
 侷限,ornv,0.492002,0
@@ -7951,7 +7920,7 @@ phrase,quick_code,freq,hk_core
 平行,mjhn,0.490992,0
 保持着,odqitu,0.490976,0
 女方,vys,0.490976,0
-表現爲,qvmubf,0.490976,0
+表現為,qvmuif,0.490976,0
 招收,qrvk,0.490960,0
 山西,umw,0.490928,0
 邊上,ysym,0.490928,0
@@ -7980,7 +7949,6 @@ phrase,quick_code,freq,hk_core
 終究,vyjn,0.490737,0
 在公司,kgcisr,0.490721,0
 於是就,yyaoyu,0.490721,0
-纔知道,vioryu,0.490721,0
 分量,chag,0.490705,0
 因人而異,wkomlwc,0.490705,0
 應有,ipkb,0.490705,0
@@ -8011,7 +7979,7 @@ phrase,quick_code,freq,hk_core
 音效,yayk,0.490464,0
 他們對,odonti,0.490448,0
 超強,grni,0.490432,0
-電臺,mugg,0.490432,0
+電台,muir,0.490432,0
 奇跡,krrc,0.490416,0
 奇蹟,krrc,0.490416,0
 逼格,ywdr,0.490416,0
@@ -8089,7 +8057,7 @@ phrase,quick_code,freq,hk_core
 清新,ebyl,0.489834,0
 硬幣,mkfb,0.489834,0
 一萬,mtb,0.489818,0
-淪爲,ebbf,0.489818,0
+淪為,ebif,0.489818,0
 位置的,otwmhi,0.489802,0
 考古,jsjr,0.489802,0
 高贊,yrhc,0.489802,0
@@ -8146,7 +8114,7 @@ phrase,quick_code,freq,hk_core
 萬能,tbip,0.489443,0
 這貨,yroc,0.489443,0
 我朋友,hibbke,0.489427,0
-爲之,bfio,0.489427,0
+為之,ifio,0.489427,0
 諾蘭,yrtw,0.489427,0
 文筆,ykhq,0.489411,0
 術語,hnyr,0.489411,0
@@ -8226,20 +8194,19 @@ phrase,quick_code,freq,hk_core
 相冊,dubt,0.488902,0
 縣城,bfgs,0.488902,0
 肉體,oobt,0.488902,0
-這臺,yrgg,0.488902,0
+這台,yrir,0.488902,0
 江西,emmw,0.488885,0
 功力,msks,0.488869,0
 增多,gani,0.488869,0
 春節,qahl,0.488869,0
 上台,ymir,0.488852,0
 上檯,ymdg,0.488852,0
-上臺,ymgg,0.488852,0
 但是沒有,omaoeekb,0.488852,0
 答覆,hrme,0.488852,0
 逃跑,yoru,0.488852,0
 備案,objd,0.488836,0
 公認的,ciyphi,0.488836,0
-爲我,bfhi,0.488836,0
+為我,ifhi,0.488836,0
 電飯煲,muoeof,0.488836,0
 是目前,aobutn,0.488819,0
 本子,dmnd,0.488819,0
@@ -8345,18 +8312,18 @@ phrase,quick_code,freq,hk_core
 絕不是,vumfao,0.488088,0
 很多事情,hvnijnpb,0.488071,0
 公益,citt,0.488038,0
-爲準,bfej,0.488038,0
+為準,ifej,0.488038,0
 此人,ypo,0.488021,0
 個稅,orhu,0.488004,0
 合計,oryj,0.488004,0
-正因爲,mmwkbf,0.488004,0
+正因為,mmwkif,0.488004,0
 往前,hgtn,0.487987,0
 流氓,euyp,0.487987,0
 老虎,jpyn,0.487987,0
 上場,ymgh,0.487971,0
 個人能力,oroipks,0.487954,0
 接入,qvoh,0.487954,0
-都是爲了,jlaobfnn,0.487954,0
+都是為了,jlaoifnn,0.487954,0
 很多次,hvniio,0.487937,0
 清朝,ebjb,0.487937,0
 是會,aooa,0.487920,0
@@ -8368,7 +8335,7 @@ phrase,quick_code,freq,hk_core
 切實,phjc,0.487870,0
 套用,kibq,0.487870,0
 葡萄,tbtu,0.487870,0
-可以分爲,mrvochbf,0.487853,0
+可以分為,mrvochif,0.487853,0
 散熱,tkgf,0.487853,0
 刷新,snyl,0.487837,0
 探測,qden,0.487837,0
@@ -8476,7 +8443,7 @@ phrase,quick_code,freq,hk_core
 看完了,hujunn,0.487076,0
 票據,mfqo,0.487076,0
 創造出,onyruu,0.487042,0
-以爲自己,vobfhusu,0.487025,0
+以為自己,voifhusu,0.487025,0
 生源,hmef,0.487008,0
 充足的,yurohi,0.486991,0
 問題在於,arackgyy,0.486991,0
@@ -8503,7 +8470,7 @@ phrase,quick_code,freq,hk_core
 有朋友,kbbbke,0.486838,0
 化妝品,opvvrr,0.486821,0
 米蘭,fdtw,0.486821,0
-可以作爲,mrvoosbf,0.486804,0
+可以作為,mrvoosif,0.486804,0
 戰國,riwm,0.486804,0
 書裏,layv,0.486804,0
 上文,ymyk,0.486786,0
@@ -8539,7 +8506,7 @@ phrase,quick_code,freq,hk_core
 房貸,hsoc,0.486564,0
 地獄,gdkk,0.486547,0
 萬億,tbop,0.486547,0
-那爲什麼,slbfojii,0.486547,0
+那為什麼,slifojii,0.486547,0
 上車,ymjj,0.486530,0
 丫頭,clmc,0.486530,0
 哪個好,rlorvd,0.486530,0
@@ -8565,7 +8532,7 @@ phrase,quick_code,freq,hk_core
 時間是,aiaaao,0.486392,0
 肯定的,ybjohi,0.486392,0
 自有,hukb,0.486392,0
-你爲什麼,ofbfojii,0.486375,0
+你為什麼,ofifojii,0.486375,0
 持倉,qior,0.486375,0
 縮短,vaot,0.486375,0
 不堪,mfgv,0.486358,0
@@ -8615,11 +8582,10 @@ phrase,quick_code,freq,hk_core
 極低,dmom,0.486064,0
 示例,mfon,0.486047,0
 通過了,ybyrnn,0.486047,0
-回避,wryj,0.486030,0
+迴避,yryj,0.486030,0
 在大學,kgkhd,0.486030,0
 幸運的,gjyjhi,0.486030,0
 打字,qnjd,0.486030,0
-迴避,yryj,0.486030,0
 兩週,moyr,0.486013,0
 養生,tvhm,0.486013,0
 廣東省,icdwfu,0.485995,0
@@ -8686,9 +8652,9 @@ phrase,quick_code,freq,hk_core
 在某個,kgtdor,0.485526,0
 夢境,tngu,0.485526,0
 樓盤,dvht,0.485526,0
-臺階,ggna,0.485508,0
+台階,irna,0.485508,0
 深圳市,edglyb,0.485491,0
-爲其,bftc,0.485491,0
+為其,iftc,0.485491,0
 理工,mgmm,0.485491,0
 生動,hmhs,0.485491,0
 兩國,mowm,0.485456,0
@@ -8776,13 +8742,13 @@ phrase,quick_code,freq,hk_core
 再怎麼,mbopii,0.484947,0
 勞動者,fshsja,0.484947,0
 不當,mffw,0.484930,0
-會因爲,oawkbf,0.484930,0
+會因為,oawkif,0.484930,0
 見識,buya,0.484930,0
 智能手機,oaipqdi,0.484912,0
 洗髮水,eusee,0.484912,0
 被罵,lewf,0.484912,0
 單身,rjhh,0.484894,0
-多爲,nibf,0.484894,0
+多為,niif,0.484894,0
 就當,yufw,0.484894,0
 構思,dbwp,0.484894,0
 依賴於,ovdcyy,0.484877,0
@@ -8793,7 +8759,7 @@ phrase,quick_code,freq,hk_core
 方向盤,yshrht,0.484859,0
 低調,omyr,0.484841,0
 入場,ohgh,0.484841,0
-同爲,brbf,0.484841,0
+同為,brif,0.484841,0
 之心,iop,0.484824,0
 交了,yknn,0.484824,0
 很可能是,hvmripao,0.484824,0
@@ -8832,7 +8798,7 @@ phrase,quick_code,freq,hk_core
 亮度,ynie,0.484629,0
 手裏的,qyvhi,0.484611,0
 紋理,vkmg,0.484594,0
-那是因爲,slaowkbf,0.484594,0
+那是因為,slaowkif,0.484594,0
 氨基酸,ovtgme,0.484576,0
 轎車,jbjj,0.484576,0
 眼界,bvwl,0.484558,0
@@ -8880,7 +8846,7 @@ phrase,quick_code,freq,hk_core
 眉毛,auhu,0.484345,0
 還將,yvvi,0.484345,0
 大米,kfd,0.484327,0
-爲核心,bfdop,0.484327,0
+為核心,ifdop,0.484327,0
 雖然在,rgbfkg,0.484327,0
 不公平,mfcimj,0.484309,0
 充當,yufw,0.484309,0
@@ -8908,7 +8874,7 @@ phrase,quick_code,freq,hk_core
 黃油,tcew,0.484185,0
 又沒有,nkeekb,0.484149,0
 忠誠,lpys,0.484149,0
-成爲一名,isbfmnr,0.484149,0
+成為一名,isifmnr,0.484149,0
 我剛,hibn,0.484149,0
 小技巧,ncqems,0.484131,0
 望遠鏡,ygyvcu,0.484131,0
@@ -9000,7 +8966,6 @@ phrase,quick_code,freq,hk_core
 犯規,kuqu,0.483484,0
 高貴,yrlc,0.483484,0
 佔有,orkb,0.483466,0
-占有,yrkb,0.483466,0
 在歐洲,kgsoel,0.483466,0
 遷移,yuhn,0.483466,0
 重力,hgks,0.483466,0
@@ -9061,7 +9026,7 @@ phrase,quick_code,freq,hk_core
 歸根結底,hbdvvrim,0.483122,0
 表白,qvha,0.483122,0
 寶藏,jcts,0.483104,0
-抽菸,qwty,0.483104,0
+抽煙,qwfg,0.483104,0
 圓形,wcmh,0.483086,0
 徒弟,hoch,0.483086,0
 推導,qgyi,0.483086,0
@@ -9210,7 +9175,7 @@ phrase,quick_code,freq,hk_core
 奔跑,ktru,0.482114,0
 詮釋,yghj,0.482114,0
 這個產品,yrorymrr,0.482114,0
-不會因爲,mfoawkbf,0.482096,0
+不會因為,mfoawkif,0.482096,0
 睡着,bmtu,0.482096,0
 內外,obny,0.482077,0
 聲帶,gjkb,0.482077,0
@@ -9232,7 +9197,7 @@ phrase,quick_code,freq,hk_core
 厲害的,mbjrhi,0.481948,0
 套裝,kivv,0.481929,0
 探測器,qdenrr,0.481929,0
-而是因爲,mlaowkbf,0.481929,0
+而是因為,mlaowkif,0.481929,0
 一幫,mgb,0.481911,0
 上升到,ymhtmn,0.481911,0
 有利,kbhn,0.481911,0
@@ -9246,7 +9211,7 @@ phrase,quick_code,freq,hk_core
 變異,vkwc,0.481837,0
 比他,ppod,0.481818,0
 畫出,lmuu,0.481818,0
-只爲,rcbf,0.481799,0
+只為,rcif,0.481799,0
 更少,mkfh,0.481799,0
 有優勢,kboegs,0.481799,0
 病例,kbon,0.481799,0
@@ -9352,7 +9317,7 @@ phrase,quick_code,freq,hk_core
 演變,ecvk,0.481108,0
 發文,neyk,0.481089,0
 知識分子,oryachnd,0.481089,0
-祕書,ihla,0.481089,0
+秘書,hhla,0.481089,0
 協商,jsyr,0.481070,0
 在我國,kghiwm,0.481070,0
 正統,mmvu,0.481070,0
@@ -9416,8 +9381,8 @@ phrase,quick_code,freq,hk_core
 變大,vkk,0.480731,0
 誕生了,ymhmnn,0.480712,0
 風氣,hiod,0.480712,0
-因爲這些,wkbfyrym,0.480693,0
-定義爲,jotibf,0.480693,0
+因為這些,wkifyrym,0.480693,0
+定義為,jotiif,0.480693,0
 慢慢地,pepegd,0.480693,0
 推斷,qgvl,0.480693,0
 世代,ptop,0.480674,0
@@ -9444,7 +9409,7 @@ phrase,quick_code,freq,hk_core
 年終獎,oqvyvk,0.480504,0
 是錯的,aocahi,0.480504,0
 火焰,ffx,0.480504,0
-人爲,obf,0.480485,0
+人為,oif,0.480485,0
 混沌,epeu,0.480485,0
 要高,mvyr,0.480485,0
 頭頂,mcmc,0.480485,0
@@ -9528,7 +9493,7 @@ phrase,quick_code,freq,hk_core
 這麼簡單,yriiharj,0.479912,0
 面具,mlbc,0.479912,0
 不宜,mfjm,0.479893,0
-喫肉,rkoo,0.479893,0
+吃肉,rnoo,0.479893,0
 子公司,ndcisr,0.479893,0
 提了,qonn,0.479893,0
 公安局,cijvsr,0.479874,0
@@ -9554,14 +9519,13 @@ phrase,quick_code,freq,hk_core
 了一,nnm,0.479701,0
 美容,tkjr,0.479701,0
 老哥,jpmr,0.479701,0
-征收,hmvk,0.479682,0
 徵收,hkvk,0.479682,0
 輕鬆的,jmsihi,0.479682,0
 這樣子,yrdend,0.479682,0
 鳳凰,hfhg,0.479682,0
 原話,mfyr,0.479662,0
 幾分,vich,0.479662,0
-以爲是,vobfao,0.479624,0
+以為是,voifao,0.479624,0
 其一,tcm,0.479624,0
 好奇心,vdkrp,0.479624,0
 上過,ymyr,0.479605,0
@@ -9670,7 +9634,7 @@ phrase,quick_code,freq,hk_core
 話術,yrhn,0.478985,0
 參與者,ihhcja,0.478965,0
 怎麼了,opiinn,0.478965,0
-爲基礎,bftgmo,0.478965,0
+為基礎,iftgmo,0.478965,0
 晚飯,auoe,0.478946,0
 被別人,lerno,0.478946,0
 劇透,ynys,0.478926,0
@@ -9695,7 +9659,7 @@ phrase,quick_code,freq,hk_core
 附帶,nikb,0.478868,0
 凡人,hio,0.478848,0
 各路,hrrr,0.478848,0
-喫虧,rkys,0.478848,0
+吃虧,rnys,0.478848,0
 射手,hiq,0.478848,0
 法國人,eiwmo,0.478848,0
 色情,nupb,0.478848,0
@@ -9709,19 +9673,19 @@ phrase,quick_code,freq,hk_core
 寒假,jyoe,0.478809,0
 危險的,nunohi,0.478790,0
 搭檔,qrdw,0.478790,0
-爲了防止,bfnnnsym,0.478790,0
+為了防止,ifnnnsym,0.478790,0
 這個道理,yroryumg,0.478790,0
-電商平臺,muyrmjgg,0.478790,0
+電商平台,muyrmjir,0.478790,0
 和學習,hrhdsa,0.478751,0
 沒有問題,eekbarac,0.478731,0
-爲首,bftu,0.478731,0
+為首,iftu,0.478731,0
 猜想,kbdp,0.478731,0
 瞭解的,bfnqhi,0.478731,0
 請輸入,ybjnoh,0.478731,0
 同齡人,bryio,0.478711,0
 豆子,mtnd,0.478711,0
 輪廓,jbil,0.478711,0
-轉爲,jibf,0.478711,0
+轉為,jiif,0.478711,0
 駕馭,kfse,0.478711,0
 圖層,wwsa,0.478692,0
 模擬題,dkqoac,0.478692,0
@@ -9734,7 +9698,7 @@ phrase,quick_code,freq,hk_core
 啥都,rrjl,0.478633,0
 張國榮,nvwmfd,0.478633,0
 不可思議,mfmrwpyi,0.478614,0
-交流平臺,ykeumjgg,0.478614,0
+交流平台,ykeumjir,0.478614,0
 原先,mfhu,0.478594,0
 點點,wrwr,0.478594,0
 加點,krwr,0.478574,0
@@ -9748,7 +9712,7 @@ phrase,quick_code,freq,hk_core
 直升機,jmhtdi,0.478555,0
 直昇機,jmatdi,0.478555,0
 選擇性,ycqjpm,0.478555,0
-出衆,uuho,0.478515,0
+出眾,uuwo,0.478515,0
 多半,nifq,0.478515,0
 幼稚,vshg,0.478496,0
 以下幾個,vomyvior,0.478476,0
@@ -9784,7 +9748,7 @@ phrase,quick_code,freq,hk_core
 短時間,otaiaa,0.478279,0
 不一致,mfmmk,0.478260,0
 主教練,ygjkvf,0.478260,0
-就因爲,yuwkbf,0.478260,0
+就因為,yuwkif,0.478260,0
 玩兒,muhu,0.478260,0
 聯想到,stdpmn,0.478260,0
 參考書,ihjsla,0.478240,0
@@ -9886,16 +9850,15 @@ phrase,quick_code,freq,hk_core
 炸彈,fsnj,0.477665,0
 不惜,mfpa,0.477646,0
 市盈率,ybntyj,0.477646,0
-爲數不多,bflkmfni,0.477646,0
-喫力,rkks,0.477626,0
+為數不多,iflkmfni,0.477646,0
+吃力,rnks,0.477626,0
 貝爾,bcmk,0.477626,0
 車企,jjom,0.477626,0
-借着,oatu,0.477606,0
+藉着,tatu,0.477606,0
 棒球,dqme,0.477606,0
 沒時間,eeaiaa,0.477606,0
 沒說,eeyu,0.477606,0
 港口,eur,0.477606,0
-藉着,tatu,0.477606,0
 慣性,pcpm,0.477586,0
 網易雲,vvahmi,0.477586,0
 入住,ohog,0.477566,0
@@ -9950,7 +9913,7 @@ phrase,quick_code,freq,hk_core
 專項,jimc,0.477186,0
 複查,ledm,0.477186,0
 馬桶,sfdb,0.477186,0
-僅爲,ombf,0.477166,0
+僅為,omif,0.477166,0
 冰冷,ieii,0.477166,0
 抓緊,qosf,0.477166,0
 魯尼,nasp,0.477166,0
@@ -10017,7 +9980,7 @@ phrase,quick_code,freq,hk_core
 上一次,ymmio,0.476783,0
 交互設計,ykmmyeyj,0.476783,0
 做不了,okmfnn,0.476783,0
-喫掉,rkqj,0.476783,0
+吃掉,rnqj,0.476783,0
 戲份,yioh,0.476783,0
 暴跌,aero,0.476783,0
 那隻,sloe,0.476783,0
@@ -10059,7 +10022,7 @@ phrase,quick_code,freq,hk_core
 詭異,yuwc,0.476581,0
 就顯得,yuachi,0.476560,0
 映射,akhi,0.476560,0
-爲了方便,bfnnysok,0.476540,0
+為了方便,ifnnysok,0.476540,0
 第二點,hhmmwr,0.476540,0
 還有些,yvkbym,0.476540,0
 代購,opbb,0.476520,0
@@ -10112,7 +10075,7 @@ phrase,quick_code,freq,hk_core
 工商,mmyr,0.476296,0
 會去,oagi,0.476296,0
 精緻的,fbvkhi,0.476296,0
-與衆不同,hchomfbr,0.476296,0
+與眾不同,hcwomfbr,0.476296,0
 不排除,mfqynd,0.476276,0
 劉德華,hnhptj,0.476276,0
 聖經,sgvm,0.476276,0
@@ -10154,7 +10117,7 @@ phrase,quick_code,freq,hk_core
 冰川,iell,0.476031,0
 救援,ikqe,0.476031,0
 繁殖,ofmm,0.476031,0
-想喫,dprk,0.476010,0
+想吃,dprn,0.476010,0
 毫無意義,yuofypti,0.476010,0
 縱向,vohr,0.476010,0
 好比,vdpp,0.475990,0
@@ -10172,13 +10135,13 @@ phrase,quick_code,freq,hk_core
 先進的,huyghi,0.475949,0
 南宋,jjjd,0.475949,0
 和我說,hrhiyu,0.475949,0
-喫東西,rkdwmw,0.475949,0
+吃東西,rndwmw,0.475949,0
 一起去,mgugi,0.475928,0
 最常用,aefbbq,0.475928,0
 雷達,mwyq,0.475928,0
-小喫,ncrk,0.475908,0
+小吃,ncrn,0.475908,0
 讓學生,yvhdhm,0.475908,0
-多喫,nirk,0.475887,0
+多吃,nirn,0.475887,0
 大佬們,kopon,0.475887,0
 是我的,aohihi,0.475887,0
 碼農,mftv,0.475887,0
@@ -10206,7 +10169,6 @@ phrase,quick_code,freq,hk_core
 我不喜歡,himfgrto,0.475785,0
 毒品,qirr,0.475785,0
 獨佔,kior,0.475785,0
-獨占,kiyr,0.475785,0
 氾濫,euet,0.475764,0
 汎濫,eiet,0.475764,0
 沒有足夠,eekbronr,0.475764,0
@@ -10227,7 +10189,6 @@ phrase,quick_code,freq,hk_core
 東亞,dwmm,0.475641,0
 敵方,ykys,0.475620,0
 由此可見,lwypmrbu,0.475620,0
-纔發現,vinemu,0.475620,0
 莊家,tgjo,0.475620,0
 誰說,ygyu,0.475620,0
 雷神,mwil,0.475620,0
@@ -10260,7 +10221,7 @@ phrase,quick_code,freq,hk_core
 而對,mlti,0.475455,0
 萬年,tboq,0.475455,0
 豪門,yoan,0.475455,0
-也因爲,pdwkbf,0.475434,0
+也因為,pdwkif,0.475434,0
 收回,vkwr,0.475434,0
 研製,mthv,0.475434,0
 而被,mlle,0.475434,0
@@ -10278,7 +10239,7 @@ phrase,quick_code,freq,hk_core
 丟掉,miqj,0.475310,0
 之餘,iood,0.475310,0
 歐文,soyk,0.475310,0
-背着,lbtu,0.475310,0
+揹着,qbtu,0.475310,0
 葡萄牙,tbtumh,0.475310,0
 賭博,baji,0.475310,0
 限制了,nvhnnn,0.475310,0
@@ -10395,7 +10356,7 @@ phrase,quick_code,freq,hk_core
 服飾,beob,0.474685,0
 稍稍,hbhb,0.474685,0
 豬豬,mama,0.474685,0
-因爲自己,wkbfhusu,0.474665,0
+因為自己,wkifhusu,0.474665,0
 如何才能,vrordhip,0.474665,0
 把它們,qujpon,0.474665,0
 招呼,qrrd,0.474665,0
@@ -10408,7 +10369,7 @@ phrase,quick_code,freq,hk_core
 而當,mlfw,0.474623,0
 來臨,dosr,0.474602,0
 嘉賓,grjc,0.474602,0
-自認爲,huypbf,0.474602,0
+自認為,huypif,0.474602,0
 企鵝,omhf,0.474581,0
 展開了,svatnn,0.474581,0
 想用,dpbq,0.474581,0
@@ -10433,7 +10394,6 @@ phrase,quick_code,freq,hk_core
 兩岸,mouj,0.474476,0
 出海,uuey,0.474476,0
 期末,tbdj,0.474476,0
-窗帘,jejb,0.474476,0
 窗簾,jehc,0.474476,0
 吉利,grhn,0.474455,0
 箭頭,hnmc,0.474455,0
@@ -10536,7 +10496,7 @@ phrase,quick_code,freq,hk_core
 駕駛員,kfskrc,0.473842,0
 下來了,mydonn,0.473821,0
 參加過,ihkryr,0.473821,0
-也爲,pdbf,0.473800,0
+也為,pdif,0.473800,0
 於此,yyyp,0.473800,0
 樂團,vdwi,0.473800,0
 發生過,nehmyr,0.473800,0
@@ -10549,7 +10509,7 @@ phrase,quick_code,freq,hk_core
 浮躁,edrd,0.473757,0
 躺平,hrmj,0.473757,0
 強勁,nims,0.473736,0
-爲什麼是,bfojiiao,0.473736,0
+為什麼是,ifojiiao,0.473736,0
 相等,duhi,0.473736,0
 很遺憾,hvycpp,0.473715,0
 是否存在,aomrkdkg,0.473715,0
@@ -10560,7 +10520,7 @@ phrase,quick_code,freq,hk_core
 景觀,aftu,0.473694,0
 有意義的,kbyptihi,0.473694,0
 林夕,ddni,0.473694,0
-爲您,bfop,0.473694,0
+為您,ifop,0.473694,0
 出租,uuhm,0.473672,0
 前場,tngh,0.473672,0
 舉報電話,hqgemuyr,0.473672,0
@@ -10647,7 +10607,7 @@ phrase,quick_code,freq,hk_core
 弱化,nmop,0.473138,0
 林憶蓮,ddpptj,0.473138,0
 能被,iple,0.473138,0
-頗爲,dcbf,0.473138,0
+頗為,dcif,0.473138,0
 領土,ocg,0.473138,0
 分級,chve,0.473116,0
 單價,rjoc,0.473116,0
@@ -10661,7 +10621,7 @@ phrase,quick_code,freq,hk_core
 倒下,onmy,0.473030,0
 和人,hro,0.473030,0
 循序漸進,huinelyg,0.473030,0
-爲目的,bfbuhi,0.473009,0
+為目的,ifbuhi,0.473009,0
 精心,fbp,0.473009,0
 轉會,jioa,0.473009,0
 遠高於,yvyryy,0.473009,0
@@ -10693,7 +10653,7 @@ phrase,quick_code,freq,hk_core
 打斷,qnvl,0.472858,0
 是哪個,aorlor,0.472858,0
 沉浸在,eneekg,0.472858,0
-喫起來,rkgudo,0.472815,0
+吃起來,rngudo,0.472815,0
 多年來,nioqdo,0.472815,0
 音遊,yayd,0.472815,0
 奈何,kfor,0.472793,0
@@ -10729,9 +10689,9 @@ phrase,quick_code,freq,hk_core
 我得,hihi,0.472598,0
 打個比方,qnorppys,0.472598,0
 海賊王,eybjmg,0.472598,0
-能成爲,ipisbf,0.472598,0
+能成為,ipisif,0.472598,0
 芒果,tvwd,0.472598,0
-被譽爲,lehrbf,0.472598,0
+被譽為,lehrif,0.472598,0
 受理,bemg,0.472577,0
 攪拌,quqq,0.472577,0
 都有了,jlkbnn,0.472577,0
@@ -10746,7 +10706,7 @@ phrase,quick_code,freq,hk_core
 選課,ycyd,0.472533,0
 項目管理,mcbuhrmg,0.472533,0
 他是一個,odaomor,0.472512,0
-嘴脣,rbmb,0.472512,0
+嘴唇,rbmr,0.472512,0
 好轉,vdji,0.472512,0
 掘金,quc,0.472512,0
 相繼,duvi,0.472512,0
@@ -10865,7 +10825,7 @@ phrase,quick_code,freq,hk_core
 推到,qgmn,0.471835,0
 襪子,lind,0.471835,0
 覺醒,humm,0.471835,0
-不爲,mfbf,0.471813,0
+不為,mfif,0.471813,0
 我愛你,hibeof,0.471813,0
 特麼,hiii,0.471791,0
 講真,ybjc,0.471791,0
@@ -10976,7 +10936,7 @@ phrase,quick_code,freq,hk_core
 糾纏,vlvg,0.471173,0
 腸道,bhyu,0.471173,0
 也不多,pdmfni,0.471150,0
-人民羣衆,orpsqho,0.471150,0
+人民羣眾,orpsqwo,0.471150,0
 妳好,vfvd,0.471150,0
 張三,nvmm,0.471150,0
 張藝謀,nvtiyd,0.471150,0
@@ -11010,7 +10970,7 @@ phrase,quick_code,freq,hk_core
 板材,dedh,0.471017,0
 轉而,jiml,0.471017,0
 做這個,okyror,0.470995,0
-即爲,albf,0.470995,0
+即為,alif,0.470995,0
 小男孩,ncwsno,0.470995,0
 真假,jcoe,0.470995,0
 瞄準,bwej,0.470995,0
@@ -11062,7 +11022,6 @@ phrase,quick_code,freq,hk_core
 蝴蝶,lbld,0.470727,0
 重合,hgor,0.470727,0
 隱喻,nprn,0.470727,0
-我纔,hivi,0.470705,0
 誰來,ygdo,0.470705,0
 過時,yrai,0.470705,0
 又說,nkyu,0.470682,0
@@ -11096,7 +11055,7 @@ phrase,quick_code,freq,hk_core
 果實,wdjc,0.470548,0
 童鞋,ygtg,0.470548,0
 聯絡,stvr,0.470548,0
-覈實,mkjc,0.470548,0
+核實,dojc,0.470548,0
 出事,uujn,0.470525,0
 命中率,ollyj,0.470525,0
 應試,ipym,0.470525,0
@@ -11151,7 +11110,7 @@ phrase,quick_code,freq,hk_core
 偏低,obom,0.470233,0
 流水線,eueve,0.470233,0
 而死,mlmp,0.470233,0
-僞裝,ofvv,0.470210,0
+偽裝,ofvv,0.470210,0
 重裝,hgvv,0.470210,0
 出租車,uuhmjj,0.470188,0
 對錯,tica,0.470188,0
@@ -11333,7 +11292,7 @@ phrase,quick_code,freq,hk_core
 說點,yuwr,0.469255,0
 那人,slo,0.469255,0
 一兩年,mmooq,0.469210,0
-將成爲,viisbf,0.469210,0
+將成為,viisif,0.469210,0
 澄清,eteb,0.469210,0
 甲骨文,wlbbyk,0.469210,0
 一下吧,mmyru,0.469187,0
@@ -11457,7 +11416,7 @@ phrase,quick_code,freq,hk_core
 申請者,llybja,0.468633,0
 相信自己,duorhusu,0.468633,0
 豆腐,mtib,0.468633,0
-這個平臺,yrormjgg,0.468633,0
+這個平台,yrormjir,0.468633,0
 上交,ymyk,0.468610,0
 不是所有,mfaohlkb,0.468610,0
 原子核,mfnddo,0.468610,0
@@ -11539,7 +11498,7 @@ phrase,quick_code,freq,hk_core
 從我,hohi,0.468238,0
 正向,mmhr,0.468238,0
 禮貌,itbu,0.468238,0
-被視爲,leiubf,0.468238,0
+被視為,leiuif,0.468238,0
 一個普通,mortayb,0.468215,0
 中東,ldw,0.468215,0
 指紋,qavk,0.468215,0
@@ -11567,7 +11526,7 @@ phrase,quick_code,freq,hk_core
 何種,orhg,0.468121,0
 在面試,kgmlym,0.468121,0
 後再,hemb,0.468121,0
-因爲這是,wkbfyrao,0.468098,0
+因為這是,wkifyrao,0.468098,0
 天文,mkyk,0.468098,0
 如何做,vrorok,0.468098,0
 無能,ofip,0.468098,0
@@ -11619,7 +11578,7 @@ phrase,quick_code,freq,hk_core
 分行,chhn,0.467793,0
 證件,ytoq,0.467793,0
 這週,yryr,0.467793,0
-吸菸,rety,0.467770,0
+吸煙,refg,0.467770,0
 大都,kjl,0.467770,0
 想起了,dpgunn,0.467770,0
 手辦,qyj,0.467770,0
@@ -11710,7 +11669,7 @@ phrase,quick_code,freq,hk_core
 給錢,vrci,0.467156,0
 試過,ymyr,0.467156,0
 跟你說,rvofyu,0.467156,0
-都認爲,jlypbf,0.467156,0
+都認為,jlypif,0.467156,0
 共情,tcpb,0.467132,0
 妳有,vfkb,0.467132,0
 是由於,aolwyy,0.467132,0
@@ -11779,7 +11738,7 @@ phrase,quick_code,freq,hk_core
 協和,jshr,0.466727,0
 機率,diyj,0.466727,0
 的路,hirr,0.466727,0
-自以爲,huvobf,0.466727,0
+自以為,huvoif,0.466727,0
 萬科,tbhj,0.466727,0
 化工,opmm,0.466703,0
 壁壘,sgwg,0.466703,0
@@ -11842,7 +11801,6 @@ phrase,quick_code,freq,hk_core
 孫燕姿,nftfiv,0.466415,0
 給你帶來,vrofkbdo,0.466415,0
 一點也不,mwrpdmf,0.466391,0
-僱佣,ogoq,0.466391,0
 僱傭,ogob,0.466391,0
 平均水平,mjgmemj,0.466391,0
 瀟灑,exep,0.466391,0
@@ -11943,7 +11901,7 @@ phrase,quick_code,freq,hk_core
 拳頭,fqmc,0.465908,0
 世界中,ptwll,0.465884,0
 格子,drnd,0.465884,0
-舞臺上,oqggym,0.465884,0
+舞台上,oqirym,0.465884,0
 郵寄,hljr,0.465884,0
 再有,mbkb,0.465860,0
 就可能,yumrip,0.465860,0
@@ -11971,7 +11929,7 @@ phrase,quick_code,freq,hk_core
 中華民族,ltjrpyk,0.465690,0
 大白,kha,0.465690,0
 雕塑,bgtg,0.465690,0
-可能因爲,mripwkbf,0.465665,0
+可能因為,mripwkif,0.465665,0
 押題,qlac,0.465665,0
 是一門,aoman,0.465665,0
 缺口,okr,0.465665,0
@@ -12032,7 +11990,7 @@ phrase,quick_code,freq,hk_core
 也不大,pdmfk,0.465348,0
 今天是,onmkao,0.465348,0
 盛大,itk,0.465348,0
-祕書長,ihlasv,0.465348,0
+秘書長,hhlasv,0.465348,0
 第一人,hhmo,0.465348,0
 腿部,bvyl,0.465348,0
 解題,nqac,0.465348,0
@@ -12055,7 +12013,7 @@ phrase,quick_code,freq,hk_core
 帶我,kbhi,0.465225,0
 橋梁,dbed,0.465225,0
 橋樑,dbdd,0.465225,0
-爲他們,bfodon,0.465225,0
+為他們,ifodon,0.465225,0
 牙刷,mhsn,0.465225,0
 一塌糊塗,mgmfbeg,0.465201,0
 他媽的,odvfhi,0.465201,0
@@ -12100,7 +12058,7 @@ phrase,quick_code,freq,hk_core
 配角,mung,0.465029,0
 高額,yrjc,0.465029,0
 之意,ioyp,0.465004,0
-便祕,okih,0.465004,0
+便秘,okhh,0.465004,0
 壞的,gvhi,0.465004,0
 我一開始,himatvr,0.465004,0
 撥打,qeqn,0.465004,0
@@ -12125,7 +12083,7 @@ phrase,quick_code,freq,hk_core
 小城市,ncgsyb,0.464906,0
 毅力,yeks,0.464906,0
 油門,ewan,0.464906,0
-爲她,bfvd,0.464906,0
+為她,ifvd,0.464906,0
 男人的,wsohi,0.464906,0
 享受到,ydbemn,0.464881,0
 國家級,wmjove,0.464881,0
@@ -12134,7 +12092,7 @@ phrase,quick_code,freq,hk_core
 有保障,kbodnj,0.464881,0
 總是會,vpaooa,0.464881,0
 聯繫人,stjfo,0.464881,0
-臺風,gghi,0.464881,0
+台風,irhi,0.464881,0
 不便,mfok,0.464856,0
 不過現在,mfyrmukg,0.464856,0
 以色列,vonumn,0.464856,0
@@ -12183,7 +12141,7 @@ phrase,quick_code,freq,hk_core
 毫不,yumf,0.464609,0
 勢頭,gsmc,0.464584,0
 司馬遷,srsfyu,0.464584,0
-能喫,iprk,0.464584,0
+能吃,iprn,0.464584,0
 這家店,yrjoir,0.464584,0
 那一套,slmki,0.464584,0
 串聯,llst,0.464560,0
@@ -12239,10 +12197,10 @@ phrase,quick_code,freq,hk_core
 煤炭,fduf,0.464361,0
 聯網,stvv,0.464361,0
 魔力,iiks,0.464361,0
-做爲,okbf,0.464336,0
+做為,okif,0.464336,0
 全美,ogtk,0.464336,0
 最有效,aekbyk,0.464336,0
-有人認爲,kboypbf,0.464336,0
+有人認為,kboypif,0.464336,0
 產權,ymdg,0.464336,0
 血量,htag,0.464336,0
 接過,qvyr,0.464311,0
@@ -12311,7 +12269,7 @@ phrase,quick_code,freq,hk_core
 突擊,jkjq,0.463986,0
 同胞,brbu,0.463961,0
 平原,mjmf,0.463961,0
-無能爲力,ofipbfks,0.463961,0
+無能為力,ofipifks,0.463961,0
 衝擊力,hnjqks,0.463961,0
 要死,mvmp,0.463961,0
 輕度,jmie,0.463961,0
@@ -12354,7 +12312,7 @@ phrase,quick_code,freq,hk_core
 聲譽,gjhr,0.463811,0
 航空公司,hnjmcisr,0.463811,0
 個個,oror,0.463786,0
-僞造,ofyr,0.463786,0
+偽造,ofyr,0.463786,0
 問候,arok,0.463786,0
 夢幻,tnvs,0.463786,0
 方便的,ysokhi,0.463786,0
@@ -12416,7 +12374,7 @@ phrase,quick_code,freq,hk_core
 外來,nydo,0.463534,0
 很有幫助,hvkbgbbs,0.463534,0
 活下來,ermydo,0.463534,0
-爲了自己,bfnnhusu,0.463534,0
+為了自己,ifnnhusu,0.463534,0
 邊境,ysgu,0.463534,0
 門前,antn,0.463534,0
 做得好,okhivd,0.463509,0
@@ -12527,14 +12485,12 @@ phrase,quick_code,freq,hk_core
 性愛,pmbe,0.463027,0
 抵禦,qmhf,0.463027,0
 反映出,heakuu,0.463002,0
-周年,broq,0.463002,0
+週年,yroq,0.463002,0
 息息相關,hphpduat,0.463002,0
 水流,eeu,0.463002,0
-胡子,jbnd,0.463002,0
-視覺上,iuhuym,0.463002,0
-週年,yroq,0.463002,0
-金融專碩,cmijimc,0.463002,0
 鬍子,sbnd,0.463002,0
+視覺上,iuhuym,0.463002,0
+金融專碩,cmijimc,0.463002,0
 心底,pim,0.462976,0
 打廣告,qnichr,0.462976,0
 打聽,qnsp,0.462976,0
@@ -12581,7 +12537,7 @@ phrase,quick_code,freq,hk_core
 顯示出,acmfuu,0.462849,0
 同時在,braikg,0.462823,0
 咋樣,rsde,0.462823,0
-因爲現在,wkbfmukg,0.462823,0
+因為現在,wkifmukg,0.462823,0
 我們還是,hionyvao,0.462823,0
 接連,qvyj,0.462823,0
 班長,mgsv,0.462823,0
@@ -12628,7 +12584,7 @@ phrase,quick_code,freq,hk_core
 服從,beho,0.462619,0
 每天晚上,oimkauym,0.462619,0
 開始學習,atvrhdsa,0.462619,0
-也是爲了,pdaobfnn,0.462593,0
+也是為了,pdaoifnn,0.462593,0
 卻能,clip,0.462593,0
 期末考試,tbdjjsym,0.462593,0
 包圍,puwq,0.462567,0
@@ -12653,7 +12609,7 @@ phrase,quick_code,freq,hk_core
 搬磚,qemi,0.462465,0
 自家的,hujohi,0.462465,0
 展會,svoa,0.462439,0
-爲了保證,bfnnodyt,0.462439,0
+為了保證,ifnnodyt,0.462439,0
 借款人,oagoo,0.462413,0
 加劇,kryn,0.462413,0
 會變得,oavkhi,0.462413,0
@@ -12679,7 +12635,7 @@ phrase,quick_code,freq,hk_core
 告訴自己,hryyhusu,0.462336,0
 木質,dhc,0.462336,0
 都不要,jlmfmv,0.462336,0
-喫透,rkys,0.462311,0
+吃透,rnys,0.462311,0
 沒看,eehu,0.462311,0
 純淨,vued,0.462311,0
 間隙,aanf,0.462311,0
@@ -12693,7 +12649,7 @@ phrase,quick_code,freq,hk_core
 動搖,hsqu,0.462259,0
 很尷尬,hvktkl,0.462259,0
 我爹,hicn,0.462259,0
-還是因爲,yvaowkbf,0.462259,0
+還是因為,yvaowkif,0.462259,0
 不亞於,mfmmyy,0.462233,0
 中國文化,lwmykop,0.462233,0
 競爭的,yubdhi,0.462233,0
@@ -12746,7 +12702,7 @@ phrase,quick_code,freq,hk_core
 學界,hdwl,0.461949,0
 特價,hioc,0.461949,0
 軍工,bjmm,0.461949,0
-轉換爲,jiqkbf,0.461949,0
+轉換為,jiqkif,0.461949,0
 閉環,ahmv,0.461949,0
 餘光,odfu,0.461949,0
 她對,vdti,0.461923,0
@@ -12759,7 +12715,7 @@ phrase,quick_code,freq,hk_core
 節氣,hlod,0.461871,0
 聲學,gjhd,0.461871,0
 風情,hipb,0.461871,0
-因爲當時,wkbffwai,0.461845,0
+因為當時,wkiffwai,0.461845,0
 始終是,vrvyao,0.461845,0
 氣場,odgh,0.461845,0
 領導幹部,ocyijjyl,0.461845,0
@@ -12770,7 +12726,6 @@ phrase,quick_code,freq,hk_core
 威廉,ivic,0.461819,0
 查查,dmdm,0.461819,0
 理論知識,mgyborya,0.461819,0
-纔可以,vimrvo,0.461819,0
 卡巴斯基,yyautltg,0.461793,0
 園區,wvsr,0.461793,0
 桂林,dgdd,0.461793,0
@@ -13005,7 +12960,7 @@ phrase,quick_code,freq,hk_core
 啓用,hrbq,0.460798,0
 回到家,wrmnjo,0.460798,0
 就感覺,yuiphu,0.460798,0
-想成爲,dpisbf,0.460798,0
+想成為,dpisif,0.460798,0
 摸到,qkmn,0.460798,0
 泡泡,eueu,0.460798,0
 這些信息,yrymorhp,0.460798,0
@@ -13095,7 +13050,7 @@ phrase,quick_code,freq,hk_core
 不清,mfeb,0.460347,0
 搶劫,qrgs,0.460347,0
 撤退,qkyv,0.460347,0
-爲零,bfmi,0.460347,0
+為零,ifmi,0.460347,0
 綁架,vlkd,0.460347,0
 貼圖,brww,0.460347,0
 不失,mfho,0.460321,0
@@ -13158,7 +13113,7 @@ phrase,quick_code,freq,hk_core
 我卻,hicl,0.460080,0
 逼着,ywtu,0.460080,0
 了新的,nnylhi,0.460054,0
-喫着,rktu,0.460054,0
+吃着,rntu,0.460054,0
 審議,jwyi,0.460054,0
 巨型,ssmg,0.460054,0
 爆發力,feneks,0.460054,0
@@ -13268,7 +13223,7 @@ phrase,quick_code,freq,hk_core
 很慢,hvpe,0.459597,0
 本報記者,dmgeyuja,0.459597,0
 西漢,mweo,0.459597,0
-喫得,rkhi,0.459570,0
+吃得,rnhi,0.459570,0
 懶惰,pcpb,0.459570,0
 手腳,qbl,0.459570,0
 模擬器,dkqorr,0.459570,0
@@ -13312,7 +13267,7 @@ phrase,quick_code,freq,hk_core
 他被,odle,0.459354,0
 叛亂,febu,0.459354,0
 漢化,eoop,0.459354,0
-爲中心,bflp,0.459354,0
+為中心,iflp,0.459354,0
 緊湊,sfek,0.459354,0
 飲酒,ooew,0.459354,0
 單機遊戲,rjdiydyi,0.459327,0
@@ -13369,7 +13324,7 @@ phrase,quick_code,freq,hk_core
 史密斯,lkjutl,0.459110,0
 復聯,hest,0.459110,0
 感人,ipo,0.459110,0
-不要因爲,mfmvwkbf,0.459083,0
+不要因為,mfmvwkif,0.459083,0
 乒乓球,ohoime,0.459083,0
 拖到,qdmn,0.459083,0
 語義,yrti,0.459083,0
@@ -13390,7 +13345,6 @@ phrase,quick_code,freq,hk_core
 做做,okok,0.459001,0
 市場化,ybghop,0.459001,0
 整容,dmjr,0.459001,0
-注明,egab,0.459001,0
 重度,hgie,0.459001,0
 順勢,lcgs,0.459001,0
 按住,qvog,0.458974,0
@@ -13425,7 +13379,7 @@ phrase,quick_code,freq,hk_core
 攀登,dqnt,0.458838,0
 迷人,ydo,0.458838,0
 不可或缺,mfmrimok,0.458811,0
-化爲,opbf,0.458811,0
+化為,opif,0.458811,0
 咱倆,ruob,0.458811,0
 在所有,kghlkb,0.458811,0
 地帶,gdkb,0.458811,0
@@ -13516,7 +13470,7 @@ phrase,quick_code,freq,hk_core
 最優解,aeoenq,0.458427,0
 發個,neor,0.458427,0
 砍掉,moqj,0.458427,0
-祕訣,ihyk,0.458427,0
+秘訣,hhyk,0.458427,0
 車間,jjaa,0.458427,0
 骨架,bbkd,0.458427,0
 二期,mmtb,0.458400,0
@@ -13550,13 +13504,13 @@ phrase,quick_code,freq,hk_core
 兩本,modm,0.458289,0
 再生,mbhm,0.458289,0
 吹捧,roqq,0.458289,0
-喫雞,rkbg,0.458289,0
+吃雞,rnbg,0.458289,0
 很清晰,hvebal,0.458289,0
 應用商店,ipbqyrir,0.458289,0
-爲單位,bfrjot,0.458289,0
+為單位,ifrjot,0.458289,0
 當面,fwml,0.458289,0
 百分之,machio,0.458289,0
-臺下,ggmy,0.458289,0
+台下,irmy,0.458289,0
 裝甲,vvwl,0.458289,0
 試試看,ymymhu,0.458289,0
 貼在,brkg,0.458289,0
@@ -13576,7 +13530,7 @@ phrase,quick_code,freq,hk_core
 基金會,tgcoa,0.458207,0
 生化,hmop,0.458207,0
 生產線,hmymve,0.458207,0
-爲由,bflw,0.458179,0
+為由,iflw,0.458179,0
 親近,yuyl,0.458179,0
 餐桌,yvyd,0.458179,0
 二線,mmve,0.458152,0
@@ -13617,7 +13571,7 @@ phrase,quick_code,freq,hk_core
 儘量避免,otagyjnu,0.457986,0
 冷凍,iiiw,0.457986,0
 指針,qacj,0.457986,0
-臺北,gglp,0.457986,0
+台北,irlp,0.457986,0
 說有,yukb,0.457986,0
 速率,ylyj,0.457986,0
 不在意,mfkgyp,0.457958,0
@@ -13649,7 +13603,7 @@ phrase,quick_code,freq,hk_core
 結構化,vrdbop,0.457875,0
 總公司,vpcisr,0.457875,0
 衹得,lphi,0.457875,0
-轉變爲,jivkbf,0.457875,0
+轉變為,jivkif,0.457875,0
 飯圈,oewu,0.457875,0
 寫上,jfym,0.457847,0
 愛上了,beymnn,0.457847,0
@@ -13682,7 +13636,7 @@ phrase,quick_code,freq,hk_core
 阿信,nror,0.457736,0
 雙向,oehr,0.457736,0
 馬來西亞,sfdomwmm,0.457736,0
-可以爲,mrvobf,0.457708,0
+可以為,mrvoif,0.457708,0
 在玩,kgmu,0.457708,0
 大號,krn,0.457708,0
 感覺是,iphuao,0.457708,0
@@ -13710,10 +13664,10 @@ phrase,quick_code,freq,hk_core
 劍道,onyu,0.457625,0
 合資,oric,0.457625,0
 告訴她,hryyvd,0.457625,0
-命名爲,olnrbf,0.457625,0
+命名為,olnrif,0.457625,0
 城裏,gsyv,0.457625,0
 枕頭,dumc,0.457625,0
-爲了保護,bfnnodye,0.457625,0
+為了保護,ifnnodye,0.457625,0
 看過的,huyrhi,0.457625,0
 作用下,osbqmy,0.457597,0
 吐蕃,rgtw,0.457597,0
@@ -13756,7 +13710,7 @@ phrase,quick_code,freq,hk_core
 明細,abvw,0.457485,0
 每一種,oimhg,0.457485,0
 蟲子,lind,0.457485,0
-愛喫,berk,0.457457,0
+愛吃,bern,0.457457,0
 時政,aimk,0.457457,0
 更符合,mkhior,0.457457,0
 讓你們,yvofon,0.457457,0
@@ -13811,7 +13765,7 @@ phrase,quick_code,freq,hk_core
 已達,suyq,0.457233,0
 忽視了,ppiunn,0.457233,0
 滿了,ebnn,0.457233,0
-臺上,ggym,0.457233,0
+台上,irym,0.457233,0
 高風險,yrhino,0.457233,0
 主要以,ygmvvo,0.457205,0
 留住,hwog,0.457205,0
@@ -13836,7 +13790,7 @@ phrase,quick_code,freq,hk_core
 我當初,hifwlh,0.457121,0
 打入,qnoh,0.457121,0
 櫃檯,dcdg,0.457121,0
-櫃臺,dcgg,0.457121,0
+櫃台,dcir,0.457121,0
 聖誕,sgym,0.457121,0
 這個觀點,yrortuwr,0.457121,0
 這種做法,yrhgokei,0.457121,0
@@ -13860,7 +13814,7 @@ phrase,quick_code,freq,hk_core
 主要內容,ygmvobjr,0.457009,0
 子宮,ndjr,0.457009,0
 幾首,vitu,0.457009,0
-還以爲,yvvobf,0.457009,0
+還以為,yvvoif,0.457009,0
 那部分,slylch,0.457009,0
 電影節,muahhl,0.457009,0
 來找我,doqihi,0.456980,0
@@ -13878,7 +13832,7 @@ phrase,quick_code,freq,hk_core
 被你,leof,0.456952,0
 複述,leyd,0.456952,0
 不用說,mfbqyu,0.456924,0
-去喫,girk,0.456924,0
+去吃,girn,0.456924,0
 基建,tgnq,0.456924,0
 天性,mkpm,0.456924,0
 焦段,ofhe,0.456924,0
@@ -14023,7 +13977,6 @@ phrase,quick_code,freq,hk_core
 王力宏,mgksji,0.456329,0
 綠化,veop,0.456329,0
 被害人,lejro,0.456329,0
-雇主,hgyg,0.456329,0
 高尚,yrfr,0.456329,0
 了下,nnmy,0.456301,0
 寓意,jbyp,0.456301,0
@@ -14232,7 +14185,7 @@ phrase,quick_code,freq,hk_core
 清華北大,ebtjlpk,0.455469,0
 寄生蟲,jrhmli,0.455440,0
 實際操作,jcnfqdos,0.455440,0
-少喫,fhrk,0.455440,0
+少吃,fhrn,0.455440,0
 放個,ykor,0.455440,0
 渣渣,emem,0.455440,0
 自豪,huyo,0.455440,0
@@ -14290,7 +14243,7 @@ phrase,quick_code,freq,hk_core
 剛剛好,bnbnvd,0.455180,0
 太慢,kipe,0.455180,0
 寫實,jfjc,0.455180,0
-爲了解決,bfnnnqek,0.455180,0
+為了解決,ifnnnqek,0.455180,0
 聯機,stdi,0.455180,0
 葉片,tdll,0.455180,0
 視覺效果,iuhuykwd,0.455180,0
@@ -14335,12 +14288,12 @@ phrase,quick_code,freq,hk_core
 記號,yurn,0.455034,0
 輪子,jbnd,0.455034,0
 長途,svyd,0.455034,0
-保溼,odeg,0.455005,0
+保濕,odef,0.455005,0
 六月,ycb,0.455005,0
 叛逆,feyu,0.455005,0
 一年半,moqfq,0.454976,0
 交友,ykke,0.454976,0
-我們認爲,hionypbf,0.454976,0
+我們認為,hionypif,0.454976,0
 支行,jehn,0.454976,0
 用不了,bqmfnn,0.454976,0
 社會中,igoal,0.454976,0
@@ -14412,7 +14365,6 @@ phrase,quick_code,freq,hk_core
 佳作,ogos,0.454743,0
 最後在,aehekg,0.454743,0
 有好多,kbvdni,0.454743,0
-這纔,yrvi,0.454743,0
 使他,okod,0.454713,0
 先做,huok,0.454713,0
 在前面,kgtnml,0.454713,0
@@ -14501,7 +14453,7 @@ phrase,quick_code,freq,hk_core
 許可證,yjmryt,0.454361,0
 使者,okja,0.454332,0
 句話,pryr,0.454332,0
-喫貨,rkoc,0.454332,0
+吃貨,rnoc,0.454332,0
 山王,umg,0.454332,0
 弄個,mtor,0.454332,0
 毛髮,huse,0.454332,0
@@ -14519,7 +14471,7 @@ phrase,quick_code,freq,hk_core
 你買,ofwc,0.454273,0
 可以提供,mrvoqooc,0.454273,0
 合法的,oreihi,0.454273,0
-喜歡喫,grtork,0.454273,0
+喜歡吃,grtorn,0.454273,0
 走出來,gouudo,0.454273,0
 呼喚,rdrk,0.454244,0
 多半是,nifqao,0.454244,0
@@ -14545,7 +14497,7 @@ phrase,quick_code,freq,hk_core
 拉動,qths,0.454185,0
 牙醫,mhsw,0.454185,0
 研究成果,mtjniswd,0.454185,0
-評爲,yjbf,0.454185,0
+評為,yjif,0.454185,0
 那這個,slyror,0.454185,0
 女人的,vohi,0.454155,0
 學制,hdhn,0.454155,0
@@ -14648,8 +14600,8 @@ phrase,quick_code,freq,hk_core
 紫外線,yfnyve,0.453770,0
 衝鋒衣,hncjyv,0.453770,0
 讓讀者,yvycja,0.453770,0
-迄今爲止,ynonbfym,0.453770,0
-不要以爲,mfmvvobf,0.453740,0
+迄今為止,ynonifym,0.453770,0
+不要以為,mfmvvoif,0.453740,0
 動量,hsag,0.453740,0
 很爽,hvkk,0.453740,0
 恰恰相反,prprduhe,0.453740,0
@@ -14687,7 +14639,7 @@ phrase,quick_code,freq,hk_core
 區別於,srrnyy,0.453621,0
 嚴禁,rkdf,0.453621,0
 抬起,qrgu,0.453621,0
-覈對,mkti,0.453621,0
+核對,doti,0.453621,0
 不尊重,mftihg,0.453591,0
 小問題,ncarac,0.453591,0
 留白,hwha,0.453591,0
@@ -14697,7 +14649,6 @@ phrase,quick_code,freq,hk_core
 技術水平,qehnemj,0.453562,0
 流川楓,eulldi,0.453562,0
 牠們,hdon,0.453562,0
-纔行,vihn,0.453562,0
 任何事情,ogorjnpb,0.453532,0
 年頭,oqmc,0.453532,0
 海口,eyr,0.453532,0
@@ -14767,7 +14718,7 @@ phrase,quick_code,freq,hk_core
 項鍊,mccf,0.453293,0
 一個概念,morduop,0.453263,0
 特長,hisv,0.453263,0
-虛僞,ymof,0.453263,0
+虛偽,ymof,0.453263,0
 但最終,omaevy,0.453233,0
 場外,ghny,0.453233,0
 大隊,kno,0.453233,0
@@ -15001,7 +14952,7 @@ phrase,quick_code,freq,hk_core
 我知道的,hioryuhi,0.452204,0
 柏林,dadd,0.452204,0
 聊到,slmn,0.452204,0
-能爲,ipbf,0.452204,0
+能為,ipif,0.452204,0
 偷襲,onyv,0.452174,0
 去解決,ginqek,0.452174,0
 建國,nqwm,0.452174,0
@@ -15026,7 +14977,7 @@ phrase,quick_code,freq,hk_core
 確定性,mgjopm,0.452113,0
 總計,vpyj,0.452113,0
 追着,yrtu,0.452113,0
-喫點,rkwr,0.452082,0
+吃點,rnwr,0.452082,0
 始於,vryy,0.452082,0
 後綴,heve,0.452082,0
 熊孩子,ifnond,0.452082,0
@@ -15210,7 +15161,7 @@ phrase,quick_code,freq,hk_core
 排練,qyvf,0.451375,0
 良性,ivpm,0.451375,0
 行了,hnnn,0.451375,0
-設置爲,yewmbf,0.451375,0
+設置為,yewmif,0.451375,0
 郵費,hllc,0.451375,0
 人眼,obv,0.451344,0
 做了什麼,oknnojii,0.451344,0
@@ -15223,7 +15174,7 @@ phrase,quick_code,freq,hk_core
 再繼續,mbvivc,0.451313,0
 拋出,qsuu,0.451313,0
 然後呢,bfherp,0.451313,0
-煙臺,fggg,0.451313,0
+煙台,fgir,0.451313,0
 組成部分,vmisylch,0.451313,0
 要解決,mvnqek,0.451313,0
 上色,ymnu,0.451282,0
@@ -15231,7 +15182,6 @@ phrase,quick_code,freq,hk_core
 動靜,hsqd,0.451282,0
 妓女,vev,0.451282,0
 得罪,hiwy,0.451282,0
-核實,dojc,0.451282,0
 沉穩,enhp,0.451282,0
 給定,vrjo,0.451282,0
 造就,yryu,0.451282,0
@@ -15253,7 +15203,6 @@ phrase,quick_code,freq,hk_core
 小樣,ncde,0.451189,0
 無盡的,oflthi,0.451189,0
 遍佈,ybob,0.451189,0
-遍布,ybkb,0.451189,0
 雙擊,oejq,0.451189,0
 中興,lhc,0.451158,0
 功利,mshn,0.451158,0
@@ -15382,7 +15331,7 @@ phrase,quick_code,freq,hk_core
 第二名,hhmmnr,0.450722,0
 精確的,fbmghi,0.450722,0
 蟑螂,ljll,0.450722,0
-覈算,mkht,0.450722,0
+核算,doht,0.450722,0
 關愛,atbe,0.450722,0
 頻頻,ycyc,0.450722,0
 一盒,mot,0.450691,0
@@ -15493,7 +15442,7 @@ phrase,quick_code,freq,hk_core
 手機端,qdiyb,0.450314,0
 撤銷,qkcb,0.450314,0
 毫不猶豫,yumfkwno,0.450314,0
-爲啥要,bfrrmv,0.450314,0
+為啥要,ifrrmv,0.450314,0
 站位,yrot,0.450314,0
 菜市場,tdybgh,0.450314,0
 還請,yvyb,0.450314,0
@@ -15558,7 +15507,7 @@ phrase,quick_code,freq,hk_core
 不好嗎,mfvdrf,0.450030,0
 之流,ioeu,0.450030,0
 借了,oann,0.450030,0
-已成爲,suisbf,0.450030,0
+已成為,suisif,0.450030,0
 建築學,nqhdhd,0.450030,0
 我剛剛,hibnbn,0.450030,0
 日韓,ajq,0.450030,0
@@ -15714,7 +15663,7 @@ phrase,quick_code,freq,hk_core
 省長,fusv,0.449394,0
 私募基金,hitstgc,0.449394,0
 老將,jpvi,0.449394,0
-臺式機,ggimdi,0.449394,0
+台式機,irimdi,0.449394,0
 螺絲,lfvf,0.449394,0
 那麼久,sliino,0.449394,0
 霍光,mgfu,0.449394,0
@@ -15807,7 +15756,7 @@ phrase,quick_code,freq,hk_core
 更多信息,mkniorhp,0.449009,0
 繁雜,ofyg,0.449009,0
 聽從,spho,0.449009,0
-自以爲是,huvobfao,0.449009,0
+自以為是,huvoifao,0.449009,0
 蓋聶,ttsj,0.449009,0
 遙感,yuip,0.449009,0
 平均值,mjgmom,0.448977,0
@@ -15822,7 +15771,6 @@ phrase,quick_code,freq,hk_core
 並行,tchn,0.448944,0
 公認,ciyp,0.448944,0
 對美國,titkwm,0.448944,0
-并行,tthn,0.448944,0
 戰鬥機,rilndi,0.448944,0
 掛機,qydi,0.448944,0
 犀利,sqhn,0.448944,0
@@ -15868,7 +15816,7 @@ phrase,quick_code,freq,hk_core
 我聽,hisp,0.448783,0
 提醒大家,qommkjo,0.448783,0
 清澈,ebek,0.448783,0
-爲目標,bfbudf,0.448783,0
+為目標,ifbudf,0.448783,0
 福音,iwya,0.448783,0
 舉例子,hqonnd,0.448783,0
 遲早,yqaj,0.448783,0
@@ -15890,7 +15838,7 @@ phrase,quick_code,freq,hk_core
 新一輪,ylmjb,0.448718,0
 知道他,oryuod,0.448718,0
 您在,opkg,0.448686,0
-被認爲,leypbf,0.448686,0
+被認為,leypif,0.448686,0
 設計出,yeyjuu,0.448686,0
 讀大學,yckhd,0.448686,0
 讚賞,ycfc,0.448686,0
@@ -15954,10 +15902,10 @@ phrase,quick_code,freq,hk_core
 又叫,nkrl,0.448427,0
 可以肯定,mrvoybjo,0.448427,0
 旗號,ycrn,0.448427,0
-本以爲,dmvobf,0.448427,0
+本以為,dmvoif,0.448427,0
 滅蚊燈,eflkft,0.448427,0
 網線,vvve,0.448427,0
-誤以爲,ykvobf,0.448427,0
+誤以為,ykvoif,0.448427,0
 一大半,mkfq,0.448394,0
 低下,ommy,0.448394,0
 完爆,jufe,0.448394,0
@@ -16011,7 +15959,7 @@ phrase,quick_code,freq,hk_core
 被黑,lewf,0.448199,0
 郎朗,ilib,0.448199,0
 做點,okwr,0.448166,0
-列爲,mnbf,0.448166,0
+列為,mnif,0.448166,0
 南山,jju,0.448166,0
 大酒店,kewir,0.448166,0
 成吉思汗,isgrwpej,0.448166,0
@@ -16079,9 +16027,9 @@ phrase,quick_code,freq,hk_core
 交稅,ykhu,0.447904,0
 大大提高,kkqoyr,0.447904,0
 愛德華,behptj,0.447904,0
-應爲,ipbf,0.447904,0
+應為,ipif,0.447904,0
 時隔,ainb,0.447904,0
-祕籍,ihha,0.447904,0
+秘籍,hhha,0.447904,0
 翻閱,hmau,0.447904,0
 送去,ykgi,0.447904,0
 可他,mrod,0.447872,0
@@ -16173,7 +16121,7 @@ phrase,quick_code,freq,hk_core
 不貴,mflc,0.447510,0
 內幕,obtb,0.447510,0
 北上,lpym,0.447510,0
-喫驚,rktf,0.447510,0
+吃驚,rntf,0.447510,0
 地處,gdyn,0.447510,0
 霸主,mbyg,0.447510,0
 低谷,omcr,0.447477,0
@@ -16200,7 +16148,7 @@ phrase,quick_code,freq,hk_core
 榮格,fddr,0.447411,0
 音樂風格,yavdhidr,0.447411,0
 一百萬,mmatb,0.447378,0
-因爲我是,wkbfhiao,0.447378,0
+因為我是,wkifhiao,0.447378,0
 密切相關,juphduat,0.447378,0
 寫一篇,jfmhb,0.447378,0
 很滿意,hvebyp,0.447378,0
@@ -16282,7 +16230,6 @@ phrase,quick_code,freq,hk_core
 相當多,dufwni,0.447146,0
 這些話,yrymyr,0.447146,0
 川普,llta,0.447112,0
-核算,doht,0.447112,0
 比較穩定,ppjkhpjo,0.447112,0
 毛孔,hunu,0.447112,0
 蒼白,trha,0.447112,0
@@ -16308,7 +16255,7 @@ phrase,quick_code,freq,hk_core
 聯繫電話,stjfmuyr,0.447013,0
 還差,yvtm,0.447013,0
 不會做,mfoaok,0.446979,0
-又因爲,nkwkbf,0.446979,0
+又因為,nkwkif,0.446979,0
 廠房,ikhs,0.446979,0
 接觸了,qvninn,0.446979,0
 春晚,qaau,0.446979,0
@@ -16322,7 +16269,7 @@ phrase,quick_code,freq,hk_core
 也只,pdrc,0.446946,0
 充電器,yumurr,0.446946,0
 全景,ogaf,0.446946,0
-可分爲,mrchbf,0.446946,0
+可分為,mrchif,0.446946,0
 美術館,tkhnor,0.446946,0
 逃亡,yoyv,0.446946,0
 你連,ofyj,0.446913,0
@@ -16411,7 +16358,7 @@ phrase,quick_code,freq,hk_core
 電磁場,mumigh,0.446679,0
 音域,yagm,0.446679,0
 不能讓,mfipyv,0.446645,0
-何爲,orbf,0.446645,0
+何為,orif,0.446645,0
 侵害,oejr,0.446645,0
 冰塊,iegi,0.446645,0
 必需,phml,0.446645,0
@@ -16489,7 +16436,7 @@ phrase,quick_code,freq,hk_core
 不求,mfie,0.446411,0
 主語,ygyr,0.446411,0
 典故,tcjk,0.446411,0
-因爲要,wkbfmv,0.446411,0
+因為要,wkifmv,0.446411,0
 在世界,kgptwl,0.446411,0
 太監,kist,0.446411,0
 慰問,spar,0.446411,0
@@ -16504,7 +16451,6 @@ phrase,quick_code,freq,hk_core
 領地,ocgd,0.446377,0
 上山,ymu,0.446343,0
 不使用,mfokbq,0.446343,0
-不干,mfmj,0.446343,0
 再結合,mbvror,0.446343,0
 卡巴,yyau,0.446343,0
 好幾,vdvi,0.446343,0
@@ -16526,7 +16472,7 @@ phrase,quick_code,freq,hk_core
 獎品,vkrr,0.446276,0
 雞腿,bgbv,0.446276,0
 靠攏,hyqp,0.446276,0
-則爲,bnbf,0.446242,0
+則為,bnif,0.446242,0
 堅韌,sgdi,0.446242,0
 大學生活,khdhmer,0.446242,0
 廢墟,iegc,0.446242,0
@@ -16571,7 +16517,7 @@ phrase,quick_code,freq,hk_core
 就怕,yupa,0.446073,0
 梁靜茹,edqdtr,0.446073,0
 死去的,mpgihi,0.446073,0
-認爲他,ypbfod,0.446073,0
+認為他,ypifod,0.446073,0
 電子遊戲,mundydyi,0.446073,0
 三類,mmfc,0.446040,0
 儘可能地,otmripgd,0.446040,0
@@ -16583,7 +16529,6 @@ phrase,quick_code,freq,hk_core
 檯面,dgml,0.446040,0
 淨值,edom,0.446040,0
 第二代,hhmmop,0.446040,0
-纔好,vivd,0.446040,0
 花椒,tpde,0.446040,0
 這幫人,yrgbo,0.446040,0
 那幾年,slvioq,0.446040,0
@@ -16786,7 +16731,6 @@ phrase,quick_code,freq,hk_core
 坐下來,ogmydo,0.445393,0
 所要,hlmv,0.445393,0
 打掃,qnqb,0.445393,0
-核對,doti,0.445393,0
 烏龜,hfhu,0.445393,0
 生態環境,hmipmvgu,0.445393,0
 路子,rrnd,0.445393,0
@@ -16818,7 +16762,6 @@ phrase,quick_code,freq,hk_core
 示意,mfyp,0.445291,0
 習俗,saor,0.445291,0
 膠水,bhe,0.445291,0
-這纔是,yrviao,0.445291,0
 不成立,mfisyt,0.445257,0
 失戀,hovp,0.445257,0
 應聘者,ipssja,0.445257,0
@@ -16860,7 +16803,7 @@ phrase,quick_code,freq,hk_core
 切成,phis,0.445051,0
 妳是,vfao,0.445051,0
 就像我,yuoohi,0.445051,0
-就爲了,yubfnn,0.445051,0
+就為了,yuifnn,0.445051,0
 神經系統,ilvmhfvu,0.445051,0
 醬汁,vwej,0.445051,0
 世錦賽,ptcbjc,0.445016,0
@@ -16906,7 +16849,7 @@ phrase,quick_code,freq,hk_core
 再從,mbho,0.444913,0
 治療方法,erkfysei,0.444913,0
 源代碼,efopmf,0.444913,0
-爲難,bftg,0.444913,0
+為難,iftg,0.444913,0
 皇室,hgjg,0.444913,0
 彩信,bhor,0.444878,0
 我買了,hiwcnn,0.444878,0
@@ -17000,7 +16943,7 @@ phrase,quick_code,freq,hk_core
 參展,ihsv,0.444532,0
 唔係,rrof,0.444532,1
 思考一下,wpjsmmy,0.444532,0
-意爲,ypbf,0.444532,0
+意為,ypif,0.444532,0
 攻勢,mkgs,0.444532,0
 諸如此類,yavrypfc,0.444532,0
 這個目標,yrorbudf,0.444532,0
@@ -17049,7 +16992,7 @@ phrase,quick_code,freq,hk_core
 請各位,ybhrot,0.444359,0
 閉眼,ahbv,0.444359,0
 也不必,pdmfph,0.444324,0
-劃分爲,lnchbf,0.444324,0
+劃分為,lnchif,0.444324,0
 明明白白,ababhaha,0.444324,0
 洗地,eugd,0.444324,0
 溫情,etpb,0.444324,0
@@ -17062,7 +17005,7 @@ phrase,quick_code,freq,hk_core
 地鐵站,gdcgyr,0.444289,0
 大爆炸,kfefs,0.444289,0
 海域,eygm,0.444289,0
-爲啥不,bfrrmf,0.444289,0
+為啥不,ifrrmf,0.444289,0
 迷路,ydrr,0.444289,0
 餘地,odgd,0.444289,0
 位子,otnd,0.444254,0
@@ -17076,7 +17019,7 @@ phrase,quick_code,freq,hk_core
 他那,odsl,0.444219,0
 個例,oron,0.444219,0
 如何提高,vrorqoyr,0.444219,0
-溼潤,egeg,0.444219,0
+濕潤,efeg,0.444219,0
 盟友,atke,0.444219,0
 省會,fuoa,0.444219,0
 血色,htnu,0.444219,0
@@ -17183,7 +17126,7 @@ phrase,quick_code,freq,hk_core
 上進,ymyg,0.443799,0
 場內,ghob,0.443799,0
 悠悠,opop,0.443799,0
-爲何不,bformf,0.443799,0
+為何不,iformf,0.443799,0
 自駕,hukf,0.443799,0
 連貫,yjwc,0.443799,0
 乏力,hoks,0.443764,0
@@ -17279,12 +17222,12 @@ phrase,quick_code,freq,hk_core
 遠低於,yvomyy,0.443518,0
 還是被,yvaole,0.443518,0
 重要因素,hgmvwkqf,0.443518,0
-香菸,haty,0.443518,0
+香煙,hafg,0.443518,0
 具體來說,bcbtdoyu,0.443483,0
 分擔,chqr,0.443483,0
 加我,krhi,0.443483,0
 周瑜,brmn,0.443483,0
-喫完飯,rkjuoe,0.443483,0
+吃完飯,rnjuoe,0.443483,0
 女演員,vecrc,0.443483,0
 本科學歷,dmhjhdmm,0.443483,0
 枯燥的,drfdhi,0.443483,0
@@ -17307,7 +17250,7 @@ phrase,quick_code,freq,hk_core
 私塾,hiyg,0.443447,0
 詞組,yrvm,0.443447,0
 跌了,ronn,0.443447,0
-跨平臺,rsmjgg,0.443447,0
+跨平台,rsmjir,0.443447,0
 車門,jjan,0.443447,0
 了一場,nnmgh,0.443412,0
 以防,vons,0.443412,0
@@ -17346,7 +17289,7 @@ phrase,quick_code,freq,hk_core
 二世,mmpt,0.443306,0
 控制住,qmhnog,0.443306,0
 摩托,iqqp,0.443306,0
-站臺,yrgg,0.443306,0
+站台,yrir,0.443306,0
 調和,yrhr,0.443306,0
 還算是,yvhtao,0.443306,0
 也跟,pdrv,0.443270,0
@@ -17386,7 +17329,7 @@ phrase,quick_code,freq,hk_core
 看樣子,hudend,0.443199,0
 聚變,sovk,0.443199,0
 自動識別,huhsyarn,0.443199,0
-衆多的,honihi,0.443199,0
+眾多的,wonihi,0.443199,0
 請我,ybhi,0.443199,0
 過早,yraj,0.443199,0
 適時,ybai,0.443199,0
@@ -17397,7 +17340,7 @@ phrase,quick_code,freq,hk_core
 這屆,yrsg,0.443164,0
 過剩,yrhn,0.443164,0
 不怎麼樣,mfopiide,0.443128,0
-在臺灣,kgggen,0.443128,0
+在台灣,kgiren,0.443128,0
 張傑,nvod,0.443128,0
 監理,stmg,0.443128,0
 芙蓉,totr,0.443128,0
@@ -17442,7 +17385,7 @@ phrase,quick_code,freq,hk_core
 張揚,nvqh,0.442986,0
 怎麼也,opiipd,0.442986,0
 渦輪,erjb,0.442986,0
-潮溼,ebeg,0.442986,0
+潮濕,ebef,0.442986,0
 焊接,fjqv,0.442986,0
 立項,ytmc,0.442986,0
 遊覽,ydsu,0.442986,0
@@ -17624,7 +17567,7 @@ phrase,quick_code,freq,hk_core
 其間,tcaa,0.442378,0
 印記,hlyu,0.442378,0
 同意了,brypnn,0.442378,0
-因爲這樣,wkbfyrde,0.442378,0
+因為這樣,wkifyrde,0.442378,0
 守望者,jiygja,0.442378,0
 定論,joyb,0.442378,0
 草案,tjjd,0.442378,0
@@ -17636,7 +17579,7 @@ phrase,quick_code,freq,hk_core
 優越,oegv,0.442342,0
 出賣,uugc,0.442342,0
 在遊戲裏,kgydyiyv,0.442342,0
-很好喫,hvvdrk,0.442342,0
+很好吃,hvvdrn,0.442342,0
 懂事,pgjn,0.442342,0
 我哥,himr,0.442342,0
 按規定,qvqujo,0.442342,0
@@ -17817,7 +17760,7 @@ phrase,quick_code,freq,hk_core
 表達能力,qvyqipks,0.441691,0
 難民,tgrp,0.441691,0
 呆着,rdtu,0.441654,0
-喫什麼,rkojii,0.441654,0
+吃什麼,rnojii,0.441654,0
 完蛋,juni,0.441654,0
 寄託,jryp,0.441654,0
 毛利,huhn,0.441654,0
@@ -17848,7 +17791,7 @@ phrase,quick_code,freq,hk_core
 不會去,mfoagi,0.441545,0
 原題,mfac,0.441545,0
 字帖,jdlr,0.441545,0
-尤爲重要,iubfhgmv,0.441545,0
+尤為重要,iuifhgmv,0.441545,0
 忘掉,ypqj,0.441545,0
 撫摸,qfqk,0.441545,0
 段時間,heaiaa,0.441545,0
@@ -17929,13 +17872,13 @@ phrase,quick_code,freq,hk_core
 就自己,yuhusu,0.441326,0
 恆定,pmjo,0.441326,0
 春風,qahi,0.441326,0
-時間爲,aiaabf,0.441326,0
+時間為,aiaaif,0.441326,0
 橙子,dtnd,0.441326,0
 表哥,qvmr,0.441326,0
 軍閥,bjai,0.441326,0
 追擊,yrjq,0.441326,0
 五千,mmhj,0.441289,0
-兩臺,mogg,0.441289,0
+兩台,moir,0.441289,0
 別人家,rnojo,0.441289,0
 張靚穎,nvqupc,0.441289,0
 是否符合,aomrhior,0.441289,0
@@ -17954,7 +17897,6 @@ phrase,quick_code,freq,hk_core
 合法性,oreipm,0.441252,0
 回血,wrht,0.441252,0
 權利人,dghno,0.441252,0
-纔對,viti,0.441252,0
 一下午,mmyoj,0.441216,0
 不和,mfhr,0.441216,0
 傳入,oioh,0.441216,0
@@ -18043,7 +17985,7 @@ phrase,quick_code,freq,hk_core
 去寫,gijf,0.440885,0
 合金,orc,0.440885,0
 會隨着,oanbtu,0.440885,0
-爲何要,bformv,0.440885,0
+為何要,iformv,0.440885,0
 班子,mgnd,0.440885,0
 盲人,yuo,0.440885,0
 紅茶,vmtd,0.440885,0
@@ -18173,7 +18115,7 @@ phrase,quick_code,freq,hk_core
 脫髮,buse,0.440441,0
 請參考,ybihjs,0.440441,0
 隨處可見,nbynmrbu,0.440441,0
-不作爲,mfosbf,0.440403,0
+不作為,mfosif,0.440403,0
 乞丐,onms,0.440403,0
 但仍然,omosbf,0.440403,0
 你我,ofhi,0.440403,0
@@ -18207,7 +18149,7 @@ phrase,quick_code,freq,hk_core
 純真,vujc,0.440329,0
 裂變,mvvk,0.440329,0
 開庭,atig,0.440329,0
-喫飽,rkou,0.440292,0
+吃飽,rnou,0.440292,0
 市場部,ybghyl,0.440292,0
 張開,nvat,0.440292,0
 悠閒,opab,0.440292,0
@@ -18229,7 +18171,6 @@ phrase,quick_code,freq,hk_core
 泰坦,qegm,0.440254,0
 直接給,jmqvvr,0.440254,0
 練習題,vfsaac,0.440254,0
-老板娘,jpdevv,0.440254,0
 老闆娘,jparvv,0.440254,0
 能起到,ipgumn,0.440254,0
 藍籌,tthi,0.440254,0
@@ -18361,7 +18302,7 @@ phrase,quick_code,freq,hk_core
 犧牲了,hshmnn,0.439881,0
 聯名,stnr,0.439881,0
 職員,sarc,0.439881,0
-衆生,hohm,0.439881,0
+眾生,wohm,0.439881,0
 遺囑,ycri,0.439881,0
 鉛筆,crhq,0.439881,0
 不過來,mfyrdo,0.439843,0
@@ -18453,7 +18394,7 @@ phrase,quick_code,freq,hk_core
 亞軍,mmbj,0.439618,0
 只可惜,rcmrpa,0.439618,0
 叫你,rlof,0.439618,0
-可以成爲,mrvoisbf,0.439618,0
+可以成為,mrvoisif,0.439618,0
 國旗,wmyc,0.439618,0
 廣電,icmu,0.439618,0
 忽略不計,ppwrmfyj,0.439618,0
@@ -18495,7 +18436,7 @@ phrase,quick_code,freq,hk_core
 那一,slm,0.439542,0
 傳授,oiqe,0.439504,0
 子弟,ndch,0.439504,0
-所作所爲,hloshlbf,0.439504,0
+所作所為,hloshlif,0.439504,0
 機動,dihs,0.439504,0
 水星,eam,0.439504,0
 濃眉,evau,0.439504,0
@@ -18604,7 +18545,7 @@ phrase,quick_code,freq,hk_core
 工商銀行,mmyrcvhn,0.439126,0
 帶個,kbor,0.439126,0
 砍了,monn,0.439126,0
-菸草,tytj,0.439126,0
+煙草,fgtj,0.439126,0
 蘭州大學,twilkhd,0.439126,0
 被判,lefn,0.439126,0
 過低,yrom,0.439126,0
@@ -18687,7 +18628,7 @@ phrase,quick_code,freq,hk_core
 第一家,hhmjo,0.438783,0
 耕地,qtgd,0.438783,0
 人種,ohg,0.438745,0
-他爲,odbf,0.438745,0
+他為,odif,0.438745,0
 就只是,yurcao,0.438745,0
 幾塊錢,vigici,0.438745,0
 幾多,vini,0.438745,0
@@ -18741,7 +18682,7 @@ phrase,quick_code,freq,hk_core
 倒計時,onyjai,0.438630,0
 更全面,mkogml,0.438630,0
 水溫,eet,0.438630,0
-爲期,bftb,0.438630,0
+為期,iftb,0.438630,0
 繁忙,ofpv,0.438630,0
 這便是,yrokao,0.438630,0
 鋼材,cudh,0.438630,0
@@ -18785,7 +18726,6 @@ phrase,quick_code,freq,hk_core
 展出,svuu,0.438477,0
 爹媽,cnvf,0.438477,0
 痴迷,kryd,0.438477,0
-癡迷,koyd,0.438477,0
 虛擬世界,ymqoptwl,0.438477,0
 讓這個,yvyror,0.438477,0
 近戰,ylri,0.438477,0
@@ -18796,7 +18736,7 @@ phrase,quick_code,freq,hk_core
 堅固,sgwr,0.438438,0
 壞蛋,gvni,0.438438,0
 指教,qajk,0.438438,0
-普遍認爲,taybypbf,0.438438,0
+普遍認為,taybypif,0.438438,0
 最直觀,aejmtu,0.438438,0
 甘心,tmp,0.438438,0
 生命體,hmolbt,0.438438,0
@@ -18808,7 +18748,6 @@ phrase,quick_code,freq,hk_core
 置業,wmtd,0.438438,0
 通常在,ybfbkg,0.438438,0
 都不好,jlmfvd,0.438438,0
-酸痛,mekb,0.438438,0
 驍龍,suyp,0.438438,0
 高曉松,yraudi,0.438438,0
 中國電信,lwmmuor,0.438400,0
@@ -18861,7 +18800,7 @@ phrase,quick_code,freq,hk_core
 一年內,moqob,0.438246,0
 上行,ymhn,0.438246,0
 不自信,mfhuor,0.438246,0
-以人爲本,voobfdm,0.438246,0
+以人為本,vooifdm,0.438246,0
 只留下,rchwmy,0.438246,0
 固執,wrgi,0.438246,0
 建立起來,nqytgudo,0.438246,0
@@ -18886,7 +18825,7 @@ phrase,quick_code,freq,hk_core
 外觀設計,nytuyeyj,0.438169,0
 審理,jwmg,0.438169,0
 極差,dmtm,0.438169,0
-歸爲,hbbf,0.438169,0
+歸為,hbif,0.438169,0
 融合了,miornn,0.438169,0
 訪客,ysjr,0.438169,0
 談一談,yfmyf,0.438169,0
@@ -18929,7 +18868,7 @@ phrase,quick_code,freq,hk_core
 那麼我,sliihi,0.438053,0
 儲戶,oahs,0.438014,0
 少爺,fhcl,0.438014,0
-尤爲,iubf,0.438014,0
+尤為,iuif,0.438014,0
 救命,ikol,0.438014,0
 永遠都,ieyvjl,0.438014,0
 薩達姆,tmyqvi,0.438014,0
@@ -19072,7 +19011,7 @@ phrase,quick_code,freq,hk_core
 罵了,wfnn,0.437587,0
 負能量,ncipag,0.437587,0
 這個傢伙,yrorooof,0.437587,0
-違法行爲,yqeihnbf,0.437587,0
+違法行為,yqeihnif,0.437587,0
 急劇,npyn,0.437548,0
 愛他,beod,0.437548,0
 採訪中,qdysl,0.437548,0
@@ -19112,7 +19051,7 @@ phrase,quick_code,freq,hk_core
 註冊碼,ygbtmf,0.437470,0
 較量,jkag,0.437470,0
 辦案,yjjd,0.437470,0
-不好喫,mfvdrk,0.437431,0
+不好吃,mfvdrn,0.437431,0
 二選一,mmycm,0.437431,0
 人民日報,orpage,0.437431,0
 偶遇,obyb,0.437431,0
@@ -19131,7 +19070,7 @@ phrase,quick_code,freq,hk_core
 傳導,oiyi,0.437392,0
 只希望,rckbyg,0.437392,0
 唐僧,iroa,0.437392,0
-喫個,rkor,0.437392,0
+吃個,rnor,0.437392,0
 在現代,kgmuop,0.437392,0
 大話,kyr,0.437392,0
 心理素質,pmgqfhc,0.437392,0
@@ -19169,7 +19108,7 @@ phrase,quick_code,freq,hk_core
 飲水,ooe,0.437313,0
 高峯期,yrujtb,0.437313,0
 黑馬,wfsf,0.437313,0
-不能喫,mfiprk,0.437274,0
+不能吃,mfiprn,0.437274,0
 偏激,obek,0.437274,0
 勇敢的,nsmkhi,0.437274,0
 卻依然,clovbf,0.437274,0
@@ -19358,11 +19297,10 @@ phrase,quick_code,freq,hk_core
 學識,hdya,0.436802,0
 工作會議,mmosoayi,0.436802,0
 很不錯了,hvmfcann,0.436802,0
-愈合,opor,0.436802,0
+癒合,kpor,0.436802,0
 更準確,mkejmg,0.436802,0
 樹葉,ditd,0.436802,0
 湧現,esmu,0.436802,0
-癒合,kpor,0.436802,0
 經濟條件,vmexodoq,0.436802,0
 而她,mlvd,0.436802,0
 英俊,tkoe,0.436802,0
@@ -19380,7 +19318,7 @@ phrase,quick_code,freq,hk_core
 歷史學家,mmlkhdjo,0.436763,0
 看得出,huhiuu,0.436763,0
 話筒,yrhr,0.436763,0
-譽爲,hrbf,0.436763,0
+譽為,hrif,0.436763,0
 走過來,goyrdo,0.436763,0
 都具有,jlbckb,0.436763,0
 僅憑,omip,0.436723,0
@@ -19417,7 +19355,7 @@ phrase,quick_code,freq,hk_core
 紙巾,vplb,0.436644,0
 變壓器,vkmgrr,0.436644,0
 之大,iok,0.436605,0
-可以喫,mrvork,0.436605,0
+可以吃,mrvorn,0.436605,0
 在不,kgmf,0.436605,0
 您對,opti,0.436605,0
 接收到,qvvkmn,0.436605,0
@@ -19445,7 +19383,7 @@ phrase,quick_code,freq,hk_core
 點數,wrlk,0.436565,0
 鼻涕,hleh,0.436565,0
 國有資產,wmkbicym,0.436525,0
-將爲,vibf,0.436525,0
+將為,viif,0.436525,0
 愛她,bevd,0.436525,0
 換新,qkyl,0.436525,0
 法寶,eijc,0.436525,0
@@ -19587,7 +19525,7 @@ phrase,quick_code,freq,hk_core
 頭的,mchi,0.436167,0
 上不了,ymmfnn,0.436127,0
 再回來,mbwrdo,0.436127,0
-戒菸,itty,0.436127,0
+戒煙,itfg,0.436127,0
 時裝,aivv,0.436127,0
 獨行俠,kihnoo,0.436127,0
 他甚至,odtvmg,0.436087,0
@@ -19601,7 +19539,7 @@ phrase,quick_code,freq,hk_core
 然後說,bfheyu,0.436087,0
 燈塔,ftgr,0.436087,0
 爬到,humn,0.436087,0
-爲了滿足,bfnnebro,0.436087,0
+為了滿足,ifnnebro,0.436087,0
 縣長,bfsv,0.436087,0
 草根,tjdv,0.436087,0
 莊子,tgnd,0.436087,0
@@ -19614,12 +19552,12 @@ phrase,quick_code,freq,hk_core
 沒有多少,eekbnifh,0.436047,0
 深大,edk,0.436047,0
 焦慮的,ofyphi,0.436047,0
-爲生,bfhm,0.436047,0
+為生,ifhm,0.436047,0
 相符,duhi,0.436047,0
 看來是,hudoao,0.436047,0
 真的很好,jchihvvd,0.436047,0
 英文版,tkykle,0.436047,0
-要喫,mvrk,0.436047,0
+要吃,mvrn,0.436047,0
 讓客戶,yvjrhs,0.436047,0
 贊助商,hcbsyr,0.436047,0
 轉貼,jibr,0.436047,0
@@ -19701,7 +19639,7 @@ phrase,quick_code,freq,hk_core
 公知,cior,0.435767,0
 厚實,mdjc,0.435767,0
 啊什麼,rrojii,0.435767,0
-在衆多,kghoni,0.435767,0
+在眾多,kgwoni,0.435767,0
 攻防,mkns,0.435767,0
 生產經營,hmymvmfr,0.435767,0
 生產能力,hmymipks,0.435767,0
@@ -19719,10 +19657,8 @@ phrase,quick_code,freq,hk_core
 反正是,hemmao,0.435726,0
 哪來,rldo,0.435726,0
 坐等,oghi,0.435726,0
-挨打,qkqn,0.435726,0
 捱打,qgqn,0.435726,0
 方位,ysot,0.435726,0
-昵稱,aphb,0.435726,0
 無望,ofyg,0.435726,0
 走的是,gohiao,0.435726,0
 起草,gutj,0.435726,0
@@ -19818,7 +19754,7 @@ phrase,quick_code,freq,hk_core
 非線性,lyvepm,0.435485,0
 高盛,yrit,0.435485,0
 一記,myu,0.435444,0
-不能因爲,mfipwkbf,0.435444,0
+不能因為,mfipwkif,0.435444,0
 也不難,pdmftg,0.435444,0
 伊布,okkb,0.435444,0
 後門,hean,0.435444,0
@@ -19855,7 +19791,7 @@ phrase,quick_code,freq,hk_core
 家暴,joae,0.435363,0
 巴塞羅那,aujgwgsl,0.435363,0
 帝國主義,ybwmygti,0.435363,0
-征戰,hmri,0.435363,0
+徵戰,hkri,0.435363,0
 怎麼啦,opiirt,0.435363,0
 捷克,qoju,0.435363,0
 明智,aboa,0.435363,0
@@ -19876,7 +19812,6 @@ phrase,quick_code,freq,hk_core
 國情,wmpb,0.435323,0
 她又,vdnk,0.435323,0
 搶佔,qror,0.435323,0
-搶占,qryr,0.435323,0
 比拼,ppqt,0.435323,0
 礦泉水,mchee,0.435323,0
 管理制度,hrmghnie,0.435323,0
@@ -19926,7 +19861,6 @@ phrase,quick_code,freq,hk_core
 抽到,qwmn,0.435201,0
 皺紋,pevk,0.435201,0
 粉的,fhhi,0.435201,0
-纔開始,viatvr,0.435201,0
 遷徙,yuho,0.435201,0
 龍頭企業,ypmcomtd,0.435201,0
 三項,mmmc,0.435161,0
@@ -19934,11 +19868,11 @@ phrase,quick_code,freq,hk_core
 哥大,mrk,0.435161,0
 感染者,ipedja,0.435161,0
 曾有,cakb,0.435161,0
-最好喫,aevdrk,0.435161,0
+最好吃,aevdrn,0.435161,0
 無從,ofho,0.435161,0
 瓜分,hoch,0.435161,0
 被困,lewd,0.435161,0
-覈准,mkig,0.435161,0
+核准,doig,0.435161,0
 費力,lcks,0.435161,0
 較小的,jknchi,0.435161,0
 項目組,mcbuvm,0.435161,0
@@ -19975,7 +19909,7 @@ phrase,quick_code,freq,hk_core
 第二屆,hhmmsg,0.435080,0
 絲襪,vfli,0.435080,0
 花心,tpp,0.435080,0
-茅臺酒,thggew,0.435080,0
+茅台酒,thirew,0.435080,0
 院子,nund,0.435080,0
 隔壁的,nbsghi,0.435080,0
 共用,tcbq,0.435039,0
@@ -20038,7 +19972,7 @@ phrase,quick_code,freq,hk_core
 轉運,jiyj,0.434917,0
 長焦,svof,0.434917,0
 不理想,mfmgdp,0.434876,0
-也成爲,pdisbf,0.434876,0
+也成為,pdisif,0.434876,0
 也用,pdbq,0.434876,0
 充電寶,yumujc,0.434876,0
 妹紙,vdvp,0.434876,0
@@ -20137,7 +20071,7 @@ phrase,quick_code,freq,hk_core
 單說,rjyu,0.434590,0
 新能源車,ylipefjj,0.434590,0
 橫跨,dcrs,0.434590,0
-爲王,bfmg,0.434590,0
+為王,ifmg,0.434590,0
 瘦身,kehh,0.434590,0
 皮鞋,detg,0.434590,0
 能買,ipwc,0.434590,0
@@ -20193,7 +20127,7 @@ phrase,quick_code,freq,hk_core
 刷屏,snst,0.434426,0
 叫法,rlei,0.434426,0
 客串,jrll,0.434426,0
-後纔,hevi,0.434426,0
+後才,hedh,0.434426,0
 念念不忘,opopmfyp,0.434426,0
 支撐的,jeqhhi,0.434426,0
 放不下,ykmfmy,0.434426,0
@@ -20222,7 +20156,6 @@ phrase,quick_code,freq,hk_core
 點擊查看,wrjqdmhu,0.434385,0
 點滴,wreb,0.434385,0
 中台,lir,0.434343,0
-中臺,lgg,0.434343,0
 中颱,lhr,0.434343,0
 也快,pdpk,0.434343,0
 停不下來,onmfmydo,0.434343,0
@@ -20247,7 +20180,7 @@ phrase,quick_code,freq,hk_core
 戴維斯,jcvgtl,0.434302,0
 新冠疫情,ylbikepb,0.434302,0
 方向是,yshrao,0.434302,0
-病竈,kbju,0.434302,0
+病灶,kbfg,0.434302,0
 到這,mnyr,0.434261,0
 建構,nqdb,0.434261,0
 您有,opkb,0.434261,0
@@ -20319,12 +20252,12 @@ phrase,quick_code,freq,hk_core
 無與倫比,ofhcobpp,0.434055,0
 等工作,himmos,0.434055,0
 聯考,stjs,0.434055,0
-臺服,ggbe,0.434055,0
+台服,irbe,0.434055,0
 註冊公司,ygbtcisr,0.434055,0
-長征,svhm,0.434055,0
+長徵,svhk,0.434055,0
 九個,knor,0.434013,0
 去搞,giqb,0.434013,0
-只爲了,rcbfnn,0.434013,0
+只為了,rcifnn,0.434013,0
 境地,gugd,0.434013,0
 尾部,suyl,0.434013,0
 忠臣,lpsl,0.434013,0
@@ -20335,7 +20268,7 @@ phrase,quick_code,freq,hk_core
 稱其,hbtc,0.434013,0
 第三者,hhmmja,0.434013,0
 聲樂,gjvd,0.434013,0
-被認爲是,leypbfao,0.434013,0
+被認為是,leypifao,0.434013,0
 要自己,mvhusu,0.434013,0
 遊戲設計,ydyiyeyj,0.434013,0
 量化交易,agopykah,0.434013,0
@@ -20452,7 +20385,7 @@ phrase,quick_code,freq,hk_core
 中金,lc,0.433640,0
 他的名字,odhinrjd,0.433640,0
 升溫,htet,0.433640,0
-喫辣,rkyl,0.433640,0
+吃辣,rnyl,0.433640,0
 弦樂,nivd,0.433640,0
 很糟糕,hvfaff,0.433640,0
 曙光,aafu,0.433640,0
@@ -20536,7 +20469,7 @@ phrase,quick_code,freq,hk_core
 我讀,hiyc,0.433431,0
 收音機,vkyadi,0.433431,0
 有貨,kboc,0.433431,0
-爲中國,bflwm,0.433431,0
+為中國,iflwm,0.433431,0
 股本,bedm,0.433431,0
 興業,hctd,0.433431,0
 過我,yrhi,0.433431,0
@@ -20555,9 +20488,8 @@ phrase,quick_code,freq,hk_core
 服裝設計,bevvyeyj,0.433389,0
 硬着頭皮,mktumcde,0.433389,0
 等待着,hihitu,0.433389,0
-設爲,yebf,0.433389,0
+設為,yeif,0.433389,0
 針灸,cjnf,0.433389,0
-鍼灸,crnf,0.433389,0
 之勢,iogs,0.433348,0
 之星,ioam,0.433348,0
 全國人民,ogwmorp,0.433348,0
@@ -20570,7 +20502,7 @@ phrase,quick_code,freq,hk_core
 我最愛,hiaebe,0.433348,0
 有一家,kbmjo,0.433348,0
 樹脂,diba,0.433348,0
-溼地,eggd,0.433348,0
+濕地,efgd,0.433348,0
 球體,mebt,0.433348,0
 考究,jsjn,0.433348,0
 阿拉,nrqt,0.433348,0
@@ -20699,7 +20631,7 @@ phrase,quick_code,freq,hk_core
 驚醒,tfmm,0.433054,0
 鬥魚,lnnf,0.433054,0
 不經意,mfvmyp,0.433012,0
-團伙,wiof,0.433012,0
+團夥,wiwn,0.433012,0
 奧尼爾,hkspmk,0.433012,0
 將我,vihi,0.433012,0
 我就要,hiyumv,0.433012,0
@@ -20768,7 +20700,7 @@ phrase,quick_code,freq,hk_core
 交待,ykhi,0.432801,0
 孟子,ntnd,0.432801,0
 張柏芝,nvdato,0.432801,0
-成爲一種,isbfmhg,0.432801,0
+成為一種,isifmhg,0.432801,0
 控制力,qmhnks,0.432801,0
 新秀,ylhs,0.432801,0
 方子,ysnd,0.432801,0
@@ -20859,13 +20791,13 @@ phrase,quick_code,freq,hk_core
 學弟,hdch,0.432547,0
 工業區,mmtdsr,0.432547,0
 擬合,qoor,0.432547,0
-爲基礎的,bftgmohi,0.432547,0
+為基礎的,iftgmohi,0.432547,0
 總價,vpoc,0.432547,0
 能贏,ipyc,0.432547,0
 自取,huse,0.432547,0
 九點,knwr,0.432505,0
 前前後後,tntnhehe,0.432505,0
-喫喝,rkrv,0.432505,0
+吃喝,rnrv,0.432505,0
 大老闆,kjpar,0.432505,0
 應着,iptu,0.432505,0
 我感到,hiipmn,0.432505,0
@@ -20874,7 +20806,7 @@ phrase,quick_code,freq,hk_core
 狙擊,kmjq,0.432505,0
 緬甸,vlpw,0.432505,0
 腦力,bwks,0.432505,0
-覈查,mkdm,0.432505,0
+核查,dodm,0.432505,0
 跟貼,rvbr,0.432505,0
 開一個,atmor,0.432505,0
 風度,hiie,0.432505,0
@@ -20909,7 +20841,6 @@ phrase,quick_code,freq,hk_core
 有本事,kbdmjn,0.432420,0
 有較大,kbjkk,0.432420,0
 村上,diym,0.432420,0
-白痴,hakr,0.432420,0
 看着她,hutuvd,0.432420,0
 西邊,mwys,0.432420,0
 這招,yrqr,0.432420,0
@@ -20976,7 +20907,6 @@ phrase,quick_code,freq,hk_core
 出征,uuhm,0.432250,0
 前去,tngi,0.432250,0
 外邊,nyys,0.432250,0
-大伙,kof,0.432250,0
 大夥,kwn,0.432250,0
 安裝了,jvvvnn,0.432250,0
 山路,urr,0.432250,0
@@ -21014,7 +20944,7 @@ phrase,quick_code,freq,hk_core
 一塊兒,mgihu,0.432164,0
 光顧,fuhc,0.432164,0
 動向,hshr,0.432164,0
-專爲,jibf,0.432164,0
+專為,jiif,0.432164,0
 德雲社,hpmiig,0.432164,0
 打印出來,qnhluudo,0.432164,0
 書院,lanu,0.432164,0
@@ -21025,7 +20955,7 @@ phrase,quick_code,freq,hk_core
 記者採訪,yujaqdys,0.432164,0
 造詣,yrya,0.432164,0
 降低成本,nqomisdm,0.432164,0
-但我認爲,omhiypbf,0.432122,0
+但我認為,omhiypif,0.432122,0
 像這樣,ooyrde,0.432122,0
 博文,jiyk,0.432122,0
 奢華,katj,0.432122,0
@@ -21036,7 +20966,6 @@ phrase,quick_code,freq,hk_core
 數理,lkmg,0.432122,0
 爬上,huym,0.432122,0
 網銀,vvcv,0.432122,0
-纔算,viht,0.432122,0
 羅生門,wghman,0.432122,0
 考慮過,jsypyr,0.432122,0
 講一個,ybmor,0.432122,0
@@ -21048,7 +20977,7 @@ phrase,quick_code,freq,hk_core
 很不好,hvmfvd,0.432079,0
 是你自己,aoofhusu,0.432079,0
 時要,aimv,0.432079,0
-爲您提供,bfopqooc,0.432079,0
+為您提供,ifopqooc,0.432079,0
 甚至能,tvmgip,0.432079,0
 看成是,huisao,0.432079,0
 緊繃,sfvb,0.432079,0
@@ -21106,7 +21035,6 @@ phrase,quick_code,freq,hk_core
 隔了,nbnn,0.431951,0
 剛到,bnmn,0.431908,0
 勸你,tsof,0.431908,0
-合伙,orof,0.431908,0
 合夥,orwn,0.431908,0
 塞進,jgyg,0.431908,0
 外商,nyyr,0.431908,0
@@ -21121,7 +21049,7 @@ phrase,quick_code,freq,hk_core
 枷鎖,drcc,0.431908,0
 歐式,soim,0.431908,0
 流媒體,euvdbt,0.431908,0
-港臺,eugg,0.431908,0
+港台,euir,0.431908,0
 熱銷,gfcb,0.431908,0
 第三屆,hhmmsg,0.431908,0
 色素,nuqf,0.431908,0
@@ -21158,7 +21086,6 @@ phrase,quick_code,freq,hk_core
 我知道你,hioryuof,0.431822,0
 烘烤,fcfs,0.431822,0
 紫光,yffu,0.431822,0
-纔能夠,viipnr,0.431822,0
 行的,hnhi,0.431822,0
 這些書,yrymla,0.431822,0
 領導班子,ocyimgnd,0.431822,0
@@ -21360,7 +21287,7 @@ phrase,quick_code,freq,hk_core
 不俗,mfor,0.431261,0
 你最,ofae,0.431261,0
 信息中心,orhplp,0.431261,0
-因爲他是,wkbfodao,0.431261,0
+因為他是,wkifodao,0.431261,0
 如上,vrym,0.431261,0
 小動物,nchshh,0.431261,0
 我還真,hiyvjc,0.431261,0
@@ -21541,7 +21468,7 @@ phrase,quick_code,freq,hk_core
 博士後,jijmhe,0.430783,0
 合着,ortu,0.430783,0
 嘮叨,rsrh,0.430783,0
-圖爲,wwbf,0.430783,0
+圖為,wwif,0.430783,0
 峽谷,uocr,0.430783,0
 打底,qnim,0.430783,0
 批次,qpio,0.430783,0
@@ -21559,7 +21486,7 @@ phrase,quick_code,freq,hk_core
 中旬,lpa,0.430739,0
 南航,jjhn,0.430739,0
 台州,iril,0.430739,0
-喫法,rkei,0.430739,0
+吃法,rnei,0.430739,0
 嫵媚,vfvu,0.430739,0
 幹到,jjmn,0.430739,0
 廝殺,ilke,0.430739,0
@@ -21612,7 +21539,7 @@ phrase,quick_code,freq,hk_core
 媽咪,vfrd,0.430608,0
 就不好,yumfvd,0.430608,0
 建設部,nqyeyl,0.430608,0
-成爲中國,isbflwm,0.430608,0
+成為中國,isiflwm,0.430608,0
 我好,hivd,0.430608,0
 手淫,qeg,0.430608,0
 捐助,qbbs,0.430608,0
@@ -21639,7 +21566,7 @@ phrase,quick_code,freq,hk_core
 江東,emdw,0.430564,0
 無意中,ofypl,0.430564,0
 煽情,fmpb,0.430564,0
-爲企業,bfomtd,0.430564,0
+為企業,ifomtd,0.430564,0
 白板,hade,0.430564,0
 而過,mlyr,0.430564,0
 輸贏,jnyc,0.430564,0
@@ -21732,7 +21659,7 @@ phrase,quick_code,freq,hk_core
 異常的,wcfbhi,0.430300,0
 穩重,hphg,0.430300,0
 綠地,vegd,0.430300,0
-纔是真正,viaojcmm,0.430300,0
+才是真正,dhaojcmm,0.430300,0
 角度上,ngieym,0.430300,0
 買房子,wchsnd,0.430300,0
 上到,ymmn,0.430256,0
@@ -21765,7 +21692,7 @@ phrase,quick_code,freq,hk_core
 憐憫,pqpk,0.430212,0
 提早,qoaj,0.430212,0
 有前途,kbtnyd,0.430212,0
-沒喫,eerk,0.430212,0
+沒吃,eern,0.430212,0
 灑脫,epbu,0.430212,0
 看劇,huyn,0.430212,0
 礦山,mcu,0.430212,0
@@ -21785,7 +21712,7 @@ phrase,quick_code,freq,hk_core
 無可,ofmr,0.430168,0
 無法改變,ofeiskvk,0.430168,0
 男票,wsmf,0.430168,0
-臺灣人,ggeno,0.430168,0
+台灣人,ireno,0.430168,0
 英語老師,tkyrjphb,0.430168,0
 西南大學,mwjjkhd,0.430168,0
 語錄,yrce,0.430168,0
@@ -21848,14 +21775,14 @@ phrase,quick_code,freq,hk_core
 神色,ilnu,0.430035,0
 給分,vrch,0.430035,0
 經管,vmhr,0.430035,0
-而是爲了,mlaobfnn,0.430035,0
+而是為了,mlaoifnn,0.430035,0
 衚衕,hnhn,0.430035,0
 重金屬,hgcsi,0.430035,0
 開始用,atvrbq,0.430035,0
 九年,knoq,0.429991,0
 史實,lkjc,0.429991,0
 哪些問題,rlymarac,0.429991,0
-喫多了,rkninn,0.429991,0
+吃多了,rnninn,0.429991,0
 嗤之以鼻,riiovohl,0.429991,0
 基礎課,tgmoyd,0.429991,0
 幾套,viki,0.429991,0
@@ -21943,14 +21870,14 @@ phrase,quick_code,freq,hk_core
 晴天,abmk,0.429814,0
 柳州,dlil,0.429814,0
 沒死,eemp,0.429814,0
-溼度,egie,0.429814,0
+濕度,efie,0.429814,0
 看下來,humydo,0.429814,0
 苦味,trrd,0.429814,0
 英法,tkei,0.429814,0
 責任制,qcoghn,0.429814,0
 送人,yko,0.429814,0
 這可,yrmr,0.429814,0
-都爲,jlbf,0.429814,0
+都為,jlif,0.429814,0
 鋼筋,cuhs,0.429814,0
 黨支部,ffjeyl,0.429814,0
 你卻,ofcl,0.429769,0
@@ -22019,7 +21946,7 @@ phrase,quick_code,freq,hk_core
 李斯,ddtl,0.429636,0
 構想,dbdp,0.429636,0
 設計思路,yeyjwprr,0.429636,0
-踊躍,rbrg,0.429636,0
+踴躍,rsrg,0.429636,0
 通訊錄,ybyjce,0.429636,0
 關上,atym,0.429636,0
 隨身攜帶,nbhhqbkb,0.429636,0
@@ -22183,7 +22110,7 @@ phrase,quick_code,freq,hk_core
 短褲,otlj,0.429234,0
 糖分,frch,0.429234,0
 葫蘆,tbtt,0.429234,0
-飯喫,oerk,0.429234,0
+飯吃,oern,0.429234,0
 你有什麼,ofkbojii,0.429189,0
 兩樣,mode,0.429189,0
 出聲,uugj,0.429189,0
@@ -22205,7 +22132,7 @@ phrase,quick_code,freq,hk_core
 交給了,ykvrnn,0.429144,0
 人身,ohh,0.429144,0
 又回到,nkwrmn,0.429144,0
-喫醋,rkma,0.429144,0
+吃醋,rnma,0.429144,0
 國航,wmhn,0.429144,0
 收費標準,vklcdfej,0.429144,0
 新功能,ylmsip,0.429144,0
@@ -22222,7 +22149,7 @@ phrase,quick_code,freq,hk_core
 一夜之間,mykioaa,0.429099,0
 一直處於,mjmynyy,0.429099,0
 問問題,ararac,0.429099,0
-喫瓜,rkho,0.429099,0
+吃瓜,rnho,0.429099,0
 嘿嘿嘿,rfrfrf,0.429099,0
 弄明白,mtabha,0.429099,0
 後置,hewm,0.429099,0
@@ -22292,7 +22219,7 @@ phrase,quick_code,freq,hk_core
 高樓,yrdv,0.429009,0
 不足之處,mfroioyn,0.428964,0
 南安普頓,jjjvtapc,0.428964,0
-可以認爲,mrvoypbf,0.428964,0
+可以認為,mrvoypif,0.428964,0
 墜落,ngtr,0.428964,0
 天龍,mkyp,0.428964,0
 導論,yiyb,0.428964,0
@@ -22350,7 +22277,7 @@ phrase,quick_code,freq,hk_core
 全然,ogbf,0.428829,0
 凳子,nnnd,0.428829,0
 太大的,kikhi,0.428829,0
-定爲,jobf,0.428829,0
+定為,joif,0.428829,0
 展廳,svip,0.428829,0
 徐靜蕾,hdqdtw,0.428829,0
 收貨,vkoc,0.428829,0
@@ -22376,7 +22303,7 @@ phrase,quick_code,freq,hk_core
 野豬,wnma,0.428784,0
 順德,lchp,0.428784,0
 一曲,mtw,0.428739,0
-只喫,rcrk,0.428739,0
+只吃,rcrn,0.428739,0
 多想,nidp,0.428739,0
 大餐,kyv,0.428739,0
 季後賽,hdhejc,0.428739,0
@@ -22536,7 +22463,7 @@ phrase,quick_code,freq,hk_core
 馬自達,sfhuyq,0.428467,0
 體操,btqd,0.428467,0
 一頭霧水,mmcmse,0.428421,0
-不爲人知,mfbfoor,0.428421,0
+不為人知,mfifoor,0.428421,0
 募集,tsod,0.428421,0
 只記得,rcyuhi,0.428421,0
 喜歡上了,grtoymnn,0.428421,0
@@ -22588,8 +22515,8 @@ phrase,quick_code,freq,hk_core
 首創,tuon,0.428331,0
 一兩個月,mmoorb,0.428285,0
 人去,ogi,0.428285,0
-喫火鍋,rkfcr,0.428285,0
-喫灰,rkkf,0.428285,0
+吃火鍋,rnfcr,0.428285,0
+吃灰,rnkf,0.428285,0
 在後期,kghetb,0.428285,0
 我就把,hiyuqu,0.428285,0
 教育網,jkybvv,0.428285,0
@@ -22634,14 +22561,13 @@ phrase,quick_code,freq,hk_core
 想哭,dprk,0.428194,0
 時時刻刻,aiaiynyn,0.428194,0
 本品,dmrr,0.428194,0
-注解,egnq,0.428194,0
+註解,ygnq,0.428194,0
 濰坊,eggs,0.428194,0
 生豬,hmma,0.428194,0
 直轄市,jmjryb,0.428194,0
 紅糖,vmfr,0.428194,0
 義務教育,tinsjkyb,0.428194,0
-臺式,ggim,0.428194,0
-註解,ygnq,0.428194,0
+台式,irim,0.428194,0
 身軀,hhhr,0.428194,0
 這一波,yrmee,0.428194,0
 遺留,ychw,0.428194,0
@@ -22683,7 +22609,7 @@ phrase,quick_code,freq,hk_core
 追到,yrmn,0.428103,0
 通常都是,ybfbjlao,0.428103,0
 進行學習,yghnhdsa,0.428103,0
-那臺,slgg,0.428103,0
+那台,slir,0.428103,0
 隱形眼鏡,npmhbvcu,0.428103,0
 低估了,omornn,0.428057,0
 在文章,kgykyj,0.428057,0
@@ -22691,11 +22617,10 @@ phrase,quick_code,freq,hk_core
 導數,yilk,0.428057,0
 幾秒鐘,vihhcg,0.428057,0
 必須先,phhchu,0.428057,0
-方鍼,yscr,0.428057,0
 更不要,mkmfmv,0.428057,0
 演進,ecyg,0.428057,0
 繞着,vutu,0.428057,0
-要爲,mvbf,0.428057,0
+要為,mvif,0.428057,0
 談及,yfne,0.428057,0
 跑出來,ruuudo,0.428057,0
 這幾,yrvi,0.428057,0
@@ -22962,7 +22887,6 @@ phrase,quick_code,freq,hk_core
 熱帶,gfkb,0.427413,0
 發展史,nesvlk,0.427413,0
 祖父,imck,0.427413,0
-纔會有,vioakb,0.427413,0
 美國總統,tkwmvpvu,0.427413,0
 賄賂,bbbr,0.427413,0
 閉嘴,ahrb,0.427413,0
@@ -23009,7 +22933,6 @@ phrase,quick_code,freq,hk_core
 冷清,iieb,0.427274,0
 北航,lphn,0.427274,0
 奇異,krwc,0.427274,0
-怎樣纔能,opdeviip,0.427274,0
 情況如何,pbeuvror,0.427274,0
 打亂,qnbu,0.427274,0
 教學視頻,jkhdiuyc,0.427274,0
@@ -23026,9 +22949,9 @@ phrase,quick_code,freq,hk_core
 首款,tugo,0.427274,0
 上分,ymch,0.427228,0
 上證,ymyt,0.427228,0
-並爲,tcbf,0.427228,0
+並為,tcif,0.427228,0
 二十多,mmjni,0.427228,0
-併爲,otbf,0.427228,0
+併為,otif,0.427228,0
 反映的,heakhi,0.427228,0
 嘈雜,rayg,0.427228,0
 導員,yirc,0.427228,0
@@ -23170,7 +23093,7 @@ phrase,quick_code,freq,hk_core
 攻擊的,mkjqhi,0.426949,0
 榜首,dstu,0.426949,0
 漂泊,efea,0.426949,0
-爲本,bfdm,0.426949,0
+為本,ifdm,0.426949,0
 直屬,jmsi,0.426949,0
 睡到,bmmn,0.426949,0
 穀物,gehh,0.426949,0
@@ -23220,14 +23143,14 @@ phrase,quick_code,freq,hk_core
 降級,nqve,0.426856,0
 頭寸,mcdi,0.426856,0
 一本正經,mdmmmvm,0.426809,0
-主要爲,ygmvbf,0.426809,0
+主要為,ygmvif,0.426809,0
 共產黨員,tcymffrc,0.426809,0
 受影響,beahva,0.426809,0
-喫好,rkvd,0.426809,0
+吃好,rnvd,0.426809,0
 好難,vdtg,0.426809,0
 幹事,jjjn,0.426809,0
 等效,hiyk,0.426809,0
-萬臺,tbgg,0.426809,0
+萬台,tbir,0.426809,0
 變種,vkhg,0.426809,0
 那這,slyr,0.426809,0
 配備了,muobnn,0.426809,0
@@ -23314,7 +23237,7 @@ phrase,quick_code,freq,hk_core
 兩百,moma,0.426575,0
 割肉,jnoo,0.426575,0
 勝算,bsht,0.426575,0
-喫苦,rktr,0.426575,0
+吃苦,rntr,0.426575,0
 就在這裏,yukgyryv,0.426575,0
 強迫自己,niyahusu,0.426575,0
 救濟,ikex,0.426575,0
@@ -23322,7 +23245,7 @@ phrase,quick_code,freq,hk_core
 污衊,eshi,0.426575,0
 炸藥,fstd,0.426575,0
 炸裂,fsmv,0.426575,0
-爲了能,bfnnip,0.426575,0
+為了能,ifnnip,0.426575,0
 產後,ymhe,0.426575,0
 看得到,huhimn,0.426575,0
 答題卡,hracyy,0.426575,0
@@ -23474,7 +23397,7 @@ phrase,quick_code,freq,hk_core
 玩弄,mumt,0.426294,0
 移動通信,hnhsybor,0.426294,0
 踢出,rhuu,0.426294,0
-難喫,tgrk,0.426294,0
+難吃,tgrn,0.426294,0
 麥芽,jeth,0.426294,0
 五子棋,mmnddc,0.426246,0
 你到底,ofmnim,0.426246,0
@@ -23539,7 +23462,7 @@ phrase,quick_code,freq,hk_core
 產品價格,ymrrocdr,0.426152,0
 番禺,hwwi,0.426152,0
 租車,hmjj,0.426152,0
-臺獨,ggki,0.426152,0
+台獨,irki,0.426152,0
 誕生於,ymhmyy,0.426152,0
 長三角,svmmng,0.426152,0
 風貌,hibu,0.426152,0
@@ -23720,13 +23643,13 @@ phrase,quick_code,freq,hk_core
 防控,nsqm,0.425773,0
 震驚了,mvtfnn,0.425773,0
 項目是,mcbuao,0.425773,0
-交易平臺,ykahmjgg,0.425726,0
+交易平台,ykahmjir,0.425726,0
 公道,ciyu,0.425726,0
 名錄,nrce,0.425726,0
 小雞,ncbg,0.425726,0
 就看你,yuhuof,0.425726,0
 想看看,dphuhu,0.425726,0
-我爲,hibf,0.425726,0
+我為,hiif,0.425726,0
 有點大,kbwrk,0.425726,0
 校驗,dkso,0.425726,0
 水產,eym,0.425726,0
@@ -23734,7 +23657,7 @@ phrase,quick_code,freq,hk_core
 游泳池,edeeed,0.425726,0
 疤痕,kukv,0.425726,0
 站了,yrnn,0.425726,0
-習以爲常,savobffb,0.425726,0
+習以為常,savoiffb,0.425726,0
 膽固醇,brwrmd,0.425726,0
 華南虎,tjjjyn,0.425726,0
 裸奔,ldkt,0.425726,0
@@ -23756,7 +23679,7 @@ phrase,quick_code,freq,hk_core
 大敗,kbk,0.425678,0
 我看你,hihuof,0.425678,0
 接班人,qvmgo,0.425678,0
-更爲重要,mkbfhgmv,0.425678,0
+更為重要,mkifhgmv,0.425678,0
 林志玲,ddgpmi,0.425678,0
 洗面奶,eumlvs,0.425678,0
 牽引,yqnl,0.425678,0
@@ -23900,7 +23823,6 @@ phrase,quick_code,freq,hk_core
 如需,vrml,0.425392,0
 幣圈,fbwu,0.425392,0
 從你,hoof,0.425392,0
-朴素,dyqf,0.425392,0
 淄博,ewji,0.425392,0
 無形中,ofmhl,0.425392,0
 給各位,vrhrot,0.425392,0
@@ -23928,7 +23850,6 @@ phrase,quick_code,freq,hk_core
 那頭,slmc,0.425344,0
 醫護人員,swyeorc,0.425344,0
 霸王別姬,mbmgrnvl,0.425344,0
-香煙,hafg,0.425344,0
 一覽,msu,0.425296,0
 不能有,mfipkb,0.425296,0
 不跟,mfrv,0.425296,0
@@ -23970,7 +23891,7 @@ phrase,quick_code,freq,hk_core
 有勇氣,kbnsod,0.425200,0
 消退,ebyv,0.425200,0
 清淨,ebed,0.425200,0
-爲了不,bfnnmf,0.425200,0
+為了不,ifnnmf,0.425200,0
 節前,hltn,0.425200,0
 輸球,jnme,0.425200,0
 不喝,mfrv,0.425152,0
@@ -24021,14 +23942,13 @@ phrase,quick_code,freq,hk_core
 多分,nich,0.425056,0
 夜空,ykjm,0.425056,0
 大字,kjd,0.425056,0
-大爲,kbf,0.425056,0
+大為,kif,0.425056,0
 寫下了,jfmynn,0.425056,0
 廣泛應用,iceoipbq,0.425056,0
 所看到,hlhumn,0.425056,0
 樂譜,vdya,0.425056,0
 比上,ppym,0.425056,0
 濱海,ecey,0.425056,0
-纔叫,virl,0.425056,0
 華山,tju,0.425056,0
 辭職了,bjsann,0.425056,0
 陳年,nwoq,0.425056,0
@@ -24384,7 +24304,7 @@ phrase,quick_code,freq,hk_core
 職權,sadg,0.424282,0
 虛擬的,ymqohi,0.424282,0
 蜀國,wiwm,0.424282,0
-覈定,mkjo,0.424282,0
+核定,dojo,0.424282,0
 設法,yeei,0.424282,0
 都還沒,jlyvee,0.424282,0
 銷售量,cborag,0.424282,0
@@ -24396,7 +24316,7 @@ phrase,quick_code,freq,hk_core
 快攻,pkmk,0.424233,0
 搞什麼,qbojii,0.424233,0
 斷開,vlat,0.424233,0
-是因爲你,aowkbfof,0.424233,0
+是因為你,aowkifof,0.424233,0
 普遍存在,taybkdkg,0.424233,0
 月末,bdj,0.424233,0
 歸檔,hbdw,0.424233,0
@@ -24423,8 +24343,8 @@ phrase,quick_code,freq,hk_core
 沒帶,eekb,0.424185,0
 游離,edyg,0.424185,0
 滿腦子,ebbwnd,0.424185,0
-皆爲,pabf,0.424185,0
-真僞,jcof,0.424185,0
+皆為,paif,0.424185,0
+真偽,jcof,0.424185,0
 約好,vivd,0.424185,0
 練得,vfhi,0.424185,0
 被低估,leomor,0.424185,0
@@ -24468,7 +24388,7 @@ phrase,quick_code,freq,hk_core
 數學上,lkhdym,0.424087,0
 歸根到底,hbdvmnim,0.424087,0
 沒有資格,eekbicdr,0.424087,0
-爲了提高,bfnnqoyr,0.424087,0
+為了提高,ifnnqoyr,0.424087,0
 痛經,kbvm,0.424087,0
 百餘,maod,0.424087,0
 看房,huhs,0.424087,0
@@ -24493,7 +24413,7 @@ phrase,quick_code,freq,hk_core
 必要時,phmvai,0.424038,0
 損失了,qchonn,0.424038,0
 暴擊,aejq,0.424038,0
-爲國家,bfwmjo,0.424038,0
+為國家,ifwmjo,0.424038,0
 發信,neor,0.424038,0
 私有化,hikbop,0.424038,0
 立方米,ytysfd,0.424038,0
@@ -24506,7 +24426,7 @@ phrase,quick_code,freq,hk_core
 須知,hcor,0.424038,0
 領帶,ockb,0.424038,0
 飛速,noyl,0.424038,0
-可能成爲,mripisbf,0.423989,0
+可能成為,mripisif,0.423989,0
 囑咐,riri,0.423989,0
 小草,nctj,0.423989,0
 少林,fhdd,0.423989,0
@@ -24522,7 +24442,7 @@ phrase,quick_code,freq,hk_core
 盤面,html,0.423989,0
 秋冬,hfhy,0.423989,0
 與人類,hcofc,0.423989,0
-買一臺,wcmgg,0.423989,0
+買一台,wcmir,0.423989,0
 軒轅,jjjv,0.423989,0
 這又,yrnk,0.423989,0
 運動鞋,yjhstg,0.423989,0
@@ -24596,7 +24516,6 @@ phrase,quick_code,freq,hk_core
 飛了,nonn,0.423842,0
 但能,omip,0.423793,0
 你倆,ofob,0.423793,0
-你纔,ofvi,0.423793,0
 別急,rnnp,0.423793,0
 剛性,bnpm,0.423793,0
 安妮,jvvp,0.423793,0
@@ -24666,12 +24585,12 @@ phrase,quick_code,freq,hk_core
 單號,rjrn,0.423645,0
 團委,wihv,0.423645,0
 在當年,kgfwoq,0.423645,0
-在臺上,kgggym,0.423645,0
+在台上,kgirym,0.423645,0
 大一點,kmwr,0.423645,0
 庭審,igjw,0.423645,0
 必定會,phjooa,0.423645,0
 掉到,qjmn,0.423645,0
-爲民,bfrp,0.423645,0
+為民,ifrp,0.423645,0
 用筆,bqhq,0.423645,0
 田園,wwv,0.423645,0
 當兵,fwoc,0.423645,0
@@ -24736,7 +24655,7 @@ phrase,quick_code,freq,hk_core
 未經許可,jdvmyjmr,0.423498,0
 潤滑,egeb,0.423498,0
 無誤,ofyk,0.423498,0
-爲輔,bfjb,0.423498,0
+為輔,ifjb,0.423498,0
 狡猾,kkkb,0.423498,0
 發電機,nemudi,0.423498,0
 睡在,bmkg,0.423498,0
@@ -24800,12 +24719,11 @@ phrase,quick_code,freq,hk_core
 想不通,dpmfyb,0.423399,0
 我們想,hiondp,0.423399,0
 搭理,qrmg,0.423399,0
-攀岩,dqur,0.423399,0
 攀巖,dquk,0.423399,0
 改掉,skqj,0.423399,0
 文學史,ykhdlk,0.423399,0
 津貼,eqbr,0.423399,0
-爲何會,bforoa,0.423399,0
+為何會,iforoa,0.423399,0
 球杆,medj,0.423399,0
 益處,ttyn,0.423399,0
 知不知道,ormforyu,0.423399,0
@@ -24868,7 +24786,7 @@ phrase,quick_code,freq,hk_core
 彩民,bhrp,0.423250,0
 意料,ypfj,0.423250,0
 感到很,ipmnhv,0.423250,0
-扎根,qudv,0.423250,0
+紮根,dfdv,0.423250,0
 施肥,ydbu,0.423250,0
 更有可能,mkkbmrip,0.423250,0
 果不其然,wdmftcbf,0.423250,0
@@ -24889,7 +24807,7 @@ phrase,quick_code,freq,hk_core
 投資收益,qeicvktt,0.423201,0
 擺設,qpye,0.423201,0
 教室裏,jkjgyv,0.423201,0
-當衆,fwho,0.423201,0
+當眾,fwwo,0.423201,0
 發抖,neqj,0.423201,0
 睡眠時間,bmbpaiaa,0.423201,0
 總在,vpkg,0.423201,0
@@ -24956,7 +24874,7 @@ phrase,quick_code,freq,hk_core
 感動的,iphshi,0.423052,0
 最慘,aeph,0.423052,0
 比較合理,ppjkormg,0.423052,0
-癡情,kopb,0.423052,0
+痴情,krpb,0.423052,0
 知識庫,oryaij,0.423052,0
 礦石,mcmr,0.423052,0
 經濟損失,vmexqcho,0.423052,0
@@ -25018,8 +24936,8 @@ phrase,quick_code,freq,hk_core
 政委,mkhv,0.422902,0
 教案,jkjd,0.422902,0
 測繪,enva,0.422902,0
-游牧民族,edhkrpyk,0.422902,0
-爲主題,bfygac,0.422902,0
+遊牧民族,ydhkrpyk,0.422902,0
+為主題,ifygac,0.422902,0
 相隔,dunb,0.422902,0
 結構調整,vrdbyrdm,0.422902,0
 統稱,vuhb,0.422902,0
@@ -25027,7 +24945,6 @@ phrase,quick_code,freq,hk_core
 豌豆,mumt,0.422902,0
 連勝,yjbs,0.422902,0
 進行比較,yghnppjk,0.422902,0
-遊牧民族,ydhkrpyk,0.422902,0
 隸屬,desi,0.422902,0
 雙胞胎,oebubr,0.422902,0
 事事,jnjn,0.422853,0
@@ -25066,7 +24983,7 @@ phrase,quick_code,freq,hk_core
 天籟,mkhc,0.422803,0
 奏鳴曲,qkrftw,0.422803,0
 寬大,jik,0.422803,0
-成爲世界,isbfptwl,0.422803,0
+成為世界,isifptwl,0.422803,0
 校園網,dkwvvv,0.422803,0
 潔淨,efed,0.422803,0
 濃濃的,evevhi,0.422803,0
@@ -25095,7 +25012,7 @@ phrase,quick_code,freq,hk_core
 熄火,fpf,0.422753,0
 當你在,fwofkg,0.422753,0
 督查,yudm,0.422753,0
-祕方,ihys,0.422753,0
+秘方,hhys,0.422753,0
 積累經驗,hcwfvmso,0.422753,0
 絕佳,vuog,0.422753,0
 計價,yjoc,0.422753,0
@@ -25111,7 +25028,7 @@ phrase,quick_code,freq,hk_core
 他的手,odhiq,0.422703,0
 儘量少,otagfh,0.422703,0
 哇塞,rgjg,0.422703,0
-展臺,svgg,0.422703,0
+展台,svir,0.422703,0
 幫人,gbo,0.422703,0
 月月,bb,0.422703,0
 有一句,kbmpr,0.422703,0
@@ -25133,7 +25050,7 @@ phrase,quick_code,freq,hk_core
 席位,ibot,0.422653,0
 應力,ipks,0.422653,0
 拿高分,oqyrch,0.422653,0
-揭祕,qvih,0.422653,0
+揭秘,qvhh,0.422653,0
 最佳選擇,aeogycqj,0.422653,0
 查爾斯,dmmktl,0.422653,0
 洋溢,eqet,0.422653,0
@@ -25159,7 +25076,7 @@ phrase,quick_code,freq,hk_core
 圍巾,wqlb,0.422603,0
 大宋,kjd,0.422603,0
 將她,vivd,0.422603,0
-就認爲,yuypbf,0.422603,0
+就認為,yuypif,0.422603,0
 市裏,ybyv,0.422603,0
 我很想,hihvdp,0.422603,0
 所想,hldp,0.422603,0
@@ -25168,7 +25085,7 @@ phrase,quick_code,freq,hk_core
 歐米茄,sofdtr,0.422603,0
 灌溉,egeu,0.422603,0
 看到她,humnvd,0.422603,0
-臺車,ggjj,0.422603,0
+台車,irjj,0.422603,0
 花落,tptr,0.422603,0
 讚歎,ycto,0.422603,0
 走動,gohs,0.422603,0
@@ -25177,7 +25094,7 @@ phrase,quick_code,freq,hk_core
 人會說,ooayu,0.422552,0
 全盤,oght,0.422552,0
 化作,opos,0.422552,0
-大平臺,kmjgg,0.422552,0
+大平台,kmjir,0.422552,0
 工具欄,mmbcdw,0.422552,0
 市局,ybsr,0.422552,0
 式樣,imde,0.422552,0
@@ -25254,7 +25171,7 @@ phrase,quick_code,freq,hk_core
 尾盤,suht,0.422402,0
 廬山,itu,0.422402,0
 微風,hkhi,0.422402,0
-性行爲,pmhnbf,0.422402,0
+性行為,pmhnif,0.422402,0
 患兒,lphu,0.422402,0
 找機會,qidioa,0.422402,0
 推給,qgvr,0.422402,0
@@ -25273,7 +25190,7 @@ phrase,quick_code,freq,hk_core
 還應,yvip,0.422402,0
 都不懂,jlmfpg,0.422402,0
 來聊聊,doslsl,0.422352,0
-先入爲主,huohbfyg,0.422352,0
+先入為主,huohifyg,0.422352,0
 勁舞,msoq,0.422352,0
 協定,jsjo,0.422352,0
 卵巢,hivd,0.422352,0
@@ -25537,7 +25454,7 @@ phrase,quick_code,freq,hk_core
 創投,onqe,0.421846,0
 命令行,oloihn,0.421846,0
 品鑑,rrct,0.421846,0
-喫人,rko,0.421846,0
+吃人,rno,0.421846,0
 基本工資,tgdmmmic,0.421846,0
 壓低,mgom,0.421846,0
 大興,khc,0.421846,0
@@ -25576,11 +25493,10 @@ phrase,quick_code,freq,hk_core
 皇子,hgnd,0.421796,0
 瞎子,brnd,0.421796,0
 罪魁禍首,wyhjirtu,0.421796,0
-翻譯爲,hmyjbf,0.421796,0
+翻譯為,hmyjif,0.421796,0
 藥材,tddh,0.421796,0
 集聚,odso,0.421796,0
 霸佔,mbor,0.421796,0
-霸占,mbyr,0.421796,0
 青雲,qbmi,0.421796,0
 髒話,btyr,0.421796,0
 上樓,ymdv,0.421745,0
@@ -25595,12 +25511,12 @@ phrase,quick_code,freq,hk_core
 披風,qehi,0.421745,0
 熊熊,ifif,0.421745,0
 盆地,ctgd,0.421745,0
-第一臺,hhmgg,0.421745,0
+第一台,hhmir,0.421745,0
 被人們,leoon,0.421745,0
 送達,ykyq,0.421745,0
 進到,ygmn,0.421745,0
 遠大,yvk,0.421745,0
-遠征,yvhm,0.421745,0
+遠徵,yvhk,0.421745,0
 重慶大學,hgiekhd,0.421745,0
 阿嬌,nrvb,0.421745,0
 雞胸肉,bgbkoo,0.421745,0
@@ -25666,7 +25582,7 @@ phrase,quick_code,freq,hk_core
 高收入,yrvkoh,0.421643,0
 不是我們,mfaohion,0.421592,0
 令人髮指,oioseqa,0.421592,0
-僞裝成,ofvvis,0.421592,0
+偽裝成,ofvvis,0.421592,0
 剛好是,bnvdao,0.421592,0
 區長,srsv,0.421592,0
 學風,hdhi,0.421592,0
@@ -25755,7 +25671,6 @@ phrase,quick_code,freq,hk_core
 皆有,pakb,0.421439,0
 看這,huyr,0.421439,0
 穆勒,hhts,0.421439,0
-纔不會,vimfoa,0.421439,0
 耳環,sjmv,0.421439,0
 訂立,ynyt,0.421439,0
 購物車,bbhhjj,0.421439,0
@@ -25844,7 +25759,7 @@ phrase,quick_code,freq,hk_core
 一改,msk,0.421234,0
 不懈,mfpq,0.421234,0
 中央銀行,llkcvhn,0.421234,0
-代爲,opbf,0.421234,0
+代為,opif,0.421234,0
 做作業,okostd,0.421234,0
 傻笑,oehk,0.421234,0
 光纜,fuvu,0.421234,0
@@ -25919,7 +25834,7 @@ phrase,quick_code,freq,hk_core
 淺析,eidl,0.421132,0
 湖邊,ebys,0.421132,0
 火炮,ffu,0.421132,0
-爲榮,bffd,0.421132,0
+為榮,iffd,0.421132,0
 發脾氣,nebjod,0.421132,0
 礦產資源,mcymicef,0.421132,0
 繞開,vuat,0.421132,0
@@ -26010,7 +25925,7 @@ phrase,quick_code,freq,hk_core
 想聽,dpsp,0.420977,0
 我吧,hiru,0.420977,0
 液態,ekip,0.420977,0
-溼疹,egkh,0.420977,0
+濕疹,efkh,0.420977,0
 火影忍者,fahspja,0.420977,0
 無極,ofdm,0.420977,0
 理事,mgjn,0.420977,0
@@ -26027,7 +25942,7 @@ phrase,quick_code,freq,hk_core
 內陸,obng,0.420926,0
 只因,rcwk,0.420926,0
 喜慶,grie,0.420926,0
-喫喝玩樂,rkrvmuvd,0.420926,0
+吃喝玩樂,rnrvmuvd,0.420926,0
 安然,jvbf,0.420926,0
 尚有,frkb,0.420926,0
 恐怖分子,mppbchnd,0.420926,0
@@ -26086,7 +26001,6 @@ phrase,quick_code,freq,hk_core
 史上最,lkymae,0.420823,0
 城鎮居民,gsccsrrp,0.420823,0
 天台,mkir,0.420823,0
-天臺,mkgg,0.420823,0
 復仇者,heonja,0.420823,0
 心知肚明,porbgab,0.420823,0
 搖桿,qudj,0.420823,0
@@ -26159,7 +26073,7 @@ phrase,quick_code,freq,hk_core
 痛哭,kbrk,0.420719,0
 知名品牌,ornrrrlj,0.420719,0
 能力有限,ipkskbnv,0.420719,0
-融爲一體,mibfmbt,0.420719,0
+融為一體,miifmbt,0.420719,0
 連鎖店,yjccir,0.420719,0
 隨口,nbr,0.420719,0
 集會,odoa,0.420719,0
@@ -26192,7 +26106,7 @@ phrase,quick_code,freq,hk_core
 自由選擇,hulwycqj,0.420668,0
 豹子,bind,0.420668,0
 趕回,gjwr,0.420668,0
-防僞,nsof,0.420668,0
+防偽,nsof,0.420668,0
 風尚,hifr,0.420668,0
 不然就,mfbfyu,0.420616,0
 修仙,ohou,0.420616,0
@@ -26325,7 +26239,7 @@ phrase,quick_code,freq,hk_core
 公益性,cittpm,0.420356,0
 募集資金,tsodicc,0.420356,0
 卡丁車,yymnjj,0.420356,0
-在舞臺上,kgoqggym,0.420356,0
+在舞台上,kgoqirym,0.420356,0
 寫點,jfwr,0.420356,0
 廈門市,ieanyb,0.420356,0
 得是,hiao,0.420356,0
@@ -26366,7 +26280,6 @@ phrase,quick_code,freq,hk_core
 歉意,toyp,0.420304,0
 無話,ofyr,0.420304,0
 的家,hijo,0.420304,0
-纔明白,viabha,0.420304,0
 落魄,trhi,0.420304,0
 貨品,ocrr,0.420304,0
 足夠好,ronrvd,0.420304,0
@@ -26430,7 +26343,7 @@ phrase,quick_code,freq,hk_core
 紅葉,vmtd,0.420200,0
 美顏,tkyc,0.420200,0
 腦細胞,bwvwbu,0.420200,0
-花癡,tpko,0.420200,0
+花痴,tpkr,0.420200,0
 英軍,tkbj,0.420200,0
 要選,mvyc,0.420200,0
 跟在,rvkg,0.420200,0
@@ -26468,7 +26381,7 @@ phrase,quick_code,freq,hk_core
 營業員,frtdrc,0.420148,0
 生生,hmhm,0.420148,0
 看透,huys,0.420148,0
-纔怪,vipg,0.420148,0
+才怪,dhpg,0.420148,0
 衡陽,hnnh,0.420148,0
 詞性,yrpm,0.420148,0
 讚嘆,ycro,0.420148,0
@@ -26578,7 +26491,7 @@ phrase,quick_code,freq,hk_core
 看得見,huhibu,0.419939,0
 真正做到,jcmmokmn,0.419939,0
 突如其來,jkvrtcdo,0.419939,0
-纔來,vido,0.419939,0
+才來,dhdo,0.419939,0
 茉莉,tjtn,0.419939,0
 西山,mwu,0.419939,0
 試水,yme,0.419939,0
@@ -26637,7 +26550,7 @@ phrase,quick_code,freq,hk_core
 歡迎你,toylof,0.419834,0
 沒資格,eeicdr,0.419834,0
 無所不能,ofhlmfip,0.419834,0
-熏陶,hfnu,0.419834,0
+薰陶,tfnu,0.419834,0
 王某,mgtd,0.419834,0
 珊瑚,mmmb,0.419834,0
 白細胞,havwbu,0.419834,0
@@ -26649,11 +26562,11 @@ phrase,quick_code,freq,hk_core
 體裁,btjv,0.419834,0
 一百個,mmaor,0.419781,0
 三歲,mmyh,0.419781,0
-下臺,mygg,0.419781,0
+下台,myir,0.419781,0
 不公平的,mfcimjhi,0.419781,0
 中轉,lji,0.419781,0
 內需,obml,0.419781,0
-別以爲,rnvobf,0.419781,0
+別以為,rnvoif,0.419781,0
 到哪,mnrl,0.419781,0
 動聽,hssp,0.419781,0
 娛樂八卦,vkvdhogy,0.419781,0
@@ -26765,7 +26678,6 @@ phrase,quick_code,freq,hk_core
 巴特勒,auhits,0.419571,0
 底色,imnu,0.419571,0
 應答,iphr,0.419571,0
-批注,qpeg,0.419571,0
 批註,qpyg,0.419571,0
 折騰了,qlbfnn,0.419571,0
 擠兌,qxcu,0.419571,0
@@ -26798,7 +26710,7 @@ phrase,quick_code,freq,hk_core
 有能力的,kbipkshi,0.419518,0
 涼爽,efkk,0.419518,0
 演奏家,ecqkjo,0.419518,0
-爲中心的,bflphi,0.419518,0
+為中心的,iflphi,0.419518,0
 牽涉,yqeh,0.419518,0
 科三,hjmm,0.419518,0
 茶館,tdor,0.419518,0
@@ -26849,7 +26761,7 @@ phrase,quick_code,freq,hk_core
 海峽,eyuo,0.419413,0
 淺色,einu,0.419413,0
 火柴,fyd,0.419413,0
-爲了實現,bfnnjcmu,0.419413,0
+為了實現,ifnnjcmu,0.419413,0
 真沒,jcee,0.419413,0
 糧油,fgew,0.419413,0
 趕往,gjhg,0.419413,0
@@ -26960,7 +26872,7 @@ phrase,quick_code,freq,hk_core
 統計局,vuyjsr,0.419201,0
 絲絲,vfvf,0.419201,0
 總隊,vpno,0.419201,0
-臺海,ggey,0.419201,0
+台海,irey,0.419201,0
 舉證,hqyt,0.419201,0
 迷離,ydyg,0.419201,0
 速寫,yljf,0.419201,0
@@ -27124,7 +27036,7 @@ phrase,quick_code,freq,hk_core
 家政,jomk,0.418882,0
 小龍蝦,ncyple,0.418882,0
 愛美,betk,0.418882,0
-所爲,hlbf,0.418882,0
+所為,hlif,0.418882,0
 打出來,qnuudo,0.418882,0
 摸着,qktu,0.418882,0
 早盤,ajht,0.418882,0
@@ -27135,7 +27047,7 @@ phrase,quick_code,freq,hk_core
 臨走,srgo,0.418882,0
 西洋,mweq,0.418882,0
 辦公桌,yjciyd,0.418882,0
-上海大衆,ymeykho,0.418828,0
+上海大眾,ymeykwo,0.418828,0
 之列,iomn,0.418828,0
 仔細觀察,odvwtujf,0.418828,0
 再走,mbgo,0.418828,0
@@ -27222,7 +27134,7 @@ phrase,quick_code,freq,hk_core
 練習曲,vfsatw,0.418722,0
 老舊,jptx,0.418722,0
 而是說,mlaoyu,0.418722,0
-臺商,ggyr,0.418722,0
+台商,iryr,0.418722,0
 部副,ylmn,0.418722,0
 都看,jlhu,0.418722,0
 鄉親,vlyu,0.418722,0
@@ -27393,14 +27305,14 @@ phrase,quick_code,freq,hk_core
 秸稈,hrhj,0.418400,0
 範例,huon,0.418400,0
 詞句,yrpr,0.418400,0
-講臺,ybgg,0.418400,0
+講台,ybir,0.418400,0
 配飾,muob,0.418400,0
 金黃,ctc,0.418400,0
 長春市,svqayb,0.418400,0
 陪他,nrod,0.418400,0
 難找,tgqi,0.418400,0
 驚險,tfno,0.418400,0
-一直以爲,mjmvobf,0.418346,0
+一直以為,mjmvoif,0.418346,0
 不構成,mfdbis,0.418346,0
 不算是,mfhtao,0.418346,0
 之戀,iovp,0.418346,0
@@ -27553,7 +27465,7 @@ phrase,quick_code,freq,hk_core
 宋江,jdem,0.418131,0
 宗室,jfjg,0.418131,0
 家庭成員,joigisrc,0.418131,0
-後纔能,heviip,0.418131,0
+後才能,hedhip,0.418131,0
 怎麼去,opiigi,0.418131,0
 成色,isnu,0.418131,0
 我給他,hivrod,0.418131,0
@@ -27620,7 +27532,6 @@ phrase,quick_code,freq,hk_core
 其他同學,tcodbrhd,0.418022,0
 口吻,rrh,0.418022,0
 噴射,rchi,0.418022,0
-回路,wrrr,0.418022,0
 在企業,kgomtd,0.418022,0
 大紅,kvm,0.418022,0
 忽忽,pppp,0.418022,0
@@ -27679,7 +27590,7 @@ phrase,quick_code,freq,hk_core
 代表大會,opqvkoa,0.417914,0
 堅強的,sgnihi,0.417914,0
 外省,nyfu,0.417914,0
-大衆點評,khowryj,0.417914,0
+大眾點評,kwowryj,0.417914,0
 宣傳片,jmoill,0.417914,0
 寶雞,jcbg,0.417914,0
 抗震,qnmv,0.417914,0
@@ -27687,7 +27598,7 @@ phrase,quick_code,freq,hk_core
 掠過,qfyr,0.417914,0
 撐着,qhtu,0.417914,0
 教育培訓,jkybgryl,0.417914,0
-方纔,ysvi,0.417914,0
+方才,ysdh,0.417914,0
 株洲,ddel,0.417914,0
 欄杆,dwdj,0.417914,0
 歡迎訪問,toylysar,0.417914,0
@@ -27811,7 +27722,7 @@ phrase,quick_code,freq,hk_core
 國家規定,wmjoqujo,0.417697,0
 它了,jpnn,0.417697,0
 山村,udi,0.417697,0
-岩漿,urve,0.417697,0
+巖漿,ukve,0.417697,0
 得住,hiog,0.417697,0
 我正,himm,0.417697,0
 手術室,qhnjg,0.417697,0
@@ -27905,7 +27816,7 @@ phrase,quick_code,freq,hk_core
 翻拍,hmqa,0.417588,0
 補血,lbht,0.417588,0
 記憶裏,yuppyv,0.417588,0
-證僞,ytof,0.417588,0
+證偽,ytof,0.417588,0
 跳下,romy,0.417588,0
 辛酸,yjme,0.417588,0
 迎戰,ylri,0.417588,0
@@ -28175,7 +28086,6 @@ phrase,quick_code,freq,hk_core
 欣然,hobf,0.417151,0
 沒有別的,eekbrnhi,0.417151,0
 海龜,eyhu,0.417151,0
-游俠,edoo,0.417151,0
 無厘頭,ofmgmc,0.417151,0
 無法用,ofeibq,0.417151,0
 登記表,ntyuqv,0.417151,0
@@ -28192,14 +28102,13 @@ phrase,quick_code,freq,hk_core
 題目是,acbuao,0.417151,0
 香山,hau,0.417151,0
 黎巴嫩,heauvk,0.417151,0
-一起喫飯,mgurkoe,0.417096,0
+一起吃飯,mgurnoe,0.417096,0
 例行,onhn,0.417096,0
 僕人,ooo,0.417096,0
 共和,tchr,0.417096,0
 同業,brtd,0.417096,0
 外文,nyyk,0.417096,0
 天極,mkdm,0.417096,0
-席卷,ibfu,0.417096,0
 席捲,ibqu,0.417096,0
 慘遭,phya,0.417096,0
 我好想,hivddp,0.417096,0
@@ -28313,11 +28222,11 @@ phrase,quick_code,freq,hk_core
 隨波逐流,nbeeyoeu,0.416986,0
 騙取,sbse,0.416986,0
 鼓點,gewr,0.416986,0
-不認爲,mfypbf,0.416931,0
+不認為,mfypif,0.416931,0
 也難,pdtg,0.416931,0
-升級爲,htvebf,0.416931,0
+升級為,htveif,0.416931,0
 吵醒,rhmm,0.416931,0
-喫完了,rkjunn,0.416931,0
+吃完了,rnjunn,0.416931,0
 在股市,kgbeyb,0.416931,0
 多線程,nivehg,0.416931,0
 屈服,sube,0.416931,0
@@ -28330,7 +28239,7 @@ phrase,quick_code,freq,hk_core
 海馬,eysf,0.416931,0
 溫州市,etilyb,0.416931,0
 激活碼,ekermf,0.416931,0
-爲愛,bfbe,0.416931,0
+為愛,ifbe,0.416931,0
 着臉,tubo,0.416931,0
 網頁遊戲,vvmcydyi,0.416931,0
 舞動,oqhs,0.416931,0
@@ -28338,7 +28247,7 @@ phrase,quick_code,freq,hk_core
 華潤,tjeg,0.416931,0
 蓋上,ttym,0.416931,0
 衛生局,hnhmsr,0.416931,0
-複覈,lemk,0.416931,0
+複核,ledo,0.416931,0
 誰不,ygmf,0.416931,0
 谷愛凌,crbeie,0.416931,0
 較早,jkaj,0.416931,0
@@ -28438,16 +28347,16 @@ phrase,quick_code,freq,hk_core
 洞口,err,0.416765,0
 深呼吸,edrdre,0.416765,0
 瓜子,hond,0.416765,0
-發展成爲,nesvisbf,0.416765,0
+發展成為,nesvisif,0.416765,0
 看看你,huhuof,0.416765,0
 萬元以上,tbmuvoym,0.416765,0
-要成爲,mvisbf,0.416765,0
+要成為,mvisif,0.416765,0
 赫然,gcbf,0.416765,0
 踏上了,raymnn,0.416765,0
 迷迷糊糊,ydydfbfb,0.416765,0
 透出,ysuu,0.416765,0
 那可,slmr,0.416765,0
-題爲,acbf,0.416765,0
+題為,acif,0.416765,0
 驚現,tfmu,0.416765,0
 三段,mmhe,0.416710,0
 不同類型,mfbrfcmg,0.416710,0
@@ -28475,7 +28384,7 @@ phrase,quick_code,freq,hk_core
 看多,huni,0.416710,0
 禁不住,dfmfog,0.416710,0
 私營,hifr,0.416710,0
-豐臺,utgg,0.416710,0
+豐台,utir,0.416710,0
 資格考試,icdrjsym,0.416710,0
 賦值,bmom,0.416710,0
 那晚,slau,0.416710,0
@@ -28494,7 +28403,6 @@ phrase,quick_code,freq,hk_core
 大腳,kbl,0.416654,0
 婦聯,vbst,0.416654,0
 就讓我,yuyvhi,0.416654,0
-布景,kbaf,0.416654,0
 彈窗,njje,0.416654,0
 微薄,hkti,0.416654,0
 悼念,pjop,0.416654,0
@@ -28502,7 +28410,7 @@ phrase,quick_code,freq,hk_core
 投資公司,qeiccisr,0.416654,0
 折射,qlhi,0.416654,0
 收復,vkhe,0.416654,0
-會爲,oabf,0.416654,0
+會為,oaif,0.416654,0
 牽動,yqhs,0.416654,0
 疼的,kyhi,0.416654,0
 礦產,mcym,0.416654,0
@@ -28514,7 +28422,7 @@ phrase,quick_code,freq,hk_core
 中低端,lomyb,0.416599,0
 之城,iogs,0.416599,0
 咆哮,rurd,0.416599,0
-喫飽了,rkounn,0.416599,0
+吃飽了,rnounn,0.416599,0
 固件,wroq,0.416599,0
 固收,wrvk,0.416599,0
 在準備,kgejob,0.416599,0
@@ -28599,7 +28507,7 @@ phrase,quick_code,freq,hk_core
 得上,hiym,0.416488,0
 德育,hpyb,0.416488,0
 持有者,qikbja,0.416488,0
-更名爲,mknrbf,0.416488,0
+更名為,mknrif,0.416488,0
 更多內容,mkniobjr,0.416488,0
 有二,kbmm,0.416488,0
 有此,kbyp,0.416488,0
@@ -28661,7 +28569,7 @@ phrase,quick_code,freq,hk_core
 服務機構,bensdidb,0.416377,0
 朴樹,dydi,0.416377,0
 無畏,ofwv,0.416377,0
-爲空,bfjm,0.416377,0
+為空,ifjm,0.416377,0
 相似性,duoopm,0.416377,0
 社科,ighj,0.416377,0
 神態,ilip,0.416377,0
@@ -28695,7 +28603,6 @@ phrase,quick_code,freq,hk_core
 據我瞭解,qohibfnq,0.416321,0
 攪拌均勻,quqqgmpm,0.416321,0
 攻佔,mkor,0.416321,0
-攻占,mkyr,0.416321,0
 新任,ylog,0.416321,0
 日本政府,admmkii,0.416321,0
 更深層次,mkedsaio,0.416321,0
@@ -28841,7 +28748,7 @@ phrase,quick_code,freq,hk_core
 士人,jmo,0.416098,0
 好機會,vddioa,0.416098,0
 小弟弟,ncchch,0.416098,0
-就成爲,yuisbf,0.416098,0
+就成為,yuisif,0.416098,0
 成才,isdh,0.416098,0
 我這個人,hiyroro,0.416098,0
 排名前,qynrtn,0.416098,0
@@ -28924,7 +28831,7 @@ phrase,quick_code,freq,hk_core
 檢舉,dohq,0.415987,0
 每逢,oiyj,0.415987,0
 民政局,rpmksr,0.415987,0
-爲宜,bfjm,0.415987,0
+為宜,ifjm,0.415987,0
 瞭解清楚,bfnqebdo,0.415987,0
 稀罕,hbbj,0.415987,0
 給誰,vryg,0.415987,0
@@ -29006,10 +28913,10 @@ phrase,quick_code,freq,hk_core
 實屬,jcsi,0.415818,0
 幫手,gbq,0.415818,0
 幹警,jjtr,0.415818,0
-捲菸,quty,0.415818,0
+捲煙,qufg,0.415818,0
 林木,ddd,0.415818,0
 漏水,ebe,0.415818,0
-爲了不讓,bfnnmfyv,0.415818,0
+為了不讓,ifnnmfyv,0.415818,0
 特製,hihv,0.415818,0
 環比,mvpp,0.415818,0
 生態圈,hmipwu,0.415818,0
@@ -29054,7 +28961,7 @@ phrase,quick_code,freq,hk_core
 錦江,cbem,0.415762,0
 頭枕,mcdu,0.415762,0
 一袋,mov,0.415706,0
-不以爲然,mfvobfbf,0.415706,0
+不以為然,mfvoifbf,0.415706,0
 保利,odhn,0.415706,0
 僅靠,omhy,0.415706,0
 充分考慮,yuchjsyp,0.415706,0
@@ -29124,7 +29031,7 @@ phrase,quick_code,freq,hk_core
 民心,rpp,0.415650,0
 沒人看,eeohu,0.415650,0
 液晶屏,ekaast,0.415650,0
-率爲,yjbf,0.415650,0
+率為,yjif,0.415650,0
 現代農業,muoptvtd,0.415650,0
 理綜,mgvf,0.415650,0
 眼睜睜,bvbdbd,0.415650,0
@@ -29194,7 +29101,7 @@ phrase,quick_code,freq,hk_core
 在老家,kgjpjo,0.415537,0
 密不可分,jumfmrch,0.415537,0
 就按,yuqv,0.415537,0
-幹部羣衆,jjylsqho,0.415537,0
+幹部羣眾,jjylsqwo,0.415537,0
 思考了,wpjsnn,0.415537,0
 想見,dpbu,0.415537,0
 把精力,qufbks,0.415537,0
@@ -29319,14 +29226,13 @@ phrase,quick_code,freq,hk_core
 同方,brys,0.415368,0
 品種的,rrhghi,0.415368,0
 嘉實,grjc,0.415368,0
-大衆化,khoop,0.415368,0
+大眾化,kwoop,0.415368,0
 孫興慜,nfhcop,0.415368,0
 封了,ginn,0.415368,0
 就看到,yuhumn,0.415368,0
 居中,srl,0.415368,0
 您將,opvi,0.415368,0
 應該做,ipyook,0.415368,0
-挂牌,qglj,0.415368,0
 推倒,qgon,0.415368,0
 收起,vkgu,0.415368,0
 放置在,ykwmkg,0.415368,0
@@ -29338,7 +29244,7 @@ phrase,quick_code,freq,hk_core
 此貼,ypbr,0.415368,0
 水木,ed,0.415368,0
 水電站,emuyr,0.415368,0
-游學,edhd,0.415368,0
+遊學,ydhd,0.415368,0
 無忌,ofsp,0.415368,0
 燻蒸,fftf,0.415368,0
 理事長,mgjnsv,0.415368,0
@@ -29349,7 +29255,6 @@ phrase,quick_code,freq,hk_core
 讀書會,yclaoa,0.415368,0
 變回,vkwr,0.415368,0
 販子,bend,0.415368,0
-遊學,ydhd,0.415368,0
 錦州,cbil,0.415368,0
 隨緣,nbvo,0.415368,0
 青年人,qboqo,0.415368,0
@@ -29409,7 +29314,7 @@ phrase,quick_code,freq,hk_core
 沉沉,enen,0.415254,0
 洗盤,euht,0.415254,0
 淘客,eujr,0.415254,0
-爲好,bfvd,0.415254,0
+為好,ifvd,0.415254,0
 發展壯大,nesvvgk,0.415254,0
 看看他,huhuod,0.415254,0
 第三條,hhmmod,0.415254,0
@@ -29429,7 +29334,7 @@ phrase,quick_code,freq,hk_core
 黨代會,ffopoa,0.415254,0
 一桌,myd,0.415198,0
 代數,oplk,0.415198,0
-以爲他,vobfod,0.415198,0
+以為他,voifod,0.415198,0
 兩片,moll,0.415198,0
 八百,homa,0.415198,0
 公共場所,citcghhl,0.415198,0
@@ -29485,7 +29390,7 @@ phrase,quick_code,freq,hk_core
 罈子,ojnd,0.415141,0
 臨牀研究,srvdmtjn,0.415141,0
 西式,mwim,0.415141,0
-診斷爲,yhvlbf,0.415141,0
+診斷為,yhvlif,0.415141,0
 誤判,ykfn,0.415141,0
 農夫,tvqo,0.415141,0
 針織,cjva,0.415141,0
@@ -29518,7 +29423,7 @@ phrase,quick_code,freq,hk_core
 敲打,yeqn,0.415084,0
 數據傳輸,lkqooijn,0.415084,0
 暴風影音,aehiahya,0.415084,0
-服務平臺,bensmjgg,0.415084,0
+服務平台,bensmjir,0.415084,0
 江陵,emne,0.415084,0
 獅子座,kbndig,0.415084,0
 礦區,mcsr,0.415084,0
@@ -29624,7 +29529,7 @@ phrase,quick_code,freq,hk_core
 又問,nkar,0.414913,0
 奴才,vedh,0.414913,0
 宣講,jmyb,0.414913,0
-專家認爲,jijoypbf,0.414913,0
+專家認為,jijoypif,0.414913,0
 從那,hosl,0.414913,0
 手鍊,qcf,0.414913,0
 手鏈,qcj,0.414913,0
@@ -29743,7 +29648,7 @@ phrase,quick_code,freq,hk_core
 洗腳,eubl,0.414742,0
 滿身,ebhh,0.414742,0
 烤鴨,fswf,0.414742,0
-爲代價,bfopoc,0.414742,0
+為代價,ifopoc,0.414742,0
 理順,mglc,0.414742,0
 紀要,vumv,0.414742,0
 維多利亞,vgnihnmm,0.414742,0
@@ -29760,9 +29665,8 @@ phrase,quick_code,freq,hk_core
 南站,jjyr,0.414685,0
 又可,nkmr,0.414685,0
 吊帶,rbkb,0.414685,0
-喫不消,rkmfeb,0.414685,0
+吃不消,rnmfeb,0.414685,0
 奮戰,kwri,0.414685,0
-如何纔能,vrorviip,0.414685,0
 始終保持,vrvyodqi,0.414685,0
 姐姐的,vmvmhi,0.414685,0
 將向,vihr,0.414685,0
@@ -29809,7 +29713,7 @@ phrase,quick_code,freq,hk_core
 報名參加,genrihkr,0.414628,0
 女人味,vord,0.414628,0
 好帖,vdlr,0.414628,0
-廣爲,icbf,0.414628,0
+廣為,icif,0.414628,0
 很亂,hvbu,0.414628,0
 我啊,hirr,0.414628,0
 服務站,bensyr,0.414628,0
@@ -29867,7 +29771,7 @@ phrase,quick_code,freq,hk_core
 降了,nqnn,0.414571,0
 順風,lchi,0.414571,0
 飄落,mitr,0.414571,0
-一起喫,mgurk,0.414513,0
+一起吃,mgurn,0.414513,0
 不熱,mfgf,0.414513,0
 于丹,mdby,0.414513,0
 何苦,ortr,0.414513,0
@@ -29893,7 +29797,7 @@ phrase,quick_code,freq,hk_core
 禱告,iihr,0.414513,0
 處處長,ynynsv,0.414513,0
 見面會,bumloa,0.414513,0
-譯爲,yjbf,0.414513,0
+譯為,yjif,0.414513,0
 豆油,mtew,0.414513,0
 跑進,ruyg,0.414513,0
 開發建設,atnenqye,0.414513,0
@@ -29907,7 +29811,7 @@ phrase,quick_code,freq,hk_core
 二十一,mmjm,0.414456,0
 凋零,irmi,0.414456,0
 刺痛,dnkb,0.414456,0
-加爲,krbf,0.414456,0
+加為,krif,0.414456,0
 呼吸道,rdreyu,0.414456,0
 啥樣,rrde,0.414456,0
 四樓,wcdv,0.414456,0
@@ -29961,7 +29865,7 @@ phrase,quick_code,freq,hk_core
 新浪娛樂,ylevvkvd,0.414398,0
 最後一刻,aehemyn,0.414398,0
 次序,ioin,0.414398,0
-歸結爲,hbvrbf,0.414398,0
+歸結為,hbvrif,0.414398,0
 海島,eyhu,0.414398,0
 淘汰賽,eueijc,0.414398,0
 生產技術,hmymqehn,0.414398,0
@@ -30005,14 +29909,13 @@ phrase,quick_code,freq,hk_core
 端子,ybnd,0.414341,0
 虎撲,ynqo,0.414341,0
 要理解,mvmgnq,0.414341,0
-質朴,hcdy,0.414341,0
 質樸,hcdo,0.414341,0
 迪拜,ywhj,0.414341,0
 追究其,yrjntc,0.414341,0
 過你,yrof,0.414341,0
 重演,hgec,0.414341,0
 長效機制,svykdihn,0.414341,0
-風溼,hieg,0.414341,0
+風濕,hief,0.414341,0
 飛雪,nomm,0.414341,0
 養育,tvyb,0.414341,0
 馴化,slop,0.414341,0
@@ -30050,7 +29953,7 @@ phrase,quick_code,freq,hk_core
 通緝,ybvj,0.414283,0
 醉酒,mjew,0.414283,0
 醫療服務,swkfbens,0.414283,0
-難爲,tgbf,0.414283,0
+難為,tgif,0.414283,0
 面議,mlyi,0.414283,0
 駐地,sggd,0.414283,0
 鹽酸,stme,0.414283,0
@@ -30059,7 +29962,7 @@ phrase,quick_code,freq,hk_core
 以期,votb,0.414226,0
 健康網,oqievv,0.414226,0
 危及,nune,0.414226,0
-可爲,mrbf,0.414226,0
+可為,mrif,0.414226,0
 大業,ktd,0.414226,0
 宿遷,jayu,0.414226,0
 小看,nchu,0.414226,0
@@ -30153,7 +30056,7 @@ phrase,quick_code,freq,hk_core
 第一人稱,hhmohb,0.414110,0
 總值,vpom,0.414110,0
 聽不,spmf,0.414110,0
-臺灣地區,ggengdsr,0.414110,0
+台灣地區,irengdsr,0.414110,0
 苦瓜,trho,0.414110,0
 蹤影,roah,0.414110,0
 轉換器,jiqkrr,0.414110,0
@@ -30186,11 +30089,10 @@ phrase,quick_code,freq,hk_core
 水產品,eymrr,0.414052,0
 潛質,eahc,0.414052,0
 無端,ofyb,0.414052,0
-爲這個,bfyror,0.414052,0
+為這個,ifyror,0.414052,0
 病牀,kbvd,0.414052,0
 站起身,yrguhh,0.414052,0
 而無,mlof,0.414052,0
-薰陶,tfnu,0.414052,0
 處決,ynek,0.414052,0
 親生,yuhm,0.414052,0
 誰先,yghu,0.414052,0
@@ -30213,7 +30115,7 @@ phrase,quick_code,freq,hk_core
 取證,seyt,0.413995,0
 可獲得,mrkehi,0.413995,0
 唐太宗,irkijf,0.413995,0
-因爲工作,wkbfmmos,0.413995,0
+因為工作,wkifmmos,0.413995,0
 大力推進,kksqgyg,0.413995,0
 學術上,hdhnym,0.413995,0
 小波,ncee,0.413995,0
@@ -30234,7 +30136,6 @@ phrase,quick_code,freq,hk_core
 牽強,yqni,0.413995,0
 理他,mgod,0.413995,0
 站穩,yrhp,0.413995,0
-纔去,vigi,0.413995,0
 腎上腺素,sbymbeqf,0.413995,0
 萬人次,tboio,0.413995,0
 註冊機,ygbtdi,0.413995,0
@@ -30259,7 +30160,7 @@ phrase,quick_code,freq,hk_core
 最低點,aeomwr,0.413937,0
 有收穫,kbvkhe,0.413937,0
 瀘州,etil,0.413937,0
-窗臺,jegg,0.413937,0
+窗台,jeir,0.413937,0
 答道,hryu,0.413937,0
 美方,tkys,0.413937,0
 聚在,sokg,0.413937,0
@@ -30293,7 +30194,7 @@ phrase,quick_code,freq,hk_core
 我只好,hircvd,0.413879,0
 收下,vkmy,0.413879,0
 標示,dfmf,0.413879,0
-此爲,ypbf,0.413879,0
+此為,ypif,0.413879,0
 油墨,ewwg,0.413879,0
 法杖,eidk,0.413879,0
 淪落,ebtr,0.413879,0
@@ -30328,7 +30229,7 @@ phrase,quick_code,freq,hk_core
 外刊,nymn,0.413821,0
 多天,nimk,0.413821,0
 大馬,ksf,0.413821,0
-奧祕,hkih,0.413821,0
+奧秘,hkhh,0.413821,0
 實踐活動,jcrierhs,0.413821,0
 小麗,ncmp,0.413821,0
 張朝陽,nvjbnh,0.413821,0
@@ -30772,7 +30673,6 @@ phrase,quick_code,freq,hk_core
 電玩,mumu,0.413237,0
 面紗,mlvh,0.413237,0
 順利進行,lchnyghn,0.413237,0
-下台,myir,0.413179,0
 不管用,mfhrbq,0.413179,0
 丟失了,mihonn,0.413179,0
 主隊,ygno,0.413179,0
@@ -30817,7 +30717,7 @@ phrase,quick_code,freq,hk_core
 半空,fqjm,0.413120,0
 南方週末,jjysyrdj,0.413120,0
 去接,giqv,0.413120,0
-喫下去,rkmygi,0.413120,0
+吃下去,rnmygi,0.413120,0
 好漢,vdeo,0.413120,0
 宣傳活動,jmoierhs,0.413120,0
 心扉,phy,0.413120,0
@@ -30855,7 +30755,7 @@ phrase,quick_code,freq,hk_core
 光碟,fumd,0.413061,0
 全軍,ogbj,0.413061,0
 六方會談,ycysoayf,0.413061,0
-喫下,rkmy,0.413061,0
+吃下,rnmy,0.413061,0
 在努力,kgvsks,0.413061,0
 在東京,kgdwyf,0.413061,0
 始終堅持,vrvysgqi,0.413061,0
@@ -31031,7 +30931,7 @@ phrase,quick_code,freq,hk_core
 不需要你,mfmlmvof,0.412826,0
 偉業,oqtd,0.412826,0
 克萊斯勒,jutotlts,0.412826,0
-再喫,mbrk,0.412826,0
+再吃,mbrn,0.412826,0
 司令部,sroiyl,0.412826,0
 司法機關,sreidiat,0.412826,0
 向北,hrlp,0.412826,0
@@ -31120,7 +31020,7 @@ phrase,quick_code,freq,hk_core
 沒給,eevr,0.412767,0
 減低,erom,0.412767,0
 減壓,ermg,0.412767,0
-爲名,bfnr,0.412767,0
+為名,ifnr,0.412767,0
 狹義,koti,0.412767,0
 盼着,bhtu,0.412767,0
 看不清楚,humfebdo,0.412767,0
@@ -31201,7 +31101,7 @@ phrase,quick_code,freq,hk_core
 叛變,fevk,0.412648,0
 名貴,nrlc,0.412648,0
 咽喉,rkrk,0.412648,0
-因爲那,wkbfsl,0.412648,0
+因為那,wkifsl,0.412648,0
 在我面前,kghimltn,0.412648,0
 大路,krr,0.412648,0
 奧林巴斯,hkddautl,0.412648,0
@@ -31230,7 +31130,7 @@ phrase,quick_code,freq,hk_core
 蒸餾,tfow,0.412648,0
 蜻蜓,lblg,0.412648,0
 要什麼,mvojii,0.412648,0
-解釋爲,nqhjbf,0.412648,0
+解釋為,nqhjif,0.412648,0
 這會兒,yroahu,0.412648,0
 配以,muvo,0.412648,0
 防曬霜,nsapmu,0.412648,0
@@ -31243,8 +31143,8 @@ phrase,quick_code,freq,hk_core
 備件,oboq,0.412589,0
 右路,krrr,0.412589,0
 咬着,rktu,0.412589,0
-喫不,rkmf,0.412589,0
-喫香,rkha,0.412589,0
+吃不,rnmf,0.412589,0
+吃香,rnha,0.412589,0
 在你身邊,kgofhhys,0.412589,0
 報上,geym,0.412589,0
 天理,mkmg,0.412589,0
@@ -31357,8 +31257,8 @@ phrase,quick_code,freq,hk_core
 法蘭克福,eitwjuiw,0.412471,0
 滬指,euqa,0.412471,0
 無障礙,ofnjmo,0.412471,0
-爲學生,bfhdhm,0.412471,0
-爲它,bfjp,0.412471,0
+為學生,ifhdhm,0.412471,0
+為它,ifjp,0.412471,0
 瑪雅,mfmg,0.412471,0
 用他,bqod,0.412471,0
 用功,bqms,0.412471,0
@@ -31381,7 +31281,7 @@ phrase,quick_code,freq,hk_core
 一股腦,mbebw,0.412411,0
 以南,vojj,0.412411,0
 作法,osei,0.412411,0
-信息平臺,orhpmjgg,0.412411,0
+信息平台,orhpmjir,0.412411,0
 假名,oenr,0.412411,0
 先例,huon,0.412411,0
 兒童節,huyghl,0.412411,0
@@ -31397,7 +31297,7 @@ phrase,quick_code,freq,hk_core
 外商投資,nyyrqeic,0.412411,0
 太原市,kimfyb,0.412411,0
 它是一種,jpaomhg,0.412411,0
-就喫,yurk,0.412411,0
+就吃,yurn,0.412411,0
 希區柯克,kbsrdrju,0.412411,0
 年假,oqoe,0.412411,0
 弧線,nove,0.412411,0
@@ -31410,7 +31310,7 @@ phrase,quick_code,freq,hk_core
 槍支,drje,0.412411,0
 歪曲,mmtw,0.412411,0
 法律援助,eihqqebs,0.412411,0
-溼了,egnn,0.412411,0
+濕了,efnn,0.412411,0
 濱海新區,eceyylsr,0.412411,0
 特徵是,hihkao,0.412411,0
 百人,mao,0.412411,0
@@ -31422,7 +31322,7 @@ phrase,quick_code,freq,hk_core
 萬金油,tbcew,0.412411,0
 被取消,leseeb,0.412411,0
 許諾,yjyr,0.412411,0
-誤認爲,ykypbf,0.412411,0
+誤認為,ykypif,0.412411,0
 醉人,mjo,0.412411,0
 錢買,ciwc,0.412411,0
 陷害,nxjr,0.412411,0
@@ -31510,7 +31410,7 @@ phrase,quick_code,freq,hk_core
 結婚後,vrvahe,0.412292,0
 綠色食品,venuovrr,0.412292,0
 網訊,vvyj,0.412292,0
-纔可,vimr,0.412292,0
+才可,dhmr,0.412292,0
 老幹部,jpjjyl,0.412292,0
 茶几,tdhn,0.412292,0
 被指,leqa,0.412292,0
@@ -31524,7 +31424,7 @@ phrase,quick_code,freq,hk_core
 青浦,qbeb,0.412292,0
 預選賽,ncycjc,0.412292,0
 馬德里,sfhpwg,0.412292,0
-驚爲天人,tfbfmko,0.412292,0
+驚為天人,tfifmko,0.412292,0
 世博,ptji,0.412233,0
 並發,tcne,0.412233,0
 也不願,pdmfmc,0.412233,0
@@ -31564,7 +31464,6 @@ phrase,quick_code,freq,hk_core
 第三類,hhmmfc,0.412233,0
 統治力,vuerks,0.412233,0
 網絡服務,vvvrbens,0.412233,0
-纔能讓,viipyv,0.412233,0
 老男人,jpwso,0.412233,0
 聊着,sltu,0.412233,0
 自暴自棄,huaehuyd,0.412233,0
@@ -31573,7 +31472,7 @@ phrase,quick_code,freq,hk_core
 退保,yvod,0.412233,0
 這學期,yrhdtb,0.412233,0
 鎖死,ccmp,0.412233,0
-隱祕,npih,0.412233,0
+隱秘,nphh,0.412233,0
 難於,tgyy,0.412233,0
 高下,yrmy,0.412233,0
 高標準,yrdfej,0.412233,0
@@ -31695,7 +31594,7 @@ phrase,quick_code,freq,hk_core
 沙丘,ehom,0.412054,0
 海事局,eyjnsr,0.412054,0
 滅蚊,eflk,0.412054,0
-爲了追求,bfnnyrie,0.412054,0
+為了追求,ifnnyrie,0.412054,0
 病痛,kbkb,0.412054,0
 籌畫,hilm,0.412054,0
 老趙,jpgb,0.412054,0
@@ -31739,7 +31638,7 @@ phrase,quick_code,freq,hk_core
 聖鬥士,sglnjm,0.411994,0
 聚合物,soorhh,0.411994,0
 股權轉讓,bedgjiyv,0.411994,0
-臺幣,ggfb,0.411994,0
+台幣,irfb,0.411994,0
 舉例說明,hqonyuab,0.411994,0
 苗木,twd,0.411994,0
 護甲,yewl,0.411994,0
@@ -31779,9 +31678,9 @@ phrase,quick_code,freq,hk_core
 村落,ditr,0.411934,0
 歎氣,tood,0.411934,0
 殿下,semy,0.411934,0
-沒喫過,eerkyr,0.411934,0
+沒吃過,eernyr,0.411934,0
 河東,erdw,0.411934,0
-港澳臺,euekgg,0.411934,0
+港澳台,euekir,0.411934,0
 犯罪分子,kuwychnd,0.411934,0
 王妃,mgvu,0.411934,0
 王莽,mgtt,0.411934,0
@@ -31947,9 +31846,8 @@ phrase,quick_code,freq,hk_core
 此法,ypei,0.411694,0
 殺跌,kero,0.411694,0
 江民,emrp,0.411694,0
-漫游,eeed,0.411694,0
 烽火,fjf,0.411694,0
-無爲,ofbf,0.411694,0
+無為,ofif,0.411694,0
 玉林,midd,0.411694,0
 生日禮物,hmaithh,0.411694,0
 睡意,bmyp,0.411694,0
@@ -31973,7 +31871,7 @@ phrase,quick_code,freq,hk_core
 其他都是,tcodjlao,0.411634,0
 功能測試,msipenym,0.411634,0
 南洋,jjeq,0.411634,0
-喫晚飯,rkauoe,0.411634,0
+吃晚飯,rnauoe,0.411634,0
 因特網,wkhivv,0.411634,0
 妒忌,vssp,0.411634,0
 定向增發,johrgane,0.411634,0
@@ -32092,7 +31990,7 @@ phrase,quick_code,freq,hk_core
 校服,dkbe,0.411513,0
 機長,disv,0.411513,0
 次要的,iomvhi,0.411513,0
-每臺,oigg,0.411513,0
+每台,oiir,0.411513,0
 水蒸氣,etfod,0.411513,0
 海鷗,eysf,0.411513,0
 煎餅,tfot,0.411513,0
@@ -32113,9 +32011,8 @@ phrase,quick_code,freq,hk_core
 休息一下,odhpmmy,0.411453,0
 余秋雨,odhfmy,0.411453,0
 兜兜,huhu,0.411453,0
-兼并,tctt,0.411453,0
 去拿,gioq,0.411453,0
-只因爲,rcwkbf,0.411453,0
+只因為,rcwkif,0.411453,0
 可享受,mrydbe,0.411453,0
 哺乳,rbbu,0.411453,0
 喝多,rvni,0.411453,0
@@ -32147,7 +32044,7 @@ phrase,quick_code,freq,hk_core
 維爾,vgmk,0.411453,0
 老大爺,jpkcl,0.411453,0
 聘任,ssog,0.411453,0
-聯衆,stho,0.411453,0
+聯眾,stwo,0.411453,0
 能控制,ipqmhn,0.411453,0
 華聯,tjst,0.411453,0
 記載了,yujjnn,0.411453,0
@@ -32220,7 +32117,7 @@ phrase,quick_code,freq,hk_core
 勞作,fsos,0.411332,0
 只愛,rcbe,0.411332,0
 各市,hryb,0.411332,0
-喫住,rkog,0.411332,0
+吃住,rnog,0.411332,0
 嘀咕,rbrr,0.411332,0
 固話,wryr,0.411332,0
 地看,gdhu,0.411332,0
@@ -32278,7 +32175,7 @@ phrase,quick_code,freq,hk_core
 待着,hitu,0.411271,0
 後悔了,hepynn,0.411271,0
 得快,hipk,0.411271,0
-我還以爲,hiyvvobf,0.411271,0
+我還以為,hiyvvoif,0.411271,0
 才把,dhqu,0.411271,0
 時辰,aimv,0.411271,0
 有一顆,kbmwc,0.411271,0
@@ -32339,7 +32236,7 @@ phrase,quick_code,freq,hk_core
 理學,mghd,0.411211,0
 理論體系,mgybbthf,0.411211,0
 發行量,nehnag,0.411211,0
-看臺,hugg,0.411211,0
+看台,huir,0.411211,0
 窗子,jend,0.411211,0
 管理學院,hrmghdnu,0.411211,0
 綿羊,vbtq,0.411211,0
@@ -32375,7 +32272,7 @@ phrase,quick_code,freq,hk_core
 折合,qlor,0.411150,0
 振華,qvtj,0.411150,0
 搞掂,qbqr,0.411150,0
-擂臺,qwgg,0.411150,0
+擂台,qwir,0.411150,0
 最便宜,aeokjm,0.411150,0
 某地,tdgd,0.411150,0
 焦作,ofos,0.411150,0
@@ -32455,7 +32352,7 @@ phrase,quick_code,freq,hk_core
 固定電話,wrjomuyr,0.411028,0
 圈套,wuki,0.411028,0
 國畫,wmlm,0.411028,0
-大喫一驚,krkmtf,0.411028,0
+大吃一驚,krnmtf,0.411028,0
 威懾,ivpj,0.411028,0
 安理會,jvmgoa,0.411028,0
 寫於,jfyy,0.411028,0
@@ -32581,7 +32478,7 @@ phrase,quick_code,freq,hk_core
 一小塊,mncgi,0.410846,0
 七日,jua,0.410846,0
 不二,mfmm,0.410846,0
-但是爲了,omaobfnn,0.410846,0
+但是為了,omaoifnn,0.410846,0
 倍受,orbe,0.410846,0
 僱用,ogbq,0.410846,0
 共和黨,tchrff,0.410846,0
@@ -32602,7 +32499,7 @@ phrase,quick_code,freq,hk_core
 正方形,mmysmh,0.410846,0
 江青,emqb,0.410846,0
 涼水,efe,0.410846,0
-爲誰,bfyg,0.410846,0
+為誰,ifyg,0.410846,0
 畸變,wrvk,0.410846,0
 發展速度,nesvylie,0.410846,0
 百萬富翁,matbjwcm,0.410846,0
@@ -32729,7 +32626,7 @@ phrase,quick_code,freq,hk_core
 輕描淡寫,jmqwefjf,0.410723,0
 辦完,yjju,0.410723,0
 遇上了,ybymnn,0.410723,0
-還爲,yvbf,0.410723,0
+還為,yvif,0.410723,0
 還能有,yvipkb,0.410723,0
 那有,slkb,0.410723,0
 銀杏,cvdr,0.410723,0
@@ -32774,7 +32671,7 @@ phrase,quick_code,freq,hk_core
 浪花,evtp,0.410662,0
 熟的,yfhi,0.410662,0
 熟睡,yfbm,0.410662,0
-爲所欲爲,bfhlcobf,0.410662,0
+為所欲為,ifhlcoif,0.410662,0
 申請材料,llybdhfj,0.410662,0
 畫法,lmei,0.410662,0
 監事,stjn,0.410662,0
@@ -32860,7 +32757,7 @@ phrase,quick_code,freq,hk_core
 侍衛,oihn,0.410540,0
 全長,ogsv,0.410540,0
 千里之外,hjwgiony,0.410540,0
-喫吧,rkru,0.410540,0
+吃吧,rnru,0.410540,0
 埋下,ggmy,0.410540,0
 天機,mkdi,0.410540,0
 女僕,voo,0.410540,0
@@ -32886,7 +32783,7 @@ phrase,quick_code,freq,hk_core
 滿族,ebyk,0.410540,0
 灰暗,kfaa,0.410540,0
 烹調,yfyr,0.410540,0
-爲重,bfhg,0.410540,0
+為重,ifhg,0.410540,0
 甘願,tmmc,0.410540,0
 由他,lwod,0.410540,0
 督辦,yuyj,0.410540,0
@@ -32923,7 +32820,7 @@ phrase,quick_code,freq,hk_core
 如何進行,vroryghn,0.410478,0
 對本,tidm,0.410478,0
 小葉,nctd,0.410478,0
-我喫,hirk,0.410478,0
+我吃,hirn,0.410478,0
 房地產商,hsgdymyr,0.410478,0
 所取得,hlsehi,0.410478,0
 挫敗,qgbk,0.410478,0
@@ -32938,9 +32835,9 @@ phrase,quick_code,freq,hk_core
 氏族,hpyk,0.410478,0
 水務,ens,0.410478,0
 水泡,eeu,0.410478,0
-爲一,bfm,0.410478,0
-登臺,ntgg,0.410478,0
-發展爲,nesvbf,0.410478,0
+為一,ifm,0.410478,0
+登台,ntir,0.410478,0
+發展為,nesvif,0.410478,0
 稅金,huc,0.410478,0
 第二期,hhmmtb,0.410478,0
 第四天,hhwcmk,0.410478,0
@@ -32986,7 +32883,7 @@ phrase,quick_code,freq,hk_core
 科技大學,hjqekhd,0.410417,0
 精裝修,fbvvoh,0.410417,0
 背板,lbde,0.410417,0
-菸酒,tyew,0.410417,0
+煙酒,fgew,0.410417,0
 該是,yoao,0.410417,0
 調整了,yrdmnn,0.410417,0
 遍歷,ybmm,0.410417,0
@@ -33053,7 +32950,6 @@ phrase,quick_code,freq,hk_core
 遷移到,yuhnmn,0.410356,0
 重金,hgc,0.410356,0
 雅緻,mgvk,0.410356,0
-雇員,hgrc,0.410356,0
 難處,tgyn,0.410356,0
 馳騁,sdss,0.410356,0
 體壇,btgm,0.410356,0
@@ -33125,7 +33021,7 @@ phrase,quick_code,freq,hk_core
 一走,mgo,0.410232,0
 主辦單位,ygyjrjot,0.410232,0
 亦不,ycmf,0.410232,0
-你作爲,ofosbf,0.410232,0
+你作為,ofosif,0.410232,0
 停用,onbq,0.410232,0
 內耗,obqu,0.410232,0
 全鎮,ogcc,0.410232,0
@@ -33141,7 +33037,7 @@ phrase,quick_code,freq,hk_core
 婆娘,evvv,0.410232,0
 封閉式,giahim,0.410232,0
 導讀,yiyc,0.410232,0
-廣大羣衆,icksqho,0.410232,0
+廣大羣眾,icksqwo,0.410232,0
 建的,nqhi,0.410232,0
 張家,nvjo,0.410232,0
 徑直,hmjm,0.410232,0
@@ -33184,7 +33080,7 @@ phrase,quick_code,freq,hk_core
 逗留,ythw,0.410232,0
 這間,yraa,0.410232,0
 造車,yrjj,0.410232,0
-還因爲,yvwkbf,0.410232,0
+還因為,yvwkif,0.410232,0
 限價,nvoc,0.410232,0
 靈兒,mohu,0.410232,0
 髮廊,seil,0.410232,0
@@ -33216,7 +33112,7 @@ phrase,quick_code,freq,hk_core
 支持了,jeqinn,0.410171,0
 整理一下,dmmgmmy,0.410171,0
 日線,ave,0.410171,0
-曾爲,cabf,0.410171,0
+曾為,caif,0.410171,0
 有基礎,kbtgmo,0.410171,0
 板磚,demi,0.410171,0
 歡迎來到,toyldomn,0.410171,0
@@ -33290,7 +33186,7 @@ phrase,quick_code,freq,hk_core
 賞心悅目,fcppubu,0.410109,0
 造勢,yrgs,0.410109,0
 餘年,odoq,0.410109,0
-不要喫,mfmvrk,0.410047,0
+不要吃,mfmvrn,0.410047,0
 中國公民,lwmcirp,0.410047,0
 件好事,oqvdjn,0.410047,0
 你一,ofm,0.410047,0
@@ -33311,7 +33207,7 @@ phrase,quick_code,freq,hk_core
 消費需求,eblcmlie,0.410047,0
 淋漓,edeb,0.410047,0
 熱切,gfph,0.410047,0
-現爲,mubf,0.410047,0
+現為,muif,0.410047,0
 當今世界,fwonptwl,0.410047,0
 睜大,bdk,0.410047,0
 羅馬尼亞,wgsfspmm,0.410047,0
@@ -33620,7 +33516,7 @@ phrase,quick_code,freq,hk_core
 白費,halc,0.409675,0
 益於,ttyy,0.409675,0
 盤算,htht,0.409675,0
-社會公衆,igoaciho,0.409675,0
+社會公眾,igoaciwo,0.409675,0
 端莊,ybtg,0.409675,0
 第五次,hhmmio,0.409675,0
 紙上談兵,vpymyfoc,0.409675,0
@@ -33717,9 +33613,9 @@ phrase,quick_code,freq,hk_core
 劉某,hntd,0.409550,0
 去處,giyn,0.409550,0
 各有不同,hrkbmfbr,0.409550,0
-同臺,brgg,0.409550,0
+同台,brir,0.409550,0
 告一段落,hrmhetr,0.409550,0
-喫上,rkym,0.409550,0
+吃上,rnym,0.409550,0
 國際品牌,wmnfrrlj,0.409550,0
 圖形學,wwmhhd,0.409550,0
 報告會,gehroa,0.409550,0
@@ -33766,7 +33662,7 @@ phrase,quick_code,freq,hk_core
 體形,btmh,0.409550,0
 高架,yrkd,0.409550,0
 魅惑,hdip,0.409550,0
-不失爲,mfhobf,0.409488,0
+不失為,mfhoif,0.409488,0
 你一個人,ofmoro,0.409488,0
 優盤,oeht,0.409488,0
 兩者都,mojajl,0.409488,0
@@ -33921,7 +33817,7 @@ phrase,quick_code,freq,hk_core
 上市後,ymybhe,0.409301,0
 不會讓你,mfoayvof,0.409301,0
 世界一流,ptwlmeu,0.409301,0
-並不認爲,tcmfypbf,0.409301,0
+並不認為,tcmfypif,0.409301,0
 九大,knk,0.409301,0
 交流會,ykeuoa,0.409301,0
 光光,fufu,0.409301,0
@@ -33946,7 +33842,7 @@ phrase,quick_code,freq,hk_core
 探訪,qdys,0.409301,0
 支教,jejk,0.409301,0
 文文,ykyk,0.409301,0
-文祕,ykih,0.409301,0
+文秘,ykhh,0.409301,0
 有機結合,kbdivror,0.409301,0
 東家,dwjo,0.409301,0
 條文,odyk,0.409301,0
@@ -34251,10 +34147,10 @@ phrase,quick_code,freq,hk_core
 被邀請,leykyb,0.408987,0
 說不出來,yumfuudo,0.408987,0
 讓利,yvhn,0.408987,0
-豐臺區,utggsr,0.408987,0
+豐台區,utirsr,0.408987,0
 趕在,gjkg,0.408987,0
 遠行,yvhn,0.408987,0
-都喫,jlrk,0.408987,0
+都吃,jlrn,0.408987,0
 重讀,hgyc,0.408987,0
 長生,svhm,0.408987,0
 馬修,sfoh,0.408987,0
@@ -34313,12 +34209,11 @@ phrase,quick_code,freq,hk_core
 閩南,aijj,0.408924,0
 雜種,yghg,0.408924,0
 領軍,ocbj,0.408924,0
-鼻梁,hled,0.408924,0
 鼻樑,hldd,0.408924,0
 下一輪,mymjb,0.408861,0
 世界紀錄,ptwlvuce,0.408861,0
 主導地位,ygyigdot,0.408861,0
-以上爲,voymbf,0.408861,0
+以上為,voymif,0.408861,0
 值得期待,omhitbhi,0.408861,0
 再回,mbwr,0.408861,0
 劇場版,ynghle,0.408861,0
@@ -34393,7 +34288,7 @@ phrase,quick_code,freq,hk_core
 導管,yihr,0.408798,0
 小四,ncwc,0.408798,0
 巨石,ssmr,0.408798,0
-幾臺,vigg,0.408798,0
+幾台,viir,0.408798,0
 德比,hppp,0.408798,0
 徹頭徹尾,hkmchksu,0.408798,0
 快捷方式,pkqoysim,0.408798,0
@@ -34409,7 +34304,7 @@ phrase,quick_code,freq,hk_core
 波里,eewg,0.408798,0
 無機,ofdi,0.408798,0
 無法解決,ofeinqek,0.408798,0
-爲的是,bfhiao,0.408798,0
+為的是,ifhiao,0.408798,0
 特困,hiwd,0.408798,0
 特警,hitr,0.408798,0
 玄武,yimm,0.408798,0
@@ -34476,7 +34371,7 @@ phrase,quick_code,freq,hk_core
 積木,hcd,0.408734,0
 第十三,hhjmm,0.408734,0
 總動員,vphsrc,0.408734,0
-纔不,vimf,0.408734,0
+才不,dhmf,0.408734,0
 羽毛球拍,smhumeqa,0.408734,0
 股票基金,bemftgc,0.408734,0
 育種,ybhg,0.408734,0
@@ -34545,7 +34440,7 @@ phrase,quick_code,freq,hk_core
 限量版,nvagle,0.408671,0
 黨派,ffev,0.408671,0
 一廂情願,miupbmc,0.408608,0
-不過因爲,mfyrwkbf,0.408608,0
+不過因為,mfyrwkif,0.408608,0
 主要產品,ygmvymrr,0.408608,0
 主題歌,ygacmo,0.408608,0
 之言,ioyr,0.408608,0
@@ -34590,7 +34485,7 @@ phrase,quick_code,freq,hk_core
 蓮子,tjnd,0.408608,0
 蔑視,tiiu,0.408608,0
 螺旋槳,lfyovd,0.408608,0
-衆神,hoil,0.408608,0
+眾神,woil,0.408608,0
 行家,hnjo,0.408608,0
 被認定,leypjo,0.408608,0
 製圖,hvww,0.408608,0
@@ -34636,12 +34531,12 @@ phrase,quick_code,freq,hk_core
 純淨水,vuede,0.408544,0
 絕無,vuof,0.408544,0
 續保,vcod,0.408544,0
-而爲,mlbf,0.408544,0
+而為,mlif,0.408544,0
 聲聲,gjgj,0.408544,0
 航拍,hnqa,0.408544,0
 花色,tpnu,0.408544,0
 譜寫,yajf,0.408544,0
-貴州茅臺,lcilthgg,0.408544,0
+貴州茅台,lcilthir,0.408544,0
 買一,wcm,0.408544,0
 超低價,gromoc,0.408544,0
 三個階段,mmornahe,0.408481,0
@@ -34688,7 +34583,7 @@ phrase,quick_code,freq,hk_core
 紅血絲,vmhtvf,0.408481,0
 網絡環境,vvvrmvgu,0.408481,0
 繼續教育,vivcjkyb,0.408481,0
-纔說,viyu,0.408481,0
+才說,dhyu,0.408481,0
 自曝,huae,0.408481,0
 蟲族,liyk,0.408481,0
 規整,qudm,0.408481,0
@@ -34703,7 +34598,7 @@ phrase,quick_code,freq,hk_core
 不算多,mfhtni,0.408417,0
 之以,iovo,0.408417,0
 付清,oieb,0.408417,0
-來爲,dobf,0.408417,0
+來為,doif,0.408417,0
 修路,ohrr,0.408417,0
 個性簽名,orpmhonr,0.408417,0
 傳播學,oiqwhd,0.408417,0
@@ -34747,7 +34642,6 @@ phrase,quick_code,freq,hk_core
 立下,ytmy,0.408417,0
 經濟基礎,vmextgmo,0.408417,0
 總資產,vpicym,0.408417,0
-纔把,viqu,0.408417,0
 考進,jsyg,0.408417,0
 職業化,satdop,0.408417,0
 聽雨,spmy,0.408417,0
@@ -34762,7 +34656,7 @@ phrase,quick_code,freq,hk_core
 過問,yrar,0.408417,0
 適於,ybyy,0.408417,0
 遼闊,yfar,0.408417,0
-邢臺,mlgg,0.408417,0
+邢台,mlir,0.408417,0
 酸酸,meme,0.408417,0
 重要嗎,hgmvrf,0.408417,0
 防盜門,nsetan,0.408417,0
@@ -34817,7 +34711,7 @@ phrase,quick_code,freq,hk_core
 翻臉,hmbo,0.408354,0
 若不是,trmfao,0.408354,0
 蓬萊,tjto,0.408354,0
-見義勇爲,butinsbf,0.408354,0
+見義勇為,butinsif,0.408354,0
 見聞,buaj,0.408354,0
 超長,grsv,0.408354,0
 過嗎,yrrf,0.408354,0
@@ -34866,7 +34760,7 @@ phrase,quick_code,freq,hk_core
 眼袋,bvov,0.408290,0
 睡夢,bmtn,0.408290,0
 社會福利,igoaiwhn,0.408290,0
-祕笈,ihhe,0.408290,0
+秘笈,hhhe,0.408290,0
 空的,jmhi,0.408290,0
 筆名,hqnr,0.408290,0
 約瑟夫,vimhqo,0.408290,0
@@ -34981,7 +34875,7 @@ phrase,quick_code,freq,hk_core
 每篇,oihb,0.408163,0
 沒一個,eemor,0.408163,0
 沒出,eeuu,0.408163,0
-爲了錢,bfnnci,0.408163,0
+為了錢,ifnnci,0.408163,0
 玩偶,muob,0.408163,0
 生活裏,hmeryv,0.408163,0
 百安居,majvsr,0.408163,0
@@ -35082,7 +34976,7 @@ phrase,quick_code,freq,hk_core
 只賣,rcgc,0.408035,0
 名堂,nrfg,0.408035,0
 和誰,hryg,0.408035,0
-喫不到,rkmfmn,0.408035,0
+吃不到,rnmfmn,0.408035,0
 固定收益,wrjovktt,0.408035,0
 在內地,kgobgd,0.408035,0
 在地球,kggdme,0.408035,0
@@ -35269,7 +35163,7 @@ phrase,quick_code,freq,hk_core
 流動資金,euhsicc,0.407843,0
 演說,ecyu,0.407843,0
 漸進,elyg,0.407843,0
-潛臺詞,eaggyr,0.407843,0
+潛台詞,eairyr,0.407843,0
 燃起,ffgu,0.407843,0
 玉溪,miek,0.407843,0
 玩樂,muvd,0.407843,0
@@ -35338,8 +35232,8 @@ phrase,quick_code,freq,hk_core
 洞裏,eryv,0.407779,0
 流通股東,euybbedw,0.407779,0
 生性,hmpm,0.407779,0
-癡呆,kord,0.407779,0
-癡心,kop,0.407779,0
+痴呆,krrd,0.407779,0
+痴心,krp,0.407779,0
 發表聲明,neqvgjab,0.407779,0
 百里,mawg,0.407779,0
 硒鼓,mwge,0.407779,0
@@ -35385,7 +35279,7 @@ phrase,quick_code,freq,hk_core
 同歸於盡,brhbyylt,0.407714,0
 吟唱,rnra,0.407714,0
 吳江,rkem,0.407714,0
-喫魚,rknf,0.407714,0
+吃魚,rnnf,0.407714,0
 嚴厲打擊,rkmbqnjq,0.407714,0
 在我身上,kghihhym,0.407714,0
 多塊,nigi,0.407714,0
@@ -35409,9 +35303,9 @@ phrase,quick_code,freq,hk_core
 海藻,eytd,0.407714,0
 淒慘,evph,0.407714,0
 游擊隊,edjqno,0.407714,0
-爲主體,bfygbt,0.407714,0
-爲了保持,bfnnodqi,0.407714,0
-爲客戶,bfjrhs,0.407714,0
+為主體,ifygbt,0.407714,0
+為了保持,ifnnodqi,0.407714,0
+為客戶,ifjrhs,0.407714,0
 王維,mgvg,0.407714,0
 相間,duaa,0.407714,0
 着落,tutr,0.407714,0
@@ -35459,7 +35353,7 @@ phrase,quick_code,freq,hk_core
 大屠殺,ksake,0.407650,0
 學習效果,hdsaykwd,0.407650,0
 宏碁,jitr,0.407650,0
-實爲,jcbf,0.407650,0
+實為,jcif,0.407650,0
 小心點,ncpwr,0.407650,0
 小黃,nctc,0.407650,0
 就剩下,yuhnmy,0.407650,0
@@ -35487,7 +35381,7 @@ phrase,quick_code,freq,hk_core
 管理部,hrmgyl,0.407650,0
 絕大,vuk,0.407650,0
 給家裏,vrjoyv,0.407650,0
-績效考覈,vcykjsmk,0.407650,0
+績效考核,vcykjsdo,0.407650,0
 聊得,slhi,0.407650,0
 英皇,tkhg,0.407650,0
 評標,yjdf,0.407650,0
@@ -35559,7 +35453,7 @@ phrase,quick_code,freq,hk_core
 中國製造,lwmhvyr,0.407521,0
 人意,oyp,0.407521,0
 來函,doue,0.407521,0
-值爲,ombf,0.407521,0
+值為,omif,0.407521,0
 健康狀況,oqievkeu,0.407521,0
 公理,cimg,0.407521,0
 公頃,cipc,0.407521,0
@@ -35582,7 +35476,7 @@ phrase,quick_code,freq,hk_core
 有感情,kbippb,0.407521,0
 服裝店,bevvir,0.407521,0
 格爾,drmk,0.407521,0
-爲每,bfoi,0.407521,0
+為每,ifoi,0.407521,0
 片名,llnr,0.407521,0
 特種部隊,hihgylno,0.407521,0
 盲區,yusr,0.407521,0
@@ -35603,7 +35497,7 @@ phrase,quick_code,freq,hk_core
 要拿,mvoq,0.407521,0
 豪邁,yoyb,0.407521,0
 賺點,bcwr,0.407521,0
-通喫,ybrk,0.407521,0
+通吃,ybrn,0.407521,0
 那只能,slrcip,0.407521,0
 金城武,cgsmm,0.407521,0
 金曲,ctw,0.407521,0
@@ -35717,7 +35611,7 @@ phrase,quick_code,freq,hk_core
 禪師,ijhb,0.407392,0
 第九屆,hhknsg,0.407392,0
 結核,vrdo,0.407392,0
-纔到,vimn,0.407392,0
+才到,dhmn,0.407392,0
 胎盤,brht,0.407392,0
 腎上腺,sbymbe,0.407392,0
 螳螂,lgll,0.407392,0
@@ -35793,7 +35687,7 @@ phrase,quick_code,freq,hk_core
 沙河,eher,0.407327,0
 洛基,ertg,0.407327,0
 演奏者,ecqkja,0.407327,0
-爲背景,bflbaf,0.407327,0
+為背景,iflbaf,0.407327,0
 生命危險,hmolnuno,0.407327,0
 真氣,jcod,0.407327,0
 胃病,wbkb,0.407327,0
@@ -35817,7 +35711,7 @@ phrase,quick_code,freq,hk_core
 他了,odnn,0.407263,0
 伎倆,oeob,0.407263,0
 信產部,orymyl,0.407263,0
-修爲,ohbf,0.407263,0
+修為,ohif,0.407263,0
 兵線,ocve,0.407263,0
 再建,mbnq,0.407263,0
 劉少奇,hnfhkr,0.407263,0
@@ -35857,7 +35751,7 @@ phrase,quick_code,freq,hk_core
 水洗,eeu,0.407263,0
 法律諮詢,eihqyrya,0.407263,0
 滲出,ehuu,0.407263,0
-爲師,bfhb,0.407263,0
+為師,ifhb,0.407263,0
 百度文庫,maieykij,0.407263,0
 管理工具,hrmgmmbc,0.407263,0
 紅魔,vmii,0.407263,0
@@ -35873,7 +35767,7 @@ phrase,quick_code,freq,hk_core
 蜀山,wiu,0.407263,0
 血汗錢,htejci,0.407263,0
 行政審批,hnmkjwqp,0.407263,0
-被評爲,leyjbf,0.407263,0
+被評為,leyjif,0.407263,0
 西昌,mwaa,0.407263,0
 護法,yeei,0.407263,0
 貓頭鷹,bwmcif,0.407263,0
@@ -36032,7 +35926,6 @@ phrase,quick_code,freq,hk_core
 符合國家,hiorwmjo,0.407068,0
 簡單易懂,harjahpg,0.407068,0
 米左右,fdkmkr,0.407068,0
-纔被,vile,0.407068,0
 而以,mlvo,0.407068,0
 聲討,gjyi,0.407068,0
 臨牀表現,srvdqvmu,0.407068,0
@@ -36062,7 +35955,6 @@ phrase,quick_code,freq,hk_core
 似地,oogd,0.407003,0
 位面,otml,0.407003,0
 來去,dogi,0.407003,0
-侵占,oeyr,0.407003,0
 像現在,oomukg,0.407003,0
 入會,ohoa,0.407003,0
 內燃機,obffdi,0.407003,0
@@ -36168,7 +36060,7 @@ phrase,quick_code,freq,hk_core
 聚集了,soodnn,0.406938,0
 肌瘤,bnkw,0.406938,0
 能出,ipuu,0.406938,0
-臺電,ggmu,0.406938,0
+台電,irmu,0.406938,0
 薰衣草,tfyvtj,0.406938,0
 註冊資金,ygbticc,0.406938,0
 買得起,wchigu,0.406938,0
@@ -36240,7 +36132,7 @@ phrase,quick_code,freq,hk_core
 緊身,sfhh,0.406873,0
 緊鄰,sffl,0.406873,0
 腹地,begd,0.406873,0
-覈銷,mkcb,0.406873,0
+核銷,docb,0.406873,0
 語言學習,yryrhdsa,0.406873,0
 調低,yrom,0.406873,0
 這個計劃,yroryjln,0.406873,0
@@ -36252,7 +36144,7 @@ phrase,quick_code,freq,hk_core
 黑頭,wfmc,0.406873,0
 點擊下面,wrjqmyml,0.406873,0
 一杯咖啡,mdfrrry,0.406807,0
-一臺電腦,mggmubw,0.406807,0
+一台電腦,mirmubw,0.406807,0
 一題,mac,0.406807,0
 不能忍,mfipsp,0.406807,0
 世界著名,ptwltanr,0.406807,0
@@ -36294,7 +36186,7 @@ phrase,quick_code,freq,hk_core
 油性,ewpm,0.406807,0
 消費羣體,eblcsqbt,0.406807,0
 深水,ede,0.406807,0
-溼熱,eggf,0.406807,0
+濕熱,efgf,0.406807,0
 瀟瀟,exex,0.406807,0
 灰心,kfp,0.406807,0
 狠毒,kvqi,0.406807,0
@@ -36336,9 +36228,9 @@ phrase,quick_code,freq,hk_core
 其他產品,tcodymrr,0.406742,0
 出票,uumf,0.406742,0
 副駕駛,mnkfsk,0.406742,0
-又分爲,nkchbf,0.406742,0
+又分為,nkchif,0.406742,0
 品牌機,rrljdi,0.406742,0
-喫奶,rkvs,0.406742,0
+吃奶,rnvs,0.406742,0
 單程,rjhg,0.406742,0
 地標,gddf,0.406742,0
 夥伴關係,wnoqatof,0.406742,0
@@ -36405,7 +36297,6 @@ phrase,quick_code,freq,hk_core
 年鑑,oqct,0.406677,0
 懊惱,pkpw,0.406677,0
 才會出現,dhoauumu,0.406677,0
-才說,dhyu,0.406677,0
 把戲,quyi,0.406677,0
 拼車,qtjj,0.406677,0
 新月,ylb,0.406677,0
@@ -36552,7 +36443,7 @@ phrase,quick_code,freq,hk_core
 自己知道,husuoryu,0.406546,0
 興業銀行,hctdcvhn,0.406546,0
 華僑城,tjobgs,0.406546,0
-萬衆,tbho,0.406546,0
+萬眾,tbwo,0.406546,0
 說不準,yumfej,0.406546,0
 辣味,ylrd,0.406546,0
 連結,yjvr,0.406546,0
@@ -36706,7 +36597,7 @@ phrase,quick_code,freq,hk_core
 噪點,rdwr,0.406349,0
 培訓學校,grylhddk,0.406349,0
 外陰,nyni,0.406349,0
-多臺,nigg,0.406349,0
+多台,niir,0.406349,0
 大熊,kif,0.406349,0
 大牀,kvd,0.406349,0
 如日中天,vralmk,0.406349,0
@@ -36714,7 +36605,7 @@ phrase,quick_code,freq,hk_core
 居住區,srogsr,0.406349,0
 工傷保險,mmohodno,0.406349,0
 廣大用戶,ickbqhs,0.406349,0
-廣播電臺,icqwmugg,0.406349,0
+廣播電台,icqwmuir,0.406349,0
 建在,nqkg,0.406349,0
 後勁,hems,0.406349,0
 急得,nphi,0.406349,0
@@ -36745,7 +36636,7 @@ phrase,quick_code,freq,hk_core
 獎懲,vkhp,0.406349,0
 瘙癢,kikv,0.406349,0
 看穿,hujh,0.406349,0
-祕魯,ihna,0.406349,0
+秘魯,hhna,0.406349,0
 禁錮,dfcr,0.406349,0
 納蘭,vbtw,0.406349,0
 經營企業,vmfromtd,0.406349,0
@@ -36778,7 +36669,7 @@ phrase,quick_code,freq,hk_core
 只是你,rcaoof,0.406283,0
 可向,mrhr,0.406283,0
 唱響,rava,0.406283,0
-喫不下,rkmfmy,0.406283,0
+吃不下,rnmfmy,0.406283,0
 外交官,nyykjr,0.406283,0
 多啊,nirr,0.406283,0
 始建,vrnq,0.406283,0
@@ -36928,7 +36819,7 @@ phrase,quick_code,freq,hk_core
 合格證,ordryt,0.406151,0
 唯二,rgmm,0.406151,0
 喝得,rvhi,0.406151,0
-喫素,rkqf,0.406151,0
+吃素,rnqf,0.406151,0
 大怒,kvp,0.406151,0
 好冷,vdii,0.406151,0
 小白兔,nchani,0.406151,0
@@ -36962,7 +36853,7 @@ phrase,quick_code,freq,hk_core
 習性,sapm,0.406151,0
 老遠,jpyv,0.406151,0
 胸脯,bkbb,0.406151,0
-臺前,ggtn,0.406151,0
+台前,irtn,0.406151,0
 苛責,trqc,0.406151,0
 蒙版,tole,0.406151,0
 裏也,yvpd,0.406151,0
@@ -36984,7 +36875,7 @@ phrase,quick_code,freq,hk_core
 亮劍,ynon,0.406085,0
 付給,oivr,0.406085,0
 企業名稱,omtdnrhb,0.406085,0
-個人行爲,orohnbf,0.406085,0
+個人行為,orohnif,0.406085,0
 公共利益,citchntt,0.406085,0
 冒險島,aunohu,0.406085,0
 到老,mnjp,0.406085,0
@@ -37032,7 +36923,7 @@ phrase,quick_code,freq,hk_core
 缺憾,okpp,0.406085,0
 羊羊,tqtq,0.406085,0
 聽講,spyb,0.406085,0
-脣膏,mbyb,0.406085,0
+唇膏,mryb,0.406085,0
 萬戶,tbhs,0.406085,0
 觸電,nimu,0.406085,0
 詩文,yiyk,0.406085,0
@@ -37138,7 +37029,7 @@ phrase,quick_code,freq,hk_core
 龍鳳,yphf,0.406019,0
 一下下,mmymy,0.405953,0
 一針,mcj,0.405953,0
-中央臺,llkgg,0.405953,0
+中央台,llkir,0.405953,0
 你寫的,ofjfhi,0.405953,0
 克斯,jutl,0.405953,0
 六百,ycma,0.405953,0
@@ -37208,7 +37099,7 @@ phrase,quick_code,freq,hk_core
 一首詩,mtuyi,0.405886,0
 不要害怕,mfmvjrpa,0.405886,0
 亞麻,mmid,0.405886,0
-以爲我,vobfhi,0.405886,0
+以為我,voifhi,0.405886,0
 任正非,ogmmly,0.405886,0
 伊斯蘭教,oktltwjk,0.405886,0
 保修期,odohtb,0.405886,0
@@ -37218,7 +37109,7 @@ phrase,quick_code,freq,hk_core
 同住,brog,0.405886,0
 回聲,wrgj,0.405886,0
 圖示,wwmf,0.405886,0
-在後臺,kghegg,0.405886,0
+在後台,kgheir,0.405886,0
 女同事,vbrjn,0.405886,0
 好讓,vdyv,0.405886,0
 嬌小,vbnc,0.405886,0
@@ -37244,7 +37135,6 @@ phrase,quick_code,freq,hk_core
 決絕,ekvu,0.405886,0
 沖淡,elef,0.405886,0
 淡雅,efmg,0.405886,0
-游蕩,edth,0.405886,0
 溜走,ewgo,0.405886,0
 爽朗,kkib,0.405886,0
 牛油果,hqewwd,0.405886,0
@@ -37274,7 +37164,7 @@ phrase,quick_code,freq,hk_core
 一試,mym,0.405820,0
 三場,mmgh,0.405820,0
 三年內,mmoqob,0.405820,0
-三臺,mmgg,0.405820,0
+三台,mmir,0.405820,0
 不利影響,mfhnahva,0.405820,0
 不輕,mfjm,0.405820,0
 中檔,ldw,0.405820,0
@@ -37380,7 +37270,7 @@ phrase,quick_code,freq,hk_core
 殺氣,keod,0.405754,0
 海景,eyaf,0.405754,0
 清明節,ebabhl,0.405754,0
-爲什,bfoj,0.405754,0
+為什,ifoj,0.405754,0
 獨奏,kiqk,0.405754,0
 玩梗,mudk,0.405754,0
 理所應當,mghlipfw,0.405754,0
@@ -37420,7 +37310,7 @@ phrase,quick_code,freq,hk_core
 使命感,okolip,0.405687,0
 全面提升,ogmlqoht,0.405687,0
 公仔,ciod,0.405687,0
-公衆人物,cihoohh,0.405687,0
+公眾人物,ciwoohh,0.405687,0
 出生地,uuhmgd,0.405687,0
 別被,rnle,0.405687,0
 半球,fqme,0.405687,0
@@ -37484,7 +37374,7 @@ phrase,quick_code,freq,hk_core
 作風建設,oshinqye,0.405621,0
 供求關係,ocieatof,0.405621,0
 內置了,obwmnn,0.405621,0
-分衆,chho,0.405621,0
+分眾,chwo,0.405621,0
 勁頭,msmc,0.405621,0
 區位,srot,0.405621,0
 古道,jryu,0.405621,0
@@ -37493,7 +37383,7 @@ phrase,quick_code,freq,hk_core
 司司長,srsrsv,0.405621,0
 名勝,nrbs,0.405621,0
 喜訊,gryj,0.405621,0
-喫些,rkym,0.405621,0
+吃些,rnym,0.405621,0
 嚴重者,rkhgja,0.405621,0
 外用,nybq,0.405621,0
 學術交流,hdhnykeu,0.405621,0
@@ -37583,7 +37473,7 @@ phrase,quick_code,freq,hk_core
 最低分,aeomch,0.405554,0
 有害物質,kbjrhhhc,0.405554,0
 有理由,kbmglw,0.405554,0
-棱角,deng,0.405554,0
+稜角,heng,0.405554,0
 業務部,tdnsyl,0.405554,0
 樂天,vdmk,0.405554,0
 法律保護,eihqodye,0.405554,0
@@ -37655,7 +37545,7 @@ phrase,quick_code,freq,hk_core
 沙啞,ehrm,0.405487,0
 流汗,euej,0.405487,0
 海中,eyl,0.405487,0
-溼透,egys,0.405487,0
+濕透,efys,0.405487,0
 滿街,ebhn,0.405487,0
 烈焰,mffx,0.405487,0
 球迷們,meydon,0.405487,0
@@ -37666,7 +37556,6 @@ phrase,quick_code,freq,hk_core
 緊要,sfmv,0.405487,0
 線材,vedh,0.405487,0
 總是有,vpaokb,0.405487,0
-纔讓,viyv,0.405487,0
 落落,trtr,0.405487,0
 蒙上,toym,0.405487,0
 衣櫥,yvdi,0.405487,0
@@ -37695,7 +37584,7 @@ phrase,quick_code,freq,hk_core
 不用註冊,mfbqygbt,0.405420,0
 中國青年,lwmqboq,0.405420,0
 主要經營,ygmvvmfr,0.405420,0
-五臺山,mmggu,0.405420,0
+五台山,mmiru,0.405420,0
 任免,ognu,0.405420,0
 來之不易,doiomfah,0.405420,0
 俏皮,obde,0.405420,0
@@ -37847,7 +37736,7 @@ phrase,quick_code,freq,hk_core
 鬼話,hiyr,0.405354,0
 一廳,mip,0.405287,0
 一念,mop,0.405287,0
-一汽大衆,menkho,0.405287,0
+一汽大眾,menkwo,0.405287,0
 主要做,ygmvok,0.405287,0
 之痛,iokb,0.405287,0
 乳溝,bueb,0.405287,0
@@ -37896,7 +37785,7 @@ phrase,quick_code,freq,hk_core
 病死,kbmp,0.405287,0
 發動了,nehsnn,0.405287,0
 直播員,jmqwrc,0.405287,0
-祕書處,ihlayn,0.405287,0
+秘書處,hhlayn,0.405287,0
 競拍,yuqa,0.405287,0
 純樸,vudo,0.405287,0
 統計表,vuyjqv,0.405287,0
@@ -37960,7 +37849,7 @@ phrase,quick_code,freq,hk_core
 宣武,jmmm,0.405220,0
 家產,joym,0.405220,0
 實力派,jcksev,0.405220,0
-就爲,yubf,0.405220,0
+就為,yuif,0.405220,0
 工農,mmtv,0.405220,0
 帶動了,kbhsnn,0.405220,0
 從美國,hotkwm,0.405220,0
@@ -38026,7 +37915,7 @@ phrase,quick_code,freq,hk_core
 全攻略,ogmkwr,0.405153,0
 再沒,mbee,0.405153,0
 出馬,uusf,0.405153,0
-到此爲止,mnypbfym,0.405153,0
+到此為止,mnypifym,0.405153,0
 創造良好,onyrivvd,0.405153,0
 吊銷,rbcb,0.405153,0
 啥也,rrpd,0.405153,0
@@ -38176,12 +38065,12 @@ phrase,quick_code,freq,hk_core
 半身,fqhh,0.405018,0
 可利用,mrhnbq,0.405018,0
 同義詞,brtiyr,0.405018,0
-喫相,rkdu,0.405018,0
+吃相,rndu,0.405018,0
 嘻哈,rrrr,0.405018,0
 多種方式,nihgysim,0.405018,0
 如雲,vrmi,0.405018,0
 封建社會,ginqigoa,0.405018,0
-對臺,tigg,0.405018,0
+對台,tiir,0.405018,0
 就應該是,yuipyoao,0.405018,0
 年審,oqjw,0.405018,0
 幾米,vifd,0.405018,0
@@ -38267,7 +38156,7 @@ phrase,quick_code,freq,hk_core
 民政部,rpmkyl,0.404951,0
 水土,eg,0.404951,0
 水土保持,egodqi,0.404951,0
-游牧,edhk,0.404951,0
+遊牧,ydhk,0.404951,0
 濱州,ecil,0.404951,0
 理療,mgkf,0.404951,0
 環評,mvyj,0.404951,0
@@ -38290,7 +38179,6 @@ phrase,quick_code,freq,hk_core
 費事,lcjn,0.404951,0
 起重機,guhgdi,0.404951,0
 這封,yrgi,0.404951,0
-遊牧,ydhk,0.404951,0
 那英,sltk,0.404951,0
 銷往,cbhg,0.404951,0
 鍋中,crl,0.404951,0
@@ -38444,7 +38332,7 @@ phrase,quick_code,freq,hk_core
 第三批,hhmmqp,0.404816,0
 紛飛,vhno,0.404816,0
 繚繞,vfvu,0.404816,0
-行爲人,hnbfo,0.404816,0
+行為人,hnifo,0.404816,0
 記憶猶新,yuppkwyl,0.404816,0
 諺語,yhyr,0.404816,0
 謝晉,yima,0.404816,0
@@ -38508,7 +38396,7 @@ phrase,quick_code,freq,hk_core
 海珠,eymd,0.404748,0
 海角,eyng,0.404748,0
 湘江,euem,0.404748,0
-溼氣,egod,0.404748,0
+濕氣,efod,0.404748,0
 相望,duyg,0.404748,0
 看中了,hulnn,0.404748,0
 科技公司,hjqecisr,0.404748,0
@@ -38520,7 +38408,7 @@ phrase,quick_code,freq,hk_core
 絕妙,vuvh,0.404748,0
 老吳,jprk,0.404748,0
 脊髓,fbbb,0.404748,0
-菸葉,tytd,0.404748,0
+煙葉,fgtd,0.404748,0
 藍牙耳機,ttmhsjdi,0.404748,0
 西雙版納,mwoelevb,0.404748,0
 親爹,yucn,0.404748,0
@@ -38810,7 +38698,7 @@ phrase,quick_code,freq,hk_core
 浮雕,edbg,0.404478,0
 無話可說,ofyrmryu,0.404478,0
 爆滿,feeb,0.404478,0
-爲國,bfwm,0.404478,0
+為國,ifwm,0.404478,0
 片尾曲,llsutw,0.404478,0
 狡辯,kkyj,0.404478,0
 瑤池,mued,0.404478,0
@@ -38845,8 +38733,8 @@ phrase,quick_code,freq,hk_core
 一口價,mroc,0.404410,0
 下鍋,mycr,0.404410,0
 主站,ygyr,0.404410,0
-也認爲,pdypbf,0.404410,0
-來喫,dork,0.404410,0
+也認為,pdypif,0.404410,0
+來吃,dorn,0.404410,0
 供銷,occb,0.404410,0
 再讀,mbyc,0.404410,0
 分道揚鑣,chyuqhcf,0.404410,0
@@ -38888,7 +38776,7 @@ phrase,quick_code,freq,hk_core
 液化,ekop,0.404410,0
 淫亂,egbu,0.404410,0
 漫不經心,eemfvmp,0.404410,0
-爲使,bfok,0.404410,0
+為使,ifok,0.404410,0
 物理量,hhmgag,0.404410,0
 甘露,tmmr,0.404410,0
 發展狀況,nesvvkeu,0.404410,0
@@ -38991,7 +38879,7 @@ phrase,quick_code,freq,hk_core
 越秀,gvhs,0.404342,0
 這主要是,yrygmvao,0.404342,0
 連敗,yjbk,0.404342,0
-還以爲是,yvvobfao,0.404342,0
+還以為是,yvvoifao,0.404342,0
 金融街,cmihn,0.404342,0
 銅錢,crci,0.404342,0
 錄象,ceno,0.404342,0
@@ -39082,8 +38970,8 @@ phrase,quick_code,freq,hk_core
 名醫,nrsw,0.404205,0
 和幫助,hrgbbs,0.404205,0
 商販,yrbe,0.404205,0
-喫早餐,rkajyv,0.404205,0
-因爲愛,wkbfbe,0.404205,0
+吃早餐,rnajyv,0.404205,0
+因為愛,wkifbe,0.404205,0
 大省,kfu,0.404205,0
 天音,mkya,0.404205,0
 好酒,vdew,0.404205,0
@@ -39118,7 +39006,7 @@ phrase,quick_code,freq,hk_core
 沒有感覺,eekbiphu,0.404205,0
 法人代表,eioopqv,0.404205,0
 無影,ofah,0.404205,0
-爲了達到,bfnnyqmn,0.404205,0
+為了達到,ifnnyqmn,0.404205,0
 獄中,kkl,0.404205,0
 瑞德,mbhp,0.404205,0
 白雲區,hamisr,0.404205,0
@@ -39142,7 +39030,7 @@ phrase,quick_code,freq,hk_core
 這兩條,yrmood,0.404205,0
 進入市場,ygohybgh,0.404205,0
 還看,yvhu,0.404205,0
-邊喫,ysrk,0.404205,0
+邊吃,ysrn,0.404205,0
 郵件地址,hloqgdgm,0.404205,0
 銀座,cvig,0.404205,0
 錢來,cido,0.404205,0
@@ -39172,8 +39060,8 @@ phrase,quick_code,freq,hk_core
 哆啦,rnrt,0.404137,0
 國際組織,wmnfvmva,0.404137,0
 外延,nynm,0.404137,0
-天文臺,mkykgg,0.404137,0
-奉爲,qqbf,0.404137,0
+天文台,mkykir,0.404137,0
+奉為,qqif,0.404137,0
 如你,vrof,0.404137,0
 學歷教育,hdmmjkyb,0.404137,0
 學起,hdgu,0.404137,0
@@ -39298,7 +39186,7 @@ phrase,quick_code,freq,hk_core
 總廠,vpik,0.404069,0
 總成,vpis,0.404069,0
 耕作,qtos,0.404069,0
-臺帳,gglv,0.404069,0
+台帳,irlv,0.404069,0
 花鳥,tphf,0.404069,0
 荒漠,tuek,0.404069,0
 裏說,yvyu,0.404069,0
@@ -39392,7 +39280,7 @@ phrase,quick_code,freq,hk_core
 都城,jlgs,0.404000,0
 都要有,jlmvkb,0.404000,0
 重磅,hgms,0.404000,0
-量爲,agbf,0.404000,0
+量為,agif,0.404000,0
 鋼鐵企業,cucgomtd,0.404000,0
 鑽孔,ccnu,0.404000,0
 閒情,abpb,0.404000,0
@@ -39410,7 +39298,7 @@ phrase,quick_code,freq,hk_core
 修護,ohye,0.403932,0
 傑拉德,odqthp,0.403932,0
 傳統節日,oivuhla,0.403932,0
-僅僅因爲,omomwkbf,0.403932,0
+僅僅因為,omomwkif,0.403932,0
 光明正大,fuabmmk,0.403932,0
 共分,tcch,0.403932,0
 到底是誰,mnimaoyg,0.403932,0
@@ -39425,7 +39313,7 @@ phrase,quick_code,freq,hk_core
 名門,nran,0.403932,0
 啓事,hrjn,0.403932,0
 四平,wcmj,0.403932,0
-困難羣衆,wdtgsqho,0.403932,0
+困難羣眾,wdtgsqwo,0.403932,0
 大偉,koq,0.403932,0
 大劇院,kynnu,0.403932,0
 大盜,ket,0.403932,0
@@ -39561,7 +39449,7 @@ phrase,quick_code,freq,hk_core
 總產量,vpymag,0.403863,0
 肝功能,bjmsip,0.403863,0
 腦門,bwan,0.403863,0
-臺軍,ggbj,0.403863,0
+台軍,irbj,0.403863,0
 良藥,ivtd,0.403863,0
 草率,tjyj,0.403863,0
 表現手法,qvmuqei,0.403863,0
@@ -39590,7 +39478,7 @@ phrase,quick_code,freq,hk_core
 上牌,ymlj,0.403795,0
 不能確定,mfipmgjo,0.403795,0
 不錯了,mfcann,0.403795,0
-互爲,mmbf,0.403795,0
+互為,mmif,0.403795,0
 井噴,ttrc,0.403795,0
 亞當斯,mmfwtl,0.403795,0
 人很,ohv,0.403795,0
@@ -39624,7 +39512,7 @@ phrase,quick_code,freq,hk_core
 平平淡淡,mjmjefef,0.403795,0
 平谷,mjcr,0.403795,0
 幽靜,uiqd,0.403795,0
-廣爲人知,icbfoor,0.403795,0
+廣為人知,icifoor,0.403795,0
 您會,opoa,0.403795,0
 我們想要,hiondpmv,0.403795,0
 房頂,hsmc,0.403795,0
@@ -39634,7 +39522,7 @@ phrase,quick_code,freq,hk_core
 撩人,qfo,0.403795,0
 攤子,qgnd,0.403795,0
 暢想,lhdp,0.403795,0
-氣象臺,odnogg,0.403795,0
+氣象台,odnoir,0.403795,0
 消費電子,eblcmund,0.403795,0
 清償,eboc,0.403795,0
 牢固樹立,jqwrdiyt,0.403795,0
@@ -39650,9 +39538,9 @@ phrase,quick_code,freq,hk_core
 而未,mljd,0.403795,0
 聖女,sgv,0.403795,0
 自動更新,huhsmkyl,0.403795,0
-臺北市,gglpyb,0.403795,0
+台北市,irlpyb,0.403795,0
 英語教學,tkyrjkhd,0.403795,0
-菸頭,tymc,0.403795,0
+煙頭,fgmc,0.403795,0
 藍藍,tttt,0.403795,0
 註冊登記,ygbtntyu,0.403795,0
 調味品,yrrdrr,0.403795,0
@@ -39925,7 +39813,7 @@ phrase,quick_code,freq,hk_core
 南京路,jjyfrr,0.403520,0
 各級黨委,hrveffhv,0.403520,0
 商品住宅,yrrrogjp,0.403520,0
-喫水果,rkewd,0.403520,0
+吃水果,rnewd,0.403520,0
 在尋找,kgsiqi,0.403520,0
 基礎研究,tgmomtjn,0.403520,0
 奧斯曼,hktlae,0.403520,0
@@ -40019,3 +39907,4 @@ phrase,quick_code,freq,hk_core
 佢哋,osrd,0.950000,1
 咗未,rmjd,0.950000,1
 冇問題,kbarac,0.950000,1
+估字,orjd,0.950000,1

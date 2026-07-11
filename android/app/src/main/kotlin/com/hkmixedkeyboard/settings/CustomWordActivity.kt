@@ -1,5 +1,6 @@
 package com.hkmixedkeyboard.settings
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
@@ -65,6 +66,7 @@ class CustomWordActivity : AppCompatActivity() {
         }
         lifecycleScope.launch {
             dao.insert(CustomWordEntity(display = display.trim(), quickCode = code.trim().lowercase()))
+            KeyboardSettings.bumpCustomWordsToken(this@CustomWordActivity)
             runOnUiThread { refreshList() }
         }
     }
@@ -88,6 +90,7 @@ class CustomWordActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun buildWordRow(word: CustomWordEntity) = LinearLayout(this).apply {
         orientation = LinearLayout.HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
@@ -104,6 +107,7 @@ class CustomWordActivity : AppCompatActivity() {
             setOnClickListener {
                 lifecycleScope.launch {
                     dao.delete(word.id)
+                    KeyboardSettings.bumpCustomWordsToken(this@CustomWordActivity)
                     runOnUiThread { refreshList() }
                 }
             }

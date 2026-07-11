@@ -1,7 +1,11 @@
 package com.hkmixedkeyboard.decoder
 
 import android.content.Context
+import com.hkmixedkeyboard.BuildConfig
 import com.hkmixedkeyboard.engine.EnglishCompletionIndex
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.File
 
 data class CharEntry(
     val char: String,
@@ -28,15 +32,48 @@ data class JyutpingEntry(val jyutping: String, val chinese: String, val freq: Do
 
 class CorpusLoader(private val ctx: Context) {
 
-    val chars: List<CharEntry> by lazy { loadChars() }
-    val phrases: List<PhraseEntry> by lazy { loadPhrases() }
+    // The four large tables go through the binary row cache (see CorpusCache):
+    // first run parses CSV and writes the cache; later cold starts read it back
+    // without re-splitting strings. The two tiny tables stay on the CSV path.
+    val chars: List<CharEntry> by lazy {
+        cached("chars",
+            read = { CharEntry(it.readUTF(), it.readUTF(), it.readUTF(), it.readDouble(), it.readBoolean()) },
+            write = { o, e -> o.writeUTF(e.char); o.writeUTF(e.quickCode); o.writeUTF(e.cangjieCode); o.writeDouble(e.freq); o.writeBoolean(e.isHkCore) },
+            parse = ::loadChars)
+    }
+    val phrases: List<PhraseEntry> by lazy {
+        cached("phrases",
+            read = { PhraseEntry(it.readUTF(), it.readUTF(), it.readDouble(), it.readBoolean()) },
+            write = { o, e -> o.writeUTF(e.phrase); o.writeUTF(e.quickCode); o.writeDouble(e.freq); o.writeBoolean(e.isHkCore) },
+            parse = ::loadPhrases)
+    }
     val mixedPhrases: List<MixedPhraseEntry> by lazy { loadMixedPhrases() }
     val whitelist: List<WhitelistEntry> by lazy { loadWhitelist() }
-    val englishAssist: List<EnglishAssistEntry> by lazy { loadEnglishAssist() }
+    val englishAssist: List<EnglishAssistEntry> by lazy {
+        cached("english_assist",
+            read = { EnglishAssistEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
+            write = { o, e -> o.writeUTF(e.english); o.writeUTF(e.chinese); o.writeDouble(e.freq) },
+            parse = ::loadEnglishAssist)
+    }
     val englishCompletionIndex: EnglishCompletionIndex by lazy {
         EnglishCompletionIndex(englishAssist)
     }
-    val jyutping: List<JyutpingEntry> by lazy { loadJyutping() }
+    val jyutping: List<JyutpingEntry> by lazy {
+        cached("jyutping",
+            read = { JyutpingEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
+            write = { o, e -> o.writeUTF(e.jyutping); o.writeUTF(e.chinese); o.writeDouble(e.freq) },
+            parse = ::loadJyutping)
+    }
+
+    // Direct-CJK lookup (pasting/typing Chinese directly). Avoids a linear scan
+    // over 21k chars / 40k phrases on every direct character. putIfAbsent keeps the
+    // first row for a duplicate key, matching the previous firstOrNull semantics.
+    val charByText: Map<String, CharEntry> by lazy {
+        HashMap<String, CharEntry>(chars.size).also { m -> for (c in chars) m.putIfAbsent(c.char, c) }
+    }
+    val phraseByText: Map<String, PhraseEntry> by lazy {
+        HashMap<String, PhraseEntry>(phrases.size).also { m -> for (p in phrases) m.putIfAbsent(p.phrase, p) }
+    }
 
     // ── Quick code indices ─────────────────────────────────────────────────
 
@@ -52,23 +89,11 @@ class CorpusLoader(private val ctx: Context) {
         SortedPrefixIndex(englishAssistIndex.keys)
     }
 
-    val englishAssistPrefixSet: Set<String> by lazy {
-        buildSet {
-            for (key in englishAssistIndex.keys) for (i in 1..key.length) add(key.substring(0, i))
-        }
-    }
-
     // ── Jyutping romanization indices ──────────────────────────────────────
 
     val jyutpingIndex: Map<String, List<DecodeCandidate>> by lazy { buildJyutpingIndex() }
     val jyutpingPrefixIndex: SortedPrefixIndex by lazy {
         SortedPrefixIndex(jyutpingIndex.keys)
-    }
-
-    val jyutpingPrefixSet: Set<String> by lazy {
-        buildSet {
-            for (key in jyutpingIndex.keys) for (i in 1..key.length) add(key.substring(0, i))
-        }
     }
 
     // Valid atomic syllables for segmentation: index keys that have at least one
@@ -235,5 +260,34 @@ class CorpusLoader(private val ctx: Context) {
             android.util.Log.e("CorpusLoader", "Failed to load $assetPath: ${e.message}")
         }
         return result
+    }
+
+    // ── Binary row cache ─────────────────────────────────────────────────────
+
+    // Returns cached rows for [name] when available and current, otherwise parses
+    // the CSV via [parse] and writes the cache for next time. An empty parse is not
+    // cached, so a transient asset-read failure never poisons the cache.
+    private fun <T> cached(
+        name: String,
+        read: (DataInputStream) -> T,
+        write: (DataOutputStream, T) -> Unit,
+        parse: () -> List<T>
+    ): List<T> {
+        val dir = File(ctx.cacheDir, "corpus")
+        CorpusCache.load(dir, name, cacheVersion, read)?.let { return it }
+        val rows = parse()
+        if (rows.isNotEmpty()) CorpusCache.store(dir, name, cacheVersion, rows, write)
+        return rows
+    }
+
+    // Cache key. The low bits track the app build (release builds bump BUILD_NUMBER,
+    // so a shipped corpus change invalidates old caches); the high byte is a manual
+    // format/content version — bump CORPUS_CONTENT_VERSION when editing the CSVs
+    // without a release build so local dev doesn't read a stale cache.
+    private val cacheVersion: Int =
+        (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
+
+    private companion object {
+        const val CORPUS_CONTENT_VERSION = 1
     }
 }

@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.Switch
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.lifecycleScope
 import com.hkmixedkeyboard.BuildConfig
 import com.hkmixedkeyboard.memory.UserMemoryDatabase
@@ -19,10 +20,12 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
 
+        val contentPadding = dp(16)
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(32, 32, 32, 32)
+            setPadding(contentPadding, contentPadding, contentPadding, contentPadding)
         }
 
         root.addView(appIcon())
@@ -39,9 +42,6 @@ class SettingsActivity : AppCompatActivity() {
         root.addView(header("輸入設定"))
 
         // Switches are created with placeholder state then updated once prefs load
-        val smartSwitch = addSwitch(root, "Space 智能提交", false) { v ->
-            lifecycleScope.launch { KeyboardSettings.setSmartSpace(this@SettingsActivity, v) }
-        }
         val rootsSwitch = addSwitch(root, "顯示倉頡字根", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setShowRoots(this@SettingsActivity, v) }
         }
@@ -51,18 +51,21 @@ class SettingsActivity : AppCompatActivity() {
         val soundSwitch = addSwitch(root, "按鍵聲音", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setSound(this@SettingsActivity, v) }
         }
-        val jpSwitch = addSwitch(root, "粵拼主輸入（空白送出中文）", false) { v ->
+        val jpSwitch = addSwitch(root, "粵拼主輸入", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setJyutpingPrimary(this@SettingsActivity, v) }
+        }
+        val simpSwitch = addSwitch(root, "簡體輸出（打繁出簡）", false) { v ->
+            lifecycleScope.launch { KeyboardSettings.setSimplifiedOutput(this@SettingsActivity, v) }
         }
 
         // Load current prefs and apply to switches
         lifecycleScope.launch {
             val prefs = KeyboardSettings.flow(this@SettingsActivity).first()
-            smartSwitch.isChecked = prefs.smartSpace
             rootsSwitch.isChecked = prefs.showRoots
             vibSwitch.isChecked   = prefs.vibration
             soundSwitch.isChecked = prefs.sound
             jpSwitch.isChecked    = prefs.jyutpingPrimary
+            simpSwitch.isChecked  = prefs.simplifiedOutput
         }
 
         root.addView(spacer())
@@ -96,6 +99,7 @@ class SettingsActivity : AppCompatActivity() {
                     db.customWordDao().clearAll()
                     // Signal the running keyboard to flush its live caches immediately.
                     KeyboardSettings.bumpMemoryClearToken(this@SettingsActivity)
+                    KeyboardSettings.bumpCustomWordsToken(this@SettingsActivity)
                     Toast.makeText(this@SettingsActivity, "詞庫已清除", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -125,7 +129,25 @@ class SettingsActivity : AppCompatActivity() {
         root.addView(label("建置時間: ${BuildConfig.BUILD_TIME}"))
         root.addView(label("備註: ${BuildConfig.BUILD_REMARK}"))
 
-        setContentView(root)
+        val scrollRoot = ScrollView(this).apply {
+            addView(root)
+        }
+        setContentView(scrollRoot)
+        applySystemBarInsets(root, contentPadding)
+    }
+
+    private fun applySystemBarInsets(root: android.view.View, contentPadding: Int) {
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
+            val bars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+            v.setPadding(
+                contentPadding,
+                contentPadding + bars.top,
+                contentPadding,
+                contentPadding + bars.bottom
+            )
+            insets
+        }
+        androidx.core.view.ViewCompat.requestApplyInsets(root)
     }
 
     // App profile picture (the launcher art), centred at the top of Settings.
@@ -159,14 +181,15 @@ class SettingsActivity : AppCompatActivity() {
         setBackgroundColor(0xFFE2E8F0.toInt())
     }
 
-    @Suppress("DEPRECATION")
+    private fun dp(n: Int) = (n * resources.displayMetrics.density + 0.5f).toInt()
+
     private fun addSwitch(
         parent: LinearLayout,
         labelText: String,
         default: Boolean,
         onChange: (Boolean) -> Unit
-    ): Switch {
-        val sw = Switch(this).apply {
+    ): SwitchCompat {
+        val sw = SwitchCompat(this).apply {
             isChecked = default
             setOnCheckedChangeListener { _, checked -> onChange(checked) }
         }

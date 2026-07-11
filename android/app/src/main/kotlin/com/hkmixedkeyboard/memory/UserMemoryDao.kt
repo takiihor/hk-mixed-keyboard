@@ -16,6 +16,9 @@ interface UserMemoryDao {
     @Query("DELETE FROM user_memory WHERE buffer = :buffer")
     suspend fun delete(buffer: String)
 
+    @Query("DELETE FROM user_memory WHERE buffer = :buffer AND candidateText = :candidateText")
+    suspend fun deleteEntry(buffer: String, candidateText: String)
+
     @Query("DELETE FROM user_memory")
     suspend fun clearAll()
 }

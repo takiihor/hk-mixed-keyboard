@@ -1,5 +1,6 @@
 package com.hkmixedkeyboard.settings
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,7 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import com.hkmixedkeyboard.memory.CustomWordEntity
 import com.hkmixedkeyboard.memory.UserMemoryDatabase
 import com.hkmixedkeyboard.util.Csv
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
 
 /**
  * Export / import personal dictionary (custom words) as CSV.
@@ -35,6 +39,7 @@ class DictionaryExportActivity : AppCompatActivity() {
         uri?.let { readImport(it) }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -75,56 +80,69 @@ class DictionaryExportActivity : AppCompatActivity() {
 
     private fun writeExport(uri: Uri) {
         lifecycleScope.launch {
-            val words = dao.loadAll()
             try {
-                contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { w ->
-                    w.write("display,quick_code\n")
-                    words.forEach { word ->
-                        w.write("${Csv.escape(word.display)},${Csv.escape(word.quickCode)}\n")
+                // Stream I/O (and the DAO read) on IO, off the UI thread, so a large
+                // dictionary can't ANR the activity.
+                val count = withContext(Dispatchers.IO) {
+                    val words = dao.loadAll()
+                    val out = contentResolver.openOutputStream(uri)
+                        ?: throw IOException("無法開啟輸出檔案")
+                    out.bufferedWriter().use { w ->
+                        w.write("display,quick_code\n")
+                        words.forEach { word ->
+                            w.write("${Csv.escape(word.display)},${Csv.escape(word.quickCode)}\n")
+                        }
                     }
+                    words.size
                 }
-                runOnUiThread {
-                    Toast.makeText(this@DictionaryExportActivity,
-                        "已匯出 ${words.size} 個詞語", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(this@DictionaryExportActivity,
+                    "已匯出 $count 個詞語", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this@DictionaryExportActivity,
-                        "匯出失敗: ${e.message}", Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(this@DictionaryExportActivity,
+                    "匯出失敗: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
 
     private fun readImport(uri: Uri) {
         lifecycleScope.launch {
-            val toInsert = mutableListOf<CustomWordEntity>()
-            var skipped = 0
             try {
-                contentResolver.openInputStream(uri)?.bufferedReader()?.forEachLine { line ->
-                    val trimmed = line.trim()
-                    if (trimmed.isBlank() || trimmed.startsWith("#") || trimmed.startsWith("display"))
-                        return@forEachLine
-                    val cols = Csv.split(trimmed)
-                    if (cols.size >= 2) {
-                        val display = cols[0].trim()
-                        val code    = cols[1].trim().lowercase()
-                        if (display.isNotBlank() && code.isNotBlank())
+                val (imported, skipped) = withContext(Dispatchers.IO) {
+                    // Existing (display, quickCode) pairs, so re-importing the same file
+                    // doesn't pile up duplicates — the PK autogenerates, so the REPLACE
+                    // conflict strategy never actually fires on a content match.
+                    val seen = dao.loadAll().mapTo(HashSet()) { it.display to it.quickCode }
+                    val toInsert = mutableListOf<CustomWordEntity>()
+                    var skip = 0
+                    val input = contentResolver.openInputStream(uri)
+                        ?: throw IOException("無法開啟檔案")
+                    input.bufferedReader().useLines { lines ->
+                        lines.forEach { line ->
+                            val trimmed = line.trim()
+                            if (trimmed.isBlank() || trimmed.startsWith("#") || trimmed.startsWith("display"))
+                                return@forEach
+                            val cols = Csv.split(trimmed)
+                            if (cols.size < 2) { skip++; return@forEach }
+                            val display = cols[0].trim()
+                            val code    = cols[1].trim().lowercase()
+                            if (display.isBlank() || code.isBlank()) { skip++; return@forEach }
+                            // seen.add returns false when the pair is already present
+                            // (on disk or earlier in this file) → skip the duplicate.
+                            if (!seen.add(display to code)) { skip++; return@forEach }
                             toInsert.add(CustomWordEntity(display = display, quickCode = code))
-                        else skipped++
-                    } else skipped++
+                        }
+                    }
+                    if (toInsert.isNotEmpty()) {
+                        dao.insertAll(toInsert)
+                        KeyboardSettings.bumpCustomWordsToken(this@DictionaryExportActivity)
+                    }
+                    toInsert.size to skip
                 }
-                toInsert.forEach { dao.insert(it) }
-                val imported = toInsert.size
-                runOnUiThread {
-                    Toast.makeText(this@DictionaryExportActivity,
-                        "已匯入 $imported 個詞語，略過 $skipped 行", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(this@DictionaryExportActivity,
+                    "已匯入 $imported 個詞語，略過 $skipped 行", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this@DictionaryExportActivity,
-                        "匯入失敗: ${e.message}", Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(this@DictionaryExportActivity,
+                    "匯入失敗: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }

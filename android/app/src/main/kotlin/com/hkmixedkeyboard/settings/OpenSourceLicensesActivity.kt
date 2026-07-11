@@ -6,10 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 /**
- * Displays the open-source data attributions (assets/licenses/NOTICE.txt) for the
- * bundled dictionary / frequency data (RIME Cangjie5, RIME Essay, CC-CEDICT,
- * rime-cantonese). Required to satisfy the GPL / CC-BY-SA / CC-BY / ODbL
- * attribution terms of those data sets.
+ * Displays bundled open-source data notices and license texts.
  */
 class OpenSourceLicensesActivity : AppCompatActivity() {
 
@@ -17,7 +14,17 @@ class OpenSourceLicensesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val notice = runCatching {
-            assets.open("licenses/NOTICE.txt").bufferedReader().use { it.readText() }
+            val files = listOf(
+                "NOTICE.txt",
+                "GPL-3.0.txt",
+                "CC-BY-SA-4.0.txt",
+                "CC-BY-4.0.txt",
+                "ODbL-1.0.txt",
+                "Apache-2.0.txt"
+            )
+            files.joinToString(separator = "\n\n\n") { file ->
+                assets.open("licenses/$file").bufferedReader().use { it.readText() }
+            }
         }.getOrElse { "Failed to load notices: ${it.message}" }
 
         val text = TextView(this).apply {

@@ -92,7 +92,7 @@ class MemoryAssistTest {
     }
 
     @Test
-    fun `Three consistent taps on Space commit then trigger hard override next Space`() {
+    fun `Space ignores hard override after three consistent taps`() {
         val mock溝通 = cnChar("溝通", "communication")
         val memory = UserMemory()
         // Seed memory: 3 CN picks for "communication"
@@ -105,9 +105,8 @@ class MemoryAssistTest {
         val state = ImeStateData(buffer = "communication", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        // Memory has count=3, confidence=1.0 → hardOverride returns 溝通
-        assertEquals("Memory override: Space should commit 溝通 after 3 consistent picks",
-            "溝通", out.committedText)
+        assertEquals("Space should stay literal even when memory has a hard override",
+            "communication ", out.committedText)
     }
 
     // ── 3. Mixed taps do not reach hard override confidence ───────────────
@@ -159,7 +158,7 @@ class MemoryAssistTest {
     // ── 5. Hard override entry survives session (memory persistence) ───────
 
     @Test
-    fun `Hard override from memory is returned on subsequent Space`() {
+    fun `Hard override from memory does not affect subsequent Space`() {
         val memory = UserMemory()
         // Simulate previous session: user picked 溝通 from communication 5 times
         memory.seed("communication", "溝通", "isu", count = 5, isHkCore = false)
@@ -172,7 +171,8 @@ class MemoryAssistTest {
         val state = ImeStateData(buffer = "communication", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("Seeded memory override fires on Space", "溝通", out.committedText)
-        assertEquals("Memory write occurs on commit", true, out.memoryWrite.shouldWrite)
+        assertEquals("Seeded memory override must not fire on Space",
+            "communication ", out.committedText)
+        assertEquals("Literal Space commit is still learned", true, out.memoryWrite.shouldWrite)
     }
 }

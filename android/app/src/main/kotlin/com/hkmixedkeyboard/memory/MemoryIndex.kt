@@ -24,24 +24,38 @@ class MemoryIndex {
         byBuffer.computeIfAbsent(entry.buffer) { ConcurrentHashMap() }[entry.candidate.text] = entry
     }
 
+    /**
+     * Hydrate cache data without clobbering choices already recorded in this live
+     * session. Room init runs asynchronously, so it may finish after the user has
+     * already tapped candidates.
+     */
+    fun putIfNewer(entry: MemoryEntry) {
+        val bufMap = byBuffer.computeIfAbsent(entry.buffer) { ConcurrentHashMap() }
+        bufMap.compute(entry.candidate.text) { _, existing ->
+            if (existing == null || entry.count > existing.count) entry else existing
+        }
+    }
+
     /** Record one more selection of [candidate] for [buffer]; returns the updated entry. */
     fun record(buffer: String, candidate: DecodeCandidate): MemoryEntry {
         val isCn = candidate.type != CandidateType.EN_LITERAL
         val bufMap = byBuffer.computeIfAbsent(buffer) { ConcurrentHashMap() }
-        val existing = bufMap[candidate.text]
-        val updated = if (existing == null) {
-            MemoryEntry(buffer, candidate, 1,
-                cnCount = if (isCn) 1 else 0, enCount = if (isCn) 0 else 1)
-        } else {
-            existing.copy(
-                candidate = candidate,
-                count = existing.count + 1,
-                cnCount = existing.cnCount + if (isCn) 1 else 0,
-                enCount = existing.enCount + if (isCn) 0 else 1
-            )
-        }
-        bufMap[candidate.text] = updated
-        return updated
+        // compute() keeps the read-modify-write atomic per (buffer, candidate): a
+        // concurrent record or cache hydration (putIfNewer runs on the IO thread during
+        // Room init) can no longer lose an increment or clobber a freshly stored entry.
+        return bufMap.compute(candidate.text) { _, existing ->
+            if (existing == null) {
+                MemoryEntry(buffer, candidate, 1,
+                    cnCount = if (isCn) 1 else 0, enCount = if (isCn) 0 else 1)
+            } else {
+                existing.copy(
+                    candidate = candidate,
+                    count = existing.count + 1,
+                    cnCount = existing.cnCount + if (isCn) 1 else 0,
+                    enCount = existing.enCount + if (isCn) 0 else 1
+                )
+            }
+        }!!
     }
 
     private fun entriesFor(buffer: String): Collection<MemoryEntry> =

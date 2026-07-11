@@ -109,7 +109,7 @@ class ConservativeSpaceTest {
 
     @Test
     fun `ALWAYS_SPACE mode flushes buffer as literal then adds space`() {
-        val ctx = ImeContext(spaceMode = SpaceMode.ALWAYS_SPACE)
+        val ctx = ImeContext()
         val ctrl = makeCtrl(ctx = ctx, classify = { buf ->
             clearChinese(buf, "唔", isHkCore = true)
         })
@@ -117,6 +117,41 @@ class ConservativeSpaceTest {
         val out = ctrl.onSpace(state)
 
         assertEquals("rr ", out.committedText)
+        assertEquals("", out.newState.buffer)
+    }
+
+    @Test
+    fun `Space flushes long exact Quick phrase as literal plus space`() {
+        val ctrl = makeCtrl(
+            ctx = ImeContext(),
+            classify = { buf ->
+                com.hkmixedkeyboard.engine.ClassifyResult(
+                    buffer = buf,
+                    cnExactParsed = false, cnHasPhraseMatch = true, cnPrefixParsed = false,
+                    cnCandidates = listOf(cnPhrase("唔該", "rryo", isHkCore = true)),
+                    enLiteral = buf, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+                )
+            }
+        )
+
+        val out = ctrl.onSpace(ImeStateData(buffer = "rryo", imeState = ImeState.COMPOSING))
+
+        assertEquals("rryo ", out.committedText)
+        assertEquals("", out.newState.buffer)
+    }
+
+    @Test
+    fun `Space flushes Jyutping buffer as literal plus space`() {
+        val ctrl = makeCtrl(
+            ctx = ImeContext(
+                scheme = com.hkmixedkeyboard.decoder.Scheme.JYUTPING
+            ),
+            classify = { collision(it, "個", isHkCore = false, enIsWord = true) }
+        )
+
+        val out = ctrl.onSpace(ImeStateData(buffer = "go", imeState = ImeState.COMPOSING))
+
+        assertEquals("go ", out.committedText)
         assertEquals("", out.newState.buffer)
     }
 
@@ -135,7 +170,7 @@ class ConservativeSpaceTest {
     }
 
     @Test
-    fun `Punctuation commits composed Chinese with full-width punctuation`() {
+    fun `Punctuation flushes latin buffer without selecting preview candidate`() {
         val ctrl = makeCtrl(classify = { clearChinese(it, "唔", isHkCore = true) })
 
         val out = ctrl.onPunctuation(
@@ -143,7 +178,19 @@ class ConservativeSpaceTest {
             ImeStateData(buffer = "rr", imeState = ImeState.COMPOSING)
         )
 
-        assertEquals("唔。", out.committedText)
+        assertEquals("rr.", out.committedText)
+    }
+
+    @Test
+    fun `Punctuation does not auto-commit Chinese preview candidate`() {
+        val ctrl = makeCtrl(classify = { clearChinese(it, "唔", isHkCore = true) })
+
+        val out = ctrl.onPunctuation(
+            "。",
+            ImeStateData(buffer = "rr", imeState = ImeState.COMPOSING)
+        )
+
+        assertEquals("rr.", out.committedText)
     }
 
     @Test

@@ -2,10 +2,11 @@ package com.hkmixedkeyboard
 
 import com.hkmixedkeyboard.commit.ImeContext
 import com.hkmixedkeyboard.commit.ImeStateData
-import com.hkmixedkeyboard.commit.SpaceMode
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
 import com.hkmixedkeyboard.decoder.SourceSchema
+import com.hkmixedkeyboard.memory.MemoryEntry
+import com.hkmixedkeyboard.memory.MemoryIndex
 import com.hkmixedkeyboard.memory.UserMemory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -65,13 +66,26 @@ class PersonalizedSuggestionTest {
         val memory = UserMemory()
         val ctrl = makeCtrl(
             memory = memory,
-            ctx = ImeContext(spaceMode = SpaceMode.ALWAYS_SPACE),
+            ctx = ImeContext(),
             classify = { clearEnglish(it) }
         )
 
         ctrl.onSpace(ImeStateData(buffer = "happy"))
 
         assertEquals("happy", memory.suggestions("hap", false).single().candidate.text)
+    }
+
+    @Test
+    fun `cache hydration keeps newer in-session counts`() {
+        val index = MemoryIndex()
+        val candidate = cnChar("估", "or")
+
+        repeat(3) { index.record("or", candidate) }
+        index.putIfNewer(MemoryEntry("or", candidate, count = 1, cnCount = 1, enCount = 0))
+
+        val suggestion = index.suggestions("or", limit = 8).single()
+        assertEquals("估", suggestion.candidate.text)
+        assertEquals(3, suggestion.count)
     }
 
 }

@@ -4,16 +4,8 @@
     <string name="ime_label">HK 速成／粵拼</string>
     <string name="settings_label">HK Mixed Keyboard 設定</string>
     <string name="subtype_quick">速成 Quick</string>
-    <string name="settings_input_mode">輸入模式</string>
-    <string name="settings_space_smart">Space 智能提交</string>
-    <string name="settings_space_always">Space 純空格</string>
-    <string name="settings_vibration">按鍵震動</string>
-    <string name="settings_sound">按鍵聲音</string>
-    <string name="settings_show_roots">顯示倉頡字根</string>
-    <string name="settings_privacy">私隱</string>
-    <string name="settings_clear_memory">清除所有個人詞庫</string>
     <string name="licenses_label">開源授權與資料來源</string>
     <string name="privacy_policy_label">私隱政策</string>
     <string name="safe_mode_active">安全模式 (密碼欄)</string>
-    <string name="debug_panel_title">Debug Panel (Internal)</string>
+    <string name="corpus_loading">載入中…</string>
 </resources>

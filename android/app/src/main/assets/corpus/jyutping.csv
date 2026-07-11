@@ -277,7 +277,6 @@ ai,瞖,0.1817
 ai,躷,0.1768
 ai,瘱,0.171
 ai,欸,0.1538
-ai,医,0.1499
 aifaa,矮化,0.4635
 aigeng,縊頸,0.4419
 aijaa,哎呀,0.514
@@ -330,7 +329,6 @@ am,奄,0.2209
 am,垵,0.2187
 am,晻,0.2167
 am,厂,0.2142
-am,广,0.2129
 am,腤,0.2111
 am,龕,0.2095
 am,庵,0.2095
@@ -620,7 +618,7 @@ baakbaan,白板,0.4876
 baakbun,百般,0.4795
 baakcaa,白茶,0.4659
 baakce,白車,0.4582
-baakci,白癡,0.5158
+baakci,白痴,0.5158
 baakcoi,白菜,0.5018
 baakdaap,百搭,0.4905
 baakdaap,白搭,0.4727
@@ -654,7 +652,7 @@ baakgwo,白果,0.4674
 baakhaan,白鷳,0.4587
 baakhak,兡,0.1868
 baakhap,百合,0.4952
-baakhek,白喫,0.472
+baakhek,白吃,0.472
 baakhok,白鶴,0.4729
 baakhuk,白鵠,0.4506
 baakjan,白人,0.522
@@ -997,14 +995,13 @@ baazyu,霸主,0.4949
 baazyut,罷黜,0.4614
 bai,幣,0.2631
 bai,閉,0.2411
-bai,祕,0.2308
+bai,秘,0.2308
 bai,弊,0.2291
 bai,泌,0.2247
 bai,蓖,0.2212
 bai,稗,0.2201
 bai,斃,0.2198
 bai,粺,0.2196
-bai,秘,0.2171
 bai,蔽,0.2168
 bai,敝,0.215
 bai,跛,0.21
@@ -1136,7 +1133,6 @@ ban,獖,0.1767
 ban,餴,0.1743
 ban,輽,0.1665
 ban,体,0.1466
-ban,禀,0.1277
 ban,𩣺,0.0225
 banbin,鬢邊,0.4605
 banbo,奔波,0.4894
@@ -1161,7 +1157,6 @@ bang,繃,0.217
 bang,嘣,0.2111
 bang,塴,0.2076
 bang,鏰,0.2038
-bang,凭,0.202
 bang,嗙,0.2007
 bang,弸,0.1972
 bang,靐,0.1966
@@ -1463,7 +1458,7 @@ batzan,不振,0.4744
 batzang,不爭,0.4804
 batzau,不周,0.4672
 batze,筆者,0.5315
-batzeon,不准,0.5185
+batzeon,不準,0.5185
 batzeon,不盡,0.494
 batzi,不止,0.5384
 batzi,不只,0.4935
@@ -1503,7 +1498,7 @@ bei,鼻,0.2412
 bei,彼,0.24
 bei,臂,0.2361
 bei,碑,0.2335
-bei,祕,0.2308
+bei,秘,0.2308
 bei,脾,0.2307
 bei,畀,0.2306
 bei,輩,0.2295
@@ -1521,7 +1516,6 @@ bei,薜,0.2216
 bei,蓖,0.2212
 bei,裨,0.221
 bei,屄,0.2182
-bei,秘,0.2171
 bei,痹,0.2157
 bei,吡,0.2143
 bei,珌,0.2139
@@ -1601,7 +1595,7 @@ beibaan,備辦,0.458
 beibik,被迫,0.5331
 beibik,被逼,0.4822
 beibou,被捕,0.4858
-beibun,祕本,0.4611
+beibun,秘本,0.4611
 beicaa,備查,0.4667
 beicaam,悲慘,0.4904
 beicai,悲悽,0.4623
@@ -1612,7 +1606,7 @@ beicing,悲情,0.483
 beicit,悲切,0.4648
 beicoi,比賽,0.5777
 beicoi,比才,0.4626
-beicong,祕藏,0.463
+beicong,秘藏,0.463
 beicung,比重,0.5132
 beicyu,避署,0.4567
 beidai,備抵,0.4541
@@ -1626,11 +1620,11 @@ beifan,比分,0.4993
 beifan,悲憤,0.4763
 beifo,備課,0.4873
 beifong,比方,0.4886
-beifong,祕方,0.4842
+beifong,秘方,0.4842
 beifong,備荒,0.459
 beigaa,比價,0.485
 beigaau,比較,0.6123
-beigei,祕技,0.4674
+beigei,秘技,0.4674
 beigei,避忌,0.463
 beigin,備件,0.4797
 beigo,悲歌,0.4675
@@ -1655,30 +1649,29 @@ beijik,裨益,0.4667
 beijik,避役,0.4523
 beijim,避嫌,0.4651
 beijin,鼻咽,0.467
-beijin,鼻菸,0.4604
+beijin,鼻煙,0.4604
 beijung,備用,0.5069
 beijyu,比如,0.6233
 beijyu,比喻,0.5191
 beijyu,避雨,0.467
 beijyun,鼻淵,0.4596
-beikap,祕笈,0.4779
+beikap,秘笈,0.4779
 beikek,悲劇,0.5328
 beikit,碑碣,0.4606
 beikwan,被困,0.4896
-beikyut,祕訣,0.4997
+beikyut,秘訣,0.4997
 beilai,比例,0.5692
 beilau,卑陋,0.4523
 beileon,毗鄰,0.4796
 beileot,比率,0.4978
 beilik,吡叻,0.4447
 beiloeng,悲涼,0.4806
-beiloeng,鼻梁,0.4781
 beiloeng,鼻樑,0.4781
 beiloeng,比量,0.4609
-beilou,祕魯,0.477
+beilou,秘魯,0.477
 beilyut,卑劣,0.4739
-beiman,祕聞,0.4682
-beimat,祕密,0.5364
+beiman,秘聞,0.4682
+beimat,秘密,0.5364
 beimei,卑微,0.5018
 beimei,媲美,0.492
 beimin,避免,0.5691
@@ -1698,7 +1691,7 @@ beisaat,被殺,0.5068
 beisaat,比薩,0.4754
 beisai,避世,0.4639
 beisak,鼻塞,0.4836
-beisan,祕辛,0.4656
+beisan,秘辛,0.4656
 beisau,備受,0.4927
 beisau,匕首,0.4903
 beisau,悲愁,0.462
@@ -1706,12 +1699,12 @@ beisek,碑石,0.4621
 beiseoi,避稅,0.4915
 beiseoi,鼻水,0.4626
 beisi,比試,0.4731
-beisi,祕史,0.4681
+beisi,秘史,0.4681
 beisi,鼻屎,0.4647
 beisiu,鼻簫,0.4482
 beisoeng,悲傷,0.5233
 beisou,比數,0.4598
-beisyu,祕書,0.5096
+beisyu,秘書,0.5096
 beisyu,避暑,0.4781
 beitaan,悲嘆,0.4646
 beitai,鼻涕,0.4902
@@ -1728,7 +1721,7 @@ beizan,避震,0.468
 beizeoi,鼻疽,0.4553
 beizi,鼻子,0.5308
 beizi,篦子,0.4605
-beizik,祕籍,0.4951
+beizik,秘籍,0.4951
 beizik,卑職,0.464
 beizik,避席,0.4552
 beizin,備戰,0.4917
@@ -1785,7 +1778,7 @@ bengwaan,病患,0.4747
 bengzing,病症,0.4953
 bengzing,病徵,0.4619
 bengzoeng,病象,0.4558
-bengzou,病竈,0.4892
+bengzou,病灶,0.4892
 bengzung,病重,0.4733
 bengzyu,病株,0.4616
 bezau,啤酒,0.5451
@@ -1918,7 +1911,7 @@ bin,萹,0.1296
 bin,獱,0.0225
 binaat,變壓,0.4726
 binbaa,邊壩,0.4597
-binbei,便祕,0.5026
+binbei,便秘,0.5026
 binbin,便便,0.4804
 binbin,邊邊,0.4718
 binbit,辨別,0.504
@@ -1956,7 +1949,6 @@ bing,屏,0.2718
 bing,餅,0.248
 bing,柄,0.2462
 bing,丙,0.2359
-bing,并,0.2306
 bing,摒,0.2294
 bing,堋,0.2279
 bing,炳,0.2275
@@ -2166,7 +2158,7 @@ binwu,便壺,0.4542
 binwun,變換,0.5211
 binzaak,貶謫,0.4617
 binzai,邊際,0.4996
-binzam,砭鍼,0.4437
+binzam,砭針,0.4437
 binzan,變陣,0.4549
 binzang,辯爭,0.4498
 binzat,變質,0.4834
@@ -2832,7 +2824,7 @@ bousaai,曝曬,0.466
 bousaat,捕殺,0.471
 bousam,報審,0.4617
 bousap,布什,0.5048
-bousap,保溼,0.4982
+bousap,保濕,0.4982
 bousat,報失,0.4594
 bousau,保守,0.526
 bousau,報仇,0.4975
@@ -2890,7 +2882,6 @@ bouzau,暴走,0.4826
 bouzeoi,補綴,0.4571
 bouzi,報紙,0.5248
 bouzi,佈置,0.5192
-bouzi,布置,0.5192
 bouzi,步子,0.4779
 bouzi,簿子,0.4593
 bouzi,寶誌,0.4574
@@ -2957,7 +2948,7 @@ bui,蛽,0.1791
 bui,愂,0.1779
 bui,揹,0.1566
 bui,桮,0.0225
-buibaau,背包,0.5207
+buibaau,揹包,0.5207
 buibun,背叛,0.5162
 buicaa,杯茶,0.4753
 buice,背斜,0.4601
@@ -3001,7 +2992,7 @@ buisyu,背書,0.5251
 buitaap,貝塔,0.4668
 buitau,背頭,0.46
 buitoi,胚胎,0.4812
-buitok,杯托,0.4591
+buitok,杯託,0.4591
 buizau,杯酒,0.474
 buizek,背脊,0.4662
 buizi,杯子,0.5151
@@ -3047,7 +3038,7 @@ bukman,卜問,0.4568
 buksaai,曝曬,0.466
 buksai,卜筮,0.461
 bukzaak,卜宅,0.451
-bukzim,卜占,0.4466
+bukzim,卜佔,0.4466
 bukzing,卜征,0.4421
 bun,本,0.3301
 bun,半,0.3104
@@ -3166,7 +3157,7 @@ bunsyun,拌蒜,0.454
 buntai,本體,0.5102
 buntai,本題,0.4863
 buntin,半天,0.5328
-buntoi,本臺,0.4644
+buntoi,本台,0.4644
 buntou,本土,0.5338
 buntou,叛徒,0.4843
 buntou,半途,0.4684
@@ -3190,7 +3181,7 @@ but,悖,0.2256
 but,勃,0.2246
 but,孛,0.2232
 but,癶,0.2223
-but,鉢,0.2214
+but,缽,0.2214
 but,茀,0.2186
 but,脖,0.2183
 but,跋,0.216
@@ -3202,7 +3193,6 @@ but,襏,0.2075
 but,鈸,0.2053
 but,餑,0.2035
 but,鵓,0.203
-but,缽,0.2026
 but,砵,0.202
 but,浡,0.1969
 but,犻,0.1947
@@ -3234,9 +3224,9 @@ buthoi,勃海,0.4571
 butjin,勃然,0.4661
 butjung,撥冗,0.4576
 butjung,撥用,0.45
-butjyu,鉢盂,0.4603
+butjyu,缽盂,0.4603
 butleng,脖領,0.456
-buttau,鉢頭,0.4551
+buttau,缽頭,0.4551
 buttung,撥通,0.4811
 butzau,撥奏,0.4547
 butzi,脖子,0.5245
@@ -3320,7 +3310,7 @@ caagun,茶館,0.4828
 caahaak,茶客,0.4635
 caahaau,查考,0.4619
 caaham,查勘,0.4636
-caahat,查覈,0.4622
+caahat,查核,0.4622
 caahau,茬口,0.4595
 caahoi,岔開,0.4647
 caahon,查看,0.5497
@@ -3446,7 +3436,7 @@ caaksik,拆息,0.46
 caaksin,拆線,0.4659
 caaksyun,賊船,0.4648
 caaktiu,柵條,0.4549
-caaktoi,拆臺,0.4624
+caaktoi,拆台,0.4624
 caakwaak,策劃,0.5427
 caakwaak,策畫,0.4551
 caakwo,賊窩,0.4612
@@ -3505,8 +3495,6 @@ caam,磛,0.1798
 caam,蝅,0.1798
 caam,艬,0.1789
 caam,酁,0.1665
-caam,忏,0.045
-caam,蚕,0.0225
 caaman,查問,0.4632
 caamau,差謬,0.4487
 caambaai,慘敗,0.4926
@@ -3675,7 +3663,6 @@ caang,揨,0.1781
 caang,朾,0.1761
 caang,憆,0.1708
 caang,饓,0.1687
-caang,撑,0.1499
 caang,罉,0.1264
 caang,鎗,0.0357
 caang,𦉘,0.0225
@@ -3802,7 +3789,6 @@ caat,攃,0.195
 caat,歘,0.1938
 caat,詧,0.1902
 caat,礸,0.1813
-caat,刹,0.0135
 caataa,察雅,0.4606
 caataam,查探,0.465
 caatau,叉頭,0.4551
@@ -3915,7 +3901,6 @@ cai,蠐,0.2063
 cai,瘛,0.205
 cai,泚,0.2039
 cai,萋,0.2022
-cai,栖,0.202
 cai,斉,0.2017
 cai,傺,0.2003
 cai,郪,0.1993
@@ -3943,7 +3928,6 @@ cai,鶈,0.1768
 cai,麡,0.1764
 cai,屖,0.1751
 cai,憏,0.1734
-cai,凄,0.1723
 caibei,齊備,0.4735
 caibou,齊步,0.4632
 caicaa,沏茶,0.4635
@@ -4269,7 +4253,7 @@ canso,診所,0.4936
 cansou,陳訴,0.4586
 cansuk,親屬,0.4896
 cansyu,陳書,0.4654
-cantok,襯托,0.4919
+cantok,襯託,0.4919
 cantou,塵土,0.4816
 canwan,陳雲,0.4732
 canwong,親王,0.486
@@ -4340,7 +4324,7 @@ catsyu,漆樹,0.4606
 catzik,七夕,0.4888
 cau,抽,0.2806
 cau,秋,0.2744
-cau,丑,0.2641
+cau,醜,0.2641
 cau,臭,0.264
 cau,族,0.2619
 cau,湊,0.2558
@@ -4349,7 +4333,6 @@ cau,仇,0.2512
 cau,趣,0.249
 cau,奏,0.2483
 cau,籌,0.2351
-cau,醜,0.2323
 cau,糗,0.2278
 cau,瞅,0.2255
 cau,稠,0.2245
@@ -4444,7 +4427,6 @@ cau,緧,0.1731
 cau,嚋,0.1731
 cau,蠤,0.1712
 cau,鰌,0.1499
-cau,凑,0.1466
 cau,紬,0.0807
 cau,詶,0.045
 caubaan,籌辦,0.4747
@@ -4462,7 +4444,6 @@ caucim,抽籤,0.483
 caucin,鞦韆,0.4782
 caucin,籌錢,0.4657
 caucin,臭錢,0.4607
-caucin,秋千,0.4543
 caucoeng,惆悵,0.4833
 caucoeng,酬唱,0.4579
 caucoi,秋菜,0.4597
@@ -4506,7 +4487,7 @@ caujau,臭鼬,0.4578
 cauji,秋意,0.4668
 cauji,秋衣,0.4627
 cauji,籌議,0.4514
-caujin,抽菸,0.5105
+caujin,抽煙,0.5105
 caujing,酬應,0.451
 caujit,抽噎,0.4632
 caujit,抽咽,0.4584
@@ -4546,7 +4527,7 @@ causeoi,抽稅,0.4553
 causeon,秋汛,0.4545
 causi,抽絲,0.4662
 causi,醜事,0.4648
-causi,丑時,0.4619
+causi,醜時,0.4619
 causi,籌思,0.4511
 causik,秋色,0.4735
 causin,秋蟬,0.462
@@ -4937,7 +4918,7 @@ ceoisoeng,除霜,0.4644
 ceoisou,除數,0.4642
 ceoitai,取締,0.4832
 ceoitau,吹頭,0.4579
-ceoitoi,吹臺,0.4553
+ceoitoi,吹台,0.4553
 ceoitong,隋唐,0.4791
 ceoitou,催吐,0.4648
 ceoitou,催討,0.46
@@ -5180,7 +5161,7 @@ ceotzin,出戰,0.492
 ceotzing,出征,0.4883
 ceotziu,出招,0.4744
 ceotzou,出租,0.5063
-ceotzung,出衆,0.5085
+ceotzung,出眾,0.5085
 cepaai,車牌,0.4853
 cepaan,奢盼,0.4494
 ceping,扯平,0.4632
@@ -5230,7 +5211,7 @@ ci,茬,0.2372
 ci,齒,0.2369
 ci,賜,0.2347
 ci,哆,0.2346
-ci,癡,0.2338
+ci,痴,0.2338
 ci,織,0.2336
 ci,匙,0.2331
 ci,磁,0.2329
@@ -5407,9 +5388,7 @@ ci,貾,0.172
 ci,瞝,0.1718
 ci,箈,0.1713
 ci,珁,0.1694
-ci,痴,0.161
 ci,离,0.1584
-ci,耻,0.1428
 ci,厠,0.1277
 ci,餈,0.1059
 ci,絺,0.0632
@@ -5422,7 +5401,7 @@ cibit,辭別,0.4646
 cicaang,臍橙,0.4658
 ciceng,刺青,0.4746
 cici,次次,0.479
-cicing,癡情,0.4843
+cicing,痴情,0.4843
 cicing,馳騁,0.4788
 cicing,辭呈,0.4644
 cicoek,刺戳,0.4523
@@ -5447,7 +5426,7 @@ cifaa,磁化,0.4662
 cifaat,始發,0.4758
 cifaat,詞法,0.4628
 cifau,磁浮,0.4634
-cifei,癡肥,0.4575
+cifei,痴肥,0.4575
 cifo,次貨,0.4611
 cifong,次方,0.4711
 cifu,似乎,0.5741
@@ -5482,7 +5461,7 @@ cihei,瓷器,0.4826
 ciheoi,辭去,0.482
 cihiu,鴟鴞,0.4532
 cihiu,鴟梟,0.4529
-cihon,癡漢,0.4631
+cihon,痴漢,0.4631
 cihong,齒腔,0.4391
 cihung,雌雄,0.4721
 cijam,辭任,0.462
@@ -5636,7 +5615,7 @@ cim,鉆,0.1319
 cim,䕭,0.0225
 cimaa,恥罵,0.4391
 cimaan,遲慢,0.452
-cimai,癡迷,0.491
+cimai,痴迷,0.491
 cimcan,纖塵,0.4645
 cimceot,簽出,0.4599
 cimcyu,簽署,0.5083
@@ -6000,7 +5979,7 @@ cingnong,青囊,0.4616
 cingoek,前腳,0.4674
 cingoi,此外,0.5658
 cingoi,情愛,0.4793
-cingoi,癡呆,0.4776
+cingoi,痴呆,0.4776
 cingon,請安,0.4707
 cingpan,清貧,0.4728
 cingpun,清盤,0.4653
@@ -6048,7 +6027,7 @@ cingtung,青銅,0.4966
 cingu,千古,0.489
 cingwaa,青蛙,0.4958
 cingwaai,情懷,0.538
-cingwai,稱爲,0.5526
+cingwai,稱為,0.5526
 cingwai,稱謂,0.4822
 cingwai,逞威,0.465
 cingwong,青黃,0.4651
@@ -6177,7 +6156,7 @@ cipsi,妾侍,0.4572
 cipun,磁盤,0.5005
 cisaat,刺殺,0.5008
 cisai,辭世,0.4729
-cisam,癡心,0.4776
+cisam,痴心,0.4776
 cisan,刺身,0.4648
 cisau,刺繡,0.4772
 cisek,磁石,0.4661
@@ -6190,9 +6169,9 @@ cising,詞性,0.483
 cising,賜姓,0.4604
 cisiu,恥笑,0.4713
 cisiu,嗤笑,0.4643
-cisiu,癡笑,0.46
+cisiu,痴笑,0.46
 ciso,廁所,0.5224
-ciso,癡傻,0.4622
+ciso,痴傻,0.4622
 cisou,次數,0.5419
 cisyu,辭書,0.466
 cisyun,詞選,0.4629
@@ -6293,7 +6272,7 @@ citteoi,撤退,0.5005
 cittung,切痛,0.4496
 cittyun,切斷,0.4893
 citung,刺痛,0.4805
-citwai,設爲,0.4888
+citwai,設為,0.4888
 citwui,撤回,0.4827
 citwun,切換,0.5295
 citwun,撤換,0.4648
@@ -6404,7 +6383,7 @@ ciupan,超頻,0.4955
 ciupei,俏皮,0.4766
 ciusaan,潮汕,0.477
 ciusang,超生,0.4752
-ciusap,潮溼,0.493
+ciusap,潮濕,0.493
 ciuseoi,憔悴,0.487
 ciuseoi,潮水,0.4784
 ciusi,超市,0.537
@@ -6447,7 +6426,7 @@ cizi,刺字,0.4606
 cizik,辭職,0.5352
 cizin,翅展,0.4565
 ciziu,池沼,0.4598
-cizoeng,癡長,0.4554
+cizoeng,痴長,0.4554
 cizoeng,笞杖,0.4518
 cizou,遲早,0.4955
 cizou,詞組,0.4932
@@ -6816,8 +6795,8 @@ coengso,場所,0.5164
 coengsoeng,暢想,0.4759
 coengtaam,暢談,0.48
 coengtaan,搶灘,0.4719
-coengtoi,窗臺,0.4803
-coengtok,槍托,0.4644
+coengtoi,窗台,0.4803
+coengtok,槍託,0.4644
 coengtou,長途,0.4982
 coengtou,腸肚,0.4565
 coengtung,暢通,0.4907
@@ -6858,11 +6837,9 @@ coi,踩,0.2853
 coi,賽,0.2767
 coi,蔡,0.264
 coi,彩,0.2599
-coi,采,0.2585
+coi,採,0.2585
 coi,財,0.2573
-coi,採,0.2451
 coi,材,0.243
-coi,纔,0.2389
 coi,裁,0.2321
 coi,埰,0.2291
 coi,寀,0.2288
@@ -6970,7 +6947,7 @@ coisik,彩色,0.5087
 coisik,菜式,0.4738
 coisik,採食,0.4642
 coisik,彩飾,0.458
-coising,采聲,0.451
+coising,採聲,0.451
 coisoeng,財相,0.458
 coisou,彩塑,0.4632
 coisyun,賽船,0.4555
@@ -7027,7 +7004,6 @@ cong,藏,0.2658
 cong,倉,0.2593
 cong,闖,0.2576
 cong,蒼,0.2537
-cong,厂,0.2367
 cong,臧,0.2359
 cong,幢,0.234
 cong,艙,0.2336
@@ -7471,7 +7447,6 @@ cung,蔥,0.24
 cung,聰,0.237
 cung,叢,0.2329
 cung,琮,0.2321
-cung,虫,0.2293
 cung,傭,0.2264
 cung,淙,0.2226
 cung,衷,0.2215
@@ -7492,7 +7467,6 @@ cung,驄,0.2065
 cung,涌,0.2051
 cung,冢,0.2048
 cung,婃,0.2027
-cung,冲,0.2026
 cung,従,0.2026
 cung,痋,0.2026
 cung,忡,0.201
@@ -7729,7 +7703,7 @@ cungtau,從頭,0.5022
 cungtau,重頭,0.4672
 cungtau,蔥頭,0.4652
 cungtin,充填,0.4717
-cungtoi,叢臺,0.4649
+cungtoi,叢台,0.4649
 cungwan,重溫,0.4837
 cungwat,蔥鬱,0.4652
 cungwing,聰穎,0.4661
@@ -7751,7 +7725,7 @@ cungzong,衝撞,0.4753
 cungzou,重組,0.514
 cungzuk,充足,0.5208
 cungzung,從中,0.5259
-cungzung,從衆,0.4657
+cungzung,從眾,0.4657
 cungzyu,蟲蛀,0.4642
 cyu,處,0.3343
 cyu,除,0.2972
@@ -8290,7 +8264,6 @@ daaifaat,大法,0.501
 daaifan,大糞,0.4635
 daaifat,大佛,0.4737
 daaifei,大飛,0.4696
-daaifo,大伙,0.4883
 daaifo,大夥,0.4883
 daaifong,大方,0.4986
 daaifu,大夫,0.5149
@@ -8429,7 +8402,7 @@ daaitau,大頭,0.5098
 daaitau,帶頭,0.4943
 daaiteng,大廳,0.51
 daaiteoi,大腿,0.5254
-daaitoi,大臺,0.464
+daaitoi,大台,0.464
 daaitong,大堂,0.4821
 daaitou,歹徒,0.4877
 daaitou,大肚,0.4732
@@ -8456,8 +8429,8 @@ daaizoeng,大象,0.5074
 daaizoeng,大將,0.4973
 daaizoi,大災,0.4661
 daaizok,大作,0.5163
-daaizou,大竈,0.4587
-daaizung,大衆,0.5623
+daaizou,大灶,0.4587
+daaizung,大眾,0.5623
 daaizyun,大專,0.5073
 daajan,打印,0.528
 daajiu,打擾,0.5072
@@ -8529,8 +8502,6 @@ daam,聸,0.1779
 daam,頕,0.1777
 daam,饏,0.1739
 daam,馾,0.1725
-daam,担,0.1499
-daam,胆,0.1499
 daam,啗,0.0582
 daamaa,打罵,0.4728
 daambok,淡薄,0.4769
@@ -8776,7 +8747,7 @@ daapcoek,搭桌,0.4466
 daapdong,搭檔,0.5086
 daapdong,搭擋,0.4609
 daapei,打屁,0.4614
-daapfo,搭伙,0.4386
+daapfo,搭夥,0.4386
 daapfuk,答覆,0.513
 daapfung,搭縫,0.4429
 daapgaai,搭界,0.4622
@@ -8817,7 +8788,7 @@ daapzou,搭造,0.4552
 daapzuk,踏足,0.4657
 daasaan,打散,0.4704
 daasaat,打殺,0.4655
-daasap,打溼,0.4735
+daasap,打濕,0.4735
 daasau,打手,0.4798
 daasei,打死,0.5141
 daaseoi,打水,0.4745
@@ -8948,7 +8919,6 @@ dai,揥,0.1861
 dai,疐,0.186
 dai,腣,0.1856
 dai,祶,0.1854
-dai,隶,0.1854
 dai,仾,0.1849
 dai,趆,0.1849
 dai,奃,0.1848
@@ -9164,7 +9134,7 @@ daksing,得勝,0.4689
 daksyu,特殊,0.5615
 daktai,得體,0.4804
 dakwai,特惠,0.4781
-dakwai,特爲,0.4652
+dakwai,特為,0.4652
 dakwu,特護,0.463
 dakzai,特製,0.4811
 dakzat,特質,0.525
@@ -9266,8 +9236,8 @@ dangsin,登仙,0.4617
 dangsoeng,燈箱,0.4764
 dangtaap,燈塔,0.49
 dangtau,燈頭,0.4657
-dangtoi,登臺,0.4788
-dangtoi,燈臺,0.4619
+dangtoi,登台,0.4788
+dangtoi,燈台,0.4619
 dangtung,等同,0.4861
 dangzaan,燈盞,0.4651
 danjuk,燉肉,0.4637
@@ -9325,7 +9295,6 @@ dau,竇,0.2451
 dau,巢,0.2442
 dau,抖,0.2423
 dau,痘,0.2379
-dau,斗,0.2378
 dau,兜,0.2375
 dau,糾,0.2335
 dau,陡,0.2248
@@ -9366,7 +9335,7 @@ daubou,兜捕,0.4453
 daucing,逗情,0.4478
 dauciu,陡峭,0.4738
 dauco,糾錯,0.4863
-daudaam,斗膽,0.4669
+daudaam,鬥膽,0.4669
 daudau,赳赳,0.4604
 daudit,陡跌,0.4444
 daufaan,兜翻,0.4549
@@ -9400,7 +9369,6 @@ daunaai,豆奶,0.4662
 daungaa,豆芽,0.477
 daungaai,陡崖,0.46
 daungau,鬥牛,0.4752
-daungau,斗牛,0.4593
 daupaau,痘皰,0.4483
 daupei,豆皮,0.4646
 daupin,糾偏,0.4642
@@ -9423,7 +9391,7 @@ dauzeon,陡峻,0.4594
 dauzi,鬥志,0.4904
 dauzoeng,豆漿,0.4957
 dauzoeng,豆醬,0.4615
-dauzung,糾衆,0.4531
+dauzung,糾眾,0.4531
 de,嗲,0.2608
 de,爹,0.2507
 de,襶,0.2137
@@ -9490,7 +9458,7 @@ deitaan,地毯,0.4876
 deitaan,地攤,0.4785
 deitau,地頭,0.4727
 deitit,地鐵,0.5241
-deitoi,地臺,0.4631
+deitoi,地台,0.4631
 deitou,地圖,0.5519
 deiwai,地位,0.5607
 deiwik,地域,0.5179
@@ -9625,7 +9593,7 @@ deoisau,對手,0.5643
 deoisoeng,對上,0.4878
 deoisou,對數,0.4725
 deoitau,對頭,0.4854
-deoitoi,對臺,0.4764
+deoitoi,對台,0.4764
 deoiwaa,對話,0.5531
 deoiwun,兌換,0.5167
 deoizaan,堆棧,0.4738
@@ -9674,9 +9642,7 @@ deon,鶨,0.1819
 deon,橔,0.1809
 deon,蜳,0.18
 deon,驐,0.1774
-deon,吨,0.1499
 deon,墫,0.0675
-deon,炖,0.0225
 deoncing,敦請,0.4586
 deoncuk,敦促,0.4774
 deonfuk,蹲伏,0.4618
@@ -9780,7 +9746,7 @@ diksi,的士,0.4797
 diksi,敵視,0.471
 diksyut,的說,0.5487
 diktaam,敵探,0.4429
-diktoi,敵臺,0.4595
+diktoi,敵台,0.4595
 dikwaa,的話,0.6201
 dikzai,滴劑,0.4626
 dikzi,嫡子,0.4605
@@ -9867,7 +9833,6 @@ din,澱,0.2135
 din,靛,0.211
 din,奠,0.2105
 din,佃,0.2083
-din,淀,0.2066
 din,癜,0.2062
 din,捵,0.2049
 din,槇,0.2019
@@ -10124,7 +10089,7 @@ dinsoeng,電商,0.5572
 dinsoeng,電箱,0.4634
 dinsyun,碘酸,0.4581
 dintai,電梯,0.5205
-dintoi,電臺,0.5136
+dintoi,電台,0.5136
 dintong,殿堂,0.4822
 dintung,電筒,0.4698
 dinwaa,電話,0.5812
@@ -10176,7 +10141,6 @@ dip,蜨,0.1849
 dip,挕,0.1842
 dip,艓,0.1809
 dip,褺,0.1797
-dip,叠,0.1207
 dipcang,疊層,0.4623
 dipdip,喋喋,0.4676
 dipgim,鰈鶼,0.4468
@@ -10483,7 +10447,6 @@ doi,岱,0.2197
 doi,甙,0.214
 doi,怠,0.2139
 doi,玳,0.2101
-doi,隶,0.2079
 doi,迨,0.2075
 doi,祋,0.205
 doi,紿,0.2022
@@ -10541,7 +10504,7 @@ doitai,代替,0.5373
 doitin,代填,0.4548
 doitong,代糖,0.4706
 doitou,代禱,0.4602
-doiwai,代爲,0.4835
+doiwai,代為,0.4835
 doizeoi,代罪,0.4596
 doizong,袋裝,0.4735
 doizuk,待續,0.4709
@@ -10574,7 +10537,6 @@ dong,檔,0.2895
 dong,黨,0.2762
 dong,擋,0.2656
 dong,盪,0.2286
-dong,党,0.226
 dong,蕩,0.2231
 dong,瑒,0.2178
 dong,噹,0.2173
@@ -10677,7 +10639,7 @@ dongzoi,當災,0.4513
 dongzok,當作,0.5343
 dongzou,當做,0.4853
 dongzung,當中,0.5605
-dongzung,當衆,0.4844
+dongzung,當眾,0.4844
 dosam,多心,0.4704
 dosi,多時,0.4775
 dosi,多事,0.4771
@@ -10757,7 +10719,6 @@ dou,琽,0.1841
 dou,隝,0.1831
 dou,壔,0.1828
 dou,醏,0.1781
-dou,陦,0.1761
 dou,翢,0.1757
 dou,嶹,0.1746
 dou,隯,0.1746
@@ -10906,7 +10867,7 @@ doumei,倒楣,0.464
 doumin,刀面,0.46
 doumiu,稻苗,0.4575
 doumou,盜墓,0.4764
-doumui,倒霉,0.5046
+doumui,倒黴,0.5046
 doumun,杜門,0.4597
 doungaa,道牙,0.456
 doungau,倒鉤,0.4625
@@ -10937,7 +10898,7 @@ doutau,渡頭,0.462
 douteoi,倒退,0.4935
 doutin,稻田,0.4764
 doutip,倒貼,0.4728
-doutoi,倒臺,0.4639
+doutoi,倒台,0.4639
 doutou,賭徒,0.4747
 doutung,道統,0.4659
 douwai,倒位,0.4558
@@ -10967,7 +10928,7 @@ douzoeng,刀匠,0.4564
 douzoeng,倒帳,0.4519
 douzoeng,倒賬,0.4517
 douzong,道藏,0.4629
-douzou,倒竈,0.4596
+douzou,倒灶,0.4596
 douzyu,賭注,0.4787
 douzyun,倒轉,0.4672
 douzyut,杜絕,0.497
@@ -11395,7 +11356,7 @@ faabaau,花苞,0.4661
 faabin,花邊,0.4783
 faacaa,花茶,0.4729
 faace,花車,0.4673
-faaci,花癡,0.483
+faaci,花痴,0.483
 faacin,花錢,0.5439
 faacoeng,花槍,0.462
 faacoi,花菜,0.4648
@@ -11492,7 +11453,7 @@ faan,翻,0.2858
 faan,返,0.2848
 faan,凡,0.2789
 faan,犯,0.2619
-faan,范,0.2606
+faan,範,0.2606
 faan,泛,0.2569
 faan,樊,0.2482
 faan,販,0.2478
@@ -11500,7 +11461,6 @@ faan,梵,0.246
 faan,番,0.2458
 faan,汎,0.2419
 faan,繁,0.2366
-faan,範,0.2358
 faan,帆,0.2351
 faan,坂,0.2349
 faan,阪,0.2348
@@ -11743,7 +11703,7 @@ faansyun,帆船,0.481
 faansyun,泛酸,0.4642
 faantang,翻騰,0.4741
 faanteng,飯廳,0.4649
-faantoi,返臺,0.4642
+faantoi,返台,0.4642
 faantong,飯堂,0.4767
 faantung,飯桶,0.4704
 faantyun,飯糰,0.4731
@@ -11752,7 +11712,7 @@ faanwaa,番話,0.4756
 faanwaa,反話,0.4626
 faanwai,範圍,0.5623
 faanwai,反胃,0.473
-faanwai,反爲,0.461
+faanwai,反為,0.461
 faanwan,販運,0.4638
 faanwan,犯渾,0.4576
 faanwing,繁榮,0.5127
@@ -11808,7 +11768,6 @@ faat,沷,0.1937
 faat,灋,0.1928
 faat,醱,0.1913
 faat,佱,0.1906
-faat,珐,0.1336
 faataam,化痰,0.4723
 faatbeng,發病,0.5169
 faatbin,髮辮,0.4628
@@ -11913,14 +11872,14 @@ faatmin,發麪,0.4631
 faatming,發明,0.5458
 faatmong,法網,0.4759
 faatmong,髮網,0.4636
-faatmou,發霉,0.4829
+faatmou,發黴,0.4829
 faatmou,發毛,0.4703
 faatmun,法門,0.476
 faatnaan,發難,0.4716
 faatngaa,發芽,0.4814
 faatngoi,發呆,0.4986
 faatnou,發怒,0.4754
-faatoi,花臺,0.4628
+faatoi,花台,0.4628
 faatok,花托,0.4604
 faaton,法案,0.5021
 faatpaai,發牌,0.4657
@@ -11972,7 +11931,7 @@ faatzin,發顫,0.4646
 faatzing,發怔,0.4604
 faatzoeng,發脹,0.4637
 faatzok,發作,0.5225
-faawai,化爲,0.4999
+faawai,化為,0.4999
 faawai,花卉,0.4904
 faawong,花王,0.4656
 faawui,花會,0.4667
@@ -12112,7 +12071,7 @@ fan,玢,0.2261
 fan,忿,0.2251
 fan,僨,0.225
 fan,拚,0.2244
-fan,熏,0.2243
+fan,燻,0.2243
 fan,賁,0.2242
 fan,酚,0.2237
 fan,憤,0.2215
@@ -12127,7 +12086,6 @@ fan,勛,0.2136
 fan,坋,0.2105
 fan,朌,0.2101
 fan,氛,0.2084
-fan,燻,0.2082
 fan,瞓,0.2077
 fan,炃,0.2075
 fan,閽,0.2069
@@ -12378,10 +12336,9 @@ fantai,分體,0.4405
 fantau,分頭,0.4751
 fantin,熏天,0.4635
 fantiu,訓條,0.4535
-fantou,熏陶,0.4829
-fantou,薰陶,0.4804
+fantou,薰陶,0.4829
 fanwaa,訓話,0.4651
-fanwai,分爲,0.5617
+fanwai,分為,0.5617
 fanwai,氛圍,0.5557
 fanwai,焚毀,0.4653
 fanwan,紛紜,0.4677
@@ -12756,7 +12713,7 @@ feizai,斐濟,0.4655
 feizau,非洲,0.5292
 feizi,妃子,0.4745
 feizin,飛濺,0.4725
-feizing,飛征,0.439
+feizing,飛徵,0.439
 feizoeng,飛漲,0.475
 feizong,肥壯,0.4632
 feizou,肥皂,0.4813
@@ -12772,8 +12729,7 @@ fo,科,0.286
 fo,顆,0.2616
 fo,棵,0.254
 fo,敤,0.2246
-fo,伙,0.2189
-fo,夥,0.2162
+fo,夥,0.2189
 fo,稞,0.214
 fo,鈥,0.2134
 fo,髁,0.2104
@@ -12799,7 +12755,6 @@ fobing,火併,0.464
 fobiu,課表,0.473
 fobou,火暴,0.4747
 fobun,課本,0.5313
-fobun,伙伴,0.5252
 fobun,夥伴,0.5252
 fobun,火伴,0.4532
 focaai,火柴,0.4827
@@ -12818,13 +12773,12 @@ fodai,貨底,0.4489
 fodau,蝌蚪,0.4737
 fofaa,火花,0.4962
 fofaa,火化,0.476
-fofu,伙夫,0.4602
+fofu,伙伕,0.4602
 fogaan,課間,0.4762
 fogai,火雞,0.4738
 fogap,火急,0.4662
 fogei,科技,0.5646
 fogei,夥計,0.4818
-fogei,伙計,0.4667
 fogeoi,火炬,0.494
 fogeoi,科舉,0.4812
 foging,火警,0.4657
@@ -12914,7 +12868,6 @@ fong,舫,0.2122
 fong,肪,0.2096
 fong,枋,0.2094
 fong,魴,0.2089
-fong,况,0.2079
 fong,肓,0.2078
 fong,昉,0.2065
 fong,鈁,0.204
@@ -12972,7 +12925,7 @@ fongcek,方尺,0.4602
 fongceoi,紡錘,0.4632
 fongci,放矢,0.4666
 fongcing,放晴,0.467
-fongcoi,方纔,0.4821
+fongcoi,方才,0.4821
 fongcong,房艙,0.4494
 fongcou,荒草,0.4658
 fongdaai,放大,0.54
@@ -13001,7 +12954,6 @@ fongfaai,方塊,0.5082
 fongfaan,防範,0.5016
 fongfaat,方法,0.5884
 fongfai,荒廢,0.4798
-fongfat,仿佛,0.5497
 fongfat,彷彿,0.5497
 fongfat,恍惚,0.4837
 fongfo,防火,0.4878
@@ -13067,7 +13019,7 @@ fongmong,慌忙,0.4775
 fongmou,荒蕪,0.4799
 fongmou,防務,0.474
 fongmuk,放牧,0.4729
-fongngai,防僞,0.4833
+fongngai,防偽,0.4833
 fongngai,方毅,0.4609
 fongngau,放牛,0.4673
 fongngoi,妨礙,0.4904
@@ -13103,7 +13055,7 @@ fongsung,放鬆,0.5456
 fongsung,仿宋,0.4638
 fongsyun,防損,0.4628
 fongtaam,訪談,0.512
-fongtoi,訪臺,0.4665
+fongtoi,訪台,0.4665
 fongtong,荒唐,0.486
 fongtong,方糖,0.464
 fongtou,荒土,0.4566
@@ -13153,11 +13105,10 @@ fotaan,火炭,0.4614
 fotai,課題,0.5222
 fotai,貨梯,0.4633
 fotau,火頭,0.4627
-fotau,伙頭,0.4586
+fotau,夥頭,0.4586
 foteoi,火腿,0.483
 fotong,課堂,0.5262
 fotung,夥同,0.4722
-fotung,伙同,0.4444
 fowaan,科幻,0.5342
 fowan,貨運,0.4917
 fowo,火鍋,0.5189
@@ -13597,7 +13548,6 @@ fuk,蕧,0.1813
 fuk,稪,0.1793
 fuk,垘,0.1771
 fuk,鴔,0.1768
-fuk,复,0.1724
 fuk,幞,0.0225
 fukam,撫琴,0.467
 fukap,呼吸,0.5443
@@ -13641,7 +13591,7 @@ fukgwok,復國,0.4678
 fukhak,復刻,0.502
 fukhak,腹黑,0.468
 fukhap,複合,0.5176
-fukhat,複覈,0.4816
+fukhat,複核,0.4816
 fukhei,福氣,0.4871
 fukhei,服氣,0.4818
 fukhing,復興,0.5026
@@ -13678,7 +13628,7 @@ fukngaan,複眼,0.4609
 fukoeng,富強,0.4782
 fukok,枯涸,0.4572
 fukpaai,復牌,0.4827
-fukpik,復辟,0.4702
+fukpik,復闢,0.4702
 fuksam,腹心,0.4621
 fuksau,復仇,0.5174
 fukse,輻射,0.5299
@@ -13719,7 +13669,7 @@ fukzi,福祉,0.4775
 fukzik,復職,0.4628
 fukziu,輻照,0.4673
 fukzong,服裝,0.5346
-fukzung,服衆,0.4521
+fukzung,服眾,0.4521
 fukzyun,復轉,0.4618
 fulaan,腐爛,0.4915
 fuleoi,負累,0.4653
@@ -13811,7 +13761,6 @@ fung,蜂,0.2293
 fung,渢,0.2244
 fung,俸,0.224
 fung,唪,0.2177
-fung,丰,0.216
 fung,夆,0.2138
 fung,烽,0.2132
 fung,賵,0.2129
@@ -13975,7 +13924,7 @@ fungpun,封盤,0.4612
 fungsaa,風沙,0.4764
 fungsaat,封殺,0.4911
 fungsai,風勢,0.4625
-fungsap,風溼,0.4805
+fungsap,風濕,0.4805
 fungsau,豐收,0.4863
 fungsek,豐碩,0.4753
 fungseoi,風水,0.4947
@@ -13997,7 +13946,7 @@ fungtaan,風癱,0.4523
 fungtaan,瘋癱,0.4444
 fungtau,風頭,0.4848
 fungtiu,封條,0.47
-fungtoi,鳳臺,0.4661
+fungtoi,鳳台,0.4661
 fungtong,楓糖,0.4583
 fungtou,封套,0.4686
 fungtou,封土,0.461
@@ -14129,7 +14078,7 @@ futip,敷貼,0.463
 futlok,闊落,0.4503
 futlou,闊佬,0.4601
 futlou,闊老,0.453
-futoi,赴臺,0.4746
+futoi,赴台,0.4746
 futung,苦痛,0.4747
 fuwaai,腐壞,0.4613
 fuwai,枯萎,0.479
@@ -14187,7 +14136,6 @@ gaa,駕,0.2351
 gaa,伽,0.2262
 gaa,迦,0.226
 gaa,瘕,0.2238
-gaa,价,0.217
 gaa,稼,0.2147
 gaa,珈,0.2145
 gaa,尕,0.214
@@ -14267,7 +14215,6 @@ gaafaat,加法,0.4743
 gaafaat,家法,0.4654
 gaafe,咖啡,0.5616
 gaafo,傢伙,0.5222
-gaafo,家伙,0.5173
 gaafo,假貨,0.5054
 gaafong,家訪,0.4714
 gaafu,家父,0.4651
@@ -14278,7 +14225,7 @@ gaagaam,加減,0.4761
 gaagaau,家教,0.5042
 gaagan,加緊,0.4867
 gaagau,架構,0.5463
-gaageoi,家具,0.5508
+gaageoi,傢俱,0.5508
 gaageoi,家居,0.5148
 gaaging,家境,0.5018
 gaagu,家姑,0.4534
@@ -14402,7 +14349,7 @@ gaaijap,介入,0.5216
 gaaiji,介意,0.5016
 gaaiji,解頤,0.4577
 gaaijim,戒嚴,0.4697
-gaaijin,戒菸,0.49
+gaaijin,戒煙,0.49
 gaaijoek,解約,0.4804
 gaaijoek,解藥,0.473
 gaaijyun,佳緣,0.4712
@@ -14582,7 +14529,6 @@ gaam,凲,0.1819
 gaam,譼,0.1805
 gaam,魐,0.1743
 gaam,鑬,0.1731
-gaam,减,0.1428
 gaamaa,加碼,0.4704
 gaamaat,減壓,0.4798
 gaamaat,監押,0.4544
@@ -14705,8 +14651,6 @@ gaan,葌,0.1803
 gaan,蠒,0.1778
 gaan,鹻,0.1764
 gaan,襺,0.1698
-gaan,碱,0.1466
-gaan,茧,0.0748
 gaan,堿,0.045
 gaan,𢵧,0.0225
 gaanap,加納,0.4747
@@ -14810,7 +14754,7 @@ gaanzaang,諫諍,0.4564
 gaanzau,間奏,0.4631
 gaanzi,繭子,0.463
 gaanzik,簡直,0.5532
-gaanzing,諫征,0.4415
+gaanzing,諫徵,0.4415
 gaanzip,間接,0.5146
 gaanzoeng,簡章,0.4764
 gaanzong,簡裝,0.4695
@@ -14906,7 +14850,6 @@ gaasat,家室,0.4646
 gaaseng,假聲,0.4658
 gaasi,傢俬,0.4765
 gaasi,家事,0.4762
-gaasi,家私,0.4738
 gaasi,假使,0.4728
 gaasi,加試,0.4673
 gaasik,加息,0.5153
@@ -15129,7 +15072,7 @@ gaautung,絞痛,0.4691
 gaautung,搞通,0.4561
 gaauwaan,交還,0.4657
 gaauwaat,狡猾,0.4845
-gaauwai,較爲,0.5484
+gaauwai,較為,0.5484
 gaauwan,攪勻,0.4664
 gaauwan,攪混,0.459
 gaauwo,攪和,0.4703
@@ -15173,7 +15116,7 @@ gaazong,假裝,0.5195
 gaazong,嫁妝,0.4736
 gaazong,嫁裝,0.4526
 gaazuk,家族,0.5515
-gaazyu,加注,0.4616
+gaazyu,加註,0.4616
 gai,計,0.2864
 gai,雞,0.279
 gai,結,0.2723
@@ -15304,7 +15247,7 @@ gambat,金筆,0.4634
 gambin,金邊,0.4716
 gambiu,錦標,0.4714
 gambok,金箔,0.4667
-gambut,金鉢,0.4582
+gambut,金缽,0.4582
 gamcau,金秋,0.4785
 gamci,今次,0.4801
 gamcin,金錢,0.5367
@@ -15350,7 +15293,7 @@ gamje,今夜,0.4879
 gamje,禁夜,0.4554
 gamjik,今譯,0.4637
 gamjim,感染,0.5471
-gamjin,禁菸,0.472
+gamjin,禁煙,0.472
 gamjin,敢言,0.4657
 gamjin,禁演,0.4583
 gamjing,感應,0.4981
@@ -15415,8 +15358,8 @@ gamtim,甘甜,0.4742
 gamtin,今天,0.6019
 gamtiu,金條,0.476
 gamtiu,禁條,0.45
-gamtoi,金臺,0.4676
-gamwai,敢爲,0.4664
+gamtoi,金台,0.4676
+gamwai,敢為,0.4664
 gamwai,禁衛,0.4633
 gamwai,感喟,0.4605
 gamwan,禁運,0.4636
@@ -15477,7 +15420,6 @@ gan,漌,0.174
 gan,歏,0.1733
 gan,螼,0.1731
 gan,菫,0.1105
-gan,仅,0.0779
 ganaak,緊握,0.477
 ganbaan,跟班,0.474
 ganbaau,跟包,0.4566
@@ -15538,7 +15480,6 @@ gang,峺,0.183
 gang,菮,0.1813
 gang,刯,0.1754
 gang,恒,0.1634
-gang,亘,0.163
 gang,𬒔,0.0225
 gangaau,近郊,0.4731
 gangan,僅僅,0.5523
@@ -15762,7 +15703,6 @@ gau,傋,0.1989
 gau,覯,0.1988
 gau,匛,0.1986
 gau,镹,0.1954
-gau,够,0.1947
 gau,嚿,0.1943
 gau,韮,0.1943
 gau,樛,0.1939
@@ -15798,7 +15738,6 @@ gau,朻,0.1789
 gau,玽,0.1778
 gau,坸,0.1734
 gau,舏,0.1718
-gau,厩,0.1466
 gau,搆,0.0492
 gaubaa,九巴,0.4562
 gaubaan,究辦,0.4503
@@ -15920,7 +15859,6 @@ gei,居,0.2676
 gei,暨,0.2654
 gei,紀,0.2651
 gei,己,0.2511
-gei,几,0.2484
 gei,技,0.2455
 gei,姬,0.2442
 gei,冀,0.243
@@ -15953,7 +15891,6 @@ gei,踦,0.2111
 gei,庋,0.21
 gei,芰,0.2086
 gei,畿,0.2086
-gei,机,0.2079
 gei,穖,0.2077
 gei,乩,0.2077
 gei,璣,0.2065
@@ -16006,7 +15943,6 @@ gei,躸,0.1761
 gei,刉,0.1751
 gei,鄿,0.1742
 gei,貄,0.1739
-gei,虮,0.1499
 gei,旣,0.0357
 gei,㠱,0.0225
 geiaat,羈押,0.4735
@@ -16202,7 +16138,6 @@ geoi,舉,0.2599
 geoi,櫃,0.2582
 geoi,俱,0.2572
 geoi,巨,0.257
-geoi,据,0.2431
 geoi,懼,0.2363
 geoi,瞿,0.2358
 geoi,鋸,0.2357
@@ -16225,7 +16160,6 @@ geoi,踞,0.2088
 geoi,倨,0.2076
 geoi,裾,0.2074
 geoi,琚,0.2072
-geoi,柜,0.2067
 geoi,櫸,0.2064
 geoi,姖,0.2058
 geoi,鋦,0.2057
@@ -16308,9 +16242,7 @@ geoidung,齲洞,0.4579
 geoifaat,句法,0.4677
 geoifo,舉火,0.4591
 geoifu,鉅富,0.4658
-geoifu,巨富,0.4425
 geoifun,鉅款,0.4743
-geoifun,巨款,0.4582
 geoifung,颶風,0.4829
 geoigou,懼高,0.4543
 geoigun,居官,0.4605
@@ -16365,7 +16297,6 @@ geoizin,舉薦,0.4651
 geoizing,舉證,0.4826
 geoizyu,居住,0.5193
 geoizyu,鉅著,0.471
-geoizyu,巨著,0.4617
 geoizyu,舉箸,0.4565
 gep,夾,0.2849
 gep,喼,0.2082
@@ -16387,7 +16318,6 @@ gik,丮,0.1989
 gik,犱,0.1975
 gik,谻,0.1959
 gik,獥,0.1923
-gik,极,0.1901
 gik,憿,0.1896
 gik,襋,0.1882
 gik,蕀,0.1863
@@ -16444,7 +16374,7 @@ gikpo,擊破,0.475
 giksai,極西,0.4595
 giksou,激素,0.5169
 gikteoi,擊退,0.4832
-gikwai,極爲,0.5333
+gikwai,極為,0.5333
 gikzang,激增,0.481
 gikzau,極晝,0.461
 gikzeon,激進,0.5025
@@ -16568,7 +16498,6 @@ gin,藆,0.1715
 gin,鵳,0.1713
 gin,餰,0.1676
 gin,幵,0.1251
-gin,茧,0.0973
 ginbik,堅壁,0.4612
 ginbing,堅冰,0.4656
 ginbok,肩膊,0.4606
@@ -16642,7 +16571,6 @@ ging,踁,0.1804
 ging,鵛,0.1799
 ging,麠,0.1751
 ging,坕,0.1729
-ging,惊,0.1466
 gingaai,見解,0.5129
 gingaau,建交,0.4745
 gingbaai,敬拜,0.4647
@@ -16810,7 +16738,7 @@ gingzau,敬酒,0.4745
 gingzeot,勁卒,0.4525
 gingzi,徑自,0.4663
 gingzi,逕自,0.4598
-gingzi,景致,0.4536
+gingzi,景緻,0.4536
 gingzik,徑直,0.4787
 gingzik,驚蟄,0.4654
 gingzoeng,景象,0.5076
@@ -16909,7 +16837,6 @@ gipzap,喼汁,0.4492
 git,結,0.2723
 git,傑,0.2598
 git,潔,0.2469
-git,杰,0.2396
 git,桔,0.2358
 git,戛,0.229
 git,孑,0.2277
@@ -16946,7 +16873,6 @@ git,迼,0.1828
 git,忦,0.1804
 git,鍻,0.1774
 git,魝,0.17
-git,洁,0.1466
 gitbaa,結巴,0.4734
 gitbaa,結疤,0.4628
 gitbaai,結拜,0.4715
@@ -17000,7 +16926,7 @@ gitsing,結繩,0.4621
 gitsit,結舌,0.4677
 gitsoeng,結霜,0.4623
 gitsyun,結算,0.5281
-gitwai,結爲,0.4734
+gitwai,結為,0.4734
 gitwong,桀王,0.4508
 gitwui,結匯,0.4709
 gitzaap,結集,0.4653
@@ -17152,7 +17078,6 @@ goek,谻,0.2184
 goek,踋,0.196
 goek,匷,0.1767
 goek,屫,0.1693
-goek,脚,0.1499
 goek,蹻,0.0748
 goek,屩,0.0225
 goekbaan,腳板,0.4654
@@ -17179,7 +17104,6 @@ goeng,強,0.3224
 goeng,慶,0.2597
 goeng,薑,0.2474
 goeng,姜,0.2474
-goeng,强,0.238
 goeng,僵,0.2252
 goeng,疆,0.2243
 goeng,羌,0.2174
@@ -17294,7 +17218,7 @@ goisin,改善,0.5523
 goisyun,改選,0.4646
 goitin,改天,0.5063
 goitou,改圖,0.463
-goiwai,改爲,0.5244
+goiwai,改為,0.5244
 goiwun,改換,0.4659
 goiwun,蓋碗,0.4631
 goizai,改制,0.493
@@ -17388,7 +17312,6 @@ golo,旮旯,0.4736
 gomai,歌迷,0.5094
 gomou,歌舞,0.4857
 gon,幹,0.3096
-gon,干,0.2917
 gon,乾,0.2845
 gon,趕,0.2735
 gon,肝,0.2516
@@ -17424,7 +17347,6 @@ gon,檊,0.1863
 gon,鳱,0.182
 gon,乹,0.1815
 gon,衦,0.1779
-gon,赶,0.1754
 gonau,乾嘔,0.4639
 gonbaa,乾巴,0.4659
 gonbing,乾冰,0.4641
@@ -17455,9 +17377,8 @@ gong,降,0.2724
 gong,鋼,0.2633
 gong,崗,0.2486
 gong,扛,0.2383
-gong,杠,0.2364
+gong,槓,0.2364
 gong,缸,0.2347
-gong,槓,0.2339
 gong,亢,0.231
 gong,綱,0.2292
 gong,岡,0.2274
@@ -17512,7 +17433,7 @@ gongbat,鋼筆,0.487
 gongbik,剛愎,0.4632
 gongcaa,鋼叉,0.4604
 gongcaat,剛察,0.4619
-gongcoi,剛纔,0.5677
+gongcoi,剛才,0.5677
 gongcoi,鋼材,0.4911
 gongcyu,鋼柱,0.4608
 gongdaai,港大,0.491
@@ -17595,8 +17516,8 @@ gongtaan,講壇,0.4772
 gongtai,講題,0.463
 gongtau,槓頭,0.4561
 gongtit,鋼鐵,0.5089
-gongtoi,港臺,0.4881
-gongtoi,講臺,0.4823
+gongtoi,港台,0.4881
+gongtoi,講台,0.4823
 gongtong,講堂,0.4748
 gongung,趕工,0.4642
 gongwaa,講話,0.5195
@@ -17622,9 +17543,9 @@ gonhon,乾旱,0.4888
 gonhot,乾渴,0.4646
 gonjim,肝炎,0.4809
 gonjit,乾熱,0.463
-gonjiu,干擾,0.5321
-gonjyu,干預,0.5269
-gonjyu,干與,0.4604
+gonjiu,幹擾,0.5321
+gonjyu,幹預,0.5269
+gonjyu,幹與,0.4604
 gonkat,乾咳,0.4659
 gonkok,乾涸,0.4755
 gonkwan,幹羣,0.4661
@@ -17873,7 +17794,6 @@ gu,酤,0.2215
 gu,蠱,0.2207
 gu,詁,0.2189
 gu,罟,0.2181
-gu,雇,0.2108
 gu,崮,0.2093
 gu,轂,0.2091
 gu,菰,0.2084
@@ -17976,7 +17896,6 @@ guhoeng,故鄉,0.5003
 guhon,孤寒,0.4623
 gui,攰,0.2108
 gui,癐,0.1913
-gui,椢,0.1764
 gujan,古人,0.5312
 gujan,故人,0.4779
 gujau,固有,0.5042
@@ -17991,7 +17910,6 @@ gujung,僱傭,0.5032
 gujung,僱用,0.479
 gujyu,古語,0.4656
 gujyun,僱員,0.4857
-gujyun,雇員,0.4788
 gujyun,沽源,0.4645
 gujyun,顧員,0.4448
 guk,局,0.2921
@@ -18064,7 +17982,6 @@ gukfaa,菊花,0.4968
 gukfong,局方,0.4749
 gukgung,鞠躬,0.4849
 gukhaan,侷限,0.5143
-gukhaan,局限,0.5143
 gukhaau,焗烤,0.4543
 gukhong,穀糠,0.458
 gukjau,焗油,0.4638
@@ -18488,7 +18405,7 @@ gungzong,弓狀,0.4576
 gungzong,供狀,0.4568
 gungzong,拱狀,0.4529
 gungzuk,恭祝,0.4659
-gungzung,公衆,0.524
+gungzung,公眾,0.524
 gungzung,工種,0.4833
 gungzyu,公主,0.541
 gungzyun,公轉,0.4733
@@ -18502,7 +18419,7 @@ gunjam,觀音,0.4869
 gunjan,官人,0.4653
 gunjan,官印,0.4621
 gunji,冠以,0.4789
-gunjin,管弦,0.4398
+gunjin,管絃,0.4398
 gunjoeng,灌陽,0.464
 gunjung,管用,0.4924
 gunjyun,官員,0.527
@@ -18556,7 +18473,7 @@ gunzin,觀戰,0.4746
 gunzo,管座,0.4594
 gunzoek,官爵,0.4615
 gunzong,罐裝,0.4667
-gunzung,觀衆,0.5759
+gunzung,觀眾,0.5759
 gunzyu,灌注,0.4778
 gunzyut,冠絕,0.463
 gupei,鼓皮,0.4586
@@ -18613,7 +18530,6 @@ gwaa,掛,0.3067
 gwaa,瓜,0.2528
 gwaa,卦,0.2343
 gwaa,呱,0.2324
-gwaa,挂,0.2273
 gwaa,蝸,0.226
 gwaa,寡,0.224
 gwaa,媧,0.2217
@@ -18652,7 +18568,6 @@ gwaai,乖,0.3206
 gwaai,怪,0.3115
 gwaai,拐,0.2315
 gwaai,枴,0.2171
-gwaai,柺,0.2169
 gwaai,狤,0.2112
 gwaai,蒯,0.2093
 gwaai,恠,0.2081
@@ -18660,7 +18575,7 @@ gwaai,夬,0.2046
 gwaai,叏,0.199
 gwaai,罫,0.1933
 gwaai,箉,0.1919
-gwaaibei,怪祕,0.4394
+gwaaibei,怪秘,0.4394
 gwaaidaai,拐帶,0.4619
 gwaaidaan,怪誕,0.4658
 gwaaigok,拐角,0.472
@@ -18682,8 +18597,7 @@ gwaaitaam,怪談,0.4672
 gwaaitoi,怪胎,0.4716
 gwaaiwaan,拐彎,0.4762
 gwaaizeoi,怪罪,0.4717
-gwaaizoeng,柺杖,0.4751
-gwaaizoeng,拐杖,0.4599
+gwaaizoeng,枴杖,0.4751
 gwaajan,寡人,0.4739
 gwaaji,卦義,0.4507
 gwaaji,掛意,0.4489
@@ -18805,7 +18719,6 @@ gwai,庋,0.2325
 gwai,悸,0.2321
 gwai,軌,0.2301
 gwai,撅,0.2294
-gwai,柜,0.2292
 gwai,饋,0.2269
 gwai,瑰,0.226
 gwai,蹶,0.2231
@@ -18818,7 +18731,7 @@ gwai,傀,0.2187
 gwai,癸,0.2153
 gwai,詭,0.2151
 gwai,閨,0.2137
-gwai,潙,0.2097
+gwai,溈,0.2097
 gwai,鮭,0.2092
 gwai,匭,0.2088
 gwai,簣,0.2083
@@ -18880,13 +18793,11 @@ gwai,祪,0.1746
 gwai,聭,0.174
 gwai,鑎,0.1712
 gwai,餽,0.123
-gwai,嬀,0.1214
 gwai,媿,0.0779
-gwai,溈,0.0357
 gwaiaa,貴啊,0.4494
 gwaibaai,跪拜,0.4665
 gwaiban,貴賓,0.4855
-gwaibei,詭祕,0.4666
+gwaibei,詭秘,0.4666
 gwaibin,詭辯,0.4636
 gwaibing,歸併,0.4631
 gwaibit,龜鱉,0.4622
@@ -18984,14 +18895,14 @@ gwaisyun,龜船,0.4522
 gwaitau,龜頭,0.4807
 gwaitau,鬼頭,0.464
 gwaitoi,櫃檯,0.4991
-gwaitoi,櫃臺,0.4991
+gwaitoi,櫃台,0.4991
 gwaitoi,鬼胎,0.4664
 gwaitou,跪禱,0.4431
 gwaiuk,鬼屋,0.4673
 gwaiwaa,鬼話,0.4766
 gwaiwaan,歸還,0.4857
 gwaiwai,歸位,0.4662
-gwaiwai,貴爲,0.4657
+gwaiwai,貴為,0.4657
 gwaiwai,櫃位,0.4553
 gwaiwai,瑰瑋,0.452
 gwaiwan,鬼魂,0.4795
@@ -19394,7 +19305,6 @@ gwok,漍,0.1881
 gwok,膕,0.188
 gwok,霩,0.1823
 gwok,簂,0.1798
-gwok,椁,0.1723
 gwokbou,國寶,0.4797
 gwokcaak,國策,0.4726
 gwokcaan,國產,0.5514
@@ -19565,7 +19475,7 @@ gwongsin,光鮮,0.4818
 gwongtau,光頭,0.4937
 gwongwaan,光環,0.5185
 gwongwaat,光滑,0.5054
-gwongwai,廣爲,0.4806
+gwongwai,廣為,0.4806
 gwongwing,光榮,0.5137
 gwongzaak,光澤,0.4893
 gwongzau,廣州,0.5541
@@ -19671,7 +19581,7 @@ gyunhin,捐獻,0.4826
 gyunhyut,捐血,0.4638
 gyunjap,捲入,0.4873
 gyunjau,倦遊,0.4551
-gyunjin,捲菸,0.4811
+gyunjin,捲煙,0.4811
 gyunjiu,卷繞,0.463
 gyunjoeng,捲揚,0.4601
 gyunjung,倦容,0.4681
@@ -19735,7 +19645,6 @@ haa,碬,0.1787
 haa,騢,0.1787
 haa,颬,0.1765
 haa,閕,0.1726
-haa,厦,0.1385
 haa,吓,0.1251
 haa,㗇,0.0225
 haaaat,下壓,0.4682
@@ -19874,7 +19783,7 @@ haajan,下人,0.4688
 haajat,夏日,0.4981
 haajau,下游,0.5057
 haajin,下弦,0.463
-haajin,下咽,0.4389
+haajin,下嚥,0.4389
 haajip,下頁,0.4706
 haajyu,下雨,0.5188
 haajyu,夏禹,0.4619
@@ -19947,7 +19856,6 @@ haam,函,0.2417
 haam,嵌,0.2387
 haam,鹹,0.2371
 haam,闞,0.2363
-haam,咸,0.2255
 haam,銜,0.2233
 haam,檻,0.2135
 haam,菡,0.2133
@@ -20003,7 +19911,7 @@ haamkau,函購,0.4538
 haamkoi,涵蓋,0.522
 haamou,蛤蟆,0.4817
 haamou,蝦蟆,0.4594
-haamsap,鹹溼,0.4649
+haamsap,鹹濕,0.4649
 haamsau,函授,0.4752
 haamseoi,鹹水,0.4651
 haamsou,函數,0.5438
@@ -20159,7 +20067,7 @@ haasan,下身,0.4818
 haasau,下手,0.5163
 haaseoi,下水,0.4973
 haaseoi,下垂,0.483
-haaseon,下脣,0.4661
+haaseon,下唇,0.4661
 haasi,遐思,0.4657
 haasoeng,遐想,0.4813
 haasuk,下屬,0.5253
@@ -20168,7 +20076,7 @@ haataap,下榻,0.4738
 haatai,下體,0.4757
 haatin,夏天,0.5471
 haatiu,下調,0.4967
-haatoi,下臺,0.4829
+haatoi,下台,0.4829
 haau,考,0.3174
 haau,烤,0.2655
 haau,校,0.2639
@@ -20280,7 +20188,7 @@ haaugun,考官,0.5194
 haaugung,校工,0.4606
 haaugwo,效果,0.5977
 haauhap,巧合,0.5003
-haauhat,考覈,0.5294
+haauhat,考核,0.5294
 haauhei,考起,0.4593
 haauhing,校慶,0.4772
 haauhon,校刊,0.4639
@@ -20469,7 +20377,6 @@ hakwaak,刻畫,0.5212
 hakwaak,刻劃,0.4654
 hakwaan,黑鯇,0.4465
 hakwu,黑戶,0.4631
-hakzai,克制,0.5195
 hakzai,剋制,0.5195
 hakzi,赫茲,0.4663
 ham,冚,0.6561
@@ -20739,7 +20646,7 @@ hangsoeng,恆常,0.4618
 hangsyu,啃書,0.462
 hangtaan,杏壇,0.4649
 hangtung,亨通,0.4675
-hangwai,行爲,0.5829
+hangwai,行為,0.5829
 hangwan,幸運,0.5203
 hangwan,恆溫,0.4769
 hangwong,杏黃,0.4623
@@ -20824,7 +20731,6 @@ hapcoeng,合唱,0.4989
 hapdong,恰當,0.4948
 hapfaat,合法,0.526
 hapfan,合婚,0.4617
-hapfo,合伙,0.4881
 hapfo,合夥,0.4881
 hapfu,合乎,0.4785
 hapfung,合縫,0.4622
@@ -20877,11 +20783,10 @@ hapzi,盒子,0.5272
 hapzi,合資,0.4994
 hapziu,合照,0.4879
 hapzok,合作,0.5725
-hapzung,合衆,0.4666
-hat,喫,0.3739
+hapzung,合眾,0.4666
+hat,吃,0.3739
 hat,核,0.262
 hat,瞎,0.2588
-hat,吃,0.2309
 hat,閡,0.2294
 hat,紇,0.2259
 hat,楁,0.2249
@@ -20893,7 +20798,6 @@ hat,咭,0.221
 hat,乞,0.2195
 hat,仡,0.2171
 hat,黠,0.2164
-hat,覈,0.215
 hat,獥,0.2148
 hat,楬,0.2132
 hat,礉,0.2117
@@ -20926,33 +20830,32 @@ hat,釳,0.0225
 hatbaai,瞎掰,0.4698
 hatcaai,瞎猜,0.4687
 hatceoi,瞎吹,0.4589
-hatdeoi,覈對,0.4976
+hatdeoi,核對,0.4976
 hatfuk,乞伏,0.4584
 hatgaau,瞎搞,0.4666
-hatgai,覈計,0.4583
+hatgai,核計,0.4583
 hatgong,乞降,0.4579
 hatjan,乞人,0.4591
 hatji,乞兒,0.4648
-hatjim,覈驗,0.463
+hatjim,核驗,0.463
 hatkau,乞求,0.4742
 hatkeoi,轄區,0.4934
 hatkoi,乞丐,0.4918
 hatlin,乞憐,0.4621
 hatnang,核能,0.4745
 hatngaan,瞎眼,0.464
-hatsat,覈實,0.505
+hatsat,核實,0.505
 hatsik,乞食,0.463
 hatsyu,乞恕,0.4425
 hattaai,乞貸,0.4449
 hattou,乞討,0.481
 hatzai,轄制,0.4593
-hatzeon,覈准,0.4896
+hatzeon,核准,0.4896
 hatzi,瞎子,0.4837
 hau,後,0.3839
 hau,口,0.2984
 hau,侯,0.2796
 hau,厚,0.2687
-hau,后,0.2674
 hau,吼,0.2627
 hau,候,0.2411
 hau,猴,0.2407
@@ -20988,7 +20891,6 @@ hau,翵,0.1881
 hau,矦,0.185
 hau,鄇,0.1827
 hau,搝,0.1771
-hau,糇,0.1723
 hau,劶,0.1717
 haubei,口碑,0.5462
 haubei,後備,0.4835
@@ -21105,7 +21007,7 @@ hausam,候審,0.4663
 hausau,後手,0.4842
 hausau,口授,0.4612
 hauseoi,口水,0.5041
-hauseon,口脣,0.4671
+hauseon,口唇,0.4671
 hauseon,口信,0.4644
 hauseot,口述,0.475
 hausi,後市,0.498
@@ -21122,7 +21024,7 @@ hauteon,後盾,0.4788
 hautin,後天,0.517
 hauting,後庭,0.4643
 hautiu,口條,0.4583
-hautoi,後臺,0.538
+hautoi,後台,0.538
 hautong,喉糖,0.4547
 hautou,后土,0.467
 hauwaa,後話,0.4823
@@ -21261,7 +21163,6 @@ hei,譆,0.1469
 hei,訢,0.0939
 hei,㞒,0.0225
 hei,㞓,0.0225
-hei,戯,0.0225
 heiaat,氣壓,0.492
 heiaat,欺壓,0.4718
 heibaan,戲班,0.4642
@@ -21477,21 +21378,20 @@ heizung,器重,0.4715
 heizyun,氣鑽,0.4576
 heizyut,氣絕,0.4637
 heizyut,棄絕,0.4616
-hek,喫,0.3604
-hek,吃,0.2174
+hek,吃,0.3604
 hek,毄,0.2044
 hek,噄,0.1807
-hekbou,喫布,0.4447
-hekcou,喫醋,0.4869
-hekcung,喫重,0.4587
-hekdou,喫刀,0.4579
-hekfaan,喫飯,0.5694
-hekfu,喫苦,0.4858
-hekging,喫驚,0.4949
-hekhoeng,喫香,0.4797
-hekkwai,喫虧,0.5086
-heklik,喫力,0.5081
-hekseoi,喫水,0.4656
+hekbou,吃布,0.4447
+hekcou,吃醋,0.4869
+hekcung,吃重,0.4587
+hekdou,吃刀,0.4579
+hekfaan,吃飯,0.5694
+hekfu,吃苦,0.4858
+hekging,吃驚,0.4949
+hekhoeng,吃香,0.4797
+hekkwai,吃虧,0.5086
+heklik,吃力,0.5081
+hekseoi,吃水,0.4656
 heng,輕,0.2968
 hengheng,輕輕,0.5252
 hengpiu,輕飄,0.4639
@@ -21571,7 +21471,7 @@ heoilei,墟里,0.4546
 heoilou,去路,0.4675
 heoiming,虛名,0.4718
 heoimou,虛無,0.5011
-heoingai,虛僞,0.4975
+heoingai,虛偽,0.4975
 heoinin,去年,0.5645
 heoinok,許諾,0.4797
 heoipui,許配,0.4641
@@ -21712,7 +21612,6 @@ hin,攐,0.1736
 hin,攓,0.1717
 hin,瀗,0.1696
 hin,幵,0.1476
-hin,献,0.1116
 hinbaai,顯擺,0.4777
 hinbing,憲兵,0.4659
 hinbou,獻寶,0.4635
@@ -21819,7 +21718,7 @@ hingsing,輕聲,0.4841
 hingsing,興盛,0.4762
 hingsung,輕鬆,0.5596
 hingtiu,輕佻,0.4653
-hingtoi,兄臺,0.4456
+hingtoi,兄台,0.4456
 hingwaa,牽掛,0.4928
 hingwai,顯貴,0.4654
 hingwong,興旺,0.4807
@@ -21884,7 +21783,6 @@ hip,脅,0.2319
 hip,慊,0.2295
 hip,肷,0.2264
 hip,愜,0.2261
-hip,叶,0.224
 hip,嗛,0.2218
 hip,勰,0.2207
 hip,脥,0.2206
@@ -21924,7 +21822,7 @@ hiplik,協力,0.4736
 hipno,怯懦,0.4711
 hipsoeng,協商,0.5096
 hiptiu,協調,0.529
-hipwan,叶韻,0.4596
+hipwan,葉韻,0.4596
 hipwui,協會,0.5291
 hipzo,協助,0.5212
 hipzok,協作,0.5101
@@ -21937,7 +21835,6 @@ hit,挈,0.2041
 hit,猲,0.187
 hit,烲,0.1844
 hit,娎,0.1779
-hit,蝎,0.1634
 hitdeng,歇頂,0.451
 hitgoek,歇腳,0.4645
 hithei,歇氣,0.458
@@ -22133,7 +22030,7 @@ hoengjau,享有,0.5141
 hoengjau,香油,0.4751
 hoengjau,香鼬,0.4442
 hoengjik,香液,0.4547
-hoengjin,香菸,0.4932
+hoengjin,香煙,0.4932
 hoengjing,響應,0.5189
 hoengjuk,香肉,0.4593
 hoengjung,享用,0.4858
@@ -22297,7 +22194,7 @@ hoifaat,開發,0.5765
 hoifan,開葷,0.4605
 hoifau,開埠,0.4624
 hoifo,開火,0.481
-hoifo,開伙,0.459
+hoifo,開夥,0.459
 hoifong,開放,0.5498
 hoifong,開房,0.4813
 hoifong,海防,0.4663
@@ -22420,7 +22317,7 @@ hoisyun,海損,0.4611
 hoitaan,海灘,0.4911
 hoitau,開頭,0.5501
 hoiting,開庭,0.4918
-hoitoi,開臺,0.4635
+hoitoi,開台,0.4635
 hoitok,開拓,0.5021
 hoitou,海塗,0.4595
 hoitung,開通,0.5244
@@ -22789,7 +22686,7 @@ honjau,罕有,0.4665
 honji,寒意,0.4761
 honji,寒衣,0.4625
 honjin,悍然,0.4643
-honjin,旱菸,0.463
+honjin,旱煙,0.463
 honjung,悍勇,0.4602
 honjyu,漢語,0.534
 honjyu,韓語,0.505
@@ -22826,7 +22723,7 @@ honsoeng,看上,0.494
 honsyun,寒酸,0.4711
 hontau,看透,0.483
 hontin,寒天,0.4633
-hontoi,看臺,0.4791
+hontoi,看台,0.4791
 honwai,捍衛,0.4903
 honwu,看護,0.4742
 honzi,漢字,0.5348
@@ -22897,7 +22794,7 @@ hou,耗,0.2441
 hou,昊,0.2335
 hou,皓,0.2297
 hou,鎬,0.2292
-hou,蚝,0.2287
+hou,蠔,0.2287
 hou,尻,0.2277
 hou,毫,0.2271
 hou,呺,0.2246
@@ -22913,7 +22810,6 @@ hou,鄗,0.2137
 hou,髇,0.2122
 hou,壕,0.2115
 hou,顥,0.2103
-hou,蠔,0.2101
 hou,嗥,0.2072
 hou,薅,0.2051
 hou,薧,0.2033
@@ -22987,7 +22883,7 @@ houhei,好戲,0.4808
 houhei,豪氣,0.4742
 houhei,好氣,0.4688
 houhei,浩氣,0.4634
-houhek,好喫,0.534
+houhek,好吃,0.534
 houhing,豪興,0.4577
 houhok,好學,0.485
 houhon,好看,0.5626
@@ -22997,7 +22893,7 @@ houhou,好好,0.5624
 houhou,皓皓,0.4623
 houhuk,嚎哭,0.4614
 houhuk,號哭,0.4603
-houjaak,好喫,0.534
+houjaak,好吃,0.534
 houjan,好人,0.5152
 houjau,好友,0.5387
 houjau,蠔油,0.4793
@@ -23073,7 +22969,7 @@ houzou,好做,0.4757
 houzyu,豪豬,0.4642
 houzyun,好轉,0.5058
 howai,可謂,0.5237
-howai,何爲,0.4946
+howai,何為,0.4946
 howai,何謂,0.4776
 howu,呵護,0.4937
 howu,可惡,0.4936
@@ -23138,7 +23034,6 @@ hung,汞,0.2356
 hung,烘,0.2313
 hung,倥,0.229
 hung,吽,0.2287
-hung,凶,0.2265
 hung,穹,0.2257
 hung,蕻,0.2232
 hung,芎,0.2213
@@ -23570,14 +23465,13 @@ jaaheoi,也許,0.5765
 jaai,踩,0.2853
 jaai,踹,0.2326
 jaai,跴,0.2121
-jaak,喫,0.3739
-jaak,吃,0.2309
+jaak,吃,0.3739
 jaak,吔,0.2237
 jaak,猰,0.2167
 jaak,窫,0.1913
 jaak,䝟,0.0225
-jaakfaan,喫飯,0.5694
-jaaksi,喫屎,0.4758
+jaakfaan,吃飯,0.5694
+jaaksi,吃屎,0.4758
 jaamun,也門,0.4674
 jaang,𨅝,0.0225
 jaap,擪,0.2033
@@ -23775,10 +23669,10 @@ jamnong,陰囊,0.4733
 jampan,音頻,0.5329
 jampui,欽佩,0.4789
 jamsam,陰森,0.4733
-jamsap,陰溼,0.4633
+jamsap,陰濕,0.4633
 jamsau,陰壽,0.4483
 jamseoi,淫水,0.4655
-jamseon,陰脣,0.4743
+jamseon,陰唇,0.4743
 jamseon,音訊,0.4733
 jamseot,壬戌,0.4628
 jamsi,吟詩,0.4715
@@ -23945,14 +23839,13 @@ jan,縯,0.1678
 jan,舋,0.1668
 jan,訢,0.1164
 jan,㶏,0.0225
-jan,衅,0.0225
 janaa,姻婭,0.4492
 janbaa,印巴,0.4657
 janbaau,引爆,0.4938
 janbai,隱蔽,0.4925
 janban,人品,0.5202
 janbat,甄拔,0.4464
-janbei,隱祕,0.4796
+janbei,隱秘,0.4796
 janbei,隱避,0.4555
 janbit,甄別,0.4877
 janbun,印本,0.4667
@@ -24104,7 +23997,7 @@ jansan,人身,0.4869
 jansan,引申,0.4805
 jansan,人臣,0.4616
 jansang,人生,0.5807
-jansap,洇溼,0.4562
+jansap,洇濕,0.4562
 jansat,殷實,0.4651
 jansau,忍受,0.517
 jansau,人手,0.4988
@@ -24139,13 +24032,13 @@ jantai,人體,0.5578
 jantau,人頭,0.4975
 jantau,癮頭,0.4577
 janteoi,引退,0.4641
-jantoi,印臺,0.463
+jantoi,印台,0.463
 jantong,印堂,0.4636
 jantung,忍痛,0.476
 jantung,隱痛,0.4661
 janwaa,人話,0.4751
-janwai,因爲,0.6397
-janwai,人爲,0.5093
+janwai,因為,0.6397
+janwai,人為,0.5093
 janwai,欣慰,0.4923
 janwai,恩惠,0.4742
 janwai,隱諱,0.463
@@ -24434,16 +24327,15 @@ jatzing,一怔,0.4739
 jatzoi,一再,0.4982
 jatzou,一早,0.495
 jatzuk,一族,0.4964
-jatzung,一衆,0.5152
+jatzung,一眾,0.5152
 jatzyut,一絕,0.4736
 jau,有,0.4465
 jau,又,0.3835
 jau,由,0.3498
 jau,友,0.2987
 jau,油,0.2869
-jau,游,0.2778
+jau,遊,0.2778
 jau,右,0.2731
-jau,遊,0.2646
 jau,休,0.2592
 jau,優,0.2582
 jau,揉,0.2541
@@ -24592,7 +24484,6 @@ jau,貁,0.1725
 jau,駀,0.1725
 jau,鶔,0.1713
 jau,蜏,0.1663
-jau,优,0.1466
 jau,褎,0.0676
 jau,輮,0.045
 jau,坵,0.0225
@@ -24664,7 +24555,7 @@ jaugei,遊記,0.4891
 jaugeoi,幽居,0.4623
 jaugeoi,油鋸,0.4611
 jaugeoi,憂懼,0.4601
-jaugik,游擊,0.4545
+jaugik,遊擊,0.4545
 jaugin,郵件,0.5466
 jauging,幽徑,0.4625
 jauging,由徑,0.4535
@@ -24751,7 +24642,6 @@ jaulaam,遊覽,0.493
 jaulai,有禮,0.476
 jaulei,有利,0.5099
 jaulei,有理,0.4895
-jaulei,游離,0.4848
 jaulei,遊離,0.4848
 jauleoi,憂慮,0.4891
 jauleoi,懮慮,0.4439
@@ -24785,7 +24675,6 @@ jauming,有名,0.5015
 jaumiu,幼苗,0.474
 jaumo,揉磨,0.4463
 jaumong,有望,0.5131
-jaumuk,游牧,0.4764
 jaumuk,遊牧,0.4764
 jaumuk,柚木,0.4684
 jaumun,油門,0.5025
@@ -24815,7 +24704,6 @@ jause,有些,0.5971
 jauseng,有聲,0.4787
 jauseoi,遊說,0.4772
 jauseoi,油水,0.476
-jauseoi,游說,0.4747
 jauseoi,游水,0.4717
 jauseoi,揉碎,0.4646
 jauseon,柔順,0.4731
@@ -24861,9 +24749,9 @@ jauwaa,油畫,0.4946
 jauwaak,誘惑,0.521
 jauwaan,憂患,0.4728
 jauwai,優惠,0.5357
-jauwai,尤爲,0.4908
+jauwai,尤為,0.4908
 jauwai,有違,0.4727
-jauwai,有爲,0.471
+jauwai,有為,0.471
 jauwan,幽魂,0.4686
 jauwan,遊魂,0.467
 jauwat,憂鬱,0.5009
@@ -25055,7 +24943,7 @@ jeonhau,潤喉,0.4646
 jeonjat,閏日,0.4523
 jeonjyut,閏月,0.4735
 jeonnin,閏年,0.4695
-jeonsap,潤溼,0.4662
+jeonsap,潤濕,0.4662
 jeonsik,潤色,0.4797
 jeonwaat,潤滑,0.4845
 jeonzaak,潤澤,0.4744
@@ -25128,7 +25016,6 @@ ji,猗,0.2283
 ji,頤,0.2274
 ji,婼,0.2263
 ji,瘞,0.225
-ji,儿,0.2245
 ji,苐,0.2244
 ji,銥,0.224
 ji,佴,0.2231
@@ -25317,8 +25204,6 @@ ji,跠,0.174
 ji,暆,0.1739
 ji,輢,0.1737
 ji,顊,0.1726
-ji,医,0.1724
-ji,异,0.1724
 ji,竩,0.171
 ji,殔,0.1657
 ji,洟,0.0714
@@ -25336,7 +25221,7 @@ jibong,依傍,0.4631
 jibong,異邦,0.4622
 jibou,醫保,0.5227
 jibui,耳背,0.462
-jibut,衣鉢,0.4653
+jibut,衣缽,0.4653
 jice,而且,0.6231
 jiceon,依循,0.4626
 jici,依次,0.5153
@@ -25615,7 +25500,7 @@ jiktai,液體,0.5258
 jiktin,逆天,0.4993
 jikting,掖庭,0.4587
 jikwaak,抑或,0.4851
-jikwai,譯爲,0.4806
+jikwai,譯為,0.4806
 jikwan,逆溫,0.458
 jikwat,抑鬱,0.5295
 jikwo,腋窩,0.4651
@@ -25660,7 +25545,6 @@ jim,檐,0.2417
 jim,厭,0.2403
 jim,巖,0.2374
 jim,驗,0.2369
-jim,广,0.2354
 jim,閻,0.2346
 jim,醃,0.232
 jim,閆,0.2315
@@ -25679,7 +25563,6 @@ jim,焱,0.2201
 jim,閹,0.2181
 jim,艷,0.218
 jim,晻,0.2167
-jim,腌,0.2162
 jim,琰,0.2159
 jim,阽,0.2147
 jim,魘,0.2116
@@ -25797,7 +25680,7 @@ jimhaa,炎夏,0.4666
 jimhaa,檐下,0.4643
 jimhan,厭恨,0.4569
 jimhan,嫌恨,0.4514
-jimhat,驗覈,0.4551
+jimhat,驗核,0.4551
 jimhau,髯口,0.4542
 jimhei,嫌棄,0.5202
 jimhei,厭棄,0.463
@@ -25876,7 +25759,7 @@ jimzeng,鹽井,0.4623
 jimzeon,嚴峻,0.4958
 jimzeon,嚴竣,0.4567
 jimzi,染指,0.4704
-jimzim,腌臢,0.4559
+jimzim,醃臢,0.4559
 jimzing,驗證,0.5508
 jimzing,炎症,0.519
 jimzing,嚴正,0.4719
@@ -25898,7 +25781,6 @@ jin,研,0.2492
 jin,延,0.2468
 jin,妍,0.2444
 jin,彥,0.2421
-jin,菸,0.242
 jin,衍,0.2368
 jin,羨,0.236
 jin,硯,0.2353
@@ -25907,7 +25789,6 @@ jin,宴,0.2324
 jin,閼,0.2295
 jin,嬿,0.2274
 jin,嫣,0.2244
-jin,烟,0.2241
 jin,鴛,0.2241
 jin,堰,0.2225
 jin,龑,0.2224
@@ -26019,8 +25900,6 @@ jin,遃,0.1751
 jin,觾,0.1718
 jin,隁,0.1676
 jin,臙,0.1659
-jin,羡,0.1601
-jin,鼹,0.1499
 jin,睍,0.0901
 jin,鷰,0.0357
 jinaai,二奶,0.4862
@@ -26029,7 +25908,7 @@ jinaan,疑難,0.4787
 jinang,異能,0.4747
 jinbin,演變,0.5096
 jinbin,衍變,0.4621
-jinbut,研鉢,0.4573
+jinbut,研缽,0.4573
 jincaau,現鈔,0.4638
 jincai,賢妻,0.4677
 jinceng,宴請,0.4771
@@ -26044,17 +25923,17 @@ jincoeng,演唱,0.5281
 jincoeng,延長,0.5133
 jincoi,賢才,0.4653
 jincoi,莧菜,0.4652
-jincou,菸草,0.4913
+jincou,煙草,0.4913
 jincyun,現存,0.4975
 jincyun,衍傳,0.4521
-jindai,菸蒂,0.4645
+jindai,煙蒂,0.4645
 jindai,賢弟,0.4644
 jindak,賢德,0.4629
-jindau,菸斗,0.4715
+jindau,煙鬥,0.4715
 jindim,燃點,0.4636
 jinding,研定,0.4477
 jindoi,現代,0.5647
-jindoi,菸袋,0.4643
+jindoi,煙袋,0.4643
 jineoi,兒女,0.4983
 jinfaa,演化,0.5214
 jinfaa,煙花,0.4936
@@ -26063,7 +25942,7 @@ jinfaat,研發,0.556
 jinfo,現貨,0.4954
 jinfo,莧科,0.4555
 jinfong,現況,0.4666
-jinfui,菸灰,0.4744
+jinfui,煙灰,0.4744
 jinfun,現款,0.4671
 jing,貽誤,0.4646
 jing,應,0.3462
@@ -26188,7 +26067,7 @@ jing,濚,0.174
 jing,蝧,0.1703
 jing,膡,0.1672
 jingaa,現價,0.4817
-jingaan,菸鹼,0.4635
+jingaan,煙鹼,0.4635
 jingam,現金,0.5408
 jingam,現今,0.5004
 jingau,研究,0.5975
@@ -26322,7 +26201,7 @@ jingnok,應諾,0.4624
 jingoi,以外,0.5532
 jingoi,意外,0.538
 jingong,演講,0.5351
-jingong,菸缸,0.4635
+jingong,煙缸,0.4635
 jingpaai,鷹派,0.4637
 jingpin,影片,0.5579
 jingping,影評,0.5009
@@ -26337,7 +26216,7 @@ jingsau,應手,0.4684
 jingse,影射,0.474
 jingsek,英石,0.4608
 jingseon,刑訊,0.4661
-jingseon,櫻脣,0.4645
+jingseon,櫻唇,0.4645
 jingseon,應訊,0.4598
 jingsi,影視,0.5321
 jingsi,應試,0.505
@@ -26363,20 +26242,20 @@ jingtai,形體,0.4945
 jingtau,迎頭,0.4664
 jingtau,認頭,0.4522
 jingtin,刑天,0.4667
-jingtoi,邢臺,0.4779
-jingtoi,瀛臺,0.462
+jingtoi,邢台,0.4779
+jingtoi,瀛台,0.462
 jingtong,刑堂,0.4572
 jingtou,櫻桃,0.4942
 jingtung,認同,0.5425
 jingun,言官,0.4615
 jingwaai,縈懷,0.4595
 jingwaak,熒惑,0.4614
-jingwai,認爲,0.5946
+jingwai,認為,0.5946
 jingwan,營運,0.4887
 jingwan,應允,0.4662
 jingwui,縈迴,0.4686
 jingwun,應援,0.4695
-jingyun,菸捲,0.463
+jingyun,煙捲,0.463
 jingzaai,營寨,0.4636
 jingzaak,刑責,0.4637
 jingzaau,鷹爪,0.4639
@@ -26421,7 +26300,7 @@ jinhei,演戲,0.5015
 jinhei,嚥氣,0.4618
 jinhoeng,燃香,0.4603
 jinhou,燃耗,0.457
-jinhyun,菸圈,0.4659
+jinhyun,煙圈,0.4659
 jinim,意念,0.4805
 jinim,疑念,0.4552
 jinjam,現任,0.4958
@@ -26435,7 +26314,7 @@ jinjik,演繹,0.5248
 jinjik,現役,0.4883
 jinjim,咽炎,0.4691
 jinjing,現形,0.4665
-jinjip,菸葉,0.4763
+jinjip,煙葉,0.4763
 jinjyu,言語,0.5173
 jinjyu,諺語,0.4763
 jinjyun,演員,0.5603
@@ -26449,7 +26328,7 @@ jinliu,燃料,0.5158
 jinloeng,賢良,0.4657
 jinlok,宴樂,0.4594
 jinmak,燕麥,0.4878
-jinman,菸民,0.4665
+jinman,煙民,0.4665
 jinman,諺文,0.4528
 jinmei,燃眉,0.466
 jinming,言明,0.4641
@@ -26463,7 +26342,6 @@ jinngai,演藝,0.4882
 jinngo,偃臥,0.4545
 jinngok,弦樂,0.4889
 jinnin,現年,0.4686
-jinoeng,二娘,0.4656
 jinoeng,二孃,0.4656
 jinoi,以內,0.5406
 jinping,延聘,0.4572
@@ -26473,22 +26351,22 @@ jinsan,現身,0.4943
 jinsat,現實,0.562
 jinseoi,延髓,0.4617
 jinsi,現時,0.4793
-jinsi,菸絲,0.4648
+jinsi,煙絲,0.4648
 jinsi,賢士,0.4638
 jinsik,研析,0.4579
 jinsing,現成,0.4911
 jinsing,延性,0.4614
 jinsiu,燃燒,0.5294
-jinsok,弦索,0.4577
+jinsok,絃索,0.4577
 jinsuk,賢淑,0.4657
 jinsyu,鼴鼠,0.4662
 jinsyun,演算,0.4652
 jinsyut,演說,0.4777
 jintaam,言談,0.4748
 jintai,演替,0.4628
-jintau,菸頭,0.4759
+jintau,煙頭,0.4759
 jintin,硯田,0.4576
-jintoi,硯臺,0.465
+jintoi,硯台,0.465
 jintou,研討,0.4912
 jinwai,賢惠,0.4777
 jinwo,燕窩,0.4778
@@ -26500,8 +26378,8 @@ jinzaap,演習,0.489
 jinzaap,研習,0.4667
 jinzai,研製,0.5071
 jinzau,演奏,0.5393
-jinzau,菸酒,0.4788
-jinzeoi,菸嘴,0.4642
+jinzau,煙酒,0.4788
+jinzeoi,煙嘴,0.4642
 jinzeon,演進,0.4865
 jinzi,燕子,0.493
 jinzi,胭脂,0.4783
@@ -26522,7 +26400,7 @@ jip,頁,0.3298
 jip,葉,0.2904
 jip,業,0.2848
 jip,櫱,0.23
-jip,腌,0.2297
+jip,醃,0.2297
 jip,掖,0.2265
 jip,燁,0.2254
 jip,顳,0.2252
@@ -26532,7 +26410,6 @@ jip,靨,0.2229
 jip,囁,0.2219
 jip,孽,0.2197
 jip,揲,0.2187
-jip,醃,0.2185
 jip,曄,0.2183
 jip,嚈,0.2141
 jip,楪,0.2138
@@ -26823,7 +26700,6 @@ jiu,襓,0.1749
 jiu,鼼,0.1749
 jiu,讑,0.1743
 jiu,柼,0.1718
-jiu,扰,0.1466
 jiu,謡,0.0357
 jiu,殀,0.0225
 jiu,㕭,0.0225
@@ -26871,7 +26747,7 @@ jiuhung,遙控,0.4904
 jiujai,搖曳,0.48
 jiujan,要人,0.4688
 jiuje,妖冶,0.4646
-jiuji,瑤臺,0.4633
+jiuji,瑤台,0.4633
 jiuji,幺二,0.4426
 jiujim,妖豔,0.4762
 jiujin,謠言,0.5133
@@ -26931,9 +26807,9 @@ jiwaak,疑惑,0.5307
 jiwaan,耳環,0.4836
 jiwaan,易彎,0.4531
 jiwaat,耳挖,0.4547
-jiwai,以爲,0.5699
+jiwai,以為,0.5699
 jiwai,移位,0.4763
-jiwai,疑爲,0.4677
+jiwai,疑為,0.4677
 jiwan,疑雲,0.4686
 jiwong,以往,0.5339
 jiwong,二簧,0.4568
@@ -27185,7 +27061,6 @@ joeng,雵,0.1731
 joeng,羻,0.1713
 joeng,蝆,0.171
 joeng,阦,0.1696
-joeng,痒,0.1691
 joeng,卬,0.1126
 joeng,瀁,0.045
 joengbaan,樣板,0.4858
@@ -27296,7 +27171,7 @@ joengsit,攘竊,0.4415
 joengsiu,仰韶,0.4638
 joengsoeng,養傷,0.4711
 joengtin,秧田,0.4611
-joengtoi,陽臺,0.5187
+joengtoi,陽台,0.5187
 joengtok,央託,0.4421
 joengtong,仰躺,0.4619
 joengtou,楊桃,0.4649
@@ -27425,7 +27300,6 @@ jukmaa,辱罵,0.5024
 jukmaa,肉麻,0.482
 jukmai,玉米,0.5184
 jukmong,慾望,0.545
-jukmong,欲望,0.545
 jukmou,浴帽,0.4617
 jukmut,辱沒,0.4625
 jukneoi,玉女,0.4795
@@ -27484,11 +27358,10 @@ jung,傭,0.2264
 jung,傛,0.2263
 jung,俑,0.2257
 jung,滃,0.2256
-jung,踊,0.2244
+jung,踴,0.2244
 jung,熔,0.224
 jung,庸,0.2238
 jung,榕,0.2238
-jung,佣,0.2235
 jung,癰,0.2232
 jung,壅,0.2225
 jung,戎,0.222
@@ -27503,7 +27376,6 @@ jung,饔,0.2086
 jung,鏞,0.2086
 jung,羢,0.208
 jung,顒,0.2072
-jung,踴,0.2062
 jung,髶,0.2052
 jung,軵,0.2034
 jung,肜,0.2031
@@ -27576,7 +27448,7 @@ jungcaan,用餐,0.4841
 jungce,戎車,0.4539
 jungci,用詞,0.505
 jungci,冗詞,0.4439
-jungcin,佣錢,0.45
+jungcin,傭錢,0.45
 jungcing,用情,0.4667
 jungco,容錯,0.473
 jungcoeng,冗長,0.4875
@@ -27625,7 +27497,7 @@ jungjik,溶液,0.4952
 jungjin,湧現,0.4903
 jungjin,冗言,0.4469
 jungjoek,用藥,0.5181
-jungjoek,踊躍,0.4872
+jungjoek,踴躍,0.4872
 jungjung,嗡嗡,0.4748
 jungjung,熔融,0.4667
 jungjung,茸茸,0.4619
@@ -27673,7 +27545,7 @@ jungsyun,饔飧,0.4512
 jungsyut,融雪,0.4644
 jungtai,溶體,0.4612
 jungtou,用途,0.5261
-jungwai,勇爲,0.4616
+jungwai,勇為,0.4616
 jungwo,融和,0.4641
 jungwu,用戶,0.6016
 jungwu,擁護,0.4856
@@ -27702,7 +27574,6 @@ jyu,雨,0.3079
 jyu,吾,0.2949
 jyu,噢,0.2921
 jyu,語,0.286
-jyu,于,0.2722
 jyu,餘,0.2707
 jyu,宇,0.2636
 jyu,休,0.2592
@@ -27711,7 +27582,6 @@ jyu,遇,0.2571
 jyu,俞,0.2569
 jyu,羽,0.2542
 jyu,逾,0.252
-jyu,余,0.2498
 jyu,愈,0.2488
 jyu,預,0.2487
 jyu,茹,0.2474
@@ -27768,7 +27638,6 @@ jyu,輿,0.215
 jyu,穻,0.2144
 jyu,妤,0.2142
 jyu,邘,0.2141
-jyu,吁,0.214
 jyu,杅,0.2138
 jyu,兪,0.2129
 jyu,燠,0.2128
@@ -28008,7 +27877,7 @@ jyuging,預警,0.5113
 jyuging,羽莖,0.4397
 jyugok,餘角,0.4557
 jyugon,魚竿,0.4653
-jyugon,餘干,0.4648
+jyugon,餘幹,0.4648
 jyugong,魚缸,0.4779
 jyugong,漁港,0.4716
 jyugou,預告,0.507
@@ -28157,7 +28026,6 @@ jyun,玹,0.2266
 jyun,洹,0.2228
 jyun,椽,0.2221
 jyun,褑,0.2219
-jyun,愿,0.2209
 jyun,涴,0.2208
 jyun,猿,0.2208
 jyun,謜,0.22
@@ -28558,7 +28426,7 @@ jyunzi,圓子,0.4645
 jyunzik,原籍,0.474
 jyunzik,圓寂,0.4649
 jyunzing,完整,0.5678
-jyunzing,遠征,0.4837
+jyunzing,遠徵,0.4837
 jyunzo,軟坐,0.4539
 jyunzoeng,院長,0.5072
 jyunzok,原作,0.5179
@@ -28579,7 +28447,7 @@ jyusaang,魚生,0.4629
 jyusai,雨勢,0.4636
 jyusak,淤塞,0.4611
 jyusang,餘生,0.483
-jyusap,濡溼,0.4617
+jyusap,濡濕,0.4617
 jyusat,如實,0.4847
 jyusat,語失,0.4536
 jyusek,礜石,0.4447
@@ -28722,7 +28590,7 @@ jyutngaam,月岩,0.4579
 jyutniu,穴鳥,0.4502
 jyutnoi,月內,0.4717
 jyutnou,乙腦,0.4638
-jyutoi,魚臺,0.466
+jyutoi,魚台,0.466
 jyutong,魚塘,0.4769
 jyutong,乳糖,0.467
 jyutou,魚肚,0.465
@@ -28737,7 +28605,7 @@ jyutsoeng,月相,0.4752
 jyutsok,月朔,0.4543
 jyutsyun,乙酸,0.4684
 jyuttau,月頭,0.4617
-jyuttoi,月臺,0.4658
+jyuttoi,月台,0.4658
 jyutung,如同,0.5419
 jyutung,茹痛,0.4394
 jyutwai,穴位,0.4822
@@ -28752,8 +28620,8 @@ jyutzin,越戰,0.4726
 jyutzoeng,越障,0.4556
 jyuwaa,雨蛙,0.4576
 jyuwaan,愚頑,0.4588
-jyuwai,譽爲,0.4903
-jyuwai,喻爲,0.4657
+jyuwai,譽為,0.4903
+jyuwai,喻為,0.4657
 jyuwok,漁獲,0.46
 jyuwu,餘弧,0.4427
 jyuwui,與會,0.4866
@@ -28848,7 +28716,6 @@ kai,稽,0.2274
 kai,契,0.2246
 kai,蹊,0.2221
 kai,綮,0.2219
-kai,启,0.2172
 kai,啟,0.2172
 kai,谿,0.2156
 kai,瘈,0.2144
@@ -29014,7 +28881,7 @@ kaphau,吸口,0.46
 kaphei,吸氣,0.5036
 kapjam,吸音,0.4667
 kapjan,吸引,0.5543
-kapjin,吸菸,0.5038
+kapjin,吸煙,0.5038
 kapjoeng,給養,0.4645
 kapjyu,給予,0.5427
 kapkeoi,級距,0.4573
@@ -29023,7 +28890,7 @@ kaplyun,級聯,0.4698
 kapmun,吸門,0.4507
 kapnaap,吸納,0.4883
 kappun,吸盤,0.4671
-kapsap,吸溼,0.4665
+kapsap,吸濕,0.4665
 kapsau,吸收,0.5463
 kapseng,吸聲,0.4649
 kapsi,及時,0.5525
@@ -29124,11 +28991,8 @@ kau,紌,0.1771
 kau,蛷,0.176
 kau,觓,0.1757
 kau,訅,0.1678
-kau,构,0.1499
-kau,虬,0.1499
 kau,銶,0.0582
 kau,搆,0.0357
-kau,鞲,0.0225
 kau,㞗,0.0225
 kauaat,扣押,0.477
 kaucaa,扣查,0.456
@@ -29752,9 +29616,8 @@ kit,礍,0.1782
 kit,鞊,0.1778
 kit,翓,0.1731
 kit,蝢,0.17
-kit,蝎,0.1499
 kit,㓞,0.0225
-kitbei,揭祕,0.4841
+kitbei,揭秘,0.4841
 kitcyun,揭穿,0.4777
 kitdaan,契丹,0.4982
 kitfaat,揭發,0.4797
@@ -29840,13 +29703,11 @@ koek,卻,0.3478
 koek,醵,0.2253
 koek,噱,0.2161
 koek,臄,0.2053
-koek,却,0.1499
 koek,蹻,0.0748
 koekbeng,卻病,0.4587
 koekbou,卻步,0.4677
-koekwai,卻爲,0.4479
+koekwai,卻為,0.4479
 koeng,強,0.3449
-koeng,强,0.238
 koeng,弶,0.2184
 koeng,蔃,0.2152
 koeng,羥,0.2138
@@ -29955,7 +29816,6 @@ kok,觳,0.2306
 kok,埆,0.22
 kok,攉,0.2175
 kok,恪,0.2174
-kok,确,0.2169
 kok,熇,0.2145
 kok,壑,0.2137
 kok,搉,0.2112
@@ -30125,7 +29985,6 @@ kuk,筁,0.1925
 kuk,髷,0.187
 kuk,匤,0.1814
 kuk,峼,0.1779
-kuk,麹,0.0225
 kukbat,曲筆,0.4569
 kukcek,曲尺,0.4595
 kukdiu,曲調,0.4791
@@ -30200,7 +30059,6 @@ kuzi,箍子,0.4493
 kwaa,掛,0.3202
 kwaa,跨,0.2724
 kwaa,誇,0.2433
-kwaa,夸,0.2304
 kwaa,垮,0.23
 kwaa,胯,0.2287
 kwaa,咼,0.2284
@@ -30238,7 +30096,7 @@ kwaanggaa,框架,0.5623
 kwaanggaai,逛街,0.5072
 kwaanghaa,逛下,0.4615
 kwaangsyun,框選,0.4395
-kwaatoi,垮臺,0.4691
+kwaatoi,垮台,0.4691
 kwaazi,褂子,0.4618
 kwaazi,侉子,0.4601
 kwaazoeng,誇張,0.525
@@ -30314,7 +30172,6 @@ kwai,驨,0.1775
 kwai,晆,0.176
 kwai,鄈,0.1742
 kwai,鍷,0.1703
-kwai,携,0.1499
 kwai,媿,0.1004
 kwai,㩗,0.0357
 kwaibei,規避,0.5131
@@ -30462,7 +30319,6 @@ kwanging,困境,0.5209
 kwangoi,菌蓋,0.4604
 kwanguk,困局,0.4727
 kwangyun,睏倦,0.4661
-kwangyun,困倦,0.4501
 kwanhei,羣起,0.4653
 kwanhong,崑腔,0.4579
 kwanhung,羣雄,0.4754
@@ -30485,7 +30341,7 @@ kwanzaap,麇集,0.4535
 kwanzeoi,羣聚,0.4631
 kwanzi,裙子,0.5076
 kwanzou,羣組,0.4882
-kwanzung,羣衆,0.537
+kwanzung,羣眾,0.537
 kwanzung,昆仲,0.4586
 kwik,闃,0.2316
 kwik,郄,0.2273
@@ -30700,12 +30556,10 @@ kyut,鷢,0.1755
 kyut,憠,0.1751
 kyut,疦,0.1746
 kyut,橜,0.1728
-kyut,决,0.1499
 kyut,駃,0.0675
 kyut,鶪,0.045
 kyut,鐍,0.0357
 kyut,鴃,0.0225
-kyut,䦆,0.0225
 kyut,䳏,0.0225
 kyutbat,決不,0.5008
 kyutcaak,決策,0.5439
@@ -30959,7 +30813,7 @@ laangmin,冷面,0.4691
 laangmok,冷漠,0.5119
 laangmun,冷門,0.5219
 laangon,欄杆,0.4821
-laangon,闌干,0.4633
+laangon,闌幹,0.4633
 laangpik,冷僻,0.4624
 laangpun,冷盤,0.4618
 laangpun,冷盆,0.4551
@@ -30997,11 +30851,9 @@ laap,錯,0.3264
 laap,立,0.2816
 laap,砬,0.2368
 laap,蠟,0.2289
-laap,蜡,0.2286
 laap,臘,0.2225
 laap,擸,0.2126
 laap,菈,0.2096
-laap,腊,0.2083
 laap,垃,0.2083
 laap,邋,0.2066
 laap,磖,0.2027
@@ -31048,7 +30900,7 @@ laapsai,立誓,0.4644
 laapsan,立身,0.4664
 laapsi,立時,0.4754
 laaptai,立體,0.5208
-laaptoi,蠟臺,0.4563
+laaptoi,蠟台,0.4563
 laapzaap,拉雜,0.4577
 laapzi,立志,0.4924
 laapzik,立即,0.5365
@@ -31151,7 +31003,6 @@ lai,蛠,0.1734
 lai,蠇,0.1723
 lai,欚,0.1715
 lai,矋,0.1083
-lai,丽,0.0779
 lai,檷,0.045
 laibaai,禮拜,0.5139
 laiban,禮品,0.5037
@@ -31224,7 +31075,7 @@ lak,玏,0.1933
 lak,艻,0.1906
 lak,阞,0.187
 lakbik,勒逼,0.4523
-lakkak,犖确,0.4478
+lakkak,犖確,0.4478
 lakling,勒令,0.4724
 lakmaa,勒馬,0.4648
 laksaat,勒殺,0.4536
@@ -31281,7 +31132,7 @@ lamlap,林立,0.4806
 lammou,臨摹,0.5048
 lammuk,林木,0.4811
 lampun,臨盆,0.4633
-lamsap,淋溼,0.474
+lamsap,淋濕,0.474
 lamse,臨寫,0.4597
 lamsi,臨時,0.5347
 lamsi,臨視,0.4523
@@ -31566,7 +31417,7 @@ lautai,樓梯,0.5038
 lautai,流體,0.4943
 lautai,柳體,0.4589
 lautiu,柳條,0.4659
-lautoi,樓臺,0.4675
+lautoi,樓台,0.4675
 lautung,流通,0.5201
 lauwaa,留話,0.4576
 lauwaan,遛彎,0.4642
@@ -31618,8 +31469,7 @@ lei,俐,0.2206
 lei,鋰,0.2202
 lei,蜊,0.2189
 lei,謧,0.2183
-lei,厘,0.2181
-lei,釐,0.2157
+lei,釐,0.2181
 lei,鯉,0.2155
 lei,狸,0.2154
 lei,籬,0.2144
@@ -31653,7 +31503,6 @@ lei,孋,0.1994
 lei,儞,0.1981
 lei,猁,0.1963
 lei,悧,0.1959
-lei,莅,0.1955
 lei,鱺,0.1952
 lei,悡,0.1947
 lei,纚,0.1943
@@ -31678,7 +31527,6 @@ lei,蟍,0.182
 lei,鵹,0.182
 lei,鯏,0.1813
 lei,鏫,0.181
-lei,离,0.1809
 lei,艃,0.1791
 lei,鋫,0.1781
 lei,穲,0.1768
@@ -31687,7 +31535,6 @@ lei,孷,0.1739
 lei,睝,0.1717
 lei,瓼,0.1713
 lei,錅,0.171
-lei,篱,0.1466
 lei,浬,0.0807
 lei,𢃇,0.045
 lei,貍,0.0357
@@ -31819,7 +31666,6 @@ leng,靚,0.2519
 leng,愣,0.2421
 leng,鯪,0.214
 leng,僆,0.1907
-leng,岭,0.1499
 leng,𡃁,0.0225
 lengcing,領情,0.472
 lenghau,領口,0.4734
@@ -31922,7 +31768,6 @@ leoi,蕌,0.1835
 leoi,謱,0.183
 leoi,樏,0.1824
 leoi,蘽,0.1823
-leoi,垒,0.182
 leoi,儢,0.1819
 leoi,挔,0.1815
 leoi,捛,0.1815
@@ -32002,7 +31847,7 @@ leoisi,蕾絲,0.4795
 leoisin,淚腺,0.4651
 leoitau,裏頭,0.5023
 leoiteoi,類推,0.4714
-leoitoi,擂臺,0.4791
+leoitoi,擂台,0.4791
 leoitou,旅途,0.4987
 leoitou,鋁土,0.4648
 leoitung,雷同,0.4828
@@ -32150,7 +31995,7 @@ leonsyut,論說,0.4888
 leontaan,論壇,0.5633
 leontoi,輪胎,0.541
 leonwaat,輪滑,0.4744
-leonwai,淪爲,0.5134
+leonwai,淪為,0.5134
 leonwui,輪迴,0.5124
 leonwun,輪換,0.4949
 leonzaau,鱗爪,0.4591
@@ -32165,7 +32010,7 @@ leonzyu,論著,0.468
 leonzyu,輪住,0.4561
 leot,率,0.3125
 leot,壘,0.2389
-leot,栗,0.2382
+leot,慄,0.2382
 leot,律,0.2379
 leot,聿,0.2271
 leot,矞,0.22
@@ -32176,7 +32021,6 @@ leot,燏,0.2166
 leot,傈,0.213
 leot,溧,0.2063
 leot,瞲,0.2043
-leot,慄,0.203
 leot,嵂,0.2014
 leot,葎,0.1989
 leot,噊,0.1989
@@ -32283,7 +32127,7 @@ likkau,力求,0.4916
 liklin,歷練,0.4886
 likloeng,力量,0.5759
 likloi,歷來,0.4889
-likngaam,礫岩,0.4611
+likngaam,礫巖,0.4611
 liknin,歷年,0.5081
 liksek,礫石,0.4639
 liksi,歷史,0.5866
@@ -32305,7 +32149,6 @@ lim,殮,0.2231
 lim,搛,0.2222
 lim,瀲,0.2205
 lim,蘞,0.2197
-lim,帘,0.2172
 lim,歛,0.2156
 lim,溓,0.2147
 lim,濂,0.2137
@@ -32396,7 +32239,6 @@ lin,媡,0.1797
 lin,蹥,0.1734
 lin,萰,0.1734
 lin,鄻,0.1596
-lin,怜,0.1466
 lin,嗹,0.0225
 linbat,練筆,0.4643
 linbat,連筆,0.4609
@@ -32445,7 +32287,6 @@ ling,彾,0.2104
 ling,蛉,0.2075
 ling,瓴,0.2071
 ling,崚,0.2053
-ling,棱,0.2051
 ling,酃,0.205
 ling,櫺,0.2047
 ling,蕶,0.2037
@@ -32503,7 +32344,6 @@ ling,閝,0.1783
 ling,竛,0.1765
 ling,麢,0.1763
 ling,朎,0.1755
-ling,岭,0.1724
 ling,秢,0.1718
 ling,怜,0.1691
 ling,蔆,0.163
@@ -32516,7 +32356,7 @@ lingceoi,領取,0.5337
 lingci,凌遲,0.465
 lingcin,零錢,0.478
 lingcong,靈牀,0.4551
-lingcyu,棱柱,0.4634
+lingcyu,稜柱,0.4634
 lingcyun,另存,0.4725
 lingdaai,領帶,0.4847
 lingdaam,零擔,0.4678
@@ -32537,11 +32377,11 @@ linggai,另計,0.4649
 linggam,靈感,0.5324
 linggau,靈柩,0.4652
 linggei,另寄,0.4479
-linggeng,棱鏡,0.4658
+linggeng,稜鏡,0.4658
 linggeng,菱鏡,0.4528
 linggin,零件,0.5128
 linggin,另見,0.4604
-linggok,棱角,0.4767
+linggok,稜角,0.4767
 linggong,領港,0.4518
 linggu,鈴鼓,0.459
 linggwan,領軍,0.4781
@@ -32629,7 +32469,7 @@ lingzaap,零雜,0.4517
 lingzaap,凌雜,0.4457
 lingzau,領袖,0.5197
 lingzeoi,零嘴,0.461
-lingzeoi,棱錐,0.4601
+lingzeoi,稜錐,0.4601
 lingzeoi,領罪,0.4562
 lingzi,靈芝,0.4799
 lingzoeng,領章,0.4613
@@ -32667,7 +32507,7 @@ linsiu,連宵,0.4541
 linso,連鎖,0.5024
 lintai,連體,0.4738
 linting,鏈烴,0.4523
-lintoi,蓮臺,0.4645
+lintoi,蓮台,0.4645
 lintung,連同,0.4871
 linwaan,連環,0.4817
 linwaan,鏈環,0.4591
@@ -32761,7 +32601,7 @@ litlaa,裂罅,0.4486
 litming,列明,0.4702
 litnou,烈怒,0.4539
 litsi,烈士,0.4859
-litwai,列爲,0.4952
+litwai,列為,0.4952
 litzan,列陣,0.4536
 litzau,烈酒,0.4771
 litzi,列子,0.4639
@@ -32835,7 +32675,6 @@ liudeoi,料堆,0.4551
 liudyun,了斷,0.4713
 liufaat,療法,0.5021
 liufut,遼闊,0.4779
-liugaai,了解,0.5818
 liugaai,瞭解,0.5818
 liugam,遼金,0.4642
 liugit,了結,0.4782
@@ -32941,7 +32780,7 @@ loekloek,略略,0.4661
 loeksik,掠食,0.4623
 loeksik,略釋,0.4562
 loektou,略圖,0.4587
-loekwai,略爲,0.4657
+loekwai,略為,0.4657
 loekzi,略知,0.4648
 loekzi,略字,0.4449
 loeng,兩,0.3311
@@ -33201,7 +33040,7 @@ loksyun,落選,0.4758
 loktin,樂天,0.4767
 loktit,烙鐵,0.4675
 lokto,駱駝,0.4854
-loktoi,落臺,0.4589
+loktoi,落台,0.4589
 lokwu,落戶,0.4938
 lokzi,咯吱,0.4656
 lokzi,落子,0.4645
@@ -33413,7 +33252,6 @@ lou,艣,0.1308
 lou,鑪,0.0357
 lou,𡀔,0.0225
 loubaak,老伯,0.475
-loubaan,老板,0.5789
 loubaan,老闆,0.5789
 loubaan,魯班,0.468
 loubei,盧比,0.4665
@@ -33430,7 +33268,7 @@ loubun,撈本,0.4511
 loucaai,老柴,0.4454
 loucau,老抽,0.472
 loucau,露醜,0.456
-louci,路癡,0.4423
+louci,路痴,0.4423
 loucin,老千,0.4653
 loucing,路程,0.4999
 loucoi,滷菜,0.4648
@@ -33557,8 +33395,8 @@ lousyun,勞損,0.4667
 loutaai,老態,0.4653
 loutau,露頭,0.4679
 loutin,露天,0.4844
-loutoi,露臺,0.4749
-loutoi,爐臺,0.4596
+loutoi,露台,0.4749
+loutoi,爐台,0.4596
 loutou,路途,0.4822
 loutou,老套,0.4778
 loutou,老土,0.4765
@@ -33580,7 +33418,7 @@ louzoeng,老賬,0.4598
 louzok,勞作,0.4792
 louzou,老早,0.4804
 louzou,老祖,0.4684
-louzou,爐竈,0.4668
+louzou,爐灶,0.4668
 louzuk,鹵族,0.4551
 louzung,老總,0.5087
 louzyu,露珠,0.4739
@@ -33657,7 +33495,6 @@ luk,勎,0.171
 luk,鵦,0.1676
 luk,甪,0.1628
 luk,彔,0.1116
-luk,箓,0.0779
 luk,緑,0.045
 luk,録,0.045
 lukcaa,綠茶,0.5032
@@ -33922,7 +33759,6 @@ maa,嗎,0.4223
 maa,嘛,0.3857
 maa,麼,0.3754
 maa,媽,0.3151
-maa,么,0.3128
 maa,馬,0.3089
 maa,罵,0.2993
 maa,碼,0.2762
@@ -34168,7 +34004,7 @@ maangdim,盲點,0.473
 maangdit,猛跌,0.4631
 maangdyun,盲端,0.4542
 maangfaat,盲法,0.4563
-maanghek,猛喫,0.4637
+maanghek,猛吃,0.4637
 maangho,猛可,0.4564
 maangin,慢件,0.4543
 maangjan,盲人,0.4921
@@ -34254,7 +34090,6 @@ maat,韈,0.1851
 maat,睰,0.1815
 maat,礣,0.1807
 maat,韤,0.1752
-maat,袜,0.1499
 maatai,馬蹄,0.4769
 maatau,碼頭,0.5003
 maatau,馬頭,0.4671
@@ -34280,7 +34115,6 @@ maau,媌,0.1913
 maau,夘,0.191
 maau,鉾,0.1897
 maau,皃,0.188
-maau,猫,0.1875
 maau,髳,0.1861
 maau,洠,0.186
 maau,渵,0.1852
@@ -34308,7 +34142,7 @@ maause,茅舍,0.4624
 maausi,卯時,0.4622
 maautau,矛頭,0.477
 maauteon,矛盾,0.5569
-maautoi,茅臺,0.528
+maautoi,茅台,0.528
 maautou,卯兔,0.4599
 maauuk,茅屋,0.4664
 maawing,馬榮,0.4599
@@ -34407,7 +34241,6 @@ mak,絔,0.2266
 mak,嚜,0.2236
 mak,貊,0.2232
 mak,陌,0.2224
-mak,脉,0.2172
 mak,霢,0.2139
 mak,眽,0.2134
 mak,銆,0.2128
@@ -34748,7 +34581,7 @@ manzoeng,蚊帳,0.4752
 manzuk,民族,0.5441
 manzuk,民俗,0.4856
 manzuk,文竹,0.4652
-manzung,民衆,0.5337
+manzung,民眾,0.5337
 manzung,文種,0.4633
 manzyu,民主,0.523
 mat,物,0.2853
@@ -34783,7 +34616,6 @@ mat,榓,0.1849
 mat,峚,0.1825
 mat,蟔,0.1751
 mat,幦,0.1748
-mat,袜,0.1724
 matbai,密閉,0.4742
 matban,物品,0.5426
 matcaan,物產,0.4722
@@ -34804,7 +34636,7 @@ mathap,密合,0.4607
 matjau,密友,0.4798
 matje,乜嘢,0.4661
 matjip,物業,0.5104
-matjuk,物欲,0.4485
+matjuk,物慾,0.4485
 matjyu,物語,0.497
 matjyut,蜜月,0.4791
 matlaap,蜜蠟,0.4632
@@ -35015,7 +34847,6 @@ mei,灖,0.1765
 mei,蝞,0.174
 mei,戂,0.1734
 mei,㵟,0.0225
-mei,霉,0.0135
 meibaa,尾巴,0.5056
 meibat,眉筆,0.4655
 meibin,未便,0.4562
@@ -35173,7 +35004,6 @@ mik,簚,0.1782
 mik,塓,0.1772
 mik,濗,0.1772
 mik,熐,0.176
-mik,幂,0.1499
 mikceoi,覓取,0.4531
 miksik,覓食,0.4749
 min,面,0.3119
@@ -35374,7 +35204,7 @@ mingtai,命題,0.5224
 mingtin,明天,0.5855
 mingtip,名帖,0.4634
 mingtong,名堂,0.4777
-mingwai,名爲,0.5247
+mingwai,名為,0.5247
 mingwai,名諱,0.4622
 mingwan,命運,0.5511
 mingwun,名媛,0.468
@@ -35525,7 +35355,6 @@ miu,竗,0.1855
 miu,庿,0.1835
 miu,玅,0.1553
 miubiu,秒錶,0.4661
-miubiu,秒表,0.4403
 miucaak,妙策,0.4594
 miuceoi,妙趣,0.4665
 miufaat,藐法,0.439
@@ -35575,7 +35404,6 @@ miuzung,秒鐘,0.4941
 miuzyu,廟主,0.4529
 mo,麼,0.3754
 mo,無,0.3523
-mo,么,0.3128
 mo,摸,0.2954
 mo,冇,0.2707
 mo,磨,0.2703
@@ -35722,7 +35550,6 @@ mong,蘉,0.1793
 mong,痝,0.177
 mong,浝,0.1694
 mong,壾,0.1663
-mong,网,0.1499
 mong,杧,0.0779
 mongaa,磨牙,0.4745
 mongbaa,網吧,0.529
@@ -35782,7 +35609,7 @@ mongsoeng,網上,0.5676
 mongsoeng,妄想,0.4931
 mongsyut,妄說,0.4575
 mongwaai,忘懷,0.4748
-mongwai,妄爲,0.4666
+mongwai,妄為,0.4666
 mongwan,亡魂,0.4662
 mongwik,網域,0.4696
 mongzaam,網站,0.584
@@ -35877,7 +35704,6 @@ mou,冃,0.1955
 mou,鞪,0.1943
 mou,眊,0.194
 mou,倵,0.1935
-mou,牦,0.1922
 mou,鉧,0.1919
 mou,萺,0.1911
 mou,霚,0.1885
@@ -35905,7 +35731,6 @@ mou,覒,0.1748
 mou,氁,0.1746
 mou,誈,0.1739
 mou,奦,0.1728
-mou,无,0.1499
 mouaat,模壓,0.4661
 moubaai,膜拜,0.4818
 moubaan,模版,0.4833
@@ -36039,7 +35864,7 @@ mouleoi,毛驢,0.474
 mouleon,無論,0.5689
 moulik,無力,0.5284
 moulik,武力,0.5046
-mouling,模棱,0.4657
+mouling,模稜,0.4657
 mouliu,無聊,0.5452
 mouliu,毛料,0.4709
 mouloek,武略,0.4627
@@ -36114,7 +35939,7 @@ moutai,母題,0.4623
 moutau,冒頭,0.4622
 mouteng,舞廳,0.4766
 moutiu,毛條,0.4623
-moutoi,舞臺,0.5397
+moutoi,舞台,0.5397
 moutong,戊糖,0.4574
 moutou,毛肚,0.4409
 mouwaak,摹畫,0.451
@@ -36214,7 +36039,7 @@ muihung,梅紅,0.4614
 muijan,媒人,0.4713
 muijat,每日,0.5369
 muijau,煤油,0.467
-muijyu,霉雨,0.4567
+muijyu,黴雨,0.4567
 muijyun,梅縣,0.4661
 muijyun,酶原,0.4626
 muikau,煤球,0.4648
@@ -36293,7 +36118,7 @@ mukkam,木琴,0.4607
 mukkek,木屐,0.4633
 mukkwan,牧羣,0.457
 mukleon,睦鄰,0.4638
-mukling,穆棱,0.4604
+mukling,穆稜,0.4604
 muklou,仫佬,0.4629
 mukluk,目錄,0.5334
 mukmaa,木馬,0.5078
@@ -36352,7 +36177,7 @@ munci,門齒,0.4603
 munciu,滿潮,0.4568
 muncoeng,門窗,0.4875
 muncyu,門柱,0.4728
-mundau,門斗,0.4568
+mundau,門鬥,0.4568
 mundong,門擋,0.4559
 munfaan,滿帆,0.456
 munfan,滿分,0.5286
@@ -36391,7 +36216,7 @@ mung,靀,0.1794
 mung,氋,0.1726
 mungam,門禁,0.4781
 mungbaan,蒙版,0.4769
-mungbai,蒙蔽,0.4797
+mungbai,矇蔽,0.4797
 mungdung,懵懂,0.4843
 mungfuk,蒙覆,0.445
 munggin,夢見,0.4952
@@ -36496,7 +36321,6 @@ mut,皌,0.1889
 mut,枺,0.183
 mut,魩,0.1765
 mut,圽,0.1763
-mut,袜,0.1724
 mutbou,抹布,0.4774
 mutcaa,抹茶,0.4677
 mutceoi,沒趣,0.4659
@@ -36703,7 +36527,7 @@ naansau,難受,0.5312
 naantaan,難彈,0.4525
 naantai,難題,0.5299
 naanteng,難聽,0.4935
-naanwai,難爲,0.4805
+naanwai,難為,0.4805
 naanwan,難混,0.4599
 naanzou,難做,0.4778
 naap,內,0.3593
@@ -36718,7 +36542,6 @@ naap,魶,0.1895
 naap,笝,0.1885
 naap,軜,0.1835
 naap,㘝,0.0225
-naap,呐,0.0225
 naapaa,哪怕,0.5678
 naapcip,納妾,0.4652
 naapcung,納寵,0.4441
@@ -36874,7 +36697,6 @@ nat,吶,0.2716
 nat,訥,0.2289
 nat,肭,0.2019
 nat,嫐,0.1996
-nat,呐,0.0225
 nau,休,0.2727
 nau,妞,0.2637
 nau,鈕,0.2586
@@ -36924,7 +36746,6 @@ nauzoek,扭着,0.4495
 nauzyun,扭轉,0.5008
 ne,呢,0.4029
 ne,乜,0.2742
-ne,呐,0.0225
 nei,你,0.448
 nei,呢,0.4254
 nei,您,0.3484
@@ -36967,7 +36788,6 @@ nei,秜,0.1768
 nei,檷,0.0675
 nei,𨉖,0.0225
 nei,䕥,0.0225
-nei,祢,0.0225
 nei,𡛧,0.0225
 nei,𦴪,0.0225
 neibou,彌補,0.5326
@@ -37011,7 +36831,6 @@ neoi,鯘,0.1678
 neoi,䋈,0.0225
 neoi,㼏,0.0225
 neoi,䲎,0.0225
-neoi,呐,0.0225
 neoibuk,女僕,0.4788
 neoibun,女伴,0.4708
 neoici,女廁,0.4645
@@ -37062,7 +36881,6 @@ neot,袦,0.1949
 neot,抐,0.186
 neot,豽,0.1797
 neot,貀,0.1739
-neot,呐,0.0225
 neotho,訥河,0.4664
 neotneot,訥訥,0.4617
 ng,嗯,0.3864
@@ -37227,9 +37045,8 @@ ngaakngoi,額外,0.5466
 ngaaktau,額頭,0.4986
 ngaalik,瓦礫,0.4665
 ngaaling,瓦楞,0.4644
-ngaam,岩,0.2547
+ngaam,巖,0.2547
 ngaam,癌,0.2409
-ngaam,巖,0.2239
 ngaam,喦,0.2175
 ngaam,碞,0.2144
 ngaam,啱,0.2107
@@ -37245,9 +37062,9 @@ ngaam,麣,0.1851
 ngaam,壧,0.1807
 ngaam,嵒,0.123
 ngaamcaam,巖巉,0.4452
-ngaamcang,岩層,0.4653
+ngaamcang,巖層,0.4653
 ngaamdung,巖洞,0.4664
-ngaamjim,岩鹽,0.4602
+ngaamjim,巖鹽,0.4602
 ngaamjoeng,岩羊,0.4598
 ngaamjyut,巖穴,0.4592
 ngaamsek,岩石,0.5015
@@ -37374,8 +37191,7 @@ ngaau,澫,0.2181
 ngaau,洨,0.2163
 ngaau,筊,0.2157
 ngaau,溔,0.2102
-ngaau,肴,0.2086
-ngaau,餚,0.2061
+ngaau,餚,0.2086
 ngaau,穾,0.205
 ngaau,宎,0.2043
 ngaau,崤,0.2039
@@ -37396,20 +37212,19 @@ ngaauzi,咬字,0.4832
 ngaauzoek,咬嚼,0.4566
 ngaauzyu,咬住,0.4753
 ngaawai,雅威,0.4563
-ngaazi,雅致,0.4648
+ngaazi,雅緻,0.4648
 ngaazi,伢子,0.4624
 ngaazo,雅座,0.4625
 ngai,兒,0.3288
 ngai,魏,0.2833
 ngai,倪,0.2634
 ngai,藝,0.248
-ngai,僞,0.2424
+ngai,偽,0.2424
 ngai,毅,0.2387
 ngai,蛾,0.237
 ngai,危,0.2311
 ngai,隗,0.2296
 ngai,燚,0.2279
-ngai,儿,0.2245
 ngai,蟻,0.2229
 ngai,钀,0.2208
 ngai,巍,0.2207
@@ -37470,13 +37285,12 @@ ngai,萟,0.1726
 ngai,驇,0.1696
 ngai,鈘,0.1689
 ngai,蜺,0.1509
-ngai,偽,0.088
 ngai,輗,0.0357
 ngai,𠼮,0.0225
 ngaiban,藝品,0.4677
 ngaibik,危迫,0.4485
-ngaicaau,僞鈔,0.4632
-ngaiciu,僞朝,0.4503
+ngaicaau,偽鈔,0.4632
+ngaiciu,偽朝,0.4503
 ngaiduk,危篤,0.4507
 ngaifo,鮨科,0.4425
 ngaigap,危急,0.4778
@@ -37485,7 +37299,7 @@ ngaigei,藝伎,0.4651
 ngaigei,藝妓,0.4648
 ngaiging,危境,0.46
 ngaiging,危徑,0.4459
-ngaigwan,僞軍,0.4657
+ngaigwan,偽軍,0.4657
 ngaihau,蟻后,0.4624
 ngaihim,危險,0.5425
 ngaihoi,危害,0.5309
@@ -37498,7 +37312,7 @@ ngaijyun,藝員,0.466
 ngaikap,危及,0.4804
 ngailau,危樓,0.4638
 ngailik,毅力,0.5025
-ngailyut,僞劣,0.4737
+ngailyut,偽劣,0.4737
 ngaimeng,藝名,0.4653
 ngaimong,危亡,0.4625
 ngaimun,詣門,0.4472
@@ -37508,13 +37322,13 @@ ngaingai,魏巍,0.4638
 ngaipou,藝圃,0.4565
 ngaiseot,藝術,0.567
 ngaisi,睨視,0.4566
-ngaisin,僞善,0.4703
-ngaisyu,僞書,0.4597
+ngaisin,偽善,0.4703
+ngaisyu,偽書,0.4597
 ngaitoi,危殆,0.4599
 ngaitou,危途,0.4563
-ngaizing,僞證,0.4653
-ngaizong,僞裝,0.5048
-ngaizou,僞造,0.502
+ngaizing,偽證,0.4653
+ngaizong,偽裝,0.5048
+ngaizou,偽造,0.502
 ngak,呃,0.2919
 ngak,眲,0.2043
 ngam,吟,0.2503
@@ -37898,10 +37712,9 @@ ngojin,訛言,0.4536
 ngojyu,俄語,0.5112
 ngok,樂,0.3138
 ngok,藥,0.295
-ngok,岳,0.2453
+ngok,嶽,0.2453
 ngok,櫟,0.2383
 ngok,鄂,0.233
-ngok,嶽,0.2178
 ngok,噩,0.2151
 ngok,鍔,0.2134
 ngok,愕,0.2134
@@ -37929,7 +37742,6 @@ ngok,遌,0.1774
 ngok,湂,0.1739
 ngok,櫮,0.1729
 ngok,𩓥,0.1712
-ngok,腭,0.1499
 ngokbaa,惡霸,0.4742
 ngokdeoi,樂隊,0.5546
 ngokfu,岳父,0.4793
@@ -38053,7 +37865,7 @@ ngsi,誤事,0.464
 ngsing,悟性,0.4854
 ngsyu,鼯鼠,0.4583
 ngtaam,晤談,0.4584
-ngtoi,五臺,0.4702
+ngtoi,五台,0.4702
 ngtung,梧桐,0.4814
 ngwan,五蘊,0.464
 ngwan,五瘟,0.4516
@@ -38081,12 +37893,10 @@ nik,嫟,0.1934
 nik,惄,0.1898
 nik,搻,0.1891
 nik,愵,0.1809
-nik,昵,0.1758
 nik,糑,0.1739
 nikbai,溺斃,0.4604
 nikbou,匿報,0.4496
 nikcing,暱稱,0.492
-nikcing,昵稱,0.4898
 nikcong,匿藏,0.4597
 nikming,匿名,0.5258
 nikoi,溺愛,0.4743
@@ -38114,7 +37924,7 @@ nim,䬯,0.0225
 nim,㑫,0.0225
 nimcin,粘纏,0.4483
 nimcung,粘蟲,0.4603
-nimdou,念叨,0.4871
+nimdou,唸叨,0.4871
 nimdou,粘度,0.4765
 nimfat,唸佛,0.4778
 nimfu,黏附,0.4645
@@ -38171,7 +37981,6 @@ nin,躎,0.177
 nin,簐,0.1729
 nin,脌,0.1083
 nin,㮟,0.0225
-nin,䟢,0.0225
 nin,𨃨,0.0225
 nin,㬗,0.0225
 nin,㲽,0.0225
@@ -38192,7 +38001,6 @@ ning,寧,0.2721
 ning,擰,0.2492
 ning,甯,0.2449
 ning,拎,0.2445
-ning,宁,0.2354
 ning,寕,0.2187
 ning,儜,0.2155
 ning,檸,0.215
@@ -38210,7 +38018,6 @@ ning,鑏,0.1874
 ning,鬡,0.1814
 ning,矃,0.181
 ning,橣,0.1757
-ning,泞,0.1499
 ning,薴,0.142
 ning,㝕,0.0225
 ning,㲰,0.0225
@@ -38296,7 +38103,6 @@ nip,踗,0.1721
 nip,踙,0.1678
 nip,踂,0.1667
 nip,囓,0.0582
-nip,蘖,0.0225
 nip,𦘒,0.0225
 nipgoek,躡腳,0.4649
 nipgwat,顳骨,0.4595
@@ -38373,7 +38179,7 @@ noeng,娘,0.2682
 noeng,孃,0.2066
 noeng,嬢,0.201
 noengcan,娘親,0.4432
-noenggaa,娘家,0.4699
+noenggaa,孃家,0.4699
 noengnoeng,娘娘,0.4855
 noengpaau,娘炮,0.4546
 nofu,懦夫,0.4723
@@ -38614,7 +38420,7 @@ nunghau,濃厚,0.4949
 nungjin,農諺,0.46
 nungjip,農業,0.5333
 nungjoek,農藥,0.495
-nungjuk,濃郁,0.5199
+nungjuk,濃鬱,0.5199
 nungkeoi,農區,0.463
 nunglik,農曆,0.514
 nunglit,濃烈,0.4915
@@ -38675,7 +38481,6 @@ o,屙,0.2105
 o,娿,0.2047
 o,痾,0.2024
 o,牱,0.1947
-o,疴,0.1723
 o,㺢,0.0225
 ofu,阿附,0.4536
 oi,唉,0.3464
@@ -38847,7 +38652,6 @@ ong,傟,0.1891
 ong,醠,0.1867
 ong,軮,0.1824
 ong,慃,0.1752
-ong,肮,0.1691
 ongim,安檢,0.4788
 ongin,案件,0.5436
 ongin,按鍵,0.52
@@ -38924,8 +38728,7 @@ ou,蝹,0.1755
 ou,䴈,0.0582
 ou,䴠,0.0225
 ou,岙,0.0225
-ou,袄,0.0225
-oubei,奧祕,0.4803
+oubei,奧秘,0.4803
 oufui,懊悔,0.4743
 oujyun,澳元,0.4789
 oumiu,奧妙,0.4757
@@ -39212,7 +39015,6 @@ paau,袌,0.1834
 paau,礟,0.1819
 paau,髱,0.1781
 paau,麅,0.177
-paau,疱,0.1723
 paau,砲,0.1603
 paau,鑤,0.0357
 paaubing,刨冰,0.4667
@@ -39260,7 +39062,7 @@ paause,拋射,0.4622
 paausyun,泡漩,0.4452
 paautai,跑題,0.4878
 paauteoi,跑腿,0.4761
-paautoi,炮臺,0.4746
+paautoi,炮台,0.4746
 paautong,泡湯,0.476
 paauzai,炮製,0.4761
 paauzai,泡製,0.4637
@@ -39286,7 +39088,7 @@ paidim,批點,0.4581
 paidong,批蕩,0.4584
 paifaat,批發,0.5051
 paigoi,批改,0.4859
-paihat,批覈,0.4564
+paihat,批核,0.4564
 paijyu,批語,0.4643
 paijyut,批閱,0.4645
 paiman,批文,0.4758
@@ -39338,7 +39140,6 @@ pang,馮,0.2637
 pang,朋,0.2367
 pang,硼,0.2304
 pang,堋,0.2279
-pang,凭,0.2245
 pang,弸,0.2197
 pang,淜,0.216
 pang,輣,0.2157
@@ -39616,7 +39417,6 @@ peklit,劈裂,0.462
 pektau,劈頭,0.4661
 peng,平,0.3179
 peng,瓶,0.2754
-peng,凭,0.2245
 peng,漰,0.2091
 penggaa,平價,0.4987
 pet,噼,0.2113
@@ -39630,7 +39430,6 @@ pik,癖,0.2197
 pik,椑,0.218
 pik,擗,0.2176
 pik,堛,0.2171
-pik,辟,0.2119
 pik,僻,0.2106
 pik,踾,0.2106
 pik,廦,0.2063
@@ -39647,7 +39446,7 @@ pik,銢,0.1717
 pikcaa,劈叉,0.4614
 pikce,辟邪,0.4713
 pikdei,僻地,0.4526
-pikguk,辟穀,0.4645
+pikguk,闢穀,0.4645
 pikhou,癖好,0.4716
 pikjiu,闢謠,0.4884
 pikjung,辟雍,0.4575
@@ -39750,7 +39549,6 @@ ping,栟,0.2152
 ping,鮄,0.2128
 ping,鉼,0.212
 ping,枰,0.2105
-ping,苹,0.2093
 ping,姘,0.2086
 ping,鮃,0.2081
 ping,呯,0.2053
@@ -39836,7 +39634,7 @@ pinggwan,平均,0.5614
 pinggwo,蘋果,0.5729
 pinghang,平衡,0.5581
 pinghang,平行,0.5139
-pinghat,評覈,0.4592
+pinghat,評核,0.4592
 pingik,偏激,0.4905
 pingik,偏極,0.4494
 pingin,偏見,0.5207
@@ -39900,7 +39698,7 @@ pingtaan,平坦,0.4851
 pingtaan,平攤,0.466
 pingtau,姘頭,0.4617
 pingtiu,屏條,0.4532
-pingtoi,平臺,0.5989
+pingtoi,平台,0.5989
 pingtou,拼圖,0.4894
 pinguk,騙局,0.5042
 pingung,騙供,0.4456
@@ -40134,11 +39932,10 @@ poi,俖,0.1947
 pojung,破蛹,0.4591
 pok,撲,0.2478
 pok,剝,0.245
-pok,朴,0.2334
+pok,樸,0.2334
 pok,攴,0.2318
 pok,濼,0.2315
 pok,醭,0.2287
-pok,樸,0.2211
 pok,噗,0.2195
 pok,蹼,0.2174
 pok,璞,0.2166
@@ -40346,7 +40143,7 @@ pouzi,鋪子,0.4739
 pouzin,鋪展,0.4642
 pouzoeng,鋪張,0.4658
 powaai,破壞,0.5447
-powai,頗爲,0.5061
+powai,頗為,0.5061
 powok,破獲,0.4791
 pozaan,破綻,0.4813
 pui,陪,0.2992
@@ -40516,7 +40313,7 @@ pun,䰉,0.0225
 pun,𦚓,0.0225
 punbit,判別,0.4748
 punbok,盤駁,0.4446
-punbut,盆鉢,0.4559
+punbut,盆缽,0.4559
 puncaa,盤查,0.4655
 puncaat,盤察,0.4412
 punci,判詞,0.4613
@@ -40657,7 +40454,6 @@ saa,逤,0.1843
 saa,閯,0.1831
 saa,訯,0.1793
 saa,髿,0.179
-saa,洒,0.0225
 saaaa,沙啞,0.4766
 saaaa,卅,0.2364
 saabaau,沙包,0.4664
@@ -40804,7 +40600,6 @@ saan,涮,0.2234
 saan,拴,0.2225
 saan,羶,0.2205
 saan,埏,0.2203
-saan,膻,0.2203
 saan,姍,0.2162
 saan,疝,0.2143
 saan,汕,0.2138
@@ -40866,7 +40661,7 @@ saanfei,散匪,0.4466
 saanfo,散貨,0.4715
 saanfo,山火,0.4661
 saanfo,山貨,0.4618
-saanfo,散伙,0.4434
+saanfo,散夥,0.4434
 saanfung,山峯,0.4881
 saanfung,山峰,0.4881
 saang,生,0.3462
@@ -41170,7 +40965,7 @@ saauseoi,潲水,0.4609
 saauseoi,餿水,0.4537
 saauseon,捎信,0.4591
 saautau,梢頭,0.4607
-saauwai,稍爲,0.4641
+saauwai,稍為,0.4641
 saauzi,哨子,0.465
 saawaat,耍滑,0.4609
 saawo,沙鍋,0.4662
@@ -41193,7 +40988,6 @@ sai,棲,0.2396
 sai,逝,0.232
 sai,茜,0.2303
 sai,誓,0.2293
-sai,栖,0.2245
 sai,篩,0.2243
 sai,駛,0.2235
 sai,硒,0.2195
@@ -41500,7 +41294,7 @@ samgwai,心悸,0.474
 samgwai,深閨,0.465
 samhaang,滲坑,0.451
 samhak,深刻,0.5265
-samhat,審覈,0.5364
+samhat,審核,0.5364
 samhau,深厚,0.4957
 samhau,心口,0.4742
 samheoi,心虛,0.483
@@ -41518,7 +41312,7 @@ samji,心意,0.4989
 samji,心儀,0.4816
 samjim,森嚴,0.467
 samjin,森然,0.4639
-samjin,心弦,0.443
+samjin,心絃,0.443
 samjing,心形,0.4564
 samjoek,沈約,0.4604
 samjoeng,瀋陽,0.5063
@@ -41667,7 +41461,7 @@ san,𠱸,0.0225
 sanbaan,申辦,0.4819
 sanbaan,身板,0.4649
 sanbak,新北,0.4664
-sanbei,神祕,0.5349
+sanbei,神秘,0.5349
 sanbin,身邊,0.5642
 sanbin,申辯,0.4651
 sanbou,申報,0.5259
@@ -41757,7 +41551,7 @@ sanggun,笙管,0.4533
 sanghaau,生效,0.5015
 sanghau,牲口,0.4735
 sanghei,生氣,0.5305
-sanghek,蹭喫,0.4592
+sanghek,蹭吃,0.4592
 sangim,身兼,0.4718
 sanging,神經,0.5341
 sangji,生疑,0.4644
@@ -41899,12 +41693,12 @@ santaam,神探,0.4732
 santaan,神壇,0.4755
 santai,身體,0.5864
 santai,神體,0.4606
-santoi,神臺,0.4611
+santoi,神台,0.4611
 santou,申討,0.4557
 santou,晨禱,0.4534
 santung,神童,0.4764
 sanwaa,神話,0.5304
-sanwai,身爲,0.5305
+sanwai,身為,0.5305
 sanwai,身位,0.4702
 sanwai,神威,0.4688
 sanwai,神位,0.4648
@@ -41939,46 +41733,45 @@ sanzung,慎重,0.5033
 sap,十,0.2872
 sap,什,0.2669
 sap,甚,0.2598
-sap,溼,0.2538
+sap,濕,0.2538
 sap,澀,0.2461
 sap,拾,0.2368
 sap,濇,0.2229
-sap,濕,0.22
 sap,辻,0.2041
 sap,趇,0.1787
 sap,椞,0.1725
 sap,譅,0.0357
-sapcan,溼疹,0.4834
+sapcan,濕疹,0.4834
 sapceoi,拾取,0.4738
-sapdei,溼地,0.4888
-sapdou,溼度,0.4872
+sapdei,濕地,0.4888
+sapdou,濕度,0.4872
 sapfan,十分,0.5713
 sapfong,拾荒,0.4674
-sapgan,溼巾,0.4571
+sapgan,濕巾,0.4571
 sapgau,十九,0.4852
 sapgok,十角,0.456
 saphak,兙,0.1841
-saphei,溼氣,0.4763
+saphei,濕氣,0.4763
 saphou,十號,0.4709
-sapjau,溼疣,0.4696
-sapjeon,溼潤,0.4935
-sapji,溼衣,0.4605
+sapjau,濕疣,0.4696
+sapjeon,濕潤,0.4935
+sapji,濕衣,0.4605
 sapjip,什葉,0.4633
-sapjit,溼熱,0.4772
+sapjit,濕熱,0.4772
 sapjyut,十月,0.4961
 sapkwok,十國,0.4652
-saplaang,溼冷,0.4628
+saplaang,濕冷,0.4628
 sapling,拾零,0.4625
-sapliu,溼了,0.4797
-sapman,溼吻,0.4633
+sapliu,濕了,0.4797
+sapman,濕吻,0.4633
 sapngaa,瓧,0.1914
-sapnim,溼黏,0.4533
-sappo,溼婆,0.4626
+sapnim,濕黏,0.4533
+sappo,濕婆,0.4626
 sapsai,十世,0.4643
 sapsing,竍,0.1853
-saptau,溼透,0.4766
+saptau,濕透,0.4766
 sapwai,拾遺,0.4665
-sapwan,溼溫,0.4568
+sapwan,濕溫,0.4568
 sapwok,拾獲,0.4592
 sapzuk,十足,0.5236
 sapzyut,拾掇,0.4637
@@ -41998,7 +41791,6 @@ sat,濏,0.185
 sat,榁,0.1837
 sat,厀,0.1793
 sat,僁,0.1775
-sat,虱,0.1586
 satbaai,失敗,0.5608
 satcaak,實測,0.5027
 satcaak,失策,0.4652
@@ -42529,7 +42321,6 @@ sauwun,手腕,0.5183
 sauzaai,守齋,0.4538
 sauzaan,修撰,0.4607
 sauzaap,收集,0.547
-sauzaap,搜集,0.5188
 sauzaap,蒐集,0.5188
 sauzai,受制,0.4756
 sauzai,守制,0.4561
@@ -42560,7 +42351,7 @@ sauzoi,受災,0.4887
 sauzuk,手續,0.5211
 sauzuk,手足,0.4795
 sauzuk,修築,0.4735
-sauzung,受衆,0.5319
+sauzung,受眾,0.5319
 sauzung,壽終,0.4647
 sauzyun,手鑽,0.4574
 sauzyut,守拙,0.4603
@@ -42768,7 +42559,7 @@ sekseon,石筍,0.4648
 seksi,碩士,0.559
 seksi,石屎,0.4573
 sektau,石頭,0.5331
-sektoi,石臺,0.4667
+sektoi,石台,0.4667
 sekzi,石子,0.4789
 sekzi,錫紙,0.464
 sekzoeng,石像,0.472
@@ -43138,7 +42929,7 @@ seon,盾,0.2644
 seon,訊,0.2614
 seon,芯,0.2585
 seon,屯,0.25
-seon,脣,0.242
+seon,唇,0.242
 seon,洵,0.2342
 seon,鶉,0.2331
 seon,醇,0.2308
@@ -43175,7 +42966,6 @@ seon,踆,0.2092
 seon,蓴,0.2091
 seon,榫,0.2086
 seon,犉,0.2083
-seon,唇,0.2079
 seon,酳,0.2071
 seon,肫,0.2067
 seon,珣,0.2064
@@ -43223,7 +43013,6 @@ seon,畃,0.1751
 seon,毥,0.172
 seon,槆,0.1708
 seon,鎨,0.1707
-seon,笋,0.1499
 seon,栒,0.1296
 seon,侚,0.0807
 seon,濬,0.0748
@@ -43242,7 +43031,7 @@ seoncing,殉情,0.4658
 seoncing,汛情,0.4629
 seoncing,徇情,0.46
 seoncoeng,順暢,0.5116
-seoncoi,脣彩,0.4681
+seoncoi,唇彩,0.4681
 seoncuk,迅速,0.5574
 seoncung,順從,0.4797
 seoncung,馴從,0.4433
@@ -43270,9 +43059,9 @@ seongap,信鴿,0.4674
 seongin,信件,0.4903
 seonging,順境,0.4656
 seongit,純潔,0.5022
-seongok,脣角,0.4668
+seongok,唇角,0.4668
 seongon,筍乾,0.4636
-seongou,脣膏,0.4769
+seongou,唇膏,0.4769
 seongwok,殉國,0.4641
 seonhau,醇厚,0.484
 seonhau,順口,0.4728
@@ -43281,7 +43070,7 @@ seonhei,順氣,0.4642
 seonhou,信號,0.5549
 seonhou,訊號,0.4736
 seonjam,信任,0.5452
-seonjan,脣印,0.4635
+seonjan,唇印,0.4635
 seonji,信義,0.4674
 seonji,順意,0.4651
 seonjin,順延,0.4731
@@ -43308,7 +43097,7 @@ seonluk,馴鹿,0.4645
 seonmaa,馴馬,0.4618
 seonmaau,榫卯,0.4724
 seonman,詢問,0.5355
-seonman,脣吻,0.46
+seonman,唇吻,0.46
 seonmok,瞬膜,0.4536
 seonmun,囟門,0.4628
 seonnaan,殉難,0.4638
@@ -43356,7 +43145,7 @@ seonzing,純正,0.5001
 seonzit,殉節,0.4569
 seonzong,殉葬,0.4648
 seonzung,純種,0.4765
-seonzung,信衆,0.4647
+seonzung,信眾,0.4647
 seot,率,0.3125
 seot,帥,0.3007
 seot,甩,0.2673
@@ -43496,7 +43285,6 @@ si,澌,0.2219
 si,肄,0.2215
 si,舐,0.2211
 si,匙,0.2196
-si,尸,0.219
 si,颸,0.2189
 si,鍉,0.218
 si,泗,0.2172
@@ -43593,7 +43381,6 @@ si,鼭,0.1749
 si,榹,0.1734
 si,鸍,0.1726
 si,餏,0.1718
-si,厮,0.1385
 si,諰,0.0582
 si,鰤,0.0225
 si,䏡,0.0225
@@ -43794,7 +43581,6 @@ sik,適,0.241
 sik,惜,0.2384
 sik,蝕,0.2372
 sik,釋,0.2348
-sik,适,0.2315
 sik,腊,0.2308
 sik,薔,0.2284
 sik,昔,0.2269
@@ -44119,7 +43905,6 @@ sin,挻,0.2228
 sin,羨,0.2225
 sin,羶,0.2205
 sin,埏,0.2203
-sin,膻,0.2203
 sin,擅,0.2193
 sin,冼,0.2176
 sin,癬,0.2157
@@ -44187,7 +43972,6 @@ sin,謆,0.179
 sin,灗,0.1781
 sin,蹮,0.1713
 sin,磰,0.1707
-sin,羡,0.1466
 sin,蟺,0.0714
 sin,鐥,0.0632
 sin,僊,0.045
@@ -44244,13 +44028,11 @@ sing,承,0.2498
 sing,陞,0.2411
 sing,晟,0.2375
 sing,腥,0.236
-sing,胜,0.2344
 sing,旌,0.2295
 sing,乗,0.2254
 sing,氶,0.2222
 sing,丞,0.2204
 sing,狌,0.2193
-sing,圣,0.2172
 sing,澠,0.2138
 sing,渻,0.213
 sing,惺,0.2117
@@ -44537,7 +44319,7 @@ singsyun,勝算,0.4858
 singtaam,星探,0.4651
 singtai,星體,0.4733
 singtang,升騰,0.4731
-singtin,升天,0.4619
+singtin,昇天,0.4619
 singtit,城鐵,0.4782
 singtoi,聖胎,0.4545
 singtou,聲討,0.4773
@@ -44546,7 +44328,7 @@ singtou,星途,0.446
 singu,仙姑,0.4657
 singung,銑工,0.4645
 singwaa,昇華,0.5089
-singwai,成爲,0.5982
+singwai,成為,0.5982
 singwan,升溫,0.4889
 singwan,星雲,0.487
 singwan,聲韻,0.4619
@@ -44612,7 +44394,7 @@ sinjoek,仙藥,0.4613
 sinjoeng,禪讓,0.4648
 sinjoeng,腺樣,0.4631
 sinjung,善用,0.4861
-sinjyu,單于,0.4706
+sinjyu,單於,0.4706
 sinjyu,擅於,0.4654
 sinjyu,鮮乳,0.4584
 sinkeoi,先驅,0.4897
@@ -44975,7 +44757,7 @@ siuhaau,小考,0.4648
 siuhak,少刻,0.4536
 siuhei,小氣,0.4945
 siuhei,小器,0.4626
-siuhek,小喫,0.5073
+siuhek,小吃,0.5073
 siuheoi,少許,0.4985
 siuhin,消遣,0.4892
 siuhing,紹興,0.4942
@@ -45121,13 +44903,13 @@ siuzoi,消災,0.4706
 siuzong,少壯,0.4638
 siuzou,小組,0.5273
 siuzuk,小築,0.4719
-siuzung,小衆,0.5387
+siuzung,小眾,0.5387
 siuzung,消腫,0.4739
 siuzyu,燒煮,0.4616
 siuzyu,少主,0.4616
 siwaan,仕宦,0.461
 siwai,思維,0.5717
-siwai,視爲,0.5267
+siwai,視為,0.5267
 siwai,示威,0.482
 siwai,侍衛,0.4788
 siwai,撕毀,0.4657
@@ -45173,7 +44955,7 @@ sizuk,氏族,0.4788
 sizuk,絲竹,0.4661
 sizuk,時俗,0.4569
 sizung,時鐘,0.4916
-sizung,示衆,0.4658
+sizung,示眾,0.4658
 sizung,師宗,0.4648
 sizyu,施主,0.4734
 sizyu,事主,0.471
@@ -45575,7 +45357,7 @@ soengseoi,上水,0.4679
 soengseoi,商水,0.4659
 soengseoi,商稅,0.4572
 soengseon,相信,0.5726
-soengseon,雙脣,0.4741
+soengseon,雙唇,0.4741
 soengseot,上述,0.557
 soengsi,嘗試,0.5643
 soengsi,上市,0.5515
@@ -45610,7 +45392,7 @@ soengtau,想頭,0.4608
 soengtin,上天,0.5141
 soengtiu,上調,0.498
 soengtiu,霜條,0.4394
-soengtoi,上臺,0.513
+soengtoi,上台,0.513
 soengtong,上堂,0.4632
 soengtong,雙糖,0.4582
 soengtou,商討,0.4821
@@ -45924,7 +45706,7 @@ souzyu,數珠,0.4577
 sowaa,傻話,0.4633
 sowaat,疏挖,0.4521
 sowai,所謂,0.5729
-sowai,所爲,0.4825
+sowai,所為,0.4825
 sozai,鎖掣,0.4394
 sozi,傻子,0.5202
 sozi,所致,0.5013
@@ -46377,7 +46159,6 @@ syun,蒃,0.1823
 syun,搎,0.179
 syun,蜁,0.1785
 syun,蕵,0.1782
-syun,隽,0.1499
 syun,𣉖,0.0225
 syunau,樞紐,0.4832
 syunbaai,酸敗,0.4604
@@ -46404,7 +46185,7 @@ syunfau,船埠,0.4521
 syunfo,選課,0.5058
 syunfo,船貨,0.4631
 syunfong,船方,0.4599
-syunfu,船夫,0.465
+syunfu,船伕,0.465
 syunfung,旋風,0.4858
 syungaa,船家,0.4633
 syungaan,酸鹼,0.4695
@@ -46483,13 +46264,12 @@ syunsyu,篆書,0.4652
 syuntai,篆體,0.46
 syuntai,旋梯,0.4592
 syuntai,船梯,0.4465
-syuntang,酸疼,0.4497
+syuntang,痠疼,0.4497
 syuntau,蒜頭,0.466
 syunting,選聽,0.4545
 syunto,船舵,0.4579
 syuntoi,蒜薹,0.4648
 syuntung,痠痛,0.491
-syuntung,酸痛,0.491
 syuntung,旋筒,0.4411
 syunwaai,損壞,0.5144
 syunwai,損毀,0.4745
@@ -46717,7 +46497,7 @@ taam,墰,0.1116
 taam,撢,0.0582
 taam,顃,0.0225
 taambaan,探班,0.4726
-taambei,探祕,0.4754
+taambei,探秘,0.4754
 taambeng,探病,0.4645
 taambui,貪杯,0.4631
 taamcaak,探測,0.5125
@@ -46917,8 +46697,8 @@ taaplam,塔林,0.4648
 taappin,拓片,0.4643
 taapsaat,塔剎,0.4596
 taapsat,塌實,0.4722
-taaptoi,塔臺,0.4618
-taaptoi,塌臺,0.4568
+taaptoi,塔台,0.4618
+taaptoi,塌台,0.4568
 taat,達,0.3012
 taat,獺,0.2306
 taat,趿,0.2296
@@ -47007,9 +46787,7 @@ tai,謕,0.1755
 tai,蝭,0.1745
 tai,鬀,0.174
 tai,漽,0.1739
-tai,体,0.1691
 tai,髰,0.1689
-tai,屉,0.153
 tai,洟,0.0939
 tai,隄,0.0225
 tai,騠,0.0225
@@ -47184,7 +46962,7 @@ tangsei,疼死,0.4635
 tangtiu,藤條,0.4648
 tangtung,疼痛,0.5386
 tangwong,褪光,0.4506
-tanhek,吞喫,0.4624
+tanhek,吞吃,0.4624
 tanmit,吞滅,0.4584
 tannaa,吞拿,0.4619
 tanping,吞併,0.4888
@@ -47327,7 +47105,6 @@ teng,廳,0.2623
 teng,艇,0.2241
 teng,聼,0.2088
 teng,廰,0.1959
-teng,听,0.1948
 tengcan,聽診,0.4653
 tengceoi,聽取,0.5001
 tengcing,聽清,0.4703
@@ -47621,7 +47398,6 @@ tin,璳,0.1772
 tin,鷆,0.1771
 tin,睓,0.1737
 tin,賟,0.1723
-tin,靔,0.0779
 tin,㥏,0.0225
 tinaap,填鴨,0.4633
 tinbaau,填飽,0.4667
@@ -47679,7 +47455,6 @@ ting,渟,0.201
 ting,諪,0.201
 ting,庁,0.1986
 ting,朾,0.1986
-ting,听,0.1948
 ting,鞓,0.1939
 ting,桯,0.1933
 ting,誔,0.192
@@ -47772,7 +47547,7 @@ tingzik,挺直,0.4769
 tingzik,停職,0.4715
 tingzin,停戰,0.4664
 tingzoeng,亭長,0.461
-tingzung,聽衆,0.5206
+tingzung,聽眾,0.5206
 tingzung,聽訟,0.4561
 tinhaa,天下,0.5488
 tinhak,天黑,0.4838
@@ -47827,7 +47602,7 @@ tinsyun,天璇,0.4613
 tintaan,天壇,0.4772
 tintai,天體,0.5121
 tintin,天天,0.5639
-tintoi,天臺,0.4833
+tintoi,天台,0.4833
 tintong,天堂,0.517
 tinwong,天王,0.4946
 tinwong,天皇,0.4907
@@ -48037,7 +47812,7 @@ tiusyun,挑選,0.5381
 tiusyun,跳船,0.4565
 tiutik,挑剔,0.4934
 tiuting,調停,0.4646
-tiutoi,跳臺,0.4665
+tiutoi,跳台,0.4665
 tiutyut,跳脫,0.4664
 tiuwo,調和,0.4931
 tiuzaap,跳閘,0.4652
@@ -48139,8 +47914,7 @@ tohaai,拖鞋,0.4907
 tohim,拖欠,0.488
 tohip,妥協,0.5239
 toi,能,0.9033
-toi,臺,0.3031
-toi,台,0.2808
+toi,台,0.3031
 toi,抬,0.249
 toi,胎,0.2422
 toi,苔,0.2349
@@ -48172,57 +47946,55 @@ toi,坮,0.183
 toi,軩,0.1817
 toi,籉,0.1797
 toi,嬯,0.1789
-toi,擡,0.1499
-toibaau,臺胞,0.4718
-toibai,臺幣,0.4795
-toibak,臺北,0.4995
-toibong,臺磅,0.4464
+toibaau,台胞,0.4718
+toibai,台幣,0.4795
+toibak,台北,0.4995
+toibong,台磅,0.4464
 toibou,檯布,0.4647
-toibou,臺步,0.4603
-toici,臺詞,0.5368
-toicin,臺前,0.4769
-toicyu,臺柱,0.4628
+toibou,台步,0.4603
+toici,台詞,0.5368
+toicin,台前,0.4769
+toicyu,台柱,0.4628
 toidang,檯燈,0.4844
-toiduk,臺獨,0.4856
-toidung,臺東,0.4675
-toidyun,臺端,0.4536
+toiduk,台獨,0.4856
+toidung,台東,0.4675
+toidyun,台端,0.4536
 toifung,颱風,0.503
-toigaai,臺階,0.5115
-toigaam,臺鑒,0.4507
+toigaai,台階,0.5115
+toigaam,台鑒,0.4507
 toigaau,胎教,0.488
-toigei,臺基,0.4638
+toigei,台基,0.4638
 toigung,怠工,0.463
-toihaa,臺下,0.4996
-toihaak,臺客,0.4614
+toihaa,台下,0.4996
+toihaak,台客,0.4614
 toiji,胎兒,0.5051
-toijing,臺型,0.4584
-toijyu,臺語,0.4663
+toijing,台型,0.4584
+toijyu,台語,0.4663
 toilik,檯曆,0.4685
 toimaan,怠慢,0.4747
-toimang,臺盟,0.461
+toimang,台盟,0.461
 toimou,胎毛,0.4632
-toimui,臺媒,0.4663
-toimui,臺妹,0.4625
-toinaam,臺南,0.4748
+toimui,台媒,0.4663
+toimui,台妹,0.4625
+toinaam,台南,0.4748
 toipun,胎盤,0.4775
 toisaan,台山,0.4752
-toisai,臺西,0.4623
+toisai,台西,0.4623
 toisang,胎生,0.4629
-toisik,臺式,0.4865
+toisik,台式,0.4865
 toisin,檯扇,0.4594
-toiwaan,臺灣,0.5504
+toiwaan,台灣,0.5504
 toizeon,殆盡,0.4796
 toizi,檯子,0.4765
-toizi,臺資,0.4728
-toizi,臺子,0.4564
-toizo,臺座,0.4611
-toizung,臺中,0.4687
+toizi,台資,0.4728
+toizi,台子,0.4564
+toizo,台座,0.4611
+toizung,台中,0.4687
 toizung,檯鐘,0.4566
 tojik,唾液,0.4767
 tojin,拖延,0.5035
 tojyun,橢圓,0.4808
 tok,託,0.258
-tok,托,0.258
 tok,拓,0.238
 tok,魄,0.2368
 tok,乇,0.2123
@@ -48246,12 +48018,11 @@ tok,汑,0.176
 tokbat,拓拔,0.4646
 tokci,託辭,0.4618
 tokfu,託付,0.4765
-tokfuk,托福,0.5165
 tokfuk,託福,0.5165
 tokgun,託管,0.4979
-toklaai,托賴,0.4524
+toklaai,託賴,0.4524
 tokpin,拓片,0.4643
-tokpun,托盤,0.4824
+tokpun,託盤,0.4824
 tokto,橐駝,0.4569
 tokwaa,拖垮,0.4647
 tokzin,拓展,0.5262
@@ -48436,7 +48207,6 @@ tou,燾,0.233
 tou,途,0.233
 tou,肚,0.2328
 tou,芏,0.2324
-tou,涂,0.229
 tou,蹈,0.2289
 tou,屠,0.2287
 tou,忉,0.2253
@@ -48598,7 +48368,7 @@ touhei,淘氣,0.481
 touhei,陶器,0.4723
 touhei,土氣,0.4654
 touhei,吐棄,0.4499
-touhek,討喫,0.4574
+touhek,討吃,0.4574
 touhok,逃學,0.4691
 touhou,土豪,0.5198
 touhou,討好,0.5046
@@ -48670,7 +48440,7 @@ touse,塗寫,0.4615
 touseoi,逃稅,0.4703
 touseoi,吐絮,0.4576
 touseoi,吐穗,0.452
-touseon,兔脣,0.4628
+touseon,兔唇,0.4628
 tousi,吐司,0.4822
 tousi,圖示,0.4768
 tousi,土司,0.4713
@@ -48973,7 +48743,7 @@ tungtung,通通,0.5003
 tunguk,同屋,0.4713
 tungwaa,童話,0.5056
 tungwaa,通話,0.501
-tungwai,同爲,0.5112
+tungwai,同為,0.5112
 tungwai,通渭,0.464
 tungwan,彤雲,0.461
 tungwong,通往,0.5008
@@ -49136,7 +48906,6 @@ ukzyu,屋主,0.476
 ung,擁,0.2528
 ung,壅,0.2315
 ung,甕,0.2153
-ung,瓮,0.2053
 ung,蕹,0.2026
 ung,齆,0.1853
 ung,罋,0.1757
@@ -49204,7 +48973,6 @@ waa,喎,0.155
 waa,騧,0.0582
 waa,𢱑,0.0225
 waa,鷨,0.0225
-waa,洼,0.0225
 waabaan,畫板,0.4675
 waabat,畫筆,0.4811
 waabeng,話柄,0.4619
@@ -49228,7 +48996,6 @@ waai,崴,0.2288
 waai,淮,0.2282
 waai,槐,0.2227
 waai,恚,0.2222
-waai,坏,0.2172
 waai,壊,0.2072
 waai,瀤,0.2067
 waai,溾,0.2058
@@ -49241,7 +49008,6 @@ waai,褢,0.1895
 waai,褱,0.1888
 waai,瘣,0.1844
 waai,櫰,0.1794
-waai,怀,0.0714
 waaiceon,懷春,0.4645
 waaicyu,壞處,0.5039
 waaidaan,壞蛋,0.491
@@ -49283,7 +49049,6 @@ waak,騞,0.2074
 waak,搳,0.2056
 waak,砉,0.2048
 waak,嫿,0.2022
-waak,划,0.1991
 waak,咟,0.195
 waak,剨,0.187
 waak,湱,0.1818
@@ -49409,7 +49174,7 @@ waangmaan,橫蠻,0.4586
 waangngaak,橫額,0.4601
 waangngaan,橫眼,0.4532
 waangngau,橫鉤,0.4502
-waango,挽歌,0.4454
+waango,輓歌,0.4454
 waangok,幻覺,0.4985
 waangpai,橫批,0.4651
 waangsam,橫心,0.4571
@@ -49531,17 +49296,17 @@ waattoi,滑胎,0.4578
 waattong,滑膛,0.4601
 waatwaan,滑環,0.4596
 waawaa,娃娃,0.511
-waawai,華爲,0.56
+waawai,華為,0.56
 waawing,蛙泳,0.4664
 waazat,畫質,0.536
 waazau,華胄,0.4545
 waazi,划子,0.457
 waazoeng,畫像,0.498
-waazoeng,划槳,0.4621
+waazoeng,劃槳,0.4621
 waazoeng,畫匠,0.4599
 waazok,畫作,0.4973
 waazuk,畫軸,0.4625
-wai,爲,0.4209
+wai,為,0.4209
 wai,位,0.3259
 wai,喂,0.2802
 wai,委,0.2698
@@ -49563,7 +49328,6 @@ wai,緯,0.2394
 wai,謂,0.2383
 wai,惟,0.2364
 wai,囗,0.2357
-wai,為,0.2346
 wai,洧,0.2333
 wai,鍏,0.2333
 wai,卉,0.2327
@@ -49644,7 +49408,6 @@ wai,檅,0.1982
 wai,衞,0.1981
 wai,煇,0.1978
 wai,嬒,0.1972
-wai,蔿,0.1969
 wai,鮠,0.1955
 wai,踓,0.1954
 wai,媦,0.1949
@@ -49711,7 +49474,6 @@ wai,瀢,0.1752
 wai,欈,0.1745
 wai,韑,0.1737
 wai,濻,0.1728
-wai,猬,0.1723
 wai,醀,0.1713
 wai,躛,0.1708
 wai,蟡,0.1698
@@ -49734,13 +49496,13 @@ waibong,毀謗,0.4642
 waibou,圍捕,0.4644
 waibui,違背,0.5095
 waibui,違悖,0.4516
-waibun,爲本,0.486
+waibun,為本,0.486
 waibut,圍脖,0.4639
 waicaan,遺產,0.5072
 waicai,遺妻,0.4438
 waiceoi,猥獕,0.4426
 waici,維持,0.5549
-waici,爲此,0.5363
+waici,為此,0.5363
 waici,位次,0.4644
 waici,謂詞,0.4614
 waicing,諱稱,0.4492
@@ -49783,7 +49545,7 @@ waigwo,委過,0.4491
 waihaai,遺骸,0.4644
 waihaak,威客,0.4684
 waihaak,威嚇,0.4636
-waihaan,爲限,0.4661
+waihaan,為限,0.4661
 waihai,維繫,0.4902
 waiham,遺憾,0.5372
 waihan,遺恨,0.4647
@@ -49793,13 +49555,13 @@ waihei,遺棄,0.4824
 waihei,偉器,0.4489
 waihin,違憲,0.4644
 waihip,威脅,0.5447
-waiho,爲何,0.5598
-waihoi,爲害,0.4718
+waiho,為何,0.5598
+waihoi,為害,0.4718
 waihong,胃腔,0.4541
 waihung,唯恐,0.4751
 waihung,惟恐,0.471
 waijam,委任,0.4743
-waijan,爲人,0.5148
+waijan,為人,0.5148
 waijan,偉人,0.4832
 waijat,唯一,0.5667
 waijat,惟一,0.4961
@@ -49834,7 +49596,7 @@ waijyun,遺願,0.4663
 waijyun,渭源,0.4645
 waikap,惠及,0.4763
 waikei,圍棋,0.5191
-waikei,爲期,0.4911
+waikei,為期,0.4911
 waikong,違抗,0.4653
 waikwai,違規,0.5124
 waikwan,圍困,0.4728
@@ -49843,7 +49605,7 @@ waikyun,維權,0.5244
 wailaam,蔚藍,0.4807
 wailaan,圍欄,0.4774
 wailaan,蕙蘭,0.4642
-wailai,爲例,0.5585
+wailai,為例,0.5585
 wailai,違例,0.4634
 wailai,威厲,0.4476
 wailau,遺漏,0.4946
@@ -49851,7 +49613,7 @@ wailau,遺留,0.4865
 waileon,維綸,0.4626
 wailik,威力,0.518
 wailit,威烈,0.4581
-wailiu,爲了,0.6014
+wailiu,為了,0.6014
 wailiu,尉繚,0.4596
 wailou,慰勞,0.4653
 wailou,圍爐,0.4629
@@ -49872,29 +49634,29 @@ waimong,威望,0.4861
 waimou,威武,0.4759
 wainaai,餵奶,0.4774
 wainaam,遺男,0.4466
-wainaan,爲難,0.4938
+wainaan,為難,0.4938
 wainaan,畏難,0.4637
-wainei,爲你,0.5388
+wainei,為你,0.5388
 wainei,維尼,0.4729
-waing,爲伍,0.4713
+waing,為伍,0.4713
 waing,違誤,0.449
 waingaan,慧眼,0.4761
 waingoi,違礙,0.4507
 waion,遺案,0.4531
 waipaai,委派,0.4757
-waisaa,爲啥,0.5562
+waisaa,為啥,0.5562
 waisai,威勢,0.4664
 waisang,衛生,0.5202
-waisang,爲生,0.49
+waisang,為生,0.49
 waisat,遺失,0.4851
 waisau,維修,0.5208
-waisau,爲首,0.5085
+waisau,為首,0.5085
 waiseon,威信,0.4781
-waisi,爲時,0.4682
+waisi,為時,0.4682
 waisi,威士,0.4639
 waisik,餵食,0.4748
-waisik,爲食,0.4554
-waisin,爲善,0.4655
+waisik,為食,0.4554
+waisin,為善,0.4655
 waising,衛星,0.5338
 waising,圍城,0.4905
 waising,蔚成,0.4566
@@ -49902,7 +49664,7 @@ waisit,穢褻,0.4491
 waisoeng,遺孀,0.4652
 waisoeng,毀傷,0.4627
 waisou,位數,0.4846
-waisou,爲數,0.4699
+waisou,為數,0.4699
 waisuk,萎縮,0.4992
 waisuk,畏縮,0.4663
 waisyu,遺書,0.4765
@@ -49913,7 +49675,7 @@ waiteoi,遺蛻,0.4551
 waitok,委託,0.5188
 waitou,畏途,0.4596
 waiwaai,毀壞,0.4781
-waiwai,蔚爲,0.4646
+waiwai,蔚為,0.4646
 waiwai,虺虺,0.445
 waiwan,維穩,0.4665
 waiwat,委屈,0.5196
@@ -49922,10 +49684,10 @@ waiwu,維護,0.5504
 waiwu,衛護,0.46
 waizai,惠濟,0.4675
 waizau,惠州,0.4897
-waizeon,爲準,0.5126
+waizeon,為準,0.5126
 waizi,位置,0.5858
-waizi,爲止,0.5193
-waizi,爲之,0.5132
+waizi,為止,0.5193
+waizi,為之,0.5132
 waizi,遺址,0.5119
 waizi,遺志,0.4632
 waizik,遺跡,0.4911
@@ -49934,15 +49696,15 @@ waizik,慰藉,0.4765
 waizik,慰籍,0.4654
 waiziu,圍剿,0.4741
 waiziu,遺照,0.4642
-waizoek,爲着,0.4684
+waizoek,為着,0.4684
 waizoeng,遺像,0.4657
 waizok,遺作,0.4647
 waizong,胃臟,0.4535
 waizuk,遺囑,0.4916
 waizuk,遺族,0.4628
-waizung,爲重,0.4788
+waizung,為重,0.4788
 waizung,威重,0.4558
-waizyu,爲主,0.5683
+waizyu,為主,0.5683
 waizyu,遺珠,0.4624
 waizyu,遺著,0.4602
 wan,暈,0.3547
@@ -49956,7 +49718,6 @@ wan,穩,0.2665
 wan,韻,0.259
 wan,魂,0.2518
 wan,尹,0.2507
-wan,云,0.2492
 wan,蘊,0.2396
 wan,渾,0.2374
 wan,搵,0.2368
@@ -50012,7 +49773,6 @@ wan,鄆,0.2036
 wan,笉,0.2022
 wan,楎,0.2022
 wan,穏,0.202
-wan,韵,0.202
 wan,溷,0.2016
 wan,囩,0.2013
 wan,澐,0.2013
@@ -50022,7 +49782,6 @@ wan,蝹,0.198
 wan,繧,0.1978
 wan,狁,0.1967
 wan,妘,0.1958
-wan,沄,0.1956
 wan,慁,0.1949
 wan,塭,0.1932
 wan,榲,0.1928
@@ -50274,12 +50033,11 @@ wanzyun,運轉,0.5166
 wat,核,0.2845
 wat,屈,0.2425
 wat,蔚,0.2417
-wat,郁,0.2321
+wat,鬱,0.2321
 wat,尉,0.2318
 wat,熨,0.2279
 wat,聿,0.2271
 wat,菀,0.2247
-wat,鬱,0.2213
 wat,鶻,0.2202
 wat,矞,0.22
 wat,遹,0.2198
@@ -50331,7 +50089,7 @@ watgeoi,屈居,0.4661
 watgit,鬱結,0.4655
 watjap,鬱悒,0.4555
 watjuk,屈辱,0.4807
-watjuk,鬱郁,0.4558
+watjuk,鬱鬱,0.4558
 watkuk,屈曲,0.4653
 watmun,鬱悶,0.5508
 watneot,膃肭,0.4516
@@ -50376,11 +50134,9 @@ wing,頴,0.1927
 wing,柡,0.1922
 wing,禜,0.1872
 wing,嵤,0.1855
-wing,蒏,0.1823
+wing,醟,0.1823
 wing,爃,0.182
 wing,峵,0.179
-wing,醟,0.1763
-wing,咏,0.1499
 wing,𢫕,0.0225
 wingbat,永不,0.4944
 wingbit,永別,0.4714
@@ -50472,7 +50228,7 @@ wohoi,禍害,0.4841
 wohou,和好,0.4779
 wojam,和音,0.4667
 wojan,倭人,0.4639
-wojin,和弦,0.5364
+wojin,和絃,0.5364
 wojyut,和悅,0.4658
 wok,約,0.3063
 wok,獲,0.2733
@@ -50512,7 +50268,7 @@ woksik,獲釋,0.4721
 woksing,獲勝,0.5039
 woksyun,獲選,0.4655
 wokzang,獲贈,0.4779
-wokzeon,獲准,0.4792
+wokzeon,獲準,0.4792
 wokzoeng,獲獎,0.5189
 woleon,渦輪,0.493
 wolyun,禍亂,0.4632
@@ -50827,7 +50583,7 @@ wugwai,烏龜,0.494
 wugwong,弧光,0.4634
 wuhaan,戶限,0.4511
 wuhau,戶口,0.5116
-wuhau,糊口,0.4605
+wuhau,餬口,0.4605
 wuhoi,烏海,0.4692
 wuhong,護航,0.475
 wui,會,0.4206
@@ -50928,7 +50684,7 @@ wuiheoi,回去,0.562
 wuihoeng,迴響,0.4759
 wuihyut,回血,0.4922
 wuijam,會陰,0.4671
-wuijam,回音,0.458
+wuijam,迴音,0.458
 wuijau,洄游,0.4609
 wuiji,會議,0.5465
 wuiji,會意,0.4674
@@ -50942,7 +50698,7 @@ wuikan,茴芹,0.4514
 wuikau,回購,0.5054
 wuikau,回扣,0.4829
 wuilai,回禮,0.4646
-wuilau,回流,0.4867
+wuilau,迴流,0.4867
 wuileot,匯率,0.5161
 wuilik,回曆,0.4569
 wuiloi,回來,0.5801
@@ -50973,7 +50729,6 @@ wuiso,會所,0.4901
 wuisoeng,回想,0.5141
 wuisoeng,會上,0.5021
 wuisyun,迴旋,0.4775
-wuisyun,回旋,0.4628
 wuitaam,會談,0.4935
 wuitau,回頭,0.5319
 wuitau,會頭,0.4599
@@ -50995,7 +50750,7 @@ wuizoeng,會長,0.506
 wuizoeng,會章,0.4574
 wuizuk,回族,0.4815
 wuizung,彙總,0.5253
-wuizung,會衆,0.4624
+wuizung,會眾,0.4624
 wujau,戶牖,0.4569
 wuji,狐疑,0.4721
 wuji,互異,0.4569
@@ -51117,7 +50872,7 @@ wundip,碗碟,0.464
 wundong,換擋,0.4953
 wuneoi,狐女,0.4617
 wunfaai,碗筷,0.4717
-wunfat,玩忽,0.4662
+wunfat,翫忽,0.4662
 wungaau,援交,0.4646
 wungau,援救,0.4653
 wungeoi,玩具,0.5318
@@ -51222,7 +50977,6 @@ wutsak,活塞,0.5083
 wuttou,活套,0.4585
 wutung,衚衕,0.4873
 wutung,互通,0.4868
-wutung,胡同,0.4747
 wutzeoi,活罪,0.4582
 wutzi,活字,0.4654
 wuwaa,胡話,0.4643
@@ -51771,7 +51525,7 @@ zaatbe,扎啤,0.4633
 zaatcyun,扎穿,0.4568
 zaatdeoi,扎堆,0.4851
 zaatfong,札幌,0.4648
-zaatgan,扎根,0.4844
+zaatgan,紮根,0.4844
 zaatgei,軋機,0.4664
 zaatgoek,紮腳,0.4574
 zaatgong,軋鋼,0.467
@@ -51973,7 +51727,7 @@ zaizoeng,滯脹,0.4648
 zaizok,製作,0.5704
 zaizou,製造,0.5552
 zaizou,祭祖,0.4718
-zaizou,祭竈,0.4615
+zaizou,祭灶,0.4615
 zak,則,0.3342
 zak,側,0.2606
 zak,廁,0.2306
@@ -52019,7 +51773,6 @@ zam,椹,0.2159
 zam,斟,0.2152
 zam,梣,0.2148
 zam,祲,0.2145
-zam,鍼,0.2129
 zam,鰔,0.2119
 zam,酖,0.2117
 zam,箴,0.209
@@ -52048,13 +51801,13 @@ zam,栚,0.1798
 zam,嶜,0.1781
 zambaan,砧板,0.4658
 zambat,針筆,0.4515
-zambin,鍼砭,0.4626
+zambin,針砭,0.4626
 zamcam,浸沉,0.4531
 zamdeoi,針對,0.578
 zamduk,鴆毒,0.455
 zamfaat,針法,0.4652
 zamgan,枕巾,0.4644
-zamgau,鍼灸,0.4888
+zamgau,針灸,0.4888
 zamgun,針管,0.464
 zamhung,針孔,0.4676
 zamjam,浸淫,0.4642
@@ -52070,7 +51823,7 @@ zammuk,砧木,0.4641
 zammuk,枕木,0.4622
 zamngaan,針眼,0.4646
 zampaau,浸泡,0.4977
-zamsap,浸溼,0.4711
+zamsap,浸濕,0.4711
 zamsin,針線,0.4666
 zamtau,枕頭,0.4994
 zamtau,浸透,0.4743
@@ -52289,7 +52042,7 @@ zanlung,震聾,0.4593
 zanman,珍聞,0.4603
 zanmong,陣亡,0.4869
 zannaap,真納,0.4564
-zanngai,真僞,0.4848
+zanngai,真偽,0.4848
 zannou,震怒,0.4665
 zanoi,珍愛,0.4759
 zanpan,振頻,0.4547
@@ -52313,7 +52066,7 @@ zansip,震懾,0.4797
 zansoeng,真相,0.5425
 zansoeng,珍賞,0.4572
 zantai,真諦,0.4821
-zantoi,鎮臺,0.458
+zantoi,鎮台,0.458
 zantung,鎮痛,0.4757
 zantung,陣痛,0.4739
 zanwaa,真話,0.4869
@@ -52639,7 +52392,6 @@ zaumei,走味,0.4574
 zaumuk,就木,0.4623
 zaumut,週末,0.5443
 zaungok,奏樂,0.463
-zaunin,周年,0.5017
 zaunin,週年,0.5017
 zauniu,鷲鳥,0.4487
 zaupin,走遍,0.4781
@@ -52767,7 +52519,6 @@ zegu,藉故,0.4647
 zegung,柘弓,0.4397
 zegwong,遮光,0.4677
 zehaa,遮瑕,0.4434
-zehau,借口,0.5181
 zehau,藉口,0.5181
 zehok,借殼,0.4764
 zejam,遮蔭,0.4632
@@ -52790,7 +52541,7 @@ zek,脊,0.2215
 zek,炙,0.2175
 zek,擿,0.2168
 zek,唧,0.2133
-zek,跖,0.2083
+zek,蹠,0.2083
 zek,嵴,0.2071
 zek,喞,0.2034
 zek,摭,0.2034
@@ -52803,7 +52554,6 @@ zek,墌,0.1838
 zek,螪,0.1797
 zek,熫,0.1752
 zek,瘷,0.1672
-zek,蹠,0.1325
 zekai,借契,0.4411
 zekcyu,脊柱,0.5051
 zekgwat,脊骨,0.4637
@@ -52944,7 +52694,6 @@ zeoi,礈,0.1768
 zeoi,祽,0.1763
 zeoi,鋷,0.1751
 zeoi,沀,0.1665
-zeoi,叙,0.1584
 zeoi,槜,0.088
 zeoi,箠,0.0857
 zeoi,鱮,0.0225
@@ -53056,7 +52805,7 @@ zeoisam,醉心,0.4664
 zeoisam,錐心,0.4643
 zeoisang,贅生,0.4484
 zeoisau,聚首,0.4745
-zeoiseon,嘴脣,0.5058
+zeoiseon,嘴唇,0.5058
 zeoiseon,追詢,0.4511
 zeoiseot,敘述,0.5242
 zeoiseot,追述,0.4623
@@ -53082,7 +52831,7 @@ zeoitau,聚頭,0.465
 zeoitim,嘴甜,0.4613
 zeoitou,追討,0.4717
 zeoiwaan,追還,0.4572
-zeoiwai,最爲,0.5471
+zeoiwai,最為,0.5471
 zeoiwai,墜毀,0.4759
 zeoiwui,聚會,0.5168
 zeoizaai,追債,0.4648
@@ -53106,7 +52855,7 @@ zeoizong,追撞,0.4584
 zeoizuk,追逐,0.5148
 zeoizung,最終,0.5903
 zeoizung,追蹤,0.5151
-zeoizung,聚衆,0.4735
+zeoizung,聚眾,0.4735
 zeon,進,0.3298
 zeon,盡,0.2931
 zeon,純,0.2922
@@ -53117,7 +52866,6 @@ zeon,蹲,0.2589
 zeon,儘,0.2465
 zeon,晉,0.244
 zeon,津,0.2423
-zeon,准,0.2421
 zeon,屯,0.2365
 zeon,鐫,0.2315
 zeon,駿,0.231
@@ -53168,7 +52916,6 @@ zeon,瑧,0.1955
 zeon,畯,0.1946
 zeon,晙,0.1945
 zeon,迍,0.1938
-zeon,侭,0.1932
 zeon,餕,0.1908
 zeon,寯,0.1904
 zeon,璶,0.1903
@@ -53198,7 +52945,6 @@ zeon,鷷,0.1779
 zeon,臇,0.1778
 zeon,嶟,0.1775
 zeon,榗,0.1742
-zeon,隽,0.1724
 zeon,澵,0.1713
 zeon,濬,0.0973
 zeon,鐏,0.088
@@ -53244,7 +52990,7 @@ zeonhang,進行,0.6156
 zeonhang,遵行,0.4633
 zeonhau,進口,0.54
 zeonheoi,進去,0.5539
-zeonheoi,准許,0.4751
+zeonheoi,準許,0.4751
 zeonhin,進獻,0.4615
 zeonhing,盡興,0.4778
 zeonhoeng,進香,0.464
@@ -53298,7 +53044,7 @@ zeonziu,遵照,0.4775
 zeonzoek,進爵,0.462
 zeonzoek,晉爵,0.459
 zeonzoeng,進賬,0.4722
-zeonzoeng,准將,0.4651
+zeonzoeng,準將,0.4651
 zeonzou,儘早,0.5116
 zeonzyu,進駐,0.4884
 zeot,詘,0.2309
@@ -53339,7 +53085,7 @@ zeze,姐姐,0.5465
 zezeoi,謝罪,0.4708
 zezi,借指,0.4595
 zezi,借支,0.4586
-zezo,借助,0.539
+zezo,藉助,0.539
 zezoeng,借賬,0.4456
 zezoeng,柘漿,0.4416
 zezok,借作,0.4525
@@ -53479,7 +53225,6 @@ zi,淄,0.2077
 zi,眥,0.2076
 zi,阤,0.2069
 zi,吇,0.2069
-zi,咨,0.2066
 zi,骴,0.2066
 zi,豸,0.2063
 zi,滓,0.2061
@@ -53609,7 +53354,6 @@ zi,絼,0.1731
 zi,紎,0.1729
 zi,洔,0.172
 zi,襧,0.1693
-zi,眦,0.1641
 zi,扺,0.0523
 zi,騃,0.045
 zi,鳷,0.0225
@@ -53648,7 +53392,7 @@ zicaan,子產,0.4611
 zicaang,支撐,0.556
 zicaau,紙鈔,0.4611
 zican,至親,0.4671
-zicau,子丑,0.4625
+zicau,子醜,0.4625
 zicek,咫尺,0.4748
 ziceoi,自取,0.4884
 ziceoi,支取,0.4727
@@ -53813,7 +53557,7 @@ ziji,旨意,0.4737
 ziji,致意,0.473
 ziji,恣意,0.4724
 zijin,自然,0.5874
-zijin,紙菸,0.4604
+zijin,紙煙,0.4604
 zijing,字形,0.5146
 zijing,自認,0.4792
 zijing,字型,0.4745
@@ -54100,7 +53844,6 @@ zilyun,自戀,0.4886
 zim,佔,0.3153
 zim,粘,0.2705
 zim,漸,0.2577
-zim,占,0.2477
 zim,尖,0.2443
 zim,沾,0.2376
 zim,詹,0.2314
@@ -54183,9 +53926,9 @@ zimok,字幕,0.5241
 zimong,指望,0.5296
 zimou,字母,0.5309
 zimou,指模,0.4569
-zimsap,沾溼,0.465
+zimsap,沾濕,0.465
 zimsek,尖石,0.4584
-zimseon,沾脣,0.4555
+zimseon,沾唇,0.4555
 zimsin,佔線,0.472
 zimsin,佔先,0.4622
 zimsing,占星,0.474
@@ -54195,7 +53938,7 @@ zimui,姊妹,0.4818
 zimui,紙媒,0.4629
 zimui,酯酶,0.4619
 zimun,自滿,0.4663
-zimwai,佔爲,0.4595
+zimwai,佔為,0.4595
 zimwu,玷污,0.4768
 zimwu,沾污,0.4629
 zimzeon,漸進,0.4777
@@ -54213,20 +53956,19 @@ zin,箭,0.247
 zin,墊,0.2445
 zin,濺,0.2415
 zin,煎,0.2387
-zin,荐,0.2333
+zin,薦,0.2333
 zin,碾,0.232
 zin,踐,0.2294
 zin,顫,0.2284
 zin,湔,0.2284
 zin,戔,0.228
-zin,薦,0.2277
 zin,餞,0.2261
 zin,蹇,0.2251
 zin,嘽,0.2241
 zin,洊,0.2237
 zin,緘,0.2227
 zin,蕆,0.2216
-zin,膻,0.2203
+zin,羶,0.2203
 zin,媊,0.2194
 zin,帴,0.219
 zin,樿,0.219
@@ -54250,7 +53992,6 @@ zin,戩,0.2097
 zin,袸,0.2094
 zin,韉,0.209
 zin,旃,0.2081
-zin,羶,0.207
 zin,諓,0.206
 zin,灛,0.2039
 zin,瀳,0.2035
@@ -54381,7 +54122,6 @@ zing,旌,0.216
 zing,偵,0.2152
 zing,鼱,0.215
 zing,旍,0.2139
-zing,征,0.2131
 zing,瀞,0.2051
 zing,湞,0.2028
 zing,徴,0.2014
@@ -54437,7 +54177,7 @@ zingcaan,正餐,0.4724
 zingcaat,偵察,0.4849
 zingcaau,精巢,0.4567
 zingcai,整齊,0.4985
-zingcan,征塵,0.4604
+zingcan,徵塵,0.4604
 zingcap,偵緝,0.4633
 zingceoi,整除,0.4637
 zingcing,政情,0.4632
@@ -54560,7 +54300,7 @@ zingloeng,徵糧,0.4587
 zinglou,正路,0.4645
 zinglung,蒸籠,0.466
 zinglyun,靖亂,0.4494
-zingmaa,征馬,0.452
+zingmaa,徵馬,0.452
 zingmak,靜脈,0.489
 zingmak,靜默,0.4758
 zingman,正文,0.5213
@@ -54639,7 +54379,7 @@ zingteng,偵聽,0.4636
 zingtim,靜恬,0.4503
 zingtin,整天,0.5287
 zingtou,淨土,0.4803
-zingtou,征討,0.4646
+zingtou,徵討,0.4646
 zingtou,正途,0.4646
 zingtung,精通,0.5233
 zingtung,正統,0.5096
@@ -54669,7 +54409,7 @@ zingzik,正值,0.4941
 zingzik,正直,0.4937
 zingzik,政績,0.4848
 zingzik,正職,0.4704
-zingzin,征戰,0.4897
+zingzin,徵戰,0.4897
 zingzing,整整,0.5235
 zingzing,靜靜,0.5048
 zingzing,正正,0.4674
@@ -54749,7 +54489,7 @@ zinsiu,展銷,0.4739
 zintau,箭頭,0.5067
 zintau,薦頭,0.4476
 zintip,剪貼,0.4681
-zintoi,展臺,0.4841
+zintoi,展台,0.4841
 zinwan,戰雲,0.4638
 zinwo,戰禍,0.4603
 zinwun,展緩,0.4484
@@ -55023,7 +54763,7 @@ zitgou,截稿,0.4652
 zitgwai,折桂,0.4658
 zitgwong,折光,0.4638
 zithak,捷克,0.4897
-zithap,折合,0.4791
+zithap,摺合,0.4791
 zithau,節候,0.4533
 zithei,節氣,0.5012
 zithok,哲學,0.5536
@@ -55610,7 +55350,7 @@ zoengsyu,樟樹,0.4678
 zoengsyun,長孫,0.4732
 zoengtip,張貼,0.4852
 zoengto,掌舵,0.4663
-zoengtoi,章臺,0.4606
+zoengtoi,章台,0.4606
 zoengwaa,像話,0.4662
 zoengwong,張皇,0.4609
 zoengwong,張惶,0.456
@@ -55651,7 +55391,6 @@ zoi,栽,0.2346
 zoi,甾,0.2344
 zoi,災,0.234
 zoi,菑,0.2268
-zoi,灾,0.2245
 zoi,縡,0.2188
 zoi,酨,0.2138
 zoi,洅,0.2095
@@ -55812,7 +55551,7 @@ zoksing,擢升,0.4611
 zoksou,作數,0.4598
 zoktin,昨天,0.5751
 zokwaa,作畫,0.4977
-zokwai,作爲,0.6138
+zokwai,作為,0.6138
 zokze,作者,0.5858
 zokzeng,鑿井,0.4609
 zokzeon,作準,0.4572
@@ -55874,7 +55613,6 @@ zong,噇,0.186
 zong,梉,0.1818
 zong,羘,0.1807
 zong,銺,0.1743
-zong,庄,0.1499
 zong,粧,0.1455
 zong,𥅾,0.0225
 zongbaan,裝扮,0.4906
@@ -55976,7 +55714,7 @@ zou,遭,0.2749
 zou,祖,0.2532
 zou,澡,0.2426
 zou,糟,0.2343
-zou,竈,0.2317
+zou,灶,0.2317
 zou,棗,0.2312
 zou,藻,0.2249
 zou,繰,0.2226
@@ -55986,12 +55724,10 @@ zou,駔,0.2158
 zou,蒩,0.2145
 zou,祚,0.2139
 zou,簉,0.213
-zou,灶,0.2129
 zou,珇,0.2124
 zou,慒,0.2123
 zou,蚤,0.2094
 zou,瑵,0.2064
-zou,皁,0.2045
 zou,胙,0.2036
 zou,傮,0.2004
 zou,阼,0.1996
@@ -56030,7 +55766,7 @@ zoufaan,早飯,0.4953
 zoufaat,做法,0.5559
 zoufan,祖墳,0.4654
 zoufan,早婚,0.4639
-zoufo,竈火,0.4593
+zoufo,灶火,0.4593
 zoufu,祖父,0.4862
 zoufuk,造福,0.4808
 zoufung,遭逢,0.4632
@@ -56040,13 +55776,13 @@ zougaa,做假,0.4651
 zougaai,租界,0.4717
 zougaap,皂莢,0.4609
 zougam,租金,0.512
-zougeoi,竈具,0.4695
+zougeoi,灶具,0.4695
 zougeoi,造句,0.4674
 zougin,組件,0.5249
 zougok,組閣,0.4639
 zougou,糟糕,0.5228
 zougung,做工,0.5209
-zougwan,竈君,0.4598
+zougwan,灶君,0.4598
 zougwok,祖國,0.5122
 zouhaak,租客,0.4772
 zouhap,組合,0.5645
@@ -56079,7 +55815,7 @@ zoumui,做媒,0.4646
 zoumung,做夢,0.504
 zounaan,遭難,0.4636
 zounai,棗泥,0.4626
-zoungaan,竈眼,0.4559
+zoungaan,灶眼,0.4559
 zounin,早年,0.5186
 zouoi,做愛,0.5084
 zouon,早安,0.4756
@@ -56103,7 +55839,7 @@ zousoeng,早霜,0.4583
 zousuk,早熟,0.4788
 zoutaap,糟蹋,0.485
 zoutaap,糟塌,0.4561
-zoutau,竈頭,0.4631
+zoutau,灶頭,0.4631
 zouteoi,早退,0.471
 zoutyun,組團,0.4868
 zouuk,組屋,0.4601
@@ -56183,7 +55919,6 @@ zuk,鷟,0.2168
 zuk,竺,0.2164
 zuk,敳,0.2161
 zuk,蠋,0.2158
-zuk,筑,0.2157
 zuk,嗾,0.2148
 zuk,孎,0.2145
 zuk,囑,0.214
@@ -56219,7 +55954,6 @@ zuk,篫,0.1751
 zuk,縬,0.1728
 zuk,踿,0.1703
 zuk,藚,0.1647
-zuk,触,0.0989
 zukbaak,竹帛,0.458
 zukbaan,竹板,0.4619
 zukbou,逐步,0.5365
@@ -56318,7 +56052,7 @@ zuksin,觸線,0.4615
 zuksou,觸鬚,0.4636
 zuktai,築堤,0.4604
 zukteoi,逐退,0.4499
-zuktoi,燭臺,0.4667
+zuktoi,燭台,0.4667
 zuktou,俗套,0.4796
 zukwaa,俗話,0.4751
 zukzaap,續集,0.4914
@@ -56346,16 +56080,14 @@ zung,總,0.3344
 zung,種,0.3286
 zung,重,0.3272
 zung,仲,0.2704
-zung,衆,0.2691
+zung,眾,0.2691
 zung,宗,0.2644
-zung,种,0.2636
 zung,鍾,0.2633
 zung,縱,0.2623
 zung,忠,0.259
 zung,鐘,0.2576
 zung,終,0.2572
 zung,腫,0.2398
-zung,眾,0.2387
 zung,綜,0.2362
 zung,衷,0.235
 zung,粽,0.2337
@@ -56388,7 +56120,6 @@ zung,糭,0.2076
 zung,縂,0.2071
 zung,艐,0.2063
 zung,蝩,0.2062
-zung,糉,0.2056
 zung,鍐,0.2054
 zung,憃,0.205
 zung,蔠,0.205
@@ -56426,7 +56157,6 @@ zung,捴,0.1894
 zung,彸,0.1876
 zung,瘇,0.1875
 zung,鑁,0.1868
-zung,潨,0.1863
 zung,踨,0.1862
 zung,媑,0.186
 zung,騌,0.1855
@@ -56469,7 +56199,6 @@ zung,鼨,0.1729
 zung,熧,0.1694
 zung,炂,0.1672
 zung,騣,0.1671
-zung,踪,0.1499
 zung,䁓,0.0225
 zung,䝋,0.0225
 zungau,中歐,0.4815
@@ -56488,7 +56217,7 @@ zungbou,縱步,0.4527
 zungcaan,中產,0.4995
 zungcaan,中餐,0.4993
 zungcan,宗親,0.466
-zungcau,衆籌,0.5169
+zungcau,眾籌,0.5169
 zungcau,中秋,0.5074
 zungcau,仲秋,0.4645
 zungceon,中旬,0.4876
@@ -56517,7 +56246,7 @@ zungdim,總店,0.4736
 zungdim,鐘點,0.4714
 zungdim,中點,0.4676
 zungdin,中電,0.4733
-zungdo,衆多,0.5467
+zungdo,眾多,0.5467
 zungduk,中毒,0.5105
 zungduk,總督,0.4861
 zungdung,中東,0.504
@@ -56563,7 +56292,7 @@ zunggun,縱貫,0.4688
 zunggung,總共,0.5286
 zunggung,中共,0.5163
 zunggung,總攻,0.4654
-zunggwaa,衆寡,0.4584
+zunggwaa,眾寡,0.4584
 zunggwai,總歸,0.4902
 zunggwai,終歸,0.4806
 zunggwok,中國,0.6138
@@ -56582,7 +56311,7 @@ zunghou,中號,0.4716
 zunghung,棕紅,0.4611
 zungjam,重任,0.4857
 zungjam,縱飲,0.4523
-zungjan,衆人,0.5306
+zungjan,眾人,0.5306
 zungjan,中印,0.4778
 zungjat,終日,0.4801
 zungjau,總有,0.532
@@ -56634,7 +56363,7 @@ zunglou,中路,0.5126
 zunglou,終老,0.4667
 zungman,中文,0.5595
 zungman,縱紋,0.4601
-zungmong,衆望,0.4677
+zungmong,眾望,0.4677
 zungmou,總務,0.472
 zungmou,鬃毛,0.4631
 zungmuk,縱目,0.459
@@ -56645,7 +56374,7 @@ zungngan,中銀,0.4751
 zungngoi,中外,0.4946
 zungnin,中年,0.5091
 zungnin,終年,0.4726
-zungnou,衆怒,0.4658
+zungnou,眾怒,0.4658
 zungoi,鍾愛,0.4801
 zungpaai,宗派,0.4665
 zungpin,總編,0.4771
@@ -56659,7 +56388,7 @@ zungsan,終身,0.5186
 zungsan,忠臣,0.4891
 zungsan,重臣,0.4678
 zungsang,終生,0.5016
-zungsang,衆生,0.4916
+zungsang,眾生,0.4916
 zungsat,忠實,0.4932
 zungsat,宗室,0.4821
 zungseoi,終須,0.4648
@@ -56684,17 +56413,17 @@ zungsing,棕繩,0.4555
 zungsoeng,中上,0.4761
 zungsoeng,中傷,0.4711
 zungsou,總數,0.507
-zungsou,衆數,0.461
+zungsou,眾數,0.461
 zungsyu,中樞,0.4971
 zungsyu,中暑,0.4801
 zungsyu,棕樹,0.4632
 zungsyun,總算,0.5068
-zungsyut,衆說,0.4672
+zungsyut,眾說,0.4672
 zungtai,總體,0.5413
 zungtau,鐘頭,0.4818
 zungtin,終天,0.4602
 zungting,中庭,0.4665
-zungtoi,中臺,0.4892
+zungtoi,中台,0.4892
 zungtou,中途,0.5201
 zungtou,總圖,0.4627
 zungtung,總統,0.5215
@@ -56796,7 +56525,6 @@ zyu,鮢,0.1876
 zyu,絑,0.1873
 zyu,煑,0.187
 zyu,趎,0.1866
-zyu,猪,0.1865
 zyu,祩,0.1863
 zyu,跦,0.1858
 zyu,陼,0.1854
@@ -56833,7 +56561,6 @@ zyucoi,主菜,0.465
 zyucyu,主廚,0.4652
 zyudaa,主打,0.5314
 zyudeoi,主隊,0.48
-zyuding,注定,0.5226
 zyuding,註定,0.5226
 zyudo,諸多,0.5321
 zyudou,主導,0.5289
@@ -56846,7 +56573,6 @@ zyufo,主科,0.4619
 zyufong,住房,0.5186
 zyufu,主婦,0.4807
 zyugaa,住家,0.4733
-zyugaai,注解,0.4865
 zyugaai,註解,0.4865
 zyugaau,主教,0.4764
 zyugei,主機,0.5397
@@ -56906,7 +56632,6 @@ zyuluk,誅戮,0.458
 zyumau,主謀,0.4651
 zyuming,著名,0.5341
 zyuming,註明,0.5192
-zyuming,注明,0.5
 zyumit,誅滅,0.4614
 zyumou,珠母,0.4538
 zyumuk,注目,0.4826
@@ -57094,7 +56819,7 @@ zyuntau,磚頭,0.487
 zyuntau,轉投,0.4728
 zyunwaan,轉彎,0.4908
 zyunwaang,專橫,0.4646
-zyunwai,專爲,0.4883
+zyunwai,專為,0.4883
 zyunwai,尊位,0.4588
 zyunwan,轉運,0.4895
 zyunwan,轉韻,0.4523
@@ -57109,7 +56834,7 @@ zyunzik,轉職,0.4741
 zyunzin,轉戰,0.4828
 zyunzing,專精,0.4809
 zyunzing,專政,0.4745
-zyunzing,專征,0.4526
+zyunzing,專徵,0.4526
 zyunzip,轉接,0.4796
 zyunzit,轉折,0.506
 zyunzoeng,轉帳,0.4792
@@ -57123,7 +56848,6 @@ zyupei,豬皮,0.4651
 zyupin,主編,0.5058
 zyupong,珠蚌,0.4569
 zyusaa,硃砂,0.4669
-zyusaa,朱砂,0.452
 zyusaat,誅殺,0.4656
 zyusam,主審,0.4642
 zyusang,諸生,0.4622

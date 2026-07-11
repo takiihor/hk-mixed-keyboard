@@ -3,12 +3,10 @@ package com.hkmixedkeyboard.commit
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
 import com.hkmixedkeyboard.decoder.SourceSchema
-import com.hkmixedkeyboard.engine.ClassifyResult
 import com.hkmixedkeyboard.memory.IUserMemory
 
 class CommitController(
     private val memory: IUserMemory,
-    private val classify: (String) -> ClassifyResult,
     private val ctx: ImeContext
 ) {
 
@@ -30,7 +28,6 @@ class CommitController(
         return CommitOutput(
             committedText = committedText,
             newState = s.copy(buffer = newBuf, imeState = ImeState.COMPOSING),
-            candidateBar = emptyList(),
             memoryWrite = memoryWrite
         )
     }
@@ -47,14 +44,12 @@ class CommitController(
                 committedText = null,
                 newState = state.copy(buffer = newBuf,
                     imeState = if (newBuf.isEmpty()) ImeState.IDLE else ImeState.COMPOSING),
-                candidateBar = emptyList(),
                 memoryWrite = MemoryWriteDecision(false)
             )
         }
 
         val lac = state.lastAutoCommit
         if (lac != null && cursorJustAfterAutoCommit) {
-            val cr = classify(lac.originalBuffer)
             return CommitOutput(
                 committedText = null,
                 deletedBefore = lac.text.length,
@@ -63,7 +58,6 @@ class CommitController(
                     lastAutoCommit = null,
                     imeState = ImeState.COMPOSING
                 ),
-                candidateBar = cr.cnCandidates,
                 memoryWrite = MemoryWriteDecision(false)
             )
         }
@@ -73,7 +67,6 @@ class CommitController(
             committedText = null,
             deletedBefore = 1,
             newState = state,
-            candidateBar = emptyList(),
             memoryWrite = MemoryWriteDecision(false)
         )
     }
@@ -83,33 +76,12 @@ class CommitController(
             return doCommitRaw(" ", resetContext = false, state = state)
         }
 
-        if (ctx.spaceMode == SpaceMode.ALWAYS_SPACE) {
-            val flushed = commitLiteralBuffer(state.buffer, learn = true, state = state)
-            val raw = doCommitRaw(" ", resetContext = false, state = flushed.newState)
-            return raw.copy(
-                committedText = (flushed.committedText ?: "") + " ",
-                memoryWrite = flushed.memoryWrite
-            )
-        }
-
-        val c = classify(state.buffer)
-        val target = selectSpaceCommitTarget(state.buffer, c)
-        val lac = AutoCommitRecord(target.text, state.buffer)
-        // When committing English literal on space in SMART mode, also insert a trailing space
-        // and exit composition so users don't need a second tap to separate words.
-        // 粵拼: Space confirms the top Cantonese candidate and clears the buffer so
-        // the next syllable starts fresh — with NO space character between characters
-        // (求 + 其 → 求其, normal Chinese text). Only the English-literal fallback
-        // below inserts a trailing space, since that path is genuine Latin text.
-        if (target.type == CandidateType.EN_LITERAL) {
-            val committed = doCommitCandidate(target, state, lac)
-            val withSpace = doCommitRaw(" ", resetContext = true, state = committed.newState)
-            return withSpace.copy(
-                committedText = (committed.committedText ?: "") + " ",
-                memoryWrite = committed.memoryWrite
-            )
-        }
-        return doCommitCandidate(target, state, lac)
+        val flushed = commitLiteralBuffer(state.buffer, learn = true, state = state)
+        val raw = doCommitRaw(" ", resetContext = true, state = flushed.newState)
+        return raw.copy(
+            committedText = (flushed.committedText ?: "") + " ",
+            memoryWrite = flushed.memoryWrite
+        )
     }
 
     fun onPunctuation(
@@ -126,16 +98,11 @@ class CommitController(
         var punctuationContext = precedingContext
 
         if (state.buffer.isNotEmpty()) {
-            val c = classify(state.buffer)
-            val target = selectPunctuationCommitTarget(state.buffer, c)
-            val lac = AutoCommitRecord(target.text, state.buffer)
-            val committed = doCommitCandidate(target, s, lac)
+            val committed = commitLiteralBuffer(state.buffer, learn = true, state = s)
             committedPrefix = committed.committedText.orEmpty()
             memoryWrite = committed.memoryWrite
             s = committed.newState
-            punctuationContext =
-                if (target.type == CandidateType.EN_LITERAL) PrecedingContext.LATIN
-                else PrecedingContext.CJK
+            punctuationContext = PrecedingContext.LATIN
         }
 
         val glyph = punctuationFor(p, punctuationContext)
@@ -156,7 +123,6 @@ class CommitController(
             return CommitOutput(
                 committedText = "\n",
                 newState = state.idle(),
-                candidateBar = emptyList(),
                 memoryWrite = MemoryWriteDecision(false)
             )
         }
@@ -172,7 +138,6 @@ class CommitController(
         return CommitOutput(
             committedText = "\n",
             newState = state,
-            candidateBar = emptyList(),
             memoryWrite = MemoryWriteDecision(false)
         )
     }
@@ -196,8 +161,6 @@ class CommitController(
                 prevCommitted = newPrev,
                 imeState = ImeState.PREDICTING
             ),
-            candidateBar = if (ctx.isSensitiveField) emptyList()
-                           else buildPostCommitBar(target.text),
             memoryWrite = MemoryWriteDecision(shouldLearn, target)
         )
     }
@@ -213,8 +176,6 @@ class CommitController(
                 prevCommitted = if (ctx.isSensitiveField) null else buffer,
                 imeState = ImeState.PREDICTING
             ),
-            candidateBar = if (ctx.isSensitiveField) emptyList()
-                           else buildPostCommitBar(buffer),
             memoryWrite = MemoryWriteDecision(!ctx.isSensitiveField && learn, cand)
         )
     }
@@ -228,86 +189,18 @@ class CommitController(
         return CommitOutput(
             committedText = text,
             newState = newState,
-            candidateBar = emptyList(),
             memoryWrite = MemoryWriteDecision(false)
         )
     }
 
-    // ── Commit target selection ──────────────────────────────────────────────
-
-    fun selectSpaceCommitTarget(buffer: String, c: ClassifyResult): DecodeCandidate {
-        // 粵拼: the user is romanizing Cantonese, so Space commits the Chinese
-        // candidate whenever one parses exactly — including short syllables like
-        // "ng"/"m"/"go" that the Quick length heuristic below would force to English.
-        if (ctx.scheme == com.hkmixedkeyboard.decoder.Scheme.JYUTPING) {
-            val cn = topCn(c)
-            return if ((c.cnExactParsed || c.cnHasPhraseMatch) && cn != null) cn else enLiteral(c)
-        }
-
-        // Short input (≤ 2 Latin letters, e.g. "hi", "st", "ha") stays English on
-        // Space. Two letters collide with 2-letter Quick codes, but a user typing two
-        // letters then Space almost always wants the English text, not an auto-picked
-        // Chinese character. The Chinese candidate is still one tap away in the bar,
-        // and the Space already adds a trailing space + exits composing (see onSpace's
-        // EN_LITERAL branch), so it doubles as "one Space = space + leave English".
-        // Longer codes (phrases) keep auto-committing Chinese below.
-        if (buffer.length <= 2) return enLiteral(c)
-
-        memory.hardOverride(buffer, ctx.isSensitiveField)?.let { return it }
-
-        val cnCommittable = c.cnExactParsed || c.cnHasPhraseMatch
-        val enStrong = c.enIsWord || c.enStrongPrefix
-
-        return when {
-            cnCommittable && !enStrong -> topCn(c)!!
-            enStrong && !cnCommittable -> enLiteral(c)
-            cnCommittable && enStrong  -> tieBreak(buffer, c)
-            else                       -> enLiteral(c)
-        }
-    }
-
-    fun selectPunctuationCommitTarget(buffer: String, c: ClassifyResult): DecodeCandidate {
-        val lower = buffer.lowercase()
-        if (c.enIsWord || c.enStrongPrefix || SHORT_WHITELIST.contains(lower))
-            return enLiteral(c)
-        if (c.cnExactParsed || c.cnHasPhraseMatch)
-            return topCn(c)!!
-        return enLiteral(c)
-    }
-
-    fun tieBreak(buffer: String, c: ClassifyResult): DecodeCandidate {
-        if (!ctx.isSensitiveField) {
-            val r = memory.cnRatio(buffer)
-            if (r >= Thresholds.CN_RATIO_THRESHOLD) return topCn(c)!!
-            if (r <= Thresholds.EN_RATIO_THRESHOLD) return enLiteral(c)
-        }
-
-        val top = topCn(c)
-        if (buffer.length <= 2 && top != null && top.isHkCore) return top
-        return enLiteral(c)
-    }
-
     // ── Helpers ──────────────────────────────────────────────────────────────
-
-    private fun topCn(c: ClassifyResult): DecodeCandidate? =
-        c.cnCandidates.firstOrNull()
-
-    private fun enLiteral(c: ClassifyResult) =
-        DecodeCandidate(c.enLiteral, "", SourceSchema.ENGLISH, CandidateType.EN_LITERAL, 0.0, false)
 
     private fun canonicalText(cand: DecodeCandidate): String {
         val lower = cand.text.lowercase()
         return CANONICAL_CASE[lower] ?: cand.text
     }
 
-    private fun buildPostCommitBar(lastText: String): List<DecodeCandidate> {
-        // Stub: real implementation queries phrase dictionary for continuations.
-        // Returns empty list here; tested via acceptance tests in a later pass.
-        return emptyList()
-    }
-
     companion object {
-        private val SHORT_WHITELIST = com.hkmixedkeyboard.engine.EnglishLexicon.SHORT_WHITELIST
         private val CANONICAL_CASE = com.hkmixedkeyboard.engine.EnglishLexicon.CANONICAL_CASE
     }
 }
