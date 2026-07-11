@@ -22,25 +22,28 @@ _更新：2026-07-12（corpus 清理 + 簡體輸出功能之後）_
 
 ## ❌ 上架前必須完成（需要你行動）
 
-### 1. 簽名 keystore（硬性阻塞）
-呢部機**冇** `keystore.properties` 亦冇 `HKKBD_*` 環境變數，所以而家個 AAB 係**未簽名**，Play 唔收。
-之前簽過 v0.46 AAB，即係 keystore 應該喺你手上：
-- 搵返個 keystore 檔案，放喺 `android/app/keystore.properties`（參考 `.sample`）或設定 `HKKBD_STORE_FILE` 等環境變數
-- 再跑 `./gradlew :app:bundleRelease -PversionedBuild=true`
-- ⚠️ 用 Play App Signing：呢個 key 係 upload key，第一次上載時 Play 會問你登記
+### 1. ~~簽名 keystore~~ ✅ 已解決（2026-07-12）
+Keystore 搵返喺 `~/.local/share/hk-mixed-keyboard/`（credentials 喺 `upload-key.env`）。
+已簽名 AAB：`android/app/build/outputs/bundle/release/app-release.aab`（v0.55.0，`jarsigner` 驗證通過）。
+上載時記得喺 Play Console 登記 Play App Signing。
 
-### 2. 私隱政策公開 URL（Play Console 必填欄位）
-- 已生成可直接 host 嘅 `docs/store/privacy_policy.html`
-- 最簡單：push 個 repo 上 GitHub → Settings → Pages → 開 `docs/` folder → URL 就係 `https://<user>.github.io/hk-mixed-keyboard/store/privacy_policy.html（視乎 Pages 設定）`
+### 2. ~~私隱政策公開 URL~~ ✅ 已解決（2026-07-12）
+Repo 已公開發佈：https://github.com/takiihor/hk-mixed-keyboard （同時滿足 GPL 來源要求）
+**Play Console 私隱政策 URL：https://takiihor.github.io/hk-mixed-keyboard/store/privacy_policy.html** （已驗證 200 OK）
 
-### 3. Play Console 商店資料
-- **512×512 icon**：已生成 `docs/store/assets/play_store_icon_512.png`
-- **Feature graphic 1024×500**：已生成 `docs/store/assets/feature_graphic_1024x500.png`（想靚啲可以自己再整）
-- **手機截圖 ≥2 張**：要喺真機／模擬器影（建議：打字中 + 候選欄 + 設定頁）
-- 應用名稱、簡介（80字）、詳細描述
+### 3. Play Console 商店資料 — 素材已備齊 ✅
+- **512×512 icon**：`docs/store/assets/play_store_icon_512.png`
+- **Feature graphic 1024×500**：`docs/store/assets/feature_graphic_1024x500.png`
+- **手機截圖 ×5（1080×2400，模擬器實拍）**：`docs/store/assets/screenshots/`
+  （速成鍵盤＋繁▸簡chip、候選列、聯想預測、簡體輸出、粵拼分詞）
+- 名稱／簡介／描述文案：`docs/store/name_*.txt`、`short_*.txt`、`long_*.md`
+- 剩低：喺 Play Console 逐項貼上
 
-### 4. 真機 AAB 測試
-用 bundletool 或 Play internal testing track 裝一次簽名版，行一次完整打字流程（速成、粵拼、簡體輸出、自訂詞、匯出匯入）。
+### 4. 裝置測試 — 模擬器已通過 ✅（建議真機再過一次）
+2026-07-12 喺 Android 15 模擬器（簽名 release v0.55.0）完整冒煙測試通過：
+IME 註冊啟用、速成 ai→時（零簡體）、候選提交、逐字組詞預測、繁▸簡 chip 切換、
+簡體輸出（時→时）、速成↔粵拼切換、粵拼連打 neihou→你好、長按⌨切換、設定跨scheme持久。
+上架前建議喺真機（不同廠商 ROM）快速再過一次。
 
 ## 📋 Data Safety 表格答案（照抄）
 
