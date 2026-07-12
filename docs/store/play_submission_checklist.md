@@ -4,10 +4,10 @@ Use this with the release AAB from `android/app/build/outputs/bundle/release/`.
 
 ## App identity
 
-- App name: HK Mixed Keyboard (Quick/Jyutping)
+- App name: HK Mixed Keyboard
 - Package name: `com.hkmixedkeyboard`
-- Current release version: `0.52.0`
-- Current version code: `67`
+- Current release version: `0.55.0`
+- Current version code: `70`
 - Category: Tools / Keyboard / Input method
 
 ## Privacy policy
@@ -60,7 +60,7 @@ The in-app Settings > 開源授權與資料來源 screen displays these notices.
 ## Upload artifacts
 
 - Play upload AAB: `android/app/build/outputs/bundle/release/app-release.aab`
-- Tester APK: `android/app/build/outputs/apk/release/app-release-0.52.0.apk`
+- Tester APK: `android/app/build/outputs/apk/release/app-release-0.55.0.apk`
 
 The upload keystore is outside the repo at:
 
