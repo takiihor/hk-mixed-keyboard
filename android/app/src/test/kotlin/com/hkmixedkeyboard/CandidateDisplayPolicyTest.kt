@@ -56,6 +56,34 @@ class CandidateDisplayPolicyTest {
     }
 
     @Test
+    fun `english word surfaces Chinese meaning right after the literal`() {
+        // Typing an English word: the completions + literal lead, but the
+        // Traditional-Chinese meaning must follow immediately after the literal —
+        // ahead of trailing English decoder noise, not at the end of the bar.
+        val meaning = DecodeCandidate(
+            "動作", "act", SourceSchema.ENGLISH_ASSIST, CandidateType.ENGLISH_ASSIST, 0.7, false
+        )
+        val enNoise = DecodeCandidate(
+            "actor", "act", SourceSchema.ENGLISH, CandidateType.EN_LITERAL, 0.0, false
+        )
+        val result = policy.order(
+            buffer = "action",
+            learned = emptyList(),
+            english = listOf(enLiteralCand("action")),
+            decoded = listOf(meaning, enNoise),
+            literal = enLiteralCand("action")
+        ).map { it.text }
+
+        val literalIdx = result.indexOf("action")
+        val meaningIdx = result.indexOf("動作")
+        val noiseIdx = result.indexOf("actor")
+        assertTrue("Chinese meaning should come after the literal, got: $result",
+            meaningIdx > literalIdx)
+        assertTrue("Chinese meaning should come before English decoder noise, got: $result",
+            meaningIdx < noiseIdx)
+    }
+
+    @Test
     fun `custom words rank first even for a long quick code`() {
         val custom = DecodeCandidate(
             "我哋", "ogrp", SourceSchema.USER_MEMORY, CandidateType.CHAR, 0.95, true

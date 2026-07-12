@@ -228,29 +228,33 @@ fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
                 return DecodeResult(buffer, scheme, buffer.length, false, true, cands)
             }
 
-            // English assist + Jyutping assist
-            val result = mutableListOf<DecodeCandidate>()
+            // English assist + Jyutping assist. Exact matches are bucketed apart
+            // from prefix completions so they rank ahead regardless of raw corpus
+            // frequency (mirrors CorpusBackedDecoder.buildAssistCandidates).
+            val exact = mutableListOf<DecodeCandidate>()
+            val prefix = mutableListOf<DecodeCandidate>()
             var hasExact = false
 
-            englishAssistIndex[lower]?.let { result.addAll(it); hasExact = true }
+            englishAssistIndex[lower]?.let { exact.addAll(it); hasExact = true }
             // Prefix completions run even with an exact match (mirrors
             // CorpusBackedDecoder): "disc" → disc→碟片 plus discuss→討論.
             if (lower.length >= 3 && englishAssistPrefixSet.contains(lower)) {
                 englishAssistIndex.entries.asSequence()
                     .filter { it.key.startsWith(lower) && it.key != lower }
                     .flatMap { it.value.asSequence() }
-                    .forEach { result.add(it) }
+                    .forEach { prefix.add(it) }
             }
 
-            jyutpingIndex[lower]?.let { result.addAll(it); hasExact = true }
+            jyutpingIndex[lower]?.let { exact.addAll(it); hasExact = true }
             if (!jyutpingIndex.containsKey(lower) && jyutpingPrefixSet.contains(lower)) {
                 jyutpingIndex.entries.filter { it.key.startsWith(lower) }
-                    .flatMap { it.value }.forEach { result.add(it) }
+                    .flatMap { it.value }.forEach { prefix.add(it) }
             }
 
-            if (result.isNotEmpty()) {
-                val deduped = result.distinctBy { it.text }
-                    .sortedByDescending { it.frequency }
+            if (exact.isNotEmpty() || prefix.isNotEmpty()) {
+                val deduped = (exact.sortedByDescending { it.frequency } +
+                    prefix.sortedByDescending { it.frequency })
+                    .distinctBy { it.text }
                     .take(15)
                 return DecodeResult(buffer, scheme, buffer.length, false, !hasExact, deduped)
             }

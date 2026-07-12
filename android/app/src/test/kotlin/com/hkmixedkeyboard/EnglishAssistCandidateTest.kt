@@ -102,6 +102,24 @@ class EnglishAssistCandidateTest {
         )
     }
 
+    // ── Group A: Exact-match weighting ────────────────────────────────────
+    // The word's own meaning must outrank a higher-frequency prefix completion.
+    // "act"→動作 (exact, freq 0.6951) vs "action"→作用 (prefix completion, 0.6987):
+    // a pure frequency sort would bury the exact 動作 under 作用.
+
+    @Test
+    fun `exact meaning ranks above a higher-frequency prefix completion`() {
+        val decoder = buildFullCorpusDecoder(CORPUS_DIR)
+        val texts = decoder.decode("act", Scheme.QUICK).candidates.map { it.text }
+
+        val exactIdx = texts.indexOf("動作")   // act → 動作 (exact)
+        val prefixIdx = texts.indexOf("作用")  // action → 作用 (prefix completion)
+        assertTrue("both meanings should be present, but got: $texts",
+            exactIdx >= 0 && prefixIdx >= 0)
+        assertTrue("exact 動作 should rank before higher-freq prefix 作用, but got: $texts",
+            exactIdx < prefixIdx)
+    }
+
     // ── Group B: Space conservatism with mock assist ──────────────────────
 
     @Test

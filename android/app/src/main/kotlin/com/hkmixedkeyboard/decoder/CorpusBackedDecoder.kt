@@ -100,12 +100,17 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
      * lookups (no exact entry matched the buffer itself).
      */
     private fun buildAssistCandidates(lower: String): Pair<List<DecodeCandidate>, Boolean> {
-        val result = mutableListOf<DecodeCandidate>()
+        // Exact-match meanings (the buffer IS an English word / Jyutping syllable)
+        // are kept in a separate bucket from prefix completions so they can rank
+        // ahead regardless of the raw corpus frequency: typing "act" should surface
+        // its own 動作 before action→作用, even though 作用's frequency is higher.
+        val exact = mutableListOf<DecodeCandidate>()
+        val prefix = mutableListOf<DecodeCandidate>()
         var hasExact = false
 
         // English assist — exact
         corpus.englishAssistIndex[lower]?.let {
-            result.addAll(it)
+            exact.addAll(it)
             hasExact = true
         }
 
@@ -117,25 +122,28 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
                 .asSequence()
                 .filter { it != lower }
                 .flatMap { corpus.englishAssistIndex[it].orEmpty().asSequence() }
-                .forEach { result.add(it) }
+                .forEach { prefix.add(it) }
         }
 
         // Jyutping — exact
         corpus.jyutpingIndex[lower]?.let {
-            result.addAll(it)
+            exact.addAll(it)
             hasExact = true
         }
 
         // Jyutping — prefix (only if no exact Jyutping match)
         if (!corpus.jyutpingIndex.containsKey(lower) && corpus.jyutpingPrefixIndex.hasPrefix(lower)) {
             corpus.jyutpingPrefixIndex.matching(lower, limit = 24)
-                .flatMapTo(result) { corpus.jyutpingIndex[it].orEmpty() }
+                .flatMapTo(prefix) { corpus.jyutpingIndex[it].orEmpty() }
         }
 
-        if (result.isEmpty()) return Pair(emptyList(), false)
+        if (exact.isEmpty() && prefix.isEmpty()) return Pair(emptyList(), false)
 
-        val deduped = result.distinctBy { it.text }
-            .sortedByDescending { it.frequency }
+        // Exact meanings first (sorted by frequency within the bucket), then prefix
+        // completions. distinctBy keeps the exact copy when a meaning appears in both.
+        val deduped = (exact.sortedByDescending { it.frequency } +
+            prefix.sortedByDescending { it.frequency })
+            .distinctBy { it.text }
             .take(15)
 
         return Pair(deduped, !hasExact)

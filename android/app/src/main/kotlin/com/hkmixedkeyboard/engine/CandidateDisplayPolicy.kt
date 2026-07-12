@@ -41,8 +41,12 @@ class CandidateDisplayPolicy {
             custom + learnedChinese + decodedChinese + learnedEnglish +
                 decodedEnglish + literal + english
         } else {
-            custom + learnedEnglish + english + literal + decodedEnglish +
-                learnedChinese + decodedChinese
+            // Latin buffer assumed to be English: the typed word (completions +
+            // literal) leads. The Traditional-Chinese meaning candidates follow
+            // immediately after the literal so "打英文出繁中" stays one glance away,
+            // instead of being pushed to the end of the bar behind English noise.
+            custom + learnedEnglish + english + literal +
+                learnedChinese + decodedChinese + decodedEnglish
         }
         return ordered.distinctBy { it.text }.take(limit)
     }
