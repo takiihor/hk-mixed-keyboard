@@ -30,8 +30,8 @@ Expected: FAIL because the round icon and `roundIcon` declaration are absent.
 
 **Step 3: Implement the smallest resource change**
 
-Generate foreground PNGs from the source by changing only connected pure black
-background to transparent.  Add a cream adaptive background and matching
+Generate foreground PNGs from the source by changing only connected black
+background to the same cream as the adaptive background.  Add a matching
 round adaptive icon XML.  Add `android:roundIcon` to the Manifest.
 
 **Step 4: Run test to verify it passes**

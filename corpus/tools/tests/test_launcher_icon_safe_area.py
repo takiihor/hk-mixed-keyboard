@@ -119,6 +119,30 @@ class LauncherIconSafeAreaTest(unittest.TestCase):
         self.assertIn('@color/ic_launcher_background', launcher)
         self.assertTrue((resources / "mipmap-anydpi/ic_launcher_round.xml").is_file())
 
+    def test_adaptive_foregrounds_do_not_expose_black_at_their_transparent_edge(self):
+        for path in (ROOT / "android/app/src/main/res").glob(
+            "mipmap-*/ic_launcher_foreground.png"
+        ):
+            with self.subTest(path=path):
+                _, _, rows = read_rgba(path)
+                black_touching_transparent_edge = 0
+                for y, row in enumerate(rows):
+                    for x in range(len(row) // 4):
+                        pixel = x * 4
+                        if row[pixel + 3] == 0 or max(row[pixel:pixel + 3]) > 8:
+                            continue
+                        for neighbour_y in range(max(0, y - 1), min(len(rows), y + 2)):
+                            for neighbour_x in range(
+                                max(0, x - 1), min(len(row) // 4, x + 2)
+                            ):
+                                if rows[neighbour_y][neighbour_x * 4 + 3] == 0:
+                                    black_touching_transparent_edge += 1
+                self.assertEqual(
+                    0,
+                    black_touching_transparent_edge,
+                    f"{path} exposes black source background at its edge",
+                )
+
 
 if __name__ == "__main__":
     unittest.main()
