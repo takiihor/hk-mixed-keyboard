@@ -104,6 +104,21 @@ class LauncherIconSafeAreaTest(unittest.TestCase):
                 self.assertLessEqual(abs((min_x + max_x + 1) - width), 2)
                 self.assertLessEqual(abs((min_y + max_y + 1) - height), 2)
 
+    def test_launcher_uses_a_cream_background_and_round_adaptive_icon(self):
+        resources = ROOT / "android/app/src/main/res"
+        colors = (resources / "values/colors.xml").read_text(encoding="utf-8")
+        manifest = (ROOT / "android/app/src/main/AndroidManifest.xml").read_text(
+            encoding="utf-8"
+        )
+        launcher = (resources / "mipmap-anydpi/ic_launcher.xml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn('<color name="ic_launcher_background">#FFF8E8</color>', colors)
+        self.assertIn('android:roundIcon="@mipmap/ic_launcher_round"', manifest)
+        self.assertIn('@color/ic_launcher_background', launcher)
+        self.assertTrue((resources / "mipmap-anydpi/ic_launcher_round.xml").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()
