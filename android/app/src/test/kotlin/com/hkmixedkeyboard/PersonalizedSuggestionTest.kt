@@ -36,6 +36,37 @@ class PersonalizedSuggestionTest {
 
         assertEquals(listOf("呢", "你"), suggestions.map { it.candidate.text })
         assertEquals(listOf(5, 2), suggestions.map { it.count })
+        assertTrue(suggestions.all { !it.isExactBuffer })
+    }
+
+    @Test
+    fun `memory suggestions expose exact buffer provenance`() {
+        val memory = UserMemory()
+        memory.record("ni", cnChar("妳", "ni"), false)
+        memory.record("nihao", cnPhrase("你好", "nihao"), false)
+
+        val suggestions = memory.suggestions("ni", isSensitive = false)
+
+        assertEquals(listOf("妳", "你好"), suggestions.map { it.candidate.text })
+        assertEquals(listOf(true, false), suggestions.map { it.isExactBuffer })
+    }
+
+    @Test
+    fun `exact entry supplies source when same text is also learned from longer buffer`() {
+        val index = MemoryIndex()
+        val exactPinyin = DecodeCandidate(
+            "妳", "ni", SourceSchema.PINYIN, CandidateType.CHAR, 0.5, false
+        )
+        val longerQuick = cnChar("妳", "nihao", freq = 1.0)
+        index.record("ni", exactPinyin)
+        repeat(5) { index.record("nihao", longerQuick) }
+
+        val suggestion = index.suggestions("ni", limit = 8).single()
+
+        assertTrue(suggestion.isExactBuffer)
+        assertEquals(1, suggestion.exactCount)
+        assertEquals(6, suggestion.count)
+        assertEquals(SourceSchema.PINYIN, suggestion.candidate.sourceSchema)
     }
 
     @Test

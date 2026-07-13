@@ -45,9 +45,10 @@ class CandidateGridView(private val context: Context) {
         val colorCell  = ContextCompat.getColor(context, R.color.key_bg)
         val padH = dp(12)
         val padV = dp(10)
+        val layoutSpec = CandidateGridLayoutPolicy.layoutSpec()
 
         val grid = GridLayout(context).apply {
-            columnCount = 4
+            columnCount = layoutSpec.columnCount
             setPadding(dp(4), dp(4), dp(4), dp(4))
             setBackgroundColor(colorBg)
         }
@@ -61,7 +62,11 @@ class CandidateGridView(private val context: Context) {
                 setPadding(padH, padV, padH, padV)
                 gravity = Gravity.CENTER
                 layoutParams = GridLayout.LayoutParams().apply {
-                    columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
+                    width = layoutSpec.cellBaseWidth
+                    columnSpec = GridLayout.spec(
+                        GridLayout.UNDEFINED,
+                        layoutSpec.cellColumnWeight
+                    )
                     setMargins(dp(2), dp(2), dp(2), dp(2))
                 }
                 background = GradientDrawable().apply {
@@ -78,7 +83,13 @@ class CandidateGridView(private val context: Context) {
         }
 
         val scroll = ScrollView(context).apply {
-            addView(grid)
+            addView(
+                grid,
+                ViewGroup.LayoutParams(
+                    layoutSpec.gridWidthMode.toLayoutSize(),
+                    layoutSpec.gridHeightMode.toLayoutSize()
+                )
+            )
             setBackgroundColor(colorBg)
         }
 
@@ -113,6 +124,11 @@ class CandidateGridView(private val context: Context) {
     }
 
     fun isShowing() = popup?.isShowing == true
+
+    private fun CandidateGridSizeMode.toLayoutSize(): Int = when (this) {
+        CandidateGridSizeMode.MATCH_PARENT -> ViewGroup.LayoutParams.MATCH_PARENT
+        CandidateGridSizeMode.WRAP_CONTENT -> ViewGroup.LayoutParams.WRAP_CONTENT
+    }
 
     private fun dp(n: Int) = (n * context.resources.displayMetrics.density + 0.5f).toInt()
 }

@@ -71,7 +71,14 @@ class CommitController(
         )
     }
 
-    fun onSpace(state: ImeStateData): CommitOutput {
+    fun onSpace(
+        state: ImeStateData,
+        autoCommitCandidate: DecodeCandidate? = null
+    ): CommitOutput {
+        if (ctx.scheme == com.hkmixedkeyboard.decoder.Scheme.PINYIN &&
+            autoCommitCandidate?.sourceSchema == SourceSchema.PINYIN) {
+            return doCommitCandidate(autoCommitCandidate, state.copy(lastAutoCommit = null))
+        }
         if (state.buffer.isEmpty()) {
             return doCommitRaw(" ", resetContext = false, state = state)
         }

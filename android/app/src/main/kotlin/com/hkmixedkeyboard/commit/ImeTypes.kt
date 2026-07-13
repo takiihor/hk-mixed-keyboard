@@ -9,8 +9,7 @@ enum class EnterPolicy { ALWAYS_PASS_THROUGH, COMMIT_THEN_SWALLOW, COMMIT_AND_SE
 data class ImeContext(
     val scheme: com.hkmixedkeyboard.decoder.Scheme = com.hkmixedkeyboard.decoder.Scheme.QUICK,
     val isSensitiveField: Boolean = false,
-    val enterPolicy: EnterPolicy = EnterPolicy.COMMIT_THEN_SWALLOW,
-    val jyutpingPrimary: Boolean = false
+    val enterPolicy: EnterPolicy = EnterPolicy.COMMIT_THEN_SWALLOW
 )
 
 data class AutoCommitRecord(val text: String, val originalBuffer: String)

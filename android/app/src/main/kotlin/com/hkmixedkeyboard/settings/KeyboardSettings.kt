@@ -5,10 +5,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import com.hkmixedkeyboard.decoder.Scheme
 
 // Restore the DataStore extension property that was accidentally removed
 val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(name = "hk_keyboard_settings")
@@ -18,6 +20,7 @@ object Keys {
     val VIBRATION      = booleanPreferencesKey("vibration")
     val SOUND          = booleanPreferencesKey("sound")
     val JYUTPING_PRIMARY = booleanPreferencesKey("jyutping_primary")
+    val INPUT_SCHEME = stringPreferencesKey("input_scheme")
     // 簡體輸出: convert committed Chinese to Simplified at the output boundary.
     val SIMPLIFIED_OUTPUT = booleanPreferencesKey("simplified_output")
     // Bumped whenever the user clears their dictionary, so the running IME can flush
@@ -42,7 +45,7 @@ data class KeyboardPrefs(
     val showRoots: Boolean = true,
     val vibration: Boolean = true,
     val sound: Boolean = false,
-    val jyutpingPrimary: Boolean = false,
+    val inputScheme: Scheme = Scheme.QUICK,
     val simplifiedOutput: Boolean = false,
     val memoryClearToken: Long = 0L,
     val customWordsToken: Long = 0L
@@ -55,7 +58,10 @@ object KeyboardSettings {
                 showRoots  = p[Keys.SHOW_ROOTS]  ?: true,
                 vibration  = p[Keys.VIBRATION]   ?: true,
                 sound      = p[Keys.SOUND]        ?: false,
-                jyutpingPrimary = p[Keys.JYUTPING_PRIMARY] ?: false,
+                inputScheme = InputSchemePreference.resolve(
+                    p[Keys.INPUT_SCHEME],
+                    p[Keys.JYUTPING_PRIMARY]
+                ),
                 simplifiedOutput = p[Keys.SIMPLIFIED_OUTPUT] ?: false,
                 memoryClearToken = p[Keys.MEMORY_CLEAR_TOKEN] ?: 0L,
                 customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L
@@ -71,8 +77,16 @@ object KeyboardSettings {
     suspend fun setSound(ctx: Context, v: Boolean) =
         ctx.settingsDataStore.edit { it[Keys.SOUND] = v }
 
-    suspend fun setJyutpingPrimary(ctx: Context, v: Boolean) =
-        ctx.settingsDataStore.edit { it[Keys.JYUTPING_PRIMARY] = v }
+    suspend fun setInputScheme(ctx: Context, scheme: Scheme) =
+        ctx.settingsDataStore.edit { it[Keys.INPUT_SCHEME] = InputSchemePreference.serialize(scheme) }
+
+    suspend fun migrateLegacyInputScheme(ctx: Context) =
+        ctx.settingsDataStore.edit { preferences ->
+            InputSchemePreference.migrationValue(
+                preferences[Keys.INPUT_SCHEME],
+                preferences[Keys.JYUTPING_PRIMARY]
+            )?.let { preferences[Keys.INPUT_SCHEME] = it }
+        }
 
     suspend fun setSimplifiedOutput(ctx: Context, v: Boolean) =
         ctx.settingsDataStore.edit { it[Keys.SIMPLIFIED_OUTPUT] = v }
@@ -85,4 +99,48 @@ object KeyboardSettings {
 
     suspend fun bumpCustomWordsToken(ctx: Context) =
         ctx.settingsDataStore.edit { it[Keys.CUSTOM_WORDS_TOKEN] = (it[Keys.CUSTOM_WORDS_TOKEN] ?: 0L) + 1 }
+}
+
+/** Pure policy for parsing the persisted scheme and migrating the legacy boolean. */
+object InputSchemePreference {
+    fun resolve(stored: String?, legacyJyutpingPrimary: Boolean?): Scheme = when (stored) {
+        null -> if (legacyJyutpingPrimary == true) Scheme.JYUTPING else Scheme.QUICK
+        "quick" -> Scheme.QUICK
+        "jyutping" -> Scheme.JYUTPING
+        "pinyin" -> Scheme.PINYIN
+        else -> Scheme.QUICK
+    }
+
+    fun serialize(scheme: Scheme): String = when (scheme) {
+        Scheme.JYUTPING -> "jyutping"
+        Scheme.PINYIN -> "pinyin"
+        else -> "quick"
+    }
+
+    fun migrationValue(stored: String?, legacyJyutpingPrimary: Boolean?): String? =
+        if (stored != null) null else serialize(resolve(null, legacyJyutpingPrimary))
+
+    fun next(scheme: Scheme): Scheme = when (scheme) {
+        Scheme.QUICK -> Scheme.JYUTPING
+        Scheme.JYUTPING -> Scheme.PINYIN
+        else -> Scheme.QUICK
+    }
+
+    fun name(scheme: Scheme): String = when (scheme) {
+        Scheme.JYUTPING -> "粵拼"
+        Scheme.PINYIN -> "拼音"
+        else -> "速成"
+    }
+
+    fun shortLabel(scheme: Scheme): String = when (scheme) {
+        Scheme.JYUTPING -> "粵"
+        Scheme.PINYIN -> "拼"
+        else -> "速"
+    }
+
+    fun showsCangjieRoots(scheme: Scheme): Boolean =
+        scheme == Scheme.QUICK || scheme == Scheme.CANGJIE
+
+    fun isRomanization(scheme: Scheme): Boolean =
+        scheme == Scheme.JYUTPING || scheme == Scheme.PINYIN
 }

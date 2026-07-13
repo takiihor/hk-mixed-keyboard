@@ -4,6 +4,10 @@
 **/.cxx/
 local.properties
 
+# Python generator/test bytecode
+__pycache__/
+*.py[cod]
+
 # Android Studio / IntelliJ
 .idea/
 *.iml

@@ -4,7 +4,9 @@ import com.hkmixedkeyboard.decoder.DecodeCandidate
 
 data class MemorySuggestion(
     val candidate: DecodeCandidate,
-    val count: Int
+    val count: Int,
+    val isExactBuffer: Boolean = false,
+    val exactCount: Int = if (isExactBuffer) count else 0
 )
 
 interface IUserMemory {

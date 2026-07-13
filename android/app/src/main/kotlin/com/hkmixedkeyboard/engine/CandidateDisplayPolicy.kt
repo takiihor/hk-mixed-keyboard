@@ -30,22 +30,26 @@ class CandidateDisplayPolicy {
 
         val learnedChinese = learned
             .filter { isChinese(it.candidate) }
-            .map { it.candidate.asUserMemory() }
+            .map { it.candidate.asLearnedCandidate() }
         val learnedEnglish = learned
             .filterNot { isChinese(it.candidate) }
-            .map { it.candidate.asUserMemory() }
+            .map { it.candidate.asLearnedCandidate() }
         val decodedChinese = rest.filter(::isChinese)
         val decodedEnglish = rest.filterNot(::isChinese)
+        val exactEnglishAssist = decodedChinese.filter {
+            it.sourceSchema == SourceSchema.ENGLISH_ASSIST &&
+                it.code.equals(buffer, ignoreCase = true)
+        }
 
         val ordered = if (chineseFirst || buffer.length <= 2) {
             custom + learnedChinese + decodedChinese + learnedEnglish +
                 decodedEnglish + literal + english
         } else {
-            // Latin buffer assumed to be English: the typed word (completions +
-            // literal) leads. The Traditional-Chinese meaning candidates follow
-            // immediately after the literal so "打英文出繁中" stays one glance away,
-            // instead of being pushed to the end of the bar behind English noise.
-            custom + learnedEnglish + english + literal +
+            // Latin buffer assumed to be English: after explicit custom words, an
+            // exact Traditional-Chinese meaning leads all learned and built-in
+            // completions. Other Chinese candidates stay immediately after the
+            // literal instead of trailing English decoder noise.
+            custom + exactEnglishAssist + learnedEnglish + english + literal +
                 learnedChinese + decodedChinese + decodedEnglish
         }
         return ordered.distinctBy { it.text }.take(limit)
@@ -58,7 +62,7 @@ class CandidateDisplayPolicy {
     ): List<DecodeCandidate> {
         val learnedChinese = learned
             .filter { isChinese(it.candidate) }
-            .map { it.candidate.asUserMemory() }
+            .map { it.candidate.asLearnedCandidate() }
 
         return (learnedChinese + decoded)
             .filter(::isChinese)
@@ -69,7 +73,7 @@ class CandidateDisplayPolicy {
     private fun isChinese(candidate: DecodeCandidate): Boolean =
         candidate.type != CandidateType.EN_LITERAL
 
-    private fun DecodeCandidate.asUserMemory(): DecodeCandidate =
-        if (sourceSchema == SourceSchema.USER_MEMORY) this
+    private fun DecodeCandidate.asLearnedCandidate(): DecodeCandidate =
+        if (sourceSchema == SourceSchema.USER_MEMORY || sourceSchema == SourceSchema.PINYIN) this
         else copy(sourceSchema = SourceSchema.USER_MEMORY)
 }

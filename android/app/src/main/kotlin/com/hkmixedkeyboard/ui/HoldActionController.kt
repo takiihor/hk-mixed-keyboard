@@ -22,11 +22,15 @@ class HoldActionController(private val scheduler: Scheduler) {
         scheduleRepeat(REPEAT_INITIAL_DELAY_MS, action)
     }
 
-    fun pressLong(tap: () -> Unit, longPress: () -> Unit) {
+    fun pressLong(
+        delayMs: Long = LONG_PRESS_DELAY_MS,
+        tap: () -> Unit,
+        longPress: () -> Unit
+    ) {
         cancel()
         tapAction = tap
         longPressFired = false
-        pending = scheduler.schedule(LONG_PRESS_DELAY_MS) {
+        pending = scheduler.schedule(delayMs) {
             pending = null
             longPressFired = true
             longPress()

@@ -19,7 +19,7 @@ kapt {
 // A short, human-readable note about this build, surfaced in the Settings screen
 // (and the APK filename) so the installed version is unmistakable. Edit this line
 // whenever you want the note to describe the latest change.
- val buildRemark = "HK corpus cleanup: simplified chars removed, 爲→為 variant fix, memory purge"
+ val buildRemark = "Pinyin mode, 3-way scheme switching, Space-hold Simplified toggle"
 
 // ── Auto-incrementing version ───────────────────────────────────────────────
 // version.properties holds versionMinor/buildNumber/buildTime. Every time an

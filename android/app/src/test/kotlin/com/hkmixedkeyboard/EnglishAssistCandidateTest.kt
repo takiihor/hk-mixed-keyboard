@@ -90,13 +90,13 @@ class EnglishAssistCandidateTest {
     }
 
     @Test
-    fun `disc prefix should show 討論 candidate`() {
+    fun `discu prefix should show 討論 candidate`() {
         val decoder = buildFullCorpusDecoder(CORPUS_DIR)
         val classifier = Classifier(decoder)
-        val result = classifier.classify("disc", Scheme.QUICK)
+        val result = classifier.classify("discu", Scheme.QUICK)
 
         assertTrue(
-            "prefix 'disc' should show 討論 candidate, " +
+            "prefix 'discu' should show 討論 candidate, " +
             "but got: ${result.cnCandidates.map { it.text }}",
             result.cnCandidates.any { it.text == "討論" }
         )
@@ -118,6 +118,57 @@ class EnglishAssistCandidateTest {
             exactIdx >= 0 && prefixIdx >= 0)
         assertTrue("exact 動作 should rank before higher-freq prefix 作用, but got: $texts",
             exactIdx < prefixIdx)
+    }
+
+    // ── English meaning ranks above the Jyutping fallback ─────────────────
+    // "cat" is also a valid Jyutping syllable (柒/七), so a Quick-mode typist
+    // would otherwise get Cantonese homophones instead of the English meaning.
+
+    @Test
+    fun `cat surfaces 貓 above Jyutping homophones`() {
+        val decoder = buildFullCorpusDecoder(CORPUS_DIR)
+        val texts = decoder.decode("cat", Scheme.QUICK).candidates.map { it.text }
+
+        assertTrue("cat should surface its English meaning 貓, but got: $texts",
+            texts.contains("貓"))
+        val maoIdx = texts.indexOf("貓")
+        val homophoneIdx = texts.indexOfFirst { it == "柒" || it == "七" }
+        if (homophoneIdx >= 0) {
+            assertTrue("English meaning 貓 should rank above Jyutping homophone 柒/七, " +
+                "but got: $texts", maoIdx < homophoneIdx)
+        }
+    }
+
+    @Test
+    fun `exact English meaning outranks an incomplete built-in Quick phrase code`() {
+        val decoder = buildFullCorpusDecoder(CORPUS_DIR)
+        val result = decoder.decode("cat", Scheme.QUICK)
+        val texts = result.candidates.map { it.text }
+
+        assertTrue("both exact English and incomplete Quick candidates should remain: $texts",
+            texts.contains("貓") && texts.contains("曾對"))
+        assertTrue("exact cat meaning must precede incomplete cati Quick phrase: $texts",
+            texts.indexOf("貓") < texts.indexOf("曾對"))
+        assertFalse("English-assist results must remain tap-only", result.isExactCode)
+    }
+
+    @Test
+    fun `exact built-in Quick phrase still wins`() {
+        val result = buildFullCorpusDecoder(CORPUS_DIR).decode("cati", Scheme.QUICK)
+
+        assertTrue(result.isExactCode)
+        assertEquals("曾對", result.candidates.firstOrNull()?.text)
+    }
+
+    @Test
+    fun `built-in Quick phrase prefix remains when no exact English meaning exists`() {
+        val result = buildFullCorpusDecoder(CORPUS_DIR).decode("cai", Scheme.QUICK)
+
+        assertTrue(result.isPrefixOnly)
+        assertTrue(result.candidates.isNotEmpty())
+        assertTrue(result.candidates.all {
+            it.sourceSchema == SourceSchema.QUICK && it.code.startsWith("cai")
+        })
     }
 
     // ── Group B: Space conservatism with mock assist ──────────────────────

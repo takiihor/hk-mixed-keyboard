@@ -146,9 +146,15 @@ class KeyboardView @JvmOverloads constructor(
     private val cursorStepPx = 18f * density
 
     private var unitH = 0f
-    private var spaceSwipeActive = false
-    private var spaceSwipeStartX = 0f
-    private var spaceSwipeLastStep = 0
+    private val spaceGestureController by lazy {
+        SpaceGestureController(
+            holdController = holdController,
+            cursorStepPx = cursorStepPx,
+            onTap = { emitKey(KEY_SPACE) },
+            onLongPress = { keyListener?.onKeyLongPress(KEY_SPACE) },
+            onSwipe = { keyListener?.onSpaceSwipe(it) }
+        )
+    }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -310,10 +316,7 @@ class KeyboardView @JvmOverloads constructor(
                 }
             }
             MotionEvent.ACTION_CANCEL -> {
-                holdController.cancel()
-                resetSwipe()
-                gesturePointerId = -1
-                pointerCells.clear()
+                cancelActiveTouches()
                 invalidate()
             }
         }
@@ -325,7 +328,7 @@ class KeyboardView @JvmOverloads constructor(
         pointerCells.put(pointerId, cell)
         haptic()
         val label = cell.def.label
-        if (isGestureKey(label)) {
+        if (KeyTouchPolicy.usesHoldGesture(label)) {
             // Backspace repeat, 符/？！ long-press and the space swipe are inherently
             // single-finger; let only the first such finger drive the shared gesture.
             if (gesturePointerId == -1) {
@@ -344,48 +347,35 @@ class KeyboardView @JvmOverloads constructor(
         val inside = cell.hitRect.contains(x, y)
         if (pointerId == gesturePointerId) {
             when (label) {
-                KEY_BACKSPACE, KEY_QUESTION, KEY_SYMBOL, KEY_MODE ->
+                KEY_BACKSPACE, KEY_QUESTION, KEY_SYMBOL ->
                     if (inside) holdController.release() else holdController.cancel()
                 KEY_SPACE -> {
-                    val wasSwiped = spaceSwipeLastStep != 0
-                    resetSwipe()
-                    if (inside && !wasSwiped) emitKey(KEY_SPACE)
+                    spaceGestureController.release(releasedInside = inside)
                 }
             }
             gesturePointerId = -1
-        } else if (inside && KeyTouchPolicy.emitsOnRelease(label)) {
+        } else if (KeyTouchPolicy.emitsOnRelease(label, releasedInside = inside)) {
             emitKey(label)
         }
     }
 
     private fun onPointerMove(pointerId: Int, x: Float, y: Float) {
         val cell = pointerCells.get(pointerId) ?: return
-        if (pointerId == gesturePointerId && cell.def.label == KEY_SPACE && spaceSwipeActive) {
-            val dx = x - spaceSwipeStartX
-            val currentStep = (dx / cursorStepPx).toInt()
-            val delta = currentStep - spaceSwipeLastStep
-            if (delta != 0) {
-                spaceSwipeLastStep = currentStep
-                val dir = if (delta > 0) 1 else -1
-                repeat(kotlin.math.abs(delta)) { keyListener?.onSpaceSwipe(dir) }
-            }
+        if (pointerId == gesturePointerId && cell.def.label == KEY_SPACE) {
+            val verticallyInside = y >= cell.hitRect.top && y <= cell.hitRect.bottom
+            spaceGestureController.move(x, holdEligible = verticallyInside)
             return
         }
         // Finger slid off the key it pressed: drop it (and cancel a gesture it owned).
         if (!cell.hitRect.contains(x, y)) {
             if (pointerId == gesturePointerId) {
-                holdController.cancel()
-                resetSwipe()
+                cancelGesture()
                 gesturePointerId = -1
             }
             pointerCells.remove(pointerId)
             invalidate()
         }
     }
-
-    private fun isGestureKey(label: String): Boolean =
-        label == KEY_BACKSPACE || label == KEY_SYMBOL ||
-            label == KEY_QUESTION || label == KEY_SPACE || label == KEY_MODE
 
     private fun beginGesture(label: String, x: Float) {
         when (label) {
@@ -401,27 +391,26 @@ class KeyboardView @JvmOverloads constructor(
                     emitKey(KEY_EXCLAIM)
                 }
             )
-            // Tap = scheme switch (速成 ↔ 粵拼); long-press = 繁/簡 output toggle.
-            KEY_MODE -> holdController.pressLong(
-                tap = { emitKey(KEY_MODE) },
-                longPress = { keyListener?.onKeyLongPress(KEY_MODE) }
-            )
             KEY_SPACE -> {
-                spaceSwipeActive = true
-                spaceSwipeStartX = x
-                spaceSwipeLastStep = 0
+                spaceGestureController.press(startX = x)
             }
         }
     }
 
-    private fun resetSwipe() {
-        spaceSwipeActive = false
-        spaceSwipeLastStep = 0
+    private fun cancelGesture() {
+        spaceGestureController.cancel()
+    }
+
+    private fun cancelActiveTouches() {
+        cancelGesture()
+        gesturePointerId = -1
+        pointerCells.clear()
     }
 
     override fun performClick(): Boolean { super.performClick(); return true }
 
     override fun onDetachedFromWindow() {
+        cancelActiveTouches()
         // The engine is shared and owned by the IME service, so we don't release it
         // here; just stop any tick still in flight for this view.
         haptics?.cancel()

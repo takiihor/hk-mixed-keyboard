@@ -30,10 +30,13 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
     }
 
     override fun isSchemeAvailable(scheme: Scheme) =
-        scheme == Scheme.QUICK || scheme == Scheme.CANGJIE || scheme == Scheme.JYUTPING
+        scheme == Scheme.QUICK || scheme == Scheme.CANGJIE ||
+            scheme == Scheme.JYUTPING || scheme == Scheme.PINYIN
 
     override fun decode(buffer: String, scheme: Scheme): DecodeResult {
         if (scheme == Scheme.MIXED_EXPERIMENTAL) return empty(buffer, scheme)
+
+        if (scheme == Scheme.PINYIN) return corpus.pinyinDecoder.decode(buffer)
 
         // JYUTPING primary mode: treat Latin buffer as Jyutping and surface
         // characters directly as committable (cnExactParsed=true) so Space commits.
@@ -78,9 +81,26 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         // 3. Prefix match — custom words first, then Quick prefixes.
         val customPrefix = customWords.prefixMatches(lower)
         val hasQuickPrefix = corpus.quickPrefixCandidateIndex.contains(lower)
+        val quickPrefix = if (hasQuickPrefix)
+            corpus.quickPrefixCandidateIndex.candidates(lower) else emptyList()
+
+        // Keep incomplete Quick choices, but never let one hide an exact English
+        // meaning (for example cat before cati). Exact custom and Quick codes above
+        // retain priority, and this merged result remains tap-only.
+        if (corpus.englishAssistIndex.containsKey(lower)) {
+            val (assistCands, _) = buildAssistCandidates(lower)
+            val exactAssist = assistCands.filter {
+                it.sourceSchema == SourceSchema.ENGLISH_ASSIST && it.code == lower
+            }
+            val remainingAssist = assistCands.filterNot {
+                it.sourceSchema == SourceSchema.ENGLISH_ASSIST && it.code == lower
+            }
+            val cands = (exactAssist + customPrefix + quickPrefix + remainingAssist)
+                .distinctBy { it.text }
+            return DecodeResult(buffer, scheme, buffer.length, false, false, cands)
+        }
+
         if (customPrefix.isNotEmpty() || hasQuickPrefix) {
-            val quickPrefix = if (hasQuickPrefix)
-                corpus.quickPrefixCandidateIndex.candidates(lower) else emptyList()
             val cands = customPrefix + quickPrefix
             if (cands.isNotEmpty())
                 return DecodeResult(buffer, scheme, buffer.length, false, true, cands)
@@ -100,19 +120,19 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
      * lookups (no exact entry matched the buffer itself).
      */
     private fun buildAssistCandidates(lower: String): Pair<List<DecodeCandidate>, Boolean> {
-        // Exact-match meanings (the buffer IS an English word / Jyutping syllable)
-        // are kept in a separate bucket from prefix completions so they can rank
-        // ahead regardless of the raw corpus frequency: typing "act" should surface
-        // its own 動作 before action→作用, even though 作用's frequency is higher.
-        val exact = mutableListOf<DecodeCandidate>()
-        val prefix = mutableListOf<DecodeCandidate>()
-        var hasExact = false
+        // Ranking honours the decode priority: English meaning (4) before Jyutping
+        // fallback (5), and within each source the exact match (the buffer IS this
+        // word / syllable) before prefix completions — so typing "act" surfaces its
+        // own 動作 before action→作用, and an English word like "cat" keeps its
+        // meanings ahead of Cantonese homophones (cat = 柒/七) that a Quick-mode
+        // typist didn't intend.
+        val englishExact = mutableListOf<DecodeCandidate>()
+        val englishPrefix = mutableListOf<DecodeCandidate>()
+        val jyutpingExact = mutableListOf<DecodeCandidate>()
+        val jyutpingPrefix = mutableListOf<DecodeCandidate>()
 
         // English assist — exact
-        corpus.englishAssistIndex[lower]?.let {
-            exact.addAll(it)
-            hasExact = true
-        }
+        corpus.englishAssistIndex[lower]?.let { englishExact.addAll(it) }
 
         // English assist — prefix completions. Run even when there is an exact
         // match so typing "disc" surfaces discuss→討論 alongside the exact
@@ -122,27 +142,28 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
                 .asSequence()
                 .filter { it != lower }
                 .flatMap { corpus.englishAssistIndex[it].orEmpty().asSequence() }
-                .forEach { prefix.add(it) }
+                .forEach { englishPrefix.add(it) }
         }
 
         // Jyutping — exact
-        corpus.jyutpingIndex[lower]?.let {
-            exact.addAll(it)
-            hasExact = true
-        }
+        corpus.jyutpingIndex[lower]?.let { jyutpingExact.addAll(it) }
 
         // Jyutping — prefix (only if no exact Jyutping match)
         if (!corpus.jyutpingIndex.containsKey(lower) && corpus.jyutpingPrefixIndex.hasPrefix(lower)) {
             corpus.jyutpingPrefixIndex.matching(lower, limit = 24)
-                .flatMapTo(prefix) { corpus.jyutpingIndex[it].orEmpty() }
+                .flatMapTo(jyutpingPrefix) { corpus.jyutpingIndex[it].orEmpty() }
         }
 
-        if (exact.isEmpty() && prefix.isEmpty()) return Pair(emptyList(), false)
+        val hasExact = englishExact.isNotEmpty() || jyutpingExact.isNotEmpty()
+        if (!hasExact && englishPrefix.isEmpty() && jyutpingPrefix.isEmpty())
+            return Pair(emptyList(), false)
 
-        // Exact meanings first (sorted by frequency within the bucket), then prefix
-        // completions. distinctBy keeps the exact copy when a meaning appears in both.
-        val deduped = (exact.sortedByDescending { it.frequency } +
-            prefix.sortedByDescending { it.frequency })
+        // English (exact → prefix) then Jyutping (exact → prefix); frequency orders
+        // within each group. distinctBy keeps the first, highest-priority copy.
+        val deduped = (englishExact.sortedByDescending { it.frequency } +
+            englishPrefix.sortedByDescending { it.frequency } +
+            jyutpingExact.sortedByDescending { it.frequency } +
+            jyutpingPrefix.sortedByDescending { it.frequency })
             .distinctBy { it.text }
             .take(15)
 

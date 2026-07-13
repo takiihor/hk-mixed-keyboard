@@ -1,0 +1,15 @@
+# CC-CEDICT sample fixture for generator tests
+#! version=1
+#! subversion=0
+#! format=ts
+#! charset=UTF-8
+#! entries=8
+#! date=2026-07-12T00:00:00Z
+你好 你好 [ni3 hao3] /hello/hi/
+香港 香港 [Xiang1 Gang3] /Hong Kong/
+普通話 普通话 [pu3 tong1 hua4] /Mandarin Chinese/
+貓 猫 [mao1] /cat/
+呂 吕 [lu:3] /surname Lu/
+綠 绿 [lü4] /green/
+西安 西安 [Xi1'an1] /Xi'an/
+西安 西安 [xi1-an1] /duplicate spelling used to test dedupe/

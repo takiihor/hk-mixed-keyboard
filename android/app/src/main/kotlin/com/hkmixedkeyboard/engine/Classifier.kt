@@ -26,7 +26,7 @@ class Classifier(private val decoder: DecoderContract) {
             cnExactParsed = dr.cnExactParsed,
             cnHasPhraseMatch = dr.cnHasPhraseMatch,
             cnPrefixParsed = dr.cnPrefixParsed,
-            cnCandidates = rankCandidates(dr.candidates),
+            cnCandidates = rankCandidates(dr.candidates, scheme),
             enLiteral = buffer,
             enAutocomplete = enAutocomplete,
             enIsWord = enIsWord,
@@ -36,8 +36,11 @@ class Classifier(private val decoder: DecoderContract) {
 
     fun canonicalForm(buffer: String): String = canonicalCase[buffer.lowercase()] ?: buffer
 
-    private fun rankCandidates(candidates: List<DecodeCandidate>): List<DecodeCandidate> =
-        candidates.sortedWith(
+    private fun rankCandidates(
+        candidates: List<DecodeCandidate>,
+        scheme: Scheme
+    ): List<DecodeCandidate> =
+        if (scheme == Scheme.PINYIN) candidates else candidates.sortedWith(
             compareByDescending<DecodeCandidate> { if (it.isHkCore) 1 else 0 }
                 .thenByDescending { it.frequency }
         )

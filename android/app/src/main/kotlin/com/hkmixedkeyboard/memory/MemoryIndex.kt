@@ -90,21 +90,28 @@ class MemoryIndex {
         // (from longer buffers like "au" when typing "a") are predictive only.
         // Sort exact-buffer count first so frequently chosen characters for THIS
         // buffer rank above characters accumulated from deeper buffers.
-        val exactEntries = byBuffer[prefix] ?: emptyMap<String, MemoryEntry>()
         return byBuffer.asSequence()
             .filter { it.key.startsWith(prefix, ignoreCase = true) }
             .flatMap { it.value.values.asSequence() }
             .groupBy { it.candidate.text }
             .map { (_, entries) ->
+                val exact = entries.filter { it.buffer.equals(prefix, ignoreCase = true) }
+                val selected = (if (exact.isNotEmpty()) exact else entries)
+                    .maxWithOrNull(MEMORY_ENTRY_ORDER)!!
                 MemorySuggestion(
-                    candidate = entries.maxBy { it.count }.candidate,
-                    count = entries.sumOf { it.count }
+                    candidate = selected.candidate,
+                    count = entries.sumOf { it.count },
+                    isExactBuffer = exact.isNotEmpty(),
+                    exactCount = exact.sumOf { it.count }
                 )
             }
             .sortedWith(
-                compareByDescending<MemorySuggestion> { exactEntries[it.candidate.text]?.count ?: 0 }
+                compareByDescending<MemorySuggestion> { it.exactCount }
                     .thenByDescending { it.count }
                     .thenByDescending { it.candidate.frequency }
+                    .thenBy { it.candidate.sourceSchema.name }
+                    .thenBy { it.candidate.code }
+                    .thenBy { it.candidate.text }
             )
             .take(limit)
     }
@@ -112,4 +119,12 @@ class MemoryIndex {
     fun clear() = byBuffer.clear()
 
     fun size() = byBuffer.values.sumOf { it.size }
+
+    private companion object {
+        val MEMORY_ENTRY_ORDER = compareBy<MemoryEntry> { it.count }
+            .thenBy { it.candidate.frequency }
+            .thenByDescending { it.candidate.sourceSchema.name }
+            .thenByDescending { it.candidate.code }
+            .thenByDescending { it.candidate.text }
+    }
 }

@@ -107,6 +107,29 @@ fun readQuickCodes(csvPath: String): List<Triple<String, String, Boolean>> {
     return result
 }
 
+/** Reads hk_core_phrases.csv so test decoding includes built-in Quick phrase prefixes. */
+fun readQuickPhrases(csvPath: String): List<PhraseEntry> {
+    val f = java.io.File(csvPath)
+    if (!f.exists()) return emptyList()
+    val result = mutableListOf<PhraseEntry>()
+    var headerSkipped = false
+    f.forEachLine { line ->
+        val t = line.trim()
+        if (t.startsWith("#") || t.isBlank()) return@forEachLine
+        if (!headerSkipped) { headerSkipped = true; return@forEachLine }
+        val cols = t.split(",")
+        if (cols.size >= 4) {
+            val phrase = cols[0].trim()
+            val quickCode = cols[1].trim()
+            val freq = cols[2].trim().toDoubleOrNull() ?: 0.0
+            val hk = cols[3].trim() == "1"
+            if (phrase.isNotEmpty() && quickCode.isNotEmpty())
+                result.add(PhraseEntry(phrase, quickCode, freq, hk))
+        }
+    }
+    return result
+}
+
 /** Reads english_assist.csv. Returns list of (english, chinese, freq). */
 fun readEnglishAssist(csvPath: String): List<Triple<String, String, Double>> {
     val f = java.io.File(csvPath)
@@ -157,21 +180,29 @@ fun readJyutping(csvPath: String): List<Triple<String, String, Double>> {
  *
  * Decode priority mirrors CorpusBackedDecoder:
  *   1. Quick exact match
- *   2. Quick prefix match
- *   3. English assist (exact then prefix)
- *   4. Jyutping (exact then prefix)
+ *   2. Exact English assist, followed by any matching Quick prefix
+ *   3. Quick prefix match when there is no exact English assist
+ *   4. English/Jyutping assist prefixes
  *
  * Assist results always have isExactCode=false, so Space never auto-commits them.
  */
 fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
     // Quick codes
     val quickCodes = readQuickCodes("$corpusDir/hk_core_chars.csv")
-    val quickIndex: Map<String, List<DecodeCandidate>> = quickCodes
-        .groupBy { it.first }
+    val quickPhrases = readQuickPhrases("$corpusDir/hk_core_phrases.csv")
+    val quickIndex: Map<String, List<DecodeCandidate>> =
+        (quickCodes.map { (qc, char, hk) ->
+            DecodeCandidate(char, qc, SourceSchema.QUICK, CandidateType.CHAR, 0.9, hk)
+        } + quickPhrases.map { phrase ->
+            DecodeCandidate(phrase.phrase, phrase.quickCode, SourceSchema.QUICK,
+                CandidateType.PHRASE, phrase.freq, phrase.isHkCore)
+        }).groupBy { it.code }
         .mapValues { (_, entries) ->
-            entries.map { (qc, char, hk) ->
-                DecodeCandidate(char, qc, SourceSchema.QUICK, CandidateType.CHAR, 0.9, hk)
-            }
+            entries.sortedWith(
+                compareByDescending<DecodeCandidate> { if (it.isHkCore) 1 else 0 }
+                    .thenByDescending { if (it.type == CandidateType.PHRASE) 1 else 0 }
+                    .thenByDescending { it.frequency }
+            )
         }
     val quickPrefixSet: Set<String> = buildSet {
         for (k in quickIndex.keys) for (i in 1..k.length) add(k.substring(0, i))
@@ -221,43 +252,62 @@ fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
                 return DecodeResult(buffer, scheme, buffer.length, true, false, it)
             }
 
-            // Quick prefix
-            if (quickPrefixSet.contains(lower) && !quickIndex.containsKey(lower)) {
-                val cands = quickIndex.entries.filter { it.key.startsWith(lower) }
-                    .flatMap { it.value }.take(12)
-                return DecodeResult(buffer, scheme, buffer.length, false, true, cands)
-            }
+            // English meaning (4) before Jyutping fallback (5); within each source
+            // exact before prefix (mirrors CorpusBackedDecoder.buildAssistCandidates).
+            val englishExact = mutableListOf<DecodeCandidate>()
+            val englishPrefix = mutableListOf<DecodeCandidate>()
+            val jyutpingExact = mutableListOf<DecodeCandidate>()
+            val jyutpingPrefix = mutableListOf<DecodeCandidate>()
 
-            // English assist + Jyutping assist. Exact matches are bucketed apart
-            // from prefix completions so they rank ahead regardless of raw corpus
-            // frequency (mirrors CorpusBackedDecoder.buildAssistCandidates).
-            val exact = mutableListOf<DecodeCandidate>()
-            val prefix = mutableListOf<DecodeCandidate>()
-            var hasExact = false
-
-            englishAssistIndex[lower]?.let { exact.addAll(it); hasExact = true }
+            englishAssistIndex[lower]?.let { englishExact.addAll(it) }
             // Prefix completions run even with an exact match (mirrors
             // CorpusBackedDecoder): "disc" → disc→碟片 plus discuss→討論.
             if (lower.length >= 3 && englishAssistPrefixSet.contains(lower)) {
                 englishAssistIndex.entries.asSequence()
                     .filter { it.key.startsWith(lower) && it.key != lower }
                     .flatMap { it.value.asSequence() }
-                    .forEach { prefix.add(it) }
+                    .forEach { englishPrefix.add(it) }
             }
 
-            jyutpingIndex[lower]?.let { exact.addAll(it); hasExact = true }
+            jyutpingIndex[lower]?.let { jyutpingExact.addAll(it) }
             if (!jyutpingIndex.containsKey(lower) && jyutpingPrefixSet.contains(lower)) {
                 jyutpingIndex.entries.filter { it.key.startsWith(lower) }
-                    .flatMap { it.value }.forEach { prefix.add(it) }
+                    .flatMap { it.value }.forEach { jyutpingPrefix.add(it) }
             }
 
-            if (exact.isNotEmpty() || prefix.isNotEmpty()) {
-                val deduped = (exact.sortedByDescending { it.frequency } +
-                    prefix.sortedByDescending { it.frequency })
+            val hasExact = englishExact.isNotEmpty() || jyutpingExact.isNotEmpty()
+            val deduped = (englishExact.sortedByDescending { it.frequency } +
+                englishPrefix.sortedByDescending { it.frequency } +
+                jyutpingExact.sortedByDescending { it.frequency } +
+                jyutpingPrefix.sortedByDescending { it.frequency })
+                .distinctBy { it.text }
+                .take(15)
+
+            val quickPrefix = if (quickPrefixSet.contains(lower)) {
+                quickIndex.entries.filter { it.key.startsWith(lower) }
+                    .flatMap { it.value }.take(12)
+            } else emptyList()
+
+            // An exact English meaning leads, without discarding incomplete Quick
+            // choices or lower-priority assist candidates.
+            if (englishExact.isNotEmpty()) {
+                val exactAssist = deduped.filter {
+                    it.sourceSchema == SourceSchema.ENGLISH_ASSIST && it.code == lower
+                }
+                val remainingAssist = deduped.filterNot {
+                    it.sourceSchema == SourceSchema.ENGLISH_ASSIST && it.code == lower
+                }
+                val cands = (exactAssist + quickPrefix + remainingAssist)
                     .distinctBy { it.text }
-                    .take(15)
-                return DecodeResult(buffer, scheme, buffer.length, false, !hasExact, deduped)
+                return DecodeResult(buffer, scheme, buffer.length, false, false, cands)
             }
+
+            // Quick prefix
+            if (quickPrefix.isNotEmpty())
+                return DecodeResult(buffer, scheme, buffer.length, false, true, quickPrefix)
+
+            if (deduped.isNotEmpty())
+                return DecodeResult(buffer, scheme, buffer.length, false, !hasExact, deduped)
 
             return DecodeResult(buffer, scheme, buffer.length, false, false, emptyList())
         }

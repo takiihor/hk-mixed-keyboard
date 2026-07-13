@@ -56,6 +56,23 @@ class CandidateDisplayPolicyTest {
     }
 
     @Test
+    fun `exact English assist meaning ranks before English prefix completions`() {
+        val exactMeaning = DecodeCandidate(
+            "貓", "cat", SourceSchema.ENGLISH_ASSIST,
+            CandidateType.ENGLISH_ASSIST, 0.72, false
+        )
+        val result = policy.order(
+            buffer = "cat",
+            learned = listOf(MemorySuggestion(enLiteralCand("category"), 4)),
+            english = listOf(enLiteralCand("category")),
+            decoded = listOf(exactMeaning),
+            literal = enLiteralCand("cat")
+        )
+
+        assertEquals(listOf("貓", "category"), result.take(2).map { it.text })
+    }
+
+    @Test
     fun `english word surfaces Chinese meaning right after the literal`() {
         // Typing an English word: the completions + literal lead, but the
         // Traditional-Chinese meaning must follow immediately after the literal —

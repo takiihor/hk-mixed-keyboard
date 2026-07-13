@@ -32,7 +32,7 @@ data class JyutpingEntry(val jyutping: String, val chinese: String, val freq: Do
 
 class CorpusLoader(private val ctx: Context) {
 
-    // The four large tables go through the binary row cache (see CorpusCache):
+    // The large tables go through the binary row cache (see CorpusCache):
     // first run parses CSV and writes the cache; later cold starts read it back
     // without re-splitting strings. The two tiny tables stay on the CSV path.
     val chars: List<CharEntry> by lazy {
@@ -64,6 +64,14 @@ class CorpusLoader(private val ctx: Context) {
             write = { o, e -> o.writeUTF(e.jyutping); o.writeUTF(e.chinese); o.writeDouble(e.freq) },
             parse = ::loadJyutping)
     }
+    val pinyinLexicon: PinyinLexicon by lazy {
+        val rows = cached("pinyin",
+            read = { PinyinEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
+            write = { o, e -> o.writeUTF(e.pinyin); o.writeUTF(e.chinese); o.writeDouble(e.freq) },
+            parse = ::loadPinyin)
+        PinyinLexicon(rows)
+    }
+    val pinyinDecoder: PinyinDecoder by lazy { PinyinDecoder(pinyinLexicon) }
 
     // Direct-CJK lookup (pasting/typing Chinese directly). Avoids a linear scan
     // over 21k chars / 40k phrases on every direct character. putIfAbsent keeps the
@@ -190,6 +198,13 @@ class CorpusLoader(private val ctx: Context) {
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
 
+    private fun loadPinyin(): List<PinyinEntry> =
+        parseCsv("corpus/pinyin.csv") { cols ->
+            if (cols.size < 3) null
+            else PinyinEntry(cols[0].lowercase(), cols[1],
+                cols[2].toDoubleOrNull() ?: 0.0)
+        }
+
     // ── Index builders ─────────────────────────────────────────────────────
 
     private fun buildQuickIndex(): Map<String, List<DecodeCandidate>> {
@@ -288,6 +303,6 @@ class CorpusLoader(private val ctx: Context) {
         (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 1
+        const val CORPUS_CONTENT_VERSION = 4
     }
 }

@@ -62,6 +62,15 @@ The in-app Settings > 開源授權與資料來源 screen displays these notices.
 - Play upload AAB: `android/app/build/outputs/bundle/release/app-release.aab`
 - Tester APK: `android/app/build/outputs/apk/release/app-release-0.55.0.apk`
 
+Before uploading, verify that both artifacts report the release version/version code
+listed above and contain every feature advertised by the store listing. For a Pinyin
+release, both commands below must print a `pinyin.csv` entry:
+
+```bash
+unzip -l android/app/build/outputs/bundle/release/app-release.aab | grep 'base/assets/corpus/pinyin.csv'
+unzip -l android/app/build/outputs/apk/release/app-release-*.apk | grep 'assets/corpus/pinyin.csv'
+```
+
 The upload keystore is outside the repo at:
 
 - Environment file: `~/.local/share/hk-mixed-keyboard/upload-key.env`
@@ -80,5 +89,8 @@ cd android
 To intentionally bump the public release version before a new store upload:
 
 ```bash
-./gradlew bundleRelease -PversionedBuild=true
+./gradlew bundleRelease assembleRelease -PversionedBuild=true
 ```
+
+Use `-PversionedBuild=true` exactly once for a release. Subsequent verification
+rebuilds should omit it so they do not select another public version.

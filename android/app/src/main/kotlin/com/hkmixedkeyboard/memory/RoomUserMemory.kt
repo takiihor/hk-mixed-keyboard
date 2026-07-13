@@ -20,16 +20,12 @@ class RoomUserMemory(
 
     /**
      * Loads persisted entries into the in-memory index. Entries whose candidate
-     * text [isStale] deems outdated (e.g. simplified characters removed from the
+     * candidate [isStale] deems outdated (e.g. simplified characters removed from the
      * corpus) are deleted from the database instead of hydrated — otherwise a
      * previously learned 因爲 would keep outranking the corrected 因為 forever.
      */
-    suspend fun init(isStale: (String) -> Boolean = { false }) = withContext(Dispatchers.IO) {
+    suspend fun init(isStale: (DecodeCandidate) -> Boolean = { false }) = withContext(Dispatchers.IO) {
         dao.loadAll().forEach { e ->
-            if (isStale(e.candidateText)) {
-                dao.deleteEntry(e.buffer, e.candidateText)
-                return@forEach
-            }
             val cand = DecodeCandidate(
                 text = e.candidateText,
                 code = e.candidateCode,
@@ -38,6 +34,10 @@ class RoomUserMemory(
                 frequency = e.frequency,
                 isHkCore = e.isHkCore
             )
+            if (isStale(cand)) {
+                dao.deleteEntry(e.buffer, e.candidateText)
+                return@forEach
+            }
             index.putIfNewer(MemoryEntry(e.buffer, cand, e.count, e.cnCount, e.enCount))
         }
     }

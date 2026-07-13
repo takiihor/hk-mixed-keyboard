@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -12,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.lifecycleScope
 import com.hkmixedkeyboard.BuildConfig
+import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.memory.UserMemoryDatabase
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
 class SettingsActivity : AppCompatActivity() {
@@ -51,20 +55,63 @@ class SettingsActivity : AppCompatActivity() {
         val soundSwitch = addSwitch(root, "按鍵聲音", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setSound(this@SettingsActivity, v) }
         }
-        val jpSwitch = addSwitch(root, "粵拼主輸入", false) { v ->
-            lifecycleScope.launch { KeyboardSettings.setJyutpingPrimary(this@SettingsActivity, v) }
+        val schemeGroup = RadioGroup(this).apply {
+            orientation = RadioGroup.HORIZONTAL
         }
+        val schemeButtons = listOf(
+            Scheme.QUICK to "速成",
+            Scheme.JYUTPING to "粵拼",
+            Scheme.PINYIN to "拼音"
+        ).associate { (scheme, label) ->
+            scheme to RadioButton(this).apply {
+                id = android.view.View.generateViewId()
+                text = label
+                schemeGroup.addView(this)
+            }
+        }
+        val schemeSelection = InputSchemeSelectionCoordinator()
+        var applyingHydration = false
+        schemeGroup.setOnCheckedChangeListener { _, checkedId ->
+            if (applyingHydration) return@setOnCheckedChangeListener
+            val scheme = schemeButtons.entries.firstOrNull { it.value.id == checkedId }?.key
+                ?: return@setOnCheckedChangeListener
+            when (val action = schemeSelection.onUserSelection(scheme)) {
+                is InputSchemeSelectionCoordinator.Action.Persist -> lifecycleScope.launch {
+                    KeyboardSettings.setInputScheme(this@SettingsActivity, action.scheme)
+                }
+                else -> Unit
+            }
+        }
+        root.addView(label("主要輸入法"))
+        root.addView(schemeGroup)
         val simpSwitch = addSwitch(root, "簡體輸出（打繁出簡）", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setSimplifiedOutput(this@SettingsActivity, v) }
         }
 
         // Load current prefs and apply to switches
         lifecycleScope.launch {
+            try {
+                KeyboardSettings.migrateLegacyInputScheme(this@SettingsActivity)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                android.util.Log.e("SettingsActivity", "Legacy scheme migration failed; using fallback", e)
+            }
             val prefs = KeyboardSettings.flow(this@SettingsActivity).first()
             rootsSwitch.isChecked = prefs.showRoots
             vibSwitch.isChecked   = prefs.vibration
             soundSwitch.isChecked = prefs.sound
-            jpSwitch.isChecked    = prefs.jyutpingPrimary
+            when (val action = schemeSelection.onHydrated(prefs.inputScheme)) {
+                is InputSchemeSelectionCoordinator.Action.ApplyToUi -> {
+                    applyingHydration = true
+                    try {
+                        schemeButtons[action.scheme]?.isChecked = true
+                    } finally {
+                        applyingHydration = false
+                    }
+                }
+                else -> Unit
+            }
             simpSwitch.isChecked  = prefs.simplifiedOutput
         }
 

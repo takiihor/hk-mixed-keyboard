@@ -23,15 +23,6 @@ class CandidateBarView @JvmOverloads constructor(
         fun onExpandTap()
     }
 
-    /**
-     * Optional action chip shown when the bar is otherwise idle (no candidates,
-     * no predictions): the 繁▸簡 output toggle. Set once by the IME; [clear]
-     * renders it. Assign before the first [clear] and re-assign (then [clear])
-     * to refresh the label after the state changes.
-     */
-    data class IdleAction(val label: String, val onTap: () -> Unit)
-
-    var idleAction: IdleAction? = null
     var candidateListener: CandidateListener? = null
     var vibrationEnabled: Boolean = true
     // Shared low-latency haptic engine, injected by the IME service.
@@ -83,7 +74,7 @@ class CandidateBarView @JvmOverloads constructor(
 
     fun setCandidates(candidates: List<DecodeCandidate>) {
         if (candidates.isEmpty()) {
-            clear() // idle: also renders the idleAction chip
+            clear()
             return
         }
         val nextSnapshot = CandidateRenderSnapshot.from(candidates)
@@ -109,25 +100,6 @@ class CandidateBarView @JvmOverloads constructor(
         renderSnapshot = null
         row.removeAllViews()
         setBackgroundColor(ContextCompat.getColor(context, R.color.cand_bg))
-        idleAction?.let { action ->
-            row.addView(TextView(context).apply {
-                text = action.label
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-                setTextColor(colorText)
-                background = android.graphics.drawable.GradientDrawable().apply {
-                    cornerRadius = dp(16).toFloat()
-                    setColor(colorEnPill)
-                }
-                setPadding(dp(14), dp(4), dp(14), dp(4))
-                gravity = Gravity.CENTER_VERTICAL
-                isFocusable = false
-                layoutParams = candidateLayoutParams(dp(8))
-                setOnClickListener {
-                    selectionHaptic(this)
-                    action.onTap()
-                }
-            })
-        }
     }
 
     private fun bindCandidateView(tv: TextView, cand: DecodeCandidate) {

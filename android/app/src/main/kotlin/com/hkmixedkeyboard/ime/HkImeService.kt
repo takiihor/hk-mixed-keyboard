@@ -9,6 +9,7 @@ import android.os.Process
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.hkmixedkeyboard.BuildConfig
 import com.hkmixedkeyboard.commit.*
 import com.hkmixedkeyboard.decoder.CandidateType
@@ -23,15 +24,20 @@ import com.hkmixedkeyboard.engine.T2SConverter
 import com.hkmixedkeyboard.memory.CustomWordDao
 import com.hkmixedkeyboard.memory.IUserMemory
 import com.hkmixedkeyboard.memory.RoomUserMemory
+import com.hkmixedkeyboard.memory.MemoryStalenessPolicy
 import com.hkmixedkeyboard.memory.UserMemoryDatabase
 import com.hkmixedkeyboard.performance.LatencyLogger
 import com.hkmixedkeyboard.performance.PerfTracer
 import com.hkmixedkeyboard.privacy.SensitiveFieldDetector
 import com.hkmixedkeyboard.settings.ChangeTokenTracker
 import com.hkmixedkeyboard.settings.KeyboardSettings
+import com.hkmixedkeyboard.settings.InputSchemePreference
+import com.hkmixedkeyboard.settings.InputSchemeTransitionCoordinator
+import com.hkmixedkeyboard.settings.InputSchemeWriteWorker
 import com.hkmixedkeyboard.ui.CandidateBarView
 import com.hkmixedkeyboard.ui.CandidateGridView
 import com.hkmixedkeyboard.ui.EmojiPanelView
+import com.hkmixedkeyboard.ui.HapticFeedbackPolicy
 import com.hkmixedkeyboard.ui.AndroidTypingHapticBackend
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardView
@@ -40,9 +46,11 @@ import com.hkmixedkeyboard.ui.ShiftStateController
 import com.hkmixedkeyboard.ui.SymbolPageView
 import com.hkmixedkeyboard.ui.TypingHapticEngine
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -79,10 +87,29 @@ class HkImeService : InputMethodService() {
 
     // 簡體輸出 mode: convert committed Chinese to Simplified at the output
     // boundary only — dictionaries, memory and prediction prefixes stay
-    // traditional. Toggled by long-pressing the ⌨ mode key or the candidate-bar
-    // idle chip; persisted so it survives IME restarts.
+    // traditional. Controlled from Settings or a space-bar hold and persisted
+    // across IME restarts.
     private var simplifiedOutput = false
     private val t2s = T2SConverter()
+    private val simplifiedOutputSettings by lazy {
+        SimplifiedOutputSettingsCoordinator(
+            loadConverter = { complete ->
+                if (t2s.isLoaded) complete(true)
+                else serviceScope.launch(Dispatchers.IO) { complete(ensureT2SLoaded()) }
+            },
+            apply = { enabled -> mainThread.post { applySimplifiedOutputSetting(enabled) } }
+        )
+    }
+    private val simplifiedOutputToggle by lazy {
+        SimplifiedOutputToggleController(
+            isConverterReady = { t2s.isLoaded },
+            apply = ::applySimplifiedOutputToggle,
+            showLoading = {
+                preloadT2S()
+                Toast.makeText(this, "簡體轉換載入中，請稍後再試", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
     private val audioManager by lazy {
         getSystemService(AUDIO_SERVICE) as? android.media.AudioManager
     }
@@ -105,6 +132,10 @@ class HkImeService : InputMethodService() {
     // until the dictionary is actually ready (no per-keystroke flicker afterwards).
     @Volatile private var quickWarm = false
     @Volatile private var jyutpingWarm = false
+    @Volatile private var pinyinWarm = false
+    private val pinyinSpaceIntent = PinyinSpaceIntentController()
+    private var compositionSession = 0L
+    private var compositionDecodeGeneration = 0L
     private val candidateRequestGate = CandidateRequestGate()
     // Decode coalescing + debounce. Kept at 0 ms for lowest candidate latency:
     // the in-flight/pending coalescing below already collapses bursts of fast
@@ -115,10 +146,13 @@ class HkImeService : InputMethodService() {
     private var decodeScheduled: Runnable? = null
     private var decodePendingBuffer: String? = null
     private var decodePendingGeneration: Long = 0L
+    private var decodePendingSession: Long = 0L
     private val candidateDisplayPolicy = CandidateDisplayPolicy()
 
     private var imeState = ImeStateData()
     private var imeCtx = ImeContext()
+    private val schemeTransition = InputSchemeTransitionCoordinator(Scheme.QUICK)
+    private val schemeWrites = Channel<Scheme>(Channel.UNLIMITED)
     private var directLatinCommit = false
     private var vibrationEnabled = true
     private var showCangjieRoots = true
@@ -190,29 +224,46 @@ class HkImeService : InputMethodService() {
         }
         rebuildCommitController()
         reloadCustomWords()
+        preloadT2S()
+
+        // One consumer preserves rapid mode-key persistence writes in tap order.
+        serviceScope.launch {
+            InputSchemeWriteWorker { scheme ->
+                KeyboardSettings.setInputScheme(applicationContext, scheme)
+            }.consume(schemeWrites) { scheme, error ->
+                android.util.Log.e(TAG, "Scheme persistence failed: $scheme", error)
+                mainThread.post {
+                    when (val action = schemeTransition.onPersistenceFailed(scheme)) {
+                        is InputSchemeTransitionCoordinator.Action.Apply ->
+                            applyInputScheme(action.scheme)
+                        else -> Unit
+                    }
+                }
+            }
+        }
 
         // Observe settings changes and update imeCtx on main thread
         serviceScope.launch {
+            try {
+                KeyboardSettings.migrateLegacyInputScheme(applicationContext)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                android.util.Log.e(TAG, "Legacy scheme migration failed; using fallback", e)
+            }
             KeyboardSettings.flow(applicationContext)
                 .catch { e -> android.util.Log.e(TAG, "Settings flow failed", e) }
                 .collectLatest { prefs ->
-                    val newScheme = if (prefs.jyutpingPrimary) com.hkmixedkeyboard.decoder.Scheme.JYUTPING else com.hkmixedkeyboard.decoder.Scheme.QUICK
+                    simplifiedOutputSettings.onSetting(prefs.simplifiedOutput)
                     mainThread.post {
-                        val schemeChanged = imeCtx.scheme != newScheme
-                        val simplifiedChanged = simplifiedOutput != prefs.simplifiedOutput
-                        simplifiedOutput = prefs.simplifiedOutput
-                        if (simplifiedOutput) warmT2SIfNeeded()
-                        imeCtx = imeCtx.copy(scheme = newScheme, jyutpingPrimary = prefs.jyutpingPrimary)
-                        // First emission tells us the persisted scheme; warm that one
-                        // first so a 粵拼 user isn't waiting behind the 速成 tables.
-                        startWarmupOnce(newScheme)
-                        rebuildCommitController()
-                        // A half-typed code is meaningless under the new scheme
-                        // (Quick codes ≠ Jyutping), so clear it on every switch.
-                        if (schemeChanged) resetCompositionState()
                         vibrationEnabled = prefs.vibration
                         soundEnabled = prefs.sound
                         showCangjieRoots = prefs.showRoots
+                        when (val action = schemeTransition.onPersisted(prefs.inputScheme)) {
+                            is InputSchemeTransitionCoordinator.Action.Apply ->
+                                applyInputScheme(action.scheme)
+                            else -> Unit
+                        }
                         // The user cleared their dictionary: flush live caches now so
                         // suggestions stop appearing without waiting for a restart.
                         if (memoryClearToken.hasChanged(prefs.memoryClearToken)) {
@@ -227,23 +278,14 @@ class HkImeService : InputMethodService() {
                         }
                         if (::keyboardView.isInitialized) {
                             keyboardView.vibrationEnabled = vibrationEnabled
-                            // Cangjie roots only make sense for Quick; hide them in 粵拼.
-                            keyboardView.showCangjieRoots = showCangjieRoots && newScheme != Scheme.JYUTPING
+                            keyboardView.showCangjieRoots = showCangjieRoots &&
+                                InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
                             keyboardView.spaceLabel = spaceLabelText()
-                            keyboardView.modeLabel = schemeShort(newScheme)
+                            keyboardView.modeLabel = schemeShort(imeCtx.scheme)
                             keyboardView.invalidate()
                         }
-                        if (schemeChanged && ::candidateBar.isInitialized) candidateBar.clear()
                         if (::candidateBar.isInitialized) {
                             candidateBar.vibrationEnabled = vibrationEnabled
-                            candidateBar.idleAction =
-                                CandidateBarView.IdleAction(t2sChipLabel()) { toggleSimplifiedOutput() }
-                            // Refresh the idle chip label, but never wipe live
-                            // candidates or post-commit predictions.
-                            if (simplifiedChanged && imeState.buffer.isEmpty() &&
-                                committedPrefix.isEmpty()) {
-                                candidateBar.clear()
-                            }
                         }
                         candidateGrid?.vibrationEnabled = vibrationEnabled
                     }
@@ -265,16 +307,18 @@ class HkImeService : InputMethodService() {
      *    individually typeable, so this purge must not repeat — a user who later
      *    deliberately commits 臺 keeps that memory.
      */
-    private fun staleMemoryPredicate(): (String) -> Boolean {
+    private fun staleMemoryPredicate(): (DecodeCandidate) -> Boolean {
         val purgeVariants =
             !getSharedPreferences("memory_migrations", MODE_PRIVATE)
                 .getBoolean(VARIANT_PURGE_FLAG, false)
-        return { text ->
-            text.any { ch ->
-                (ch.code > 0x2E80 && corpus.charByText[ch.toString()] == null) ||
-                    (purgeVariants && ch in STALE_VARIANT_CHARS)
+        val policy = MemoryStalenessPolicy(
+            quickContains = { corpus.charByText[it] != null },
+            purgeVariant = { text ->
+                purgeVariants && text.codePointCount(0, text.length) == 1 &&
+                    text[0] in STALE_VARIANT_CHARS
             }
-        }
+        )
+        return policy::isStale
     }
 
     /** Marks the one-time variant purge done — only after init/purge succeeded. */
@@ -300,16 +344,19 @@ class HkImeService : InputMethodService() {
     private fun startWarmupOnce(scheme: Scheme) {
         if (warmStarted) return
         warmStarted = true
-        val jyutpingFirst = scheme == Scheme.JYUTPING
-        warmHandler.post { warmCorpus(jyutpingFirst) }
+        warmHandler.post { warmCorpus(scheme) }
     }
 
     // Runs on the warm thread. Each step is wrapped so a corpus error can't crash
     // this (uncaught exceptions on a HandlerThread would take down the IME process).
-    private fun warmCorpus(jyutpingFirst: Boolean) {
+    private fun warmCorpus(activeScheme: Scheme) {
         // One-time vibrator capability probe, off the first keystroke's path.
         runCatching { typingHaptics?.warmUp() }
-        if (jyutpingFirst) { warmJyutping(); warmQuick() } else { warmQuick(); warmJyutping() }
+        when (activeScheme) {
+            Scheme.JYUTPING -> { warmJyutping(); warmQuick(); warmPinyin() }
+            Scheme.PINYIN -> { warmPinyin(); warmQuick(); warmJyutping() }
+            else -> { warmQuick(); warmJyutping(); warmPinyin() }
+        }
         // Indices not needed for the first candidate: post-commit predictions and
         // the English-meaning assist/completion fallbacks. Warm them last.
         runCatching {
@@ -340,8 +387,18 @@ class HkImeService : InputMethodService() {
         PerfTracer.mark("warm_jyutping_done")
     }
 
-    private fun schemeWarm(): Boolean =
-        if (imeCtx.scheme == Scheme.JYUTPING) jyutpingWarm else quickWarm
+    private fun warmPinyin() {
+        pinyinWarm = pinyinCorpusReady()
+        if (pinyinWarm) {
+            PerfTracer.mark("warm_pinyin_done")
+        }
+    }
+
+    private fun schemeWarm(): Boolean = when (imeCtx.scheme) {
+        Scheme.JYUTPING -> jyutpingWarm
+        Scheme.PINYIN -> pinyinWarm
+        else -> quickWarm
+    }
 
     override fun onCreateInputView(): View {
         return try {
@@ -380,7 +437,6 @@ class HkImeService : InputMethodService() {
                 override fun onCandidateTap(candidate: DecodeCandidate) = handleCandidateTap(candidate)
                 override fun onExpandTap() = handleExpandTap()
             }
-            idleAction = CandidateBarView.IdleAction(t2sChipLabel()) { toggleSimplifiedOutput() }
             clear()
         }
 
@@ -394,7 +450,8 @@ class HkImeService : InputMethodService() {
             minimumHeight = keyboardHeight
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
-            showCangjieRoots = this@HkImeService.showCangjieRoots && imeCtx.scheme != Scheme.JYUTPING
+            showCangjieRoots = this@HkImeService.showCangjieRoots &&
+                InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
             spaceLabel = spaceLabelText()
             modeLabel = schemeShort(imeCtx.scheme)
             keyListener = object : KeyboardView.KeyListener {
@@ -481,7 +538,6 @@ class HkImeService : InputMethodService() {
         candidateBar = CandidateBarView(this).apply {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
-            idleAction = CandidateBarView.IdleAction(t2sChipLabel()) { toggleSimplifiedOutput() }
             clear()
         }
         root.addView(candidateBar, LinearLayout.LayoutParams(
@@ -490,7 +546,8 @@ class HkImeService : InputMethodService() {
             minimumHeight = keyboardHeight
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
-            showCangjieRoots = this@HkImeService.showCangjieRoots && imeCtx.scheme != Scheme.JYUTPING
+            showCangjieRoots = this@HkImeService.showCangjieRoots &&
+                InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
             spaceLabel = spaceLabelText()
             modeLabel = schemeShort(imeCtx.scheme)
             keyListener = object : KeyboardView.KeyListener {
@@ -548,13 +605,20 @@ class HkImeService : InputMethodService() {
 
     private fun handleKey(label: String) {
         LatencyLogger.keyDown()
+        if (label != KeyboardView.KEY_SPACE) pinyinSpaceIntent.cancel()
         if (soundEnabled) {
             audioManager?.playSoundEffect(android.media.AudioManager.FX_KEYPRESS_STANDARD)
         }
         val out = when (label) {
             KeyboardView.KEY_BACKSPACE -> ctrl.onBackspace(imeState,
                 cursorJustAfterAutoCommit = isAtAutoCommitPosition())
-            KeyboardView.KEY_SPACE    -> ctrl.onSpace(imeState)
+            KeyboardView.KEY_SPACE    -> {
+                if (imeCtx.scheme == Scheme.PINYIN && imeState.buffer.isNotEmpty()) {
+                    handlePinyinSpace()
+                    return
+                }
+                ctrl.onSpace(imeState)
+            }
             KeyboardView.KEY_ENTER    -> ctrl.onEnter(imeState)
             KeyboardView.KEY_EMOJI    -> { showEmojiPanel(); return }
             KeyboardView.KEY_SYMBOL   -> { showSymbolPage(); return }
@@ -595,7 +659,36 @@ class HkImeService : InputMethodService() {
     private fun handleKeyLongPress(label: String) {
         when (label) {
             KeyboardView.KEY_SYMBOL -> showEmojiPanel()
-            KeyboardView.KEY_MODE -> toggleSimplifiedOutput()
+            KeyboardView.KEY_SPACE -> toggleSimplifiedOutput()
+        }
+    }
+
+    private fun toggleSimplifiedOutput() {
+        simplifiedOutputToggle.toggle(currentlyEnabled = simplifiedOutput)
+    }
+
+    private fun applySimplifiedOutputToggle(result: SimplifiedOutputToggleController.Result) {
+        simplifiedOutput = result.enabled
+        if (::keyboardView.isInitialized) {
+            keyboardView.spaceLabel = spaceLabelText()
+            keyboardView.invalidate()
+        }
+        typingHaptics?.perform(enabled = vibrationEnabled) {
+            if (::keyboardView.isInitialized) {
+                HapticFeedbackPolicy.performSelection(keyboardView, enabled = true)
+            }
+        }
+        Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
+        serviceScope.launch {
+            KeyboardSettings.setSimplifiedOutput(applicationContext, result.enabled)
+        }
+    }
+
+    private fun applySimplifiedOutputSetting(enabled: Boolean) {
+        simplifiedOutput = enabled
+        if (::keyboardView.isInitialized) {
+            keyboardView.spaceLabel = spaceLabelText()
+            keyboardView.invalidate()
         }
     }
 
@@ -605,6 +698,32 @@ class HkImeService : InputMethodService() {
                       else android.view.KeyEvent.KEYCODE_DPAD_RIGHT
         ic.sendKeyEvent(android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, keyCode))
         ic.sendKeyEvent(android.view.KeyEvent(android.view.KeyEvent.ACTION_UP, keyCode))
+    }
+
+    private fun handlePinyinSpace() {
+        val buffer = imeState.buffer
+        val generation = if (compositionDecodeGeneration > 0L) {
+            compositionDecodeGeneration
+        } else {
+            scheduleDecode(buffer)
+        }
+        when (val action = pinyinSpaceIntent.request(buffer, compositionSession, generation)) {
+            is PinyinSpaceIntentController.Action.Ready -> resolvePinyinSpace(action.token)
+            PinyinSpaceIntentController.Action.AwaitDecode -> {
+                if (::candidateBar.isInitialized && !schemeWarm()) candidateBar.showLoading()
+            }
+        }
+    }
+
+    private fun resolvePinyinSpace(token: PinyinSpaceIntentController.Token) {
+        val resolution = pinyinSpaceIntent.consume(token) ?: return
+        if (imeCtx.scheme != Scheme.PINYIN ||
+            imeState.buffer != token.key.buffer ||
+            compositionSession != token.key.session) return
+        val out = ctrl.onSpace(imeState, resolution.candidate)
+        committedPrefix = if (isCjk(out.committedText)) out.committedText!! else ""
+        applyOutput(out)
+        LatencyLogger.visualFeedback()
     }
 
     private fun isCjk(s: String?): Boolean =
@@ -628,54 +747,63 @@ class HkImeService : InputMethodService() {
         }
     }
 
-    // Flip the input scheme (速成 ↔ 粵拼) from the on-keyboard mode key. Persisting
-    // the flag is the single source of truth: the settings flow collector picks the
-    // change up and updates imeCtx, the commit controller, and the key labels — the
-    // same path the Settings toggle uses, so the two stay in sync.
+    // Cycle the input scheme (速成 → 粵拼 → 拼音) from the on-keyboard mode key.
+    // Apply immediately so the following keystroke uses the new decoder. Persistence
+    // stays ordered in the background; stale flow emissions cannot regress the UI.
     private fun toggleScheme() {
-        val next = !imeCtx.jyutpingPrimary
-        serviceScope.launch { KeyboardSettings.setJyutpingPrimary(applicationContext, next) }
+        when (val action = schemeTransition.onToggle()) {
+            is InputSchemeTransitionCoordinator.Action.ApplyAndPersist -> {
+                applyInputScheme(action.scheme)
+                schemeWrites.trySend(action.scheme)
+            }
+            else -> Unit
+        }
     }
 
-    // Flip 簡體輸出 (long-press ⌨ / candidate-bar chip). Like toggleScheme, the
-    // persisted flag is the single source of truth; the settings collector applies
-    // the change and refreshes labels.
-    private fun toggleSimplifiedOutput() {
-        val next = !simplifiedOutput
-        serviceScope.launch { KeyboardSettings.setSimplifiedOutput(applicationContext, next) }
-        android.widget.Toast.makeText(
-            this,
-            if (next) "簡體輸出：開" else "簡體輸出：關（繁體）",
-            android.widget.Toast.LENGTH_SHORT
-        ).show()
+    private fun applyInputScheme(newScheme: Scheme) {
+        val changed = imeCtx.scheme != newScheme
+        imeCtx = imeCtx.copy(scheme = newScheme)
+        startWarmupOnce(newScheme)
+        rebuildCommitController()
+        // A half-typed code is meaningless under a different scheme.
+        if (changed) resetCompositionState()
+        if (::keyboardView.isInitialized) {
+            keyboardView.showCangjieRoots = showCangjieRoots &&
+                InputSchemePreference.showsCangjieRoots(newScheme)
+            keyboardView.spaceLabel = spaceLabelText()
+            keyboardView.modeLabel = schemeShort(newScheme)
+            keyboardView.invalidate()
+        }
+        if (changed && ::candidateBar.isInitialized) candidateBar.clear()
     }
 
     /** Text actually sent to the app: converted to Simplified when the mode is on. */
     private fun outputText(text: String): String =
         if (simplifiedOutput) t2s.convert(text) else text
 
-    private fun warmT2SIfNeeded() {
+    private fun preloadT2S() {
         if (t2s.isLoaded) return
-        serviceScope.launch(Dispatchers.IO) {
-            if (!t2s.isLoaded) {
-                runCatching {
-                    assets.open("t2s/t2s_map.tsv").bufferedReader().use { t2s.load(it) }
-                }.onFailure { android.util.Log.e(TAG, "t2s table load failed", it) }
-            }
-        }
+        serviceScope.launch(Dispatchers.IO) { ensureT2SLoaded() }
+    }
+
+    @Synchronized
+    private fun ensureT2SLoaded(): Boolean {
+        if (t2s.isLoaded) return true
+        return runCatching {
+            assets.open("t2s/t2s_map.tsv").bufferedReader().use { t2s.load(it) }
+            t2s.isLoaded
+        }.onFailure { android.util.Log.e(TAG, "t2s table load failed", it) }
+            .getOrDefault(false)
     }
 
     private fun spaceLabelText(): String =
         schemeName(imeCtx.scheme) + if (simplifiedOutput) "·簡" else ""
 
-    private fun t2sChipLabel(): String =
-        if (simplifiedOutput) "簡▸繁" else "繁▸簡"
-
     private fun schemeName(scheme: Scheme): String =
-        if (scheme == Scheme.JYUTPING) "粵拼" else "速成"
+        InputSchemePreference.name(scheme)
 
     private fun schemeShort(scheme: Scheme): String =
-        if (scheme == Scheme.JYUTPING) "粵" else "速"
+        InputSchemePreference.shortLabel(scheme)
 
     private fun isAsciiLetter(label: String): Boolean =
         label.length == 1 && label[0] in 'A'..'Z'
@@ -721,6 +849,7 @@ class HkImeService : InputMethodService() {
     }
 
     private fun handleCandidateTap(candidate: DecodeCandidate) {
+        pinyinSpaceIntent.cancel()
         candidateGrid?.dismiss()
         // No active composition → this is a next-character prediction tap; commit
         // it directly and extend the chain so the bar offers the following char.
@@ -832,7 +961,13 @@ class HkImeService : InputMethodService() {
 
         ic.endBatchEdit()
 
+        val endedComposition = imeState.buffer.isNotEmpty() && out.newState.buffer.isEmpty()
         imeState = out.newState
+        if (endedComposition) {
+            compositionSession++
+            compositionDecodeGeneration = 0L
+            pinyinSpaceIntent.cancel()
+        }
         updateCandidateBar(out)
         updateDebugPanel()
     }
@@ -860,37 +995,81 @@ class HkImeService : InputMethodService() {
         scheduleDecode(bufSnapshot)
     }
 
-    private fun scheduleDecode(buffer: String) {
+    private fun scheduleDecode(buffer: String): Long {
         val gen = candidateRequestGate.next()
+        val session = compositionSession
+        compositionDecodeGeneration = gen
         if (decodeInFlight) {
             decodePendingBuffer = buffer
             decodePendingGeneration = gen
-            return
+            decodePendingSession = session
+            return gen
         }
         decodeScheduled?.let { decodeHandler.removeCallbacks(it) }
-        val runnable = Runnable { runDecode(buffer, gen) }
+        val runnable = Runnable { runDecode(buffer, gen, session) }
         decodeScheduled = runnable
         decodeHandler.postDelayed(runnable, DECODE_DEBOUNCE_MS)
+        return gen
     }
 
     // Runs one decode on the decode thread and publishes its candidates. If a newer
     // buffer arrived while this was in flight, it chains straight into decoding that
     // one — so bursts collapse into at most one in-flight + one pending decode.
-    private fun runDecode(buffer: String, gen: Long) {
+    private fun runDecode(buffer: String, gen: Long, session: Long) {
         if (!candidateRequestGate.isCurrent(gen)) return
         decodeInFlight = true
         PerfTracer.mark("decode_start") { "gen=$gen buf_len=${buffer.length}" }
         LatencyLogger.decodeStart()
-        val cr = PerfTracer.time("classify") { classifier.classify(buffer, imeCtx.scheme) }
+        val decodeScheme = imeCtx.scheme
+        if (decodeScheme == Scheme.PINYIN && !pinyinCorpusReady()) {
+            pinyinWarm = false
+            publishPinyinResolution(buffer, gen, session, candidate = null)
+            publishPinyinUnavailable(buffer, gen)
+            finishDecode()
+            return
+        }
+        val cr = try {
+            PerfTracer.time("classify") { classifier.classify(buffer, decodeScheme) }
+        } catch (e: Exception) {
+            if (decodeScheme != Scheme.PINYIN) throw e
+            android.util.Log.e(TAG, "Pinyin decode failed", e)
+            pinyinWarm = false
+            publishPinyinResolution(buffer, gen, session, candidate = null)
+            publishPinyinUnavailable(buffer, gen)
+            finishDecode()
+            return
+        }
+        val learned = composingLearnedSuggestions(
+            buffer,
+            CandidateDisplayPolicy.EXPANDED_LIMIT
+        )
+        if (decodeScheme == Scheme.PINYIN) {
+            publishPinyinResolution(
+                buffer,
+                gen,
+                session,
+                PinyinImePolicy.spaceCandidate(
+                    scheme = Scheme.PINYIN,
+                    buffer = buffer,
+                    candidates = cr.cnCandidates,
+                    learned = learned
+                )
+            )
+        }
         // The index for this scheme is now loaded (this decode built it if warm-up
         // hadn't yet); clear the loading hint for subsequent keystrokes.
-        if (imeCtx.scheme == Scheme.JYUTPING) jyutpingWarm = true else quickWarm = true
-        LatencyLogger.decodeEnd(buffer.length, cr.cnCandidates.size, imeCtx.scheme.name)
+        when (decodeScheme) {
+            Scheme.JYUTPING -> jyutpingWarm = true
+            Scheme.PINYIN -> pinyinWarm = true
+            else -> quickWarm = true
+        }
+        LatencyLogger.decodeEnd(buffer.length, cr.cnCandidates.size, decodeScheme.name)
         val display = PerfTracer.time("build_display") {
             buildComposingDisplay(
                 buffer,
                 cr.cnCandidates,
                 cr.cnHasPhraseMatch,
+                learned,
                 com.hkmixedkeyboard.engine.CandidateDisplayPolicy.BAR_LIMIT
             )
         }
@@ -899,23 +1078,54 @@ class HkImeService : InputMethodService() {
                 buffer,
                 cr.cnCandidates,
                 cr.cnHasPhraseMatch,
+                learned,
                 com.hkmixedkeyboard.engine.CandidateDisplayPolicy.EXPANDED_LIMIT
             )
         }
         mainThread.post {
-            if (candidateRequestGate.isCurrent(gen) && imeState.buffer == buffer) {
+            if (candidateRequestGate.isCurrent(gen) && imeState.buffer == buffer &&
+                compositionSession == session) {
                 lastCandidates = expanded
                 candidateBar.setCandidates(display)
                 LatencyLogger.firstCandidateRender()
                 PerfTracer.mark("first_candidate_render") { "gen=$gen size=${display.size}" }
             }
         }
+        finishDecode()
+    }
+
+    private fun publishPinyinResolution(
+        buffer: String,
+        gen: Long,
+        session: Long,
+        candidate: DecodeCandidate?
+    ) {
+        val token = pinyinSpaceIntent.onDecoded(buffer, session, gen, candidate) ?: return
+        mainThread.post { resolvePinyinSpace(token) }
+    }
+
+    private fun publishPinyinUnavailable(buffer: String, gen: Long) {
+        mainThread.post {
+            if (candidateRequestGate.isCurrent(gen) && imeState.buffer == buffer) {
+                lastCandidates = emptyList()
+                candidateBar.showLoading()
+            }
+        }
+    }
+
+    private fun pinyinCorpusReady(): Boolean = runCatching {
+        PinyinImePolicy.isCorpusReady(corpus.pinyinLexicon)
+    }.getOrDefault(false)
+
+    private fun finishDecode() {
         decodeInFlight = false
         val pending = decodePendingBuffer ?: return
         val pgen = decodePendingGeneration
+        val psession = decodePendingSession
         decodePendingBuffer = null
         decodePendingGeneration = 0L
-        decodeHandler.post { runDecode(pending, pgen) }
+        decodePendingSession = 0L
+        decodeHandler.post { runDecode(pending, pgen, psession) }
     }
 
     private fun schedulePredictions(prefix: String) {
@@ -931,12 +1141,12 @@ class HkImeService : InputMethodService() {
                 learned = learned,
                 decoded = decoded,
                 limit = CandidateDisplayPolicy.BAR_LIMIT
-            )
+            ).filter { isRenderable(it.text) }
             val expanded = candidateDisplayPolicy.orderPredictions(
                 learned = learned,
                 decoded = decoded,
                 limit = CandidateDisplayPolicy.EXPANDED_LIMIT
-            )
+            ).filter { isRenderable(it.text) }
             mainThread.post {
                 if (committedPrefix == prefix && imeState.buffer.isEmpty()) {
                     lastCandidates = expanded
@@ -953,7 +1163,8 @@ class HkImeService : InputMethodService() {
     private fun buildComposingDisplay(
         buffer: String,
         decoded: List<DecodeCandidate>,
-        phraseExact: Boolean = false,
+        phraseExact: Boolean,
+        learnedSuggestions: List<com.hkmixedkeyboard.memory.MemorySuggestion>,
         limit: Int = com.hkmixedkeyboard.engine.CandidateDisplayPolicy.BAR_LIMIT
     ): List<DecodeCandidate> {
         val literal = DecodeCandidate(
@@ -961,27 +1172,55 @@ class HkImeService : InputMethodService() {
             com.hkmixedkeyboard.decoder.SourceSchema.ENGLISH,
             com.hkmixedkeyboard.decoder.CandidateType.EN_LITERAL, 0.0, false
         )
-        val learned = (memory ?: fallbackMemory)
-            .suggestions(buffer, imeCtx.isSensitiveField, limit = limit)
-        val romanization = imeCtx.scheme == Scheme.JYUTPING
+        val learned = PinyinImePolicy.filterLearnedSuggestions(
+            imeCtx.scheme,
+            learnedSuggestions
+        )
         return candidateDisplayPolicy.order(
             buffer = buffer,
             learned = learned,
             // English-word completions only make sense for the Latin/Quick path;
             // in 粵拼 they would crowd out the Cantonese candidates.
-            english = if (romanization) emptyList()
-                      else corpus.englishCompletionIndex.forPrefix(buffer, limit = 5),
+            english = if (PinyinImePolicy.shouldOfferEnglishCompletions(imeCtx.scheme))
+                corpus.englishCompletionIndex.forPrefix(buffer, limit = 5)
+            else emptyList(),
             decoded = decoded,
             literal = literal,
-            chineseFirst = romanization || phraseExact,
+            chineseFirst = PinyinImePolicy.isChineseFirst(imeCtx.scheme, phraseExact),
             limit = limit
-        )
+        ).filter { isRenderable(it.text) }
+    }
+
+    private fun composingLearnedSuggestions(
+        buffer: String,
+        limit: Int
+    ): List<com.hkmixedkeyboard.memory.MemorySuggestion> =
+        (memory ?: fallbackMemory).suggestions(buffer, imeCtx.isSensitiveField, limit)
+
+    // Some corpus readings are rare supplementary-plane CJK characters (e.g. 𨳍)
+    // that a device's system font has no glyph for — they render as blank "tofu"
+    // cells in the bar / expanded grid. Drop any candidate the current font can't
+    // fully render. hasGlyph is device-font-aware, so a character still shows on
+    // devices that can render it and is hidden only where it would be blank.
+    private val glyphPaint = android.graphics.Paint()
+    private fun isRenderable(text: String): Boolean {
+        if (text.isEmpty()) return false
+        var i = 0
+        while (i < text.length) {
+            val cp = text.codePointAt(i)
+            if (!glyphPaint.hasGlyph(String(Character.toChars(cp)))) return false
+            i += Character.charCount(cp)
+        }
+        return true
     }
 
     // ── Composition state ────────────────────────────────────────────────────
 
     private fun resetCompositionState() {
         cancelCandidateDecode()
+        pinyinSpaceIntent.cancel()
+        compositionSession++
+        compositionDecodeGeneration = 0L
         imeState = ImeStateData()
         committedPrefix = ""
         currentInputConnection?.finishComposingText()
@@ -1065,6 +1304,7 @@ class HkImeService : InputMethodService() {
 
     private fun clearCompositionAfterStandaloneInsert() {
         cancelCandidateDecode()
+        compositionSession++
         imeState = ImeStateData()
         committedPrefix = ""
         lastCandidates = emptyList()
@@ -1134,7 +1374,10 @@ class HkImeService : InputMethodService() {
         predictScheduled?.let { decodeHandler.removeCallbacks(it) }
         predictScheduled = null
         decodePendingBuffer = null
+        decodePendingSession = 0L
         decodeInFlight = false
+        compositionDecodeGeneration = 0L
+        pinyinSpaceIntent.cancel()
         candidateRequestGate.invalidate()
     }
 }

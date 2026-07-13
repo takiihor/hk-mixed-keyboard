@@ -27,8 +27,13 @@ License:  GNU General Public License v3.0 (GPL-3.0)
 
 3. CC-CEDICT — Chinese-English dictionary
 -----------------------------------------
-Used for: English → Chinese meaning assist (english_assist).
-Project:  https://www.mdbg.net/chinese/dictionary?page=cc-cedict
+Used for: English → Chinese meaning assist (english_assist) and offline
+          Mandarin Pinyin input (pinyin.csv; Traditional headwords + pinyin).
+Project:  https://cc-cedict.org/
+Snapshot: https://cc-cedict.org/editor/editor_export_cedict.php?c=gz
+Date:     2026-07-12T16:23:25Z
+Format:   CC-CEDICT version=1, subversion=0
+SHA-256:  90e2881776366f606171a977a1f54786196f428ba604c728a279d4aaff7223a8
 License:  Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
           https://creativecommons.org/licenses/by-sa/4.0/
 
@@ -55,7 +60,8 @@ License:  Apache License 2.0
 Modifications
 -------------
 The above data sets were filtered, re-ranked by frequency, reformatted to CSV,
-and in some cases supplemented with curated entries. The derived dictionary
+normalized to toneless continuous Pinyin keys where applicable, and in some
+cases supplemented with curated entries. The derived dictionary
 files distributed with this app remain subject to the licenses above, including
 their attribution and (where applicable) share-alike / open-database terms.
 

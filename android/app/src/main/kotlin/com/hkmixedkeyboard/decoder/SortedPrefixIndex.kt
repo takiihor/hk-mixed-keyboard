@@ -24,6 +24,17 @@ class SortedPrefixIndex(keys: Collection<String>) {
         return result
     }
 
+    fun forEachMatching(prefix: String, action: (String) -> Unit) {
+        if (prefix.isEmpty()) return
+        var index = lowerBound(prefix)
+        while (index < sortedKeys.size) {
+            val key = sortedKeys[index]
+            if (!key.startsWith(prefix)) break
+            action(key)
+            index++
+        }
+    }
+
     private fun lowerBound(target: String): Int {
         var low = 0
         var high = sortedKeys.size
