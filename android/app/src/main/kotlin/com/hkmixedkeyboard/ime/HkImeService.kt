@@ -43,6 +43,7 @@ import com.hkmixedkeyboard.ui.AndroidTypingHapticBackend
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.KeyboardView
+import com.hkmixedkeyboard.ui.MainKeyboardLongPressPolicy
 import com.hkmixedkeyboard.ui.ShiftState
 import com.hkmixedkeyboard.ui.ShiftStateController
 import com.hkmixedkeyboard.ui.SymbolKeyboardRouting
@@ -447,6 +448,7 @@ class HkImeService : InputMethodService() {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, candidateBarHeight
             )
+            visibility = View.VISIBLE
             candidateListener = object : CandidateBarView.CandidateListener {
                 override fun onCandidateTap(candidate: DecodeCandidate) = handleCandidateTap(candidate)
                 override fun onExpandTap() = handleExpandTap()
@@ -566,10 +568,13 @@ class HkImeService : InputMethodService() {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
             themeColors = currentThemeColors
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, candidateBarHeight
+            )
+            visibility = View.VISIBLE
             clear()
         }
-        root.addView(candidateBar, LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, candidateBarHeight))
+        root.addView(candidateBar)
         keyboardView = KeyboardView(this).apply {
             minimumHeight = keyboardHeight
             vibrationEnabled = this@HkImeService.vibrationEnabled
@@ -615,7 +620,7 @@ class HkImeService : InputMethodService() {
         shiftController.reset()
         refreshShiftVisual()
         if (::candidateBar.isInitialized) {
-            if (sensitive) candidateBar.showSafeMode() else candidateBar.clear()
+            if (sensitive) candidateBar.showSafeMode() else candidateBar.clearSystemMessage()
         }
     }
 
@@ -662,6 +667,7 @@ class HkImeService : InputMethodService() {
             }
             // The combined ？！ key commits ？ on tap; KeyboardView emits ！ on hold.
             KeyboardView.KEY_QUESTION -> ctrl.onPunctuation("？", imeState, precedingContext())
+            "." -> ctrl.onPunctuation(".", imeState, PrecedingContext.LATIN)
             KeyboardView.KEY_COMMA,
             KeyboardView.KEY_PERIOD,
             KeyboardView.KEY_EXCLAIM  -> ctrl.onPunctuation(label, imeState, precedingContext())
@@ -689,6 +695,10 @@ class HkImeService : InputMethodService() {
     }
 
     private fun handleKeyLongPress(label: String) {
+        MainKeyboardLongPressPolicy.longPressTextFor(label)?.let { punctuation ->
+            handleKey(punctuation)
+            return
+        }
         when (label) {
             KeyboardView.KEY_SYMBOL -> showEmojiPanel()
             KeyboardView.KEY_SPACE -> toggleSimplifiedOutput()
@@ -806,7 +816,7 @@ class HkImeService : InputMethodService() {
             keyboardView.modeLabel = schemeShort(newScheme)
             keyboardView.invalidate()
         }
-        if (changed && ::candidateBar.isInitialized) candidateBar.clear()
+        if (changed && ::candidateBar.isInitialized) candidateBar.clearSystemMessage()
     }
 
     /** Text actually sent to the app: converted to Simplified when the mode is on. */
@@ -919,7 +929,7 @@ class HkImeService : InputMethodService() {
         if (!::candidateBar.isInitialized) return
         if (imeCtx.isSensitiveField) { candidateBar.showSafeMode(); return }
         val prefix = committedPrefix
-        if (prefix.isEmpty()) { lastCandidates = emptyList(); candidateBar.clear(); return }
+        if (prefix.isEmpty()) { lastCandidates = emptyList(); candidateBar.clearSystemMessage(); return }
         schedulePredictions(prefix)
     }
 
@@ -1015,6 +1025,7 @@ class HkImeService : InputMethodService() {
         val bufSnapshot = imeState.buffer
         if (bufSnapshot.isEmpty()) {
             cancelCandidateDecode()
+            candidateBar.clearSystemMessage()
             // Nothing composing → show next-character predictions for what was just
             // committed (empty prefix simply clears the bar).
             showNextCharPredictions()
@@ -1351,7 +1362,7 @@ class HkImeService : InputMethodService() {
         committedPrefix = ""
         lastCandidates = emptyList()
         if (::candidateBar.isInitialized) {
-            if (imeCtx.isSensitiveField) candidateBar.showSafeMode() else candidateBar.clear()
+            if (imeCtx.isSensitiveField) candidateBar.showSafeMode() else candidateBar.clearSystemMessage()
         }
     }
 

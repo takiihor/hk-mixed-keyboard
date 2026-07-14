@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard.ui
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -28,7 +29,10 @@ class CandidateBarView @JvmOverloads constructor(
     var haptics: TypingHapticEngine? = null
     private var renderSnapshot: CandidateRenderSnapshot? = null
     private var displayedCandidates: List<DecodeCandidate> = emptyList()
-    private var contentState = ContentState.EMPTY
+    private var systemMessageStyle: SystemMessageStyle? = null
+
+    var displayState: CandidateBarDisplayState = CandidateBarDisplayState.EMPTY
+        private set
 
     var themeColors: KeyboardThemeColors = KeyboardThemeColors.from(context)
         set(value) {
@@ -36,7 +40,7 @@ class CandidateBarView @JvmOverloads constructor(
             applyTheme()
         }
 
-    private enum class ContentState { EMPTY, LOADING, SAFE_MODE, CANDIDATES }
+    private enum class SystemMessageStyle { DEFAULT, SAFE_MODE }
 
     private fun selectionHaptic(view: View) {
         val engine = haptics
@@ -59,30 +63,25 @@ class CandidateBarView @JvmOverloads constructor(
     private val colorHkText get() = themeColors.candidatePriorityText
     private val colorEnPill get() = themeColors.candidatePillBackground
 
-    private val textSizeSp = 24f
+    private val textSizeSp = CandidateBarLayoutPolicy.TEXT_SIZE_SP
     private val padH = dp(18)
-    private val padV = dp(6)
+    private val padV = dp(CandidateBarLayoutPolicy.VERTICAL_PADDING_DP)
 
     fun showSafeMode() {
-        renderSnapshot = null
-        displayedCandidates = emptyList()
-        contentState = ContentState.SAFE_MODE
-        row.removeAllViews()
-        row.addView(makeLabel(context.getString(R.string.safe_mode_active),
-            themeColors.safeModeText))
-        setBackgroundColor(themeColors.safeModeBackground)
+        showSystemMessage(
+            text = context.getString(R.string.safe_mode_active),
+            style = SystemMessageStyle.SAFE_MODE
+        )
     }
 
     // Shown briefly on a cold start while the dictionary is still warming, so the
     // bar isn't blank when a code is typed before candidates are ready. The pending
     // decode replaces it as soon as the corpus is loaded.
     fun showLoading() {
-        renderSnapshot = null
-        displayedCandidates = emptyList()
-        contentState = ContentState.LOADING
-        row.removeAllViews()
-        row.addView(makeLabel(context.getString(R.string.corpus_loading), colorText))
-        setBackgroundColor(themeColors.candidateBackground)
+        showSystemMessage(
+            text = context.getString(R.string.corpus_loading),
+            style = SystemMessageStyle.DEFAULT
+        )
     }
 
     fun setCandidates(candidates: List<DecodeCandidate>) {
@@ -94,7 +93,9 @@ class CandidateBarView @JvmOverloads constructor(
         if (nextSnapshot == renderSnapshot) return
         renderSnapshot = nextSnapshot
         displayedCandidates = candidates
-        contentState = ContentState.CANDIDATES
+        systemMessageStyle = null
+        setRowWidth(LayoutParams.WRAP_CONTENT)
+        updateDisplayState(CandidateBarDisplayState.CANDIDATES_OR_COMPOSING)
         setBackgroundColor(themeColors.candidateBackground)
 
         val desiredCount = candidates.size + 1
@@ -112,28 +113,46 @@ class CandidateBarView @JvmOverloads constructor(
     }
 
     fun clear() {
+        if (CandidateBarDisplayStatePolicy.afterClear(displayState) == CandidateBarDisplayState.SYSTEM_MESSAGE) {
+            return
+        }
         renderSnapshot = null
         displayedCandidates = emptyList()
-        contentState = ContentState.EMPTY
+        systemMessageStyle = null
         row.removeAllViews()
+        setRowWidth(LayoutParams.WRAP_CONTENT)
+        updateDisplayState(CandidateBarDisplayState.EMPTY)
+        setBackgroundColor(themeColors.candidateBackground)
+    }
+
+    /** Clears a stale safety/loading/error message when its owner resolves it. */
+    fun clearSystemMessage() {
+        if (displayState != CandidateBarDisplayState.SYSTEM_MESSAGE) {
+            clear()
+            return
+        }
+        renderSnapshot = null
+        displayedCandidates = emptyList()
+        systemMessageStyle = null
+        row.removeAllViews()
+        setRowWidth(LayoutParams.WRAP_CONTENT)
+        updateDisplayState(CandidateBarDisplayState.EMPTY)
         setBackgroundColor(themeColors.candidateBackground)
     }
 
     private fun applyTheme() {
-        if (contentState == ContentState.SAFE_MODE) {
-            setBackgroundColor(themeColors.safeModeBackground)
-            (row.getChildAt(0) as? TextView)?.setTextColor(themeColors.safeModeText)
+        if (displayState == CandidateBarDisplayState.SYSTEM_MESSAGE) {
+            bindSystemMessageTheme(row.getChildAt(0) as? TextView)
             return
         }
         setBackgroundColor(themeColors.candidateBackground)
-        when (contentState) {
-            ContentState.CANDIDATES -> displayedCandidates.forEachIndexed { index, candidate ->
+        when (displayState) {
+            CandidateBarDisplayState.CANDIDATES_OR_COMPOSING -> displayedCandidates.forEachIndexed { index, candidate ->
                 (row.getChildAt(index) as? TextView)?.let { bindCandidateView(it, candidate) }
             }
-            ContentState.LOADING -> (row.getChildAt(0) as? TextView)?.setTextColor(colorText)
             else -> Unit
         }
-        if (contentState == ContentState.CANDIDATES) {
+        if (displayState == CandidateBarDisplayState.CANDIDATES_OR_COMPOSING) {
             (row.getChildAt(displayedCandidates.size) as? TextView)?.let(::bindExpandView)
         }
     }
@@ -178,7 +197,13 @@ class CandidateBarView @JvmOverloads constructor(
     private fun bindLabel(tv: TextView, value: String) {
         tv.text = value
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp)
+        tv.typeface = android.graphics.Typeface.create(
+            "sans-serif-medium",
+            android.graphics.Typeface.NORMAL
+        )
         tv.gravity = Gravity.CENTER_VERTICAL
+        tv.setSingleLine(true)
+        tv.ellipsize = TextUtils.TruncateAt.END
         tv.isFocusable = false
     }
 
@@ -191,13 +216,48 @@ class CandidateBarView @JvmOverloads constructor(
             setMargins(margin, 0, margin, 0)
         }
 
-    private fun makeLabel(text: String, color: Int) = TextView(context).apply {
+    private fun showSystemMessage(text: String, style: SystemMessageStyle) {
+        renderSnapshot = null
+        displayedCandidates = emptyList()
+        systemMessageStyle = style
+        row.removeAllViews()
+        setRowWidth(LayoutParams.MATCH_PARENT)
+        row.addView(makeSystemMessageLabel(text))
+        updateDisplayState(CandidateBarDisplayState.SYSTEM_MESSAGE)
+        bindSystemMessageTheme(row.getChildAt(0) as? TextView)
+    }
+
+    private fun makeSystemMessageLabel(text: String) = TextView(context).apply {
         this.text = text
-        setTextColor(color)
         setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp)
+        typeface = android.graphics.Typeface.create(
+            "sans-serif-medium",
+            android.graphics.Typeface.NORMAL
+        )
         setPadding(padH, padV, padH, padV)
         gravity = Gravity.CENTER_VERTICAL
+        maxLines = CandidateBarLayoutPolicy.SYSTEM_MESSAGE_MAX_LINES
+        ellipsize = TextUtils.TruncateAt.END
         isFocusable = false
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { gravity = Gravity.CENTER_VERTICAL }
+    }
+
+    private fun bindSystemMessageTheme(label: TextView?) {
+        val isSafeMode = systemMessageStyle == SystemMessageStyle.SAFE_MODE
+        setBackgroundColor(if (isSafeMode) themeColors.safeModeBackground else themeColors.candidateBackground)
+        label?.setTextColor(if (isSafeMode) themeColors.safeModeText else colorText)
+    }
+
+    private fun setRowWidth(width: Int) {
+        row.layoutParams = LayoutParams(width, LayoutParams.MATCH_PARENT)
+    }
+
+    private fun updateDisplayState(next: CandidateBarDisplayState) {
+        if (displayState == next) return
+        displayState = next
     }
 
     private fun dp(n: Int) = (n * resources.displayMetrics.density + 0.5f).toInt()

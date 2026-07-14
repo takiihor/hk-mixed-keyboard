@@ -67,21 +67,39 @@ class KeyboardLayoutTest {
     }
 
     @Test
-    fun `number row is shorter than typing rows`() {
-        assertEquals(0.85f, KeyboardLayout.rows.first().heightWeight)
-        assertEquals(1f, KeyboardLayout.rows[1].heightWeight)
+    fun `all five rows use the comfortable compact 48dp height`() {
+        assertEquals(48f, KeyboardLayout.BASE_ROW_HEIGHT_DP)
+        assertEquals(
+            listOf(1f, 1f, 1f, 1f, 1f),
+            KeyboardLayout.rows.map { it.heightWeight }
+        )
+
+        val cells = KeyboardLayout.buildCells(width = 410f, height = 240f)
+        assertEquals(48f, cells.single { it.key.label == "1" }.bounds.bottom, 0.001f)
+        assertEquals(
+            48f,
+            cells.single { it.key.label == "Q" }.bounds.bottom -
+                cells.single { it.key.label == "Q" }.bounds.top,
+            0.001f
+        )
     }
 
     @Test
-    fun `input view minimum height includes candidate bar and keyboard`() {
+    fun `compact geometry preserves every key width and horizontal position`() {
+        val cells = KeyboardLayout.buildCells(width = 1000f, height = 240f)
+        val q = cells.single { it.key.label == "Q" }
+        val a = cells.single { it.key.label == "A" }
+        val space = cells.single { it.key.label == KeyboardLayout.KEY_SPACE }
+
+        assertEquals(100f, q.bounds.right - q.bounds.left, 0.001f)
+        assertEquals(50f, a.bounds.left, 0.001f)
+        assertEquals(300f, space.bounds.right - space.bounds.left, 0.001f)
+    }
+
+    @Test
+    fun `fixed candidate bar plus comfortable keyboard reserves 282dp`() {
         val density = 2f
-        assertEquals(
-            (56f * KeyboardLayout.totalHeightWeight * density).toInt(),
-            KeyboardLayout.keyboardHeightPx(density)
-        )
-        assertEquals(
-            (56f * (KeyboardLayout.totalHeightWeight + 1f) * density).toInt(),
-            KeyboardLayout.inputViewMinHeightPx(density)
-        )
+        assertEquals((240f * density).toInt(), KeyboardLayout.keyboardHeightPx(density))
+        assertEquals((282f * density).toInt(), KeyboardLayout.inputViewMinHeightPx(density))
     }
 }

@@ -17,7 +17,7 @@ object KeyboardLayout {
     const val KEY_EXCLAIM = "！"
 
     const val GRID_WIDTH_UNITS = 10f
-    const val BASE_ROW_HEIGHT_DP = 56f
+    const val BASE_ROW_HEIGHT_DP = 48f
 
     data class KeyDef(
         val label: String,
@@ -64,8 +64,7 @@ object KeyboardLayout {
     val rows: List<RowDef> = listOf(
         row(
             labels("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"),
-            startUnits = 0f,
-            heightWeight = 0.85f
+            startUnits = 0f
         ),
         row(
             labels("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
@@ -102,13 +101,13 @@ object KeyboardLayout {
         rows.sumOf { it.heightWeight.toDouble() }.toFloat()
 
     fun candidateBarHeightPx(density: Float): Int =
-        (BASE_ROW_HEIGHT_DP * density).toInt()
+        CandidateBarLayoutPolicy.heightPx(density, CandidateBarDisplayState.CANDIDATES_OR_COMPOSING)
 
     fun keyboardHeightPx(density: Float): Int =
         (BASE_ROW_HEIGHT_DP * totalHeightWeight * density).toInt()
 
     fun inputViewMinHeightPx(density: Float): Int =
-        candidateBarHeightPx(density) + keyboardHeightPx(density)
+        keyboardHeightPx(density) + candidateBarHeightPx(density)
 
     fun buildCells(width: Float, height: Float): List<KeyCell> {
         val unitWidth = width / GRID_WIDTH_UNITS

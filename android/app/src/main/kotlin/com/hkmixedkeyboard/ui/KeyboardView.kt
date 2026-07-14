@@ -185,12 +185,11 @@ class KeyboardView @JvmOverloads constructor(
             cells += KeyCell(cell.key, drawRect, hitRect)
         }
         unitH = h / KeyboardLayout.totalHeightWeight
-        // Size text relative to row height. The Cangjie root is the main glyph but
-        // kept small so it does not dominate the key; the latin hint stays legible.
-        paintLabel.textSize = (unitH * 0.30f).coerceIn(14f, 22f * density)
-        paintHint.textSize = (unitH * 0.24f).coerceIn(10f, 15f * density)
-        paintSpace.textSize = (unitH * 0.24f).coerceIn(12f, 16f * density)
-        paintPopLabel.textSize = (unitH * 0.38f).coerceIn(18f, 26f * density)
+        // Preserve the previous 56dp-row visual sizes while compacting row geometry.
+        paintLabel.textSize = 17f * density
+        paintHint.textSize = 13f * density
+        paintSpace.textSize = 13f * density
+        paintPopLabel.textSize = 21f * density
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -354,7 +353,7 @@ class KeyboardView @JvmOverloads constructor(
         val inside = cell.hitRect.contains(x, y)
         if (pointerId == gesturePointerId) {
             when (label) {
-                KEY_BACKSPACE, KEY_QUESTION, KEY_SYMBOL ->
+                KEY_BACKSPACE, KEY_QUESTION, KEY_PERIOD, KEY_SYMBOL ->
                     if (inside) holdController.release() else holdController.cancel()
                 KEY_SPACE -> {
                     spaceGestureController.release(releasedInside = inside)
@@ -397,6 +396,10 @@ class KeyboardView @JvmOverloads constructor(
                     keyListener?.onKeyLongPress(KEY_QUESTION)
                     emitKey(KEY_EXCLAIM)
                 }
+            )
+            KEY_PERIOD -> holdController.pressLong(
+                tap = { emitKey(MainKeyboardLongPressPolicy.shortPressTextFor(KEY_PERIOD)) },
+                longPress = { keyListener?.onKeyLongPress(KEY_PERIOD) }
             )
             KEY_SPACE -> {
                 spaceGestureController.press(startX = x)

@@ -37,6 +37,14 @@ class KeyboardThemeColorsTest {
     }
 
     @Test
+    fun `iPhone style light theme keeps priority candidates blue`() {
+        val light = KeyboardTheme.IOS_LIGHT.toColors()
+
+        assertEquals(0xFF0B57D0.toInt(), light.candidatePriorityText)
+        assertNotEquals(light.candidateText, light.candidatePriorityText)
+    }
+
+    @Test
     fun `iPhone style light theme supplies surrounding Emoji UI tokens`() {
         val light = KeyboardTheme.IOS_LIGHT.toColors()
 
