@@ -10,12 +10,15 @@ import android.widget.RadioGroup
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.lifecycleScope
 import com.hkmixedkeyboard.BuildConfig
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.memory.UserMemoryDatabase
+import com.hkmixedkeyboard.ui.KeyboardThemeColors
+import com.hkmixedkeyboard.ui.toColors
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
@@ -84,6 +87,41 @@ class SettingsActivity : AppCompatActivity() {
         }
         root.addView(label("主要輸入法"))
         root.addView(schemeGroup)
+
+        root.addView(header("鍵盤主題"))
+        val themeGroup = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+        val themeRows = mutableMapOf<KeyboardTheme, LinearLayout>()
+        var applyingThemeHydration = false
+        val themeButtons = mutableMapOf<KeyboardTheme, RadioButton>()
+        KeyboardTheme.entries.forEach { theme ->
+            val button = RadioButton(this).apply {
+                id = android.view.View.generateViewId()
+                text = KeyboardThemePreference.label(theme)
+            }
+            val row = themeOptionRow(theme, button)
+            themeRows[theme] = row
+            button.setOnCheckedChangeListener { _, checked ->
+                if (!checked || applyingThemeHydration) return@setOnCheckedChangeListener
+                themeButtons.forEach { (candidate, other) ->
+                    if (candidate != theme && other.isChecked) other.isChecked = false
+                }
+                themeRows.forEach { (candidate, row) ->
+                    row.contentDescription = KeyboardThemePreference.accessibilityDescription(
+                        candidate, candidate == theme
+                    )
+                }
+                lifecycleScope.launch { KeyboardSettings.setTheme(this@SettingsActivity, theme) }
+            }
+            row.setOnClickListener {
+                if (!button.isChecked) button.isChecked = true
+            }
+            themeGroup.addView(row)
+            themeButtons[theme] = button
+        }
+        root.addView(themeGroup)
+
         val simpSwitch = addSwitch(root, "簡體輸出（打繁出簡）", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setSimplifiedOutput(this@SettingsActivity, v) }
         }
@@ -113,6 +151,17 @@ class SettingsActivity : AppCompatActivity() {
                 else -> Unit
             }
             simpSwitch.isChecked  = prefs.simplifiedOutput
+            applyingThemeHydration = true
+            try {
+                themeButtons[prefs.theme]?.isChecked = true
+                themeRows.forEach { (theme, row) ->
+                    row.contentDescription = KeyboardThemePreference.accessibilityDescription(
+                        theme, theme == prefs.theme
+                    )
+                }
+            } finally {
+                applyingThemeHydration = false
+            }
         }
 
         root.addView(spacer())
@@ -220,6 +269,60 @@ class SettingsActivity : AppCompatActivity() {
         this.text = text; textSize = 13f
         setPadding(0, 4, 0, 4)
     }
+
+    private fun themeOptionRow(theme: KeyboardTheme, button: RadioButton): LinearLayout {
+        val colors = theme.toColors()
+        val preview = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(dp(6), dp(6), dp(6), dp(6))
+            setBackgroundColor(colors.keyboardBackground)
+            layoutParams = LinearLayout.LayoutParams(0, dp(52), 1f).apply {
+                setMargins(dp(8), dp(4), 0, dp(4))
+            }
+        }
+        preview.addView(previewKey("A", colors.keyBackground, colors.label))
+        preview.addView(previewKey("中", colors.keyBackground, colors.label))
+        preview.addView(previewKey("⇧", colors.specialKeyBackground, colors.label))
+
+        val description = TextView(this).apply {
+            text = when (theme) {
+                KeyboardTheme.DARK -> "現有深色鍵盤配色"
+                KeyboardTheme.IOS_LIGHT -> "淺灰背景、白色字元鍵、灰色功能鍵"
+            }
+            textSize = 12f
+            setTextColor(colors.label)
+        }
+        val details = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(button)
+            addView(description)
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            setPadding(0, dp(4), 0, dp(4))
+            addView(details)
+            addView(preview)
+            isClickable = true
+            isFocusable = true
+        }
+    }
+
+    private fun previewKey(label: String, background: Int, textColor: Int): TextView =
+        TextView(this).apply {
+            text = label
+            gravity = android.view.Gravity.CENTER
+            textSize = 13f
+            setTextColor(textColor)
+            this.background = GradientDrawable().apply {
+                setColor(background)
+                cornerRadius = dp(6).toFloat()
+            }
+            layoutParams = LinearLayout.LayoutParams(0, dp(38), 1f).apply {
+                setMargins(dp(2), 0, dp(2), 0)
+            }
+        }
 
     private fun spacer() = android.view.View(this).apply {
         layoutParams = LinearLayout.LayoutParams(

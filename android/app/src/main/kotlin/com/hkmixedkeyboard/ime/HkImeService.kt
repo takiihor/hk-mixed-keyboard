@@ -30,6 +30,7 @@ import com.hkmixedkeyboard.performance.LatencyLogger
 import com.hkmixedkeyboard.performance.PerfTracer
 import com.hkmixedkeyboard.privacy.SensitiveFieldDetector
 import com.hkmixedkeyboard.settings.ChangeTokenTracker
+import com.hkmixedkeyboard.settings.KeyboardTheme
 import com.hkmixedkeyboard.settings.KeyboardSettings
 import com.hkmixedkeyboard.settings.InputSchemePreference
 import com.hkmixedkeyboard.settings.InputSchemeTransitionCoordinator
@@ -40,6 +41,7 @@ import com.hkmixedkeyboard.ui.EmojiPanelView
 import com.hkmixedkeyboard.ui.HapticFeedbackPolicy
 import com.hkmixedkeyboard.ui.AndroidTypingHapticBackend
 import com.hkmixedkeyboard.ui.KeyboardLayout
+import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.KeyboardView
 import com.hkmixedkeyboard.ui.ShiftState
 import com.hkmixedkeyboard.ui.ShiftStateController
@@ -48,6 +50,7 @@ import com.hkmixedkeyboard.ui.SymbolKeyboardState
 import com.hkmixedkeyboard.ui.SymbolEnterAction
 import com.hkmixedkeyboard.ui.SymbolPageView
 import com.hkmixedkeyboard.ui.TypingHapticEngine
+import com.hkmixedkeyboard.ui.toColors
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -161,6 +164,8 @@ class HkImeService : InputMethodService() {
     private var directLatinCommit = false
     private var vibrationEnabled = true
     private var showCangjieRoots = true
+    private var currentThemeColors: KeyboardThemeColors = KeyboardTheme.DARK.toColors()
+    private var serviceDestroyed = false
     private val memoryClearToken = ChangeTokenTracker()
     private val customWordsToken = ChangeTokenTracker()
     private val shiftController = ShiftStateController()
@@ -262,9 +267,11 @@ class HkImeService : InputMethodService() {
                 .collectLatest { prefs ->
                     simplifiedOutputSettings.onSetting(prefs.simplifiedOutput)
                     mainThread.post {
+                        if (serviceDestroyed) return@post
                         vibrationEnabled = prefs.vibration
                         soundEnabled = prefs.sound
                         showCangjieRoots = prefs.showRoots
+                        applyTheme(prefs.theme.toColors())
                         when (val action = schemeTransition.onPersisted(prefs.inputScheme)) {
                             is InputSchemeTransitionCoordinator.Action.Apply ->
                                 applyInputScheme(action.scheme)
@@ -334,6 +341,7 @@ class HkImeService : InputMethodService() {
     }
 
     override fun onDestroy() {
+        serviceDestroyed = true
         super.onDestroy()
         cancelCandidateDecode()
         serviceJob.cancel()
@@ -429,13 +437,13 @@ class HkImeService : InputMethodService() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             minimumHeight = KeyboardLayout.inputViewMinHeightPx(density)
-            setBackgroundColor(androidx.core.content.ContextCompat.getColor(
-                this@HkImeService, com.hkmixedkeyboard.R.color.keyboard_bg))
+            setBackgroundColor(currentThemeColors.keyboardBackground)
         }
 
         candidateBar = CandidateBarView(this).apply {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
+            themeColors = currentThemeColors
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, candidateBarHeight
             )
@@ -456,6 +464,7 @@ class HkImeService : InputMethodService() {
             minimumHeight = keyboardHeight
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
+            themeColors = currentThemeColors
             showCangjieRoots = this@HkImeService.showCangjieRoots &&
                 InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
             spaceLabel = spaceLabelText()
@@ -522,9 +531,22 @@ class HkImeService : InputMethodService() {
     // padding on each show so the keys always sit above the navigation bar.
     override fun onWindowShown() {
         super.onWindowShown()
+        applyTheme(currentThemeColors)
         if (::inputRoot.isInitialized) {
             androidx.core.view.ViewCompat.requestApplyInsets(inputRoot)
         }
+    }
+
+    /** Runs only on the main thread from the settings collector or IME lifecycle. */
+    private fun applyTheme(colors: KeyboardThemeColors) {
+        if (serviceDestroyed) return
+        currentThemeColors = colors
+        if (::inputRoot.isInitialized) inputRoot.setBackgroundColor(colors.keyboardBackground)
+        if (::keyboardView.isInitialized) keyboardView.themeColors = colors
+        if (::candidateBar.isInitialized) candidateBar.themeColors = colors
+        candidateGrid?.themeColors = colors
+        symbolPanel?.themeColors = colors
+        (altPanel as? EmojiPanelView)?.themeColors = colors
     }
 
     private fun buildFallbackInputView(): View {
@@ -538,12 +560,12 @@ class HkImeService : InputMethodService() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             minimumHeight = KeyboardLayout.inputViewMinHeightPx(density)
-            setBackgroundColor(androidx.core.content.ContextCompat.getColor(
-                this@HkImeService, com.hkmixedkeyboard.R.color.keyboard_bg))
+            setBackgroundColor(currentThemeColors.keyboardBackground)
         }
         candidateBar = CandidateBarView(this).apply {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
+            themeColors = currentThemeColors
             clear()
         }
         root.addView(candidateBar, LinearLayout.LayoutParams(
@@ -552,6 +574,7 @@ class HkImeService : InputMethodService() {
             minimumHeight = keyboardHeight
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
+            themeColors = currentThemeColors
             showCangjieRoots = this@HkImeService.showCangjieRoots &&
                 InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
             spaceLabel = spaceLabelText()
@@ -904,6 +927,7 @@ class HkImeService : InputMethodService() {
         val grid = candidateGrid ?: CandidateGridView(this).also {
             it.vibrationEnabled = vibrationEnabled
             it.haptics = typingHaptics
+            it.themeColors = currentThemeColors
             candidateGrid = it
         }
         if (grid.isShowing()) { grid.dismiss(); return }
@@ -1250,6 +1274,7 @@ class HkImeService : InputMethodService() {
         val panel = SymbolPageView(this).apply {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
+            themeColors = currentThemeColors
             symbolPage = symbolKeyboardState.symbolPage
             enterAction = SymbolEnterAction.fromImeOptions(activeEditorInfo?.imeOptions ?: 0)
             onKeyTap = ::handleSymbolKey
@@ -1280,6 +1305,7 @@ class HkImeService : InputMethodService() {
         val panel = EmojiPanelView(this).apply {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
+            themeColors = currentThemeColors
             // Stay open so several emoji can be tapped in a row (Telegram-style).
             onEmojiTap = { emoji -> insertStandaloneText(emoji) }
             onBackspace = {

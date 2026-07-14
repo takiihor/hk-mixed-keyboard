@@ -29,6 +29,12 @@ object Keys {
     // Bumped whenever custom words change. The IME reloads that table only on this
     // signal instead of querying Room every time the keyboard opens.
     val CUSTOM_WORDS_TOKEN = longPreferencesKey("custom_words_token")
+    val KEYBOARD_THEME = stringPreferencesKey("keyboard_theme")
+}
+
+enum class KeyboardTheme {
+    DARK,
+    IOS_LIGHT
 }
 
 class ChangeTokenTracker {
@@ -48,7 +54,8 @@ data class KeyboardPrefs(
     val inputScheme: Scheme = Scheme.QUICK,
     val simplifiedOutput: Boolean = false,
     val memoryClearToken: Long = 0L,
-    val customWordsToken: Long = 0L
+    val customWordsToken: Long = 0L,
+    val theme: KeyboardTheme = KeyboardTheme.DARK
 )
 
 object KeyboardSettings {
@@ -64,7 +71,8 @@ object KeyboardSettings {
                 ),
                 simplifiedOutput = p[Keys.SIMPLIFIED_OUTPUT] ?: false,
                 memoryClearToken = p[Keys.MEMORY_CLEAR_TOKEN] ?: 0L,
-                customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L
+                customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L,
+                theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME])
             )
         }
 
@@ -91,6 +99,9 @@ object KeyboardSettings {
     suspend fun setSimplifiedOutput(ctx: Context, v: Boolean) =
         ctx.settingsDataStore.edit { it[Keys.SIMPLIFIED_OUTPUT] = v }
 
+    suspend fun setTheme(ctx: Context, theme: KeyboardTheme) =
+        ctx.settingsDataStore.edit { it[Keys.KEYBOARD_THEME] = KeyboardThemePreference.serialize(theme) }
+
     // Monotonic counters rather than timestamps: two bumps within the same
     // millisecond would produce equal tokens and ChangeTokenTracker would miss the
     // second change.
@@ -99,6 +110,32 @@ object KeyboardSettings {
 
     suspend fun bumpCustomWordsToken(ctx: Context) =
         ctx.settingsDataStore.edit { it[Keys.CUSTOM_WORDS_TOKEN] = (it[Keys.CUSTOM_WORDS_TOKEN] ?: 0L) + 1 }
+}
+
+/** Pure policy for parsing the persisted keyboard theme. */
+object KeyboardThemePreference {
+    fun resolve(stored: String?): KeyboardTheme = when (stored) {
+        "ios_light" -> KeyboardTheme.IOS_LIGHT
+        "dark" -> KeyboardTheme.DARK
+        else -> KeyboardTheme.DARK
+    }
+
+    fun serialize(theme: KeyboardTheme): String = when (theme) {
+        KeyboardTheme.DARK -> "dark"
+        KeyboardTheme.IOS_LIGHT -> "ios_light"
+    }
+
+    fun label(theme: KeyboardTheme): String = when (theme) {
+        KeyboardTheme.DARK -> "深色"
+        KeyboardTheme.IOS_LIGHT -> "淺色（iPhone 風格）"
+    }
+
+    fun accessibilityDescription(theme: KeyboardTheme, selected: Boolean): String = when {
+        theme == KeyboardTheme.DARK && selected -> "深色鍵盤主題，已選取"
+        theme == KeyboardTheme.DARK -> "深色鍵盤主題，未選取"
+        selected -> "淺色 iPhone 風格鍵盤主題，已選取"
+        else -> "淺色 iPhone 風格鍵盤主題，未選取"
+    }
 }
 
 /** Pure policy for parsing the persisted scheme and migrating the legacy boolean. */
