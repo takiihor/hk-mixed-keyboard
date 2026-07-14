@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.hkmixedkeyboard.R
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
@@ -28,6 +27,16 @@ class CandidateBarView @JvmOverloads constructor(
     // Shared low-latency haptic engine, injected by the IME service.
     var haptics: TypingHapticEngine? = null
     private var renderSnapshot: CandidateRenderSnapshot? = null
+    private var displayedCandidates: List<DecodeCandidate> = emptyList()
+    private var contentState = ContentState.EMPTY
+
+    var themeColors: KeyboardThemeColors = KeyboardThemeColors.from(context)
+        set(value) {
+            field = value
+            applyTheme()
+        }
+
+    private enum class ContentState { EMPTY, LOADING, SAFE_MODE, CANDIDATES }
 
     private fun selectionHaptic(view: View) {
         val engine = haptics
@@ -46,9 +55,9 @@ class CandidateBarView @JvmOverloads constructor(
         addView(it, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
     }
 
-    private val colorText    = ContextCompat.getColor(context, R.color.cand_text)
-    private val colorHkText  = ContextCompat.getColor(context, R.color.cand_text_hk)
-    private val colorEnPill  = ContextCompat.getColor(context, R.color.key_bg)
+    private val colorText get() = themeColors.candidateText
+    private val colorHkText get() = themeColors.candidatePriorityText
+    private val colorEnPill get() = themeColors.candidatePillBackground
 
     private val textSizeSp = 24f
     private val padH = dp(18)
@@ -56,10 +65,12 @@ class CandidateBarView @JvmOverloads constructor(
 
     fun showSafeMode() {
         renderSnapshot = null
+        displayedCandidates = emptyList()
+        contentState = ContentState.SAFE_MODE
         row.removeAllViews()
         row.addView(makeLabel(context.getString(R.string.safe_mode_active),
-            ContextCompat.getColor(context, R.color.safe_mode_text)))
-        setBackgroundColor(ContextCompat.getColor(context, R.color.safe_mode_bg))
+            themeColors.safeModeText))
+        setBackgroundColor(themeColors.safeModeBackground)
     }
 
     // Shown briefly on a cold start while the dictionary is still warming, so the
@@ -67,9 +78,11 @@ class CandidateBarView @JvmOverloads constructor(
     // decode replaces it as soon as the corpus is loaded.
     fun showLoading() {
         renderSnapshot = null
+        displayedCandidates = emptyList()
+        contentState = ContentState.LOADING
         row.removeAllViews()
         row.addView(makeLabel(context.getString(R.string.corpus_loading), colorText))
-        setBackgroundColor(ContextCompat.getColor(context, R.color.cand_bg))
+        setBackgroundColor(themeColors.candidateBackground)
     }
 
     fun setCandidates(candidates: List<DecodeCandidate>) {
@@ -80,7 +93,9 @@ class CandidateBarView @JvmOverloads constructor(
         val nextSnapshot = CandidateRenderSnapshot.from(candidates)
         if (nextSnapshot == renderSnapshot) return
         renderSnapshot = nextSnapshot
-        setBackgroundColor(ContextCompat.getColor(context, R.color.cand_bg))
+        displayedCandidates = candidates
+        contentState = ContentState.CANDIDATES
+        setBackgroundColor(themeColors.candidateBackground)
 
         val desiredCount = candidates.size + 1
         while (row.childCount < desiredCount) {
@@ -98,8 +113,29 @@ class CandidateBarView @JvmOverloads constructor(
 
     fun clear() {
         renderSnapshot = null
+        displayedCandidates = emptyList()
+        contentState = ContentState.EMPTY
         row.removeAllViews()
-        setBackgroundColor(ContextCompat.getColor(context, R.color.cand_bg))
+        setBackgroundColor(themeColors.candidateBackground)
+    }
+
+    private fun applyTheme() {
+        if (contentState == ContentState.SAFE_MODE) {
+            setBackgroundColor(themeColors.safeModeBackground)
+            (row.getChildAt(0) as? TextView)?.setTextColor(themeColors.safeModeText)
+            return
+        }
+        setBackgroundColor(themeColors.candidateBackground)
+        when (contentState) {
+            ContentState.CANDIDATES -> displayedCandidates.forEachIndexed { index, candidate ->
+                (row.getChildAt(index) as? TextView)?.let { bindCandidateView(it, candidate) }
+            }
+            ContentState.LOADING -> (row.getChildAt(0) as? TextView)?.setTextColor(colorText)
+            else -> Unit
+        }
+        if (contentState == ContentState.CANDIDATES) {
+            (row.getChildAt(displayedCandidates.size) as? TextView)?.let(::bindExpandView)
+        }
     }
 
     private fun bindCandidateView(tv: TextView, cand: DecodeCandidate) {

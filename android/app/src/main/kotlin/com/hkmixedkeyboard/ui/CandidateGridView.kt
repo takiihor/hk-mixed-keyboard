@@ -11,16 +11,21 @@ import android.widget.GridLayout
 import android.widget.PopupWindow
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.hkmixedkeyboard.R
 import com.hkmixedkeyboard.decoder.DecodeCandidate
 
 class CandidateGridView(private val context: Context) {
 
     private var popup: PopupWindow? = null
+    private var grid: GridLayout? = null
+    private val candidateCells = mutableListOf<Pair<TextView, DecodeCandidate>>()
     var vibrationEnabled: Boolean = true
     // Shared low-latency haptic engine, injected by the IME service.
     var haptics: TypingHapticEngine? = null
+    var themeColors: KeyboardThemeColors = KeyboardThemeColors.from(context)
+        set(value) {
+            field = value
+            applyTheme()
+        }
 
     private fun selectionHaptic(view: View) {
         val engine = haptics
@@ -35,14 +40,7 @@ class CandidateGridView(private val context: Context) {
 
     fun show(anchor: View, candidates: List<DecodeCandidate>, onTap: (DecodeCandidate) -> Unit) {
         dismiss()
-
-        // Match the keyboard's dark theme so candidates stay legible and the panel
-        // looks like part of the keyboard (was light cells with near-white text =
-        // invisible normal candidates).
-        val colorHk    = ContextCompat.getColor(context, R.color.cand_text_hk)
-        val colorNorm  = ContextCompat.getColor(context, R.color.cand_text)
-        val colorBg    = ContextCompat.getColor(context, R.color.keyboard_bg)
-        val colorCell  = ContextCompat.getColor(context, R.color.key_bg)
+        candidateCells.clear()
         val padH = dp(12)
         val padV = dp(10)
         val layoutSpec = CandidateGridLayoutPolicy.layoutSpec()
@@ -50,14 +48,14 @@ class CandidateGridView(private val context: Context) {
         val grid = GridLayout(context).apply {
             columnCount = layoutSpec.columnCount
             setPadding(dp(4), dp(4), dp(4), dp(4))
-            setBackgroundColor(colorBg)
+            setBackgroundColor(themeColors.candidateBackground)
         }
+        this.grid = grid
 
         candidates.forEach { cand ->
-            val color = if (CandidateVisualPolicy.isPriority(cand)) colorHk else colorNorm
             val cell = TextView(context).apply {
                 text = cand.text
-                setTextColor(color)
+                setTextColor(candidateTextColor(cand))
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
                 setPadding(padH, padV, padH, padV)
                 gravity = Gravity.CENTER
@@ -70,7 +68,7 @@ class CandidateGridView(private val context: Context) {
                     setMargins(dp(2), dp(2), dp(2), dp(2))
                 }
                 background = GradientDrawable().apply {
-                    setColor(colorCell)
+                    setColor(themeColors.candidateSelectedBackground)
                     cornerRadius = dp(6).toFloat()
                 }
                 setOnClickListener {
@@ -79,6 +77,7 @@ class CandidateGridView(private val context: Context) {
                     dismiss()
                 }
             }
+            candidateCells += cell to cand
             grid.addView(cell)
         }
 
@@ -90,7 +89,7 @@ class CandidateGridView(private val context: Context) {
                     layoutSpec.gridHeightMode.toLayoutSize()
                 )
             )
-            setBackgroundColor(colorBg)
+            setBackgroundColor(themeColors.candidateBackground)
         }
 
         val width = if (anchor.width > 0) anchor.width else ViewGroup.LayoutParams.MATCH_PARENT
@@ -111,7 +110,7 @@ class CandidateGridView(private val context: Context) {
         // while candidate cells still receive taps.
         popup = PopupWindow(scroll, width, height, false).apply {
             isOutsideTouchable = true
-            setBackgroundDrawable(ColorDrawable(colorBg))
+            setBackgroundDrawable(ColorDrawable(themeColors.candidateBackground))
             elevation = dp(8).toFloat()
         }
 
@@ -121,9 +120,27 @@ class CandidateGridView(private val context: Context) {
     fun dismiss() {
         popup?.dismiss()
         popup = null
+        grid = null
+        candidateCells.clear()
     }
 
     fun isShowing() = popup?.isShowing == true
+
+    private fun applyTheme() {
+        grid?.setBackgroundColor(themeColors.candidateBackground)
+        candidateCells.forEach { (cell, candidate) ->
+            cell.setTextColor(candidateTextColor(candidate))
+            cell.background = GradientDrawable().apply {
+                setColor(themeColors.candidateSelectedBackground)
+                cornerRadius = dp(6).toFloat()
+            }
+        }
+        popup?.setBackgroundDrawable(ColorDrawable(themeColors.candidateBackground))
+    }
+
+    private fun candidateTextColor(candidate: DecodeCandidate): Int =
+        if (CandidateVisualPolicy.isPriority(candidate)) themeColors.candidatePriorityText
+        else themeColors.candidateText
 
     private fun CandidateGridSizeMode.toLayoutSize(): Int = when (this) {
         CandidateGridSizeMode.MATCH_PARENT -> ViewGroup.LayoutParams.MATCH_PARENT

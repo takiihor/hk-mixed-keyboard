@@ -4,11 +4,49 @@ import com.hkmixedkeyboard.ui.KeyboardMode
 import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.SymbolKeyboardState
 import com.hkmixedkeyboard.ui.SymbolPage
+import com.hkmixedkeyboard.ui.toColors
+import com.hkmixedkeyboard.settings.KeyboardTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
 
 class KeyboardThemeColorsTest {
+
+    @Test
+    fun `dark theme resolves to the current approved keyboard palette`() {
+        val dark = KeyboardTheme.DARK.toColors()
+
+        assertEquals(0xFF202124.toInt(), dark.keyboardBackground)
+        assertEquals(0xFF3C4043.toInt(), dark.keyBackground)
+        assertEquals(0xFF26282A.toInt(), dark.specialKeyBackground)
+        assertEquals(0xFFE8EAED.toInt(), dark.label)
+        assertEquals(0xFF15191C.toInt(), dark.symbolKeyboardBackground)
+    }
+
+    @Test
+    fun `iPhone style light theme separates character and function keys`() {
+        val light = KeyboardTheme.IOS_LIGHT.toColors()
+
+        assertEquals(0xFFD1D5DB.toInt(), light.keyboardBackground)
+        assertEquals(0xFFFFFFFF.toInt(), light.keyBackground)
+        assertEquals(0xFFAEB4BD.toInt(), light.specialKeyBackground)
+        assertNotEquals(light.keyBackground, light.specialKeyBackground)
+        assertEquals(0xFF111214.toInt(), light.label)
+        assertEquals(0xFFC4C8CE.toInt(), light.pressedKeyBackground)
+        assertEquals(0xFF969DA7.toInt(), light.pressedSpecialKeyBackground)
+    }
+
+    @Test
+    fun `iPhone style light theme supplies surrounding Emoji UI tokens`() {
+        val light = KeyboardTheme.IOS_LIGHT.toColors()
+
+        assertEquals(0xFFD1D5DB.toInt(), light.emojiPanelBackground)
+        assertEquals(0xFFAEB4BD.toInt(), light.emojiCategoryBarBackground)
+        assertEquals(0xFFFFFFFF.toInt(), light.emojiSearchBackground)
+        assertEquals(0xFF191B1E.toInt(), light.emojiFunctionIcon)
+        assertEquals(0xFFC4C8CE.toInt(), light.emojiGridPressedBackground)
+        assertEquals(0xFF202326.toInt(), light.emojiSelectionIndicator)
+    }
 
     @Test
     fun `symbol palette is held by one immutable keyboard theme token object`() {

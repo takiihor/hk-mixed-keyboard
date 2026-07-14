@@ -269,13 +269,27 @@ class SymbolPageView(context: Context) : View(context) {
         val key = rendered.spec
         val rect = rendered.geometry.visualRect
         val isPressed = if (isPopup) selectedAlternative == key else activeKey?.spec == key
-        paint.color = when {
+        val keyBackground = when {
             isPopup -> themeColors.symbolPopupBackground
-            isPressed -> themeColors.symbolPressedKeyBackground
+            isPressed && key.role == SymbolKeyRole.TEXT -> themeColors.symbolPressedKeyBackground
+            isPressed -> themeColors.symbolPressedFunctionKeyBackground
             key.role == SymbolKeyRole.TEXT -> themeColors.symbolKeyBackground
             else -> themeColors.symbolFunctionKeyBackground
         }
         val radius = dp(9).toFloat()
+        if (android.graphics.Color.alpha(themeColors.keyShadow) > 0) {
+            paint.color = themeColors.keyShadow
+            canvas.drawRoundRect(
+                rect.left,
+                rect.top + dp(1),
+                rect.right,
+                rect.bottom + dp(1),
+                radius,
+                radius,
+                paint
+            )
+        }
+        paint.color = keyBackground
         canvas.drawRoundRect(rect.toRectF(), radius, radius, paint)
 
         if (key.icon != null) {

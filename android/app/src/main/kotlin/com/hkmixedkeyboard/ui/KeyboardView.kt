@@ -116,18 +116,13 @@ class KeyboardView @JvmOverloads constructor(
     private val paintPopLabel = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
     }
+    private val paintKeyShadow = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
 
-    private val themeColors = KeyboardThemeColors.from(context)
-    private val colorKeyBg      = themeColors.keyBackground
-    private val colorSpecialBg  = themeColors.specialKeyBackground
-    private val colorSpaceBg    = themeColors.spaceKeyBackground
-    private val colorPressedBg  = themeColors.pressedKeyBackground
-    private val colorEnterBg    = themeColors.enterKeyBackground
-    private val colorLabel      = themeColors.label
-    private val colorHint       = themeColors.hint
-    private val colorEnterLabel = themeColors.enterLabel
-    private val colorPopBg      = themeColors.popupBackground
-    private val colorPopLabel   = themeColors.popupLabel
+    var themeColors: KeyboardThemeColors = KeyboardThemeColors.from(context)
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     private val density = resources.displayMetrics.density
     private val cornerRadius = 9f * density
@@ -204,12 +199,25 @@ class KeyboardView @JvmOverloads constructor(
             val pressed = isPressed(cell)
             val isEnter = label == KEY_ENTER
             val bg = when {
-                pressed -> colorPressedBg
-                isEnter -> colorEnterBg
-                label == KEY_SHIFT && shiftActive -> colorEnterBg
-                label == KEY_SPACE -> colorSpaceBg
-                isSpecial(label) -> colorSpecialBg
-                else -> colorKeyBg
+                pressed && isSpecial(label) -> themeColors.pressedSpecialKeyBackground
+                pressed -> themeColors.pressedKeyBackground
+                isEnter -> themeColors.enterKeyBackground
+                label == KEY_SHIFT && shiftActive -> themeColors.enterKeyBackground
+                label == KEY_SPACE -> themeColors.spaceKeyBackground
+                isSpecial(label) -> themeColors.specialKeyBackground
+                else -> themeColors.keyBackground
+            }
+            if (android.graphics.Color.alpha(themeColors.keyShadow) > 0) {
+                paintKeyShadow.color = themeColors.keyShadow
+                canvas.drawRoundRect(
+                    cell.rect.left,
+                    cell.rect.top + density,
+                    cell.rect.right,
+                    cell.rect.bottom + density,
+                    cornerRadius,
+                    cornerRadius,
+                    paintKeyShadow
+                )
             }
             paintBg.color = bg
             canvas.drawRoundRect(cell.rect, cornerRadius, cornerRadius, paintBg)
@@ -222,31 +230,31 @@ class KeyboardView @JvmOverloads constructor(
 
             when {
                 label == KEY_SPACE -> {
-                    paintSpace.color = colorHint
+                    paintSpace.color = themeColors.hint
                     canvas.drawText(spaceLabel, cx,
                         cy - (paintSpace.ascent() + paintSpace.descent()) / 2, paintSpace)
                 }
                 label == KEY_MODE -> {
-                    paintLabel.color = colorLabel
+                    paintLabel.color = themeColors.label
                     canvas.drawText(modeLabel, cx,
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
                 }
                 showCangjieRoots && CANGJIE.containsKey(label) -> {
                     // Big Cangjie root, centred; small latin hint in the top-right.
-                    paintLabel.color = colorLabel
+                    paintLabel.color = themeColors.label
                     canvas.drawText(CANGJIE[label]!!, cx,
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
-                    paintHint.color = colorHint
+                    paintHint.color = themeColors.hint
                     canvas.drawText(shown, cell.rect.right - hintInset,
                         cell.rect.top + hintInset - paintHint.ascent(), paintHint)
                 }
                 label == KEY_SHIFT && shiftActive -> {
-                    paintLabel.color = colorEnterLabel
+                    paintLabel.color = themeColors.enterLabel
                     canvas.drawText(if (shiftLocked) "⇪" else label, cx,
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
                 }
                 else -> {
-                    paintLabel.color = if (isEnter) colorEnterLabel else colorLabel
+                    paintLabel.color = if (isEnter) themeColors.enterLabel else themeColors.label
                     canvas.drawText(shown, cx,
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
                 }
@@ -281,12 +289,12 @@ class KeyboardView @JvmOverloads constructor(
         if (popTop < 0f) return  // number row: no space above, skip
 
         val popRect = RectF(popLeft, popTop, popLeft + popW, popTop + popH)
-        paintPopBg.color = colorPopBg
+        paintPopBg.color = themeColors.popupBackground
         canvas.drawRoundRect(popRect, cornerRadius, cornerRadius, paintPopBg)
 
         val label = cell.def.label
         val shown = if (isLetter(label) && !shiftActive) label.lowercase() else label
-        paintPopLabel.color = colorPopLabel
+        paintPopLabel.color = themeColors.popupLabel
         val pcy = popRect.centerY()
         canvas.drawText(shown, cx, pcy - (paintPopLabel.ascent() + paintPopLabel.descent()) / 2, paintPopLabel)
     }
