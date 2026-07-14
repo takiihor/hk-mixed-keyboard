@@ -106,6 +106,9 @@ class KeyboardView @JvmOverloads constructor(
     private val paintLabel = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
     }
+    private val paintRoot = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textAlign = Paint.Align.CENTER
+    }
     private val paintHint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.RIGHT
     }
@@ -127,7 +130,6 @@ class KeyboardView @JvmOverloads constructor(
     private val density = resources.displayMetrics.density
     private val cornerRadius = 9f * density
     private val keyMargin = 2.5f * density
-    private val hintInset = 5f * density
     // Extra hit slop in px applied around each key for detection (does not affect
     // drawing). Generous so light / slightly-off taps still register; the enlarged
     // rects overlap in the gaps, and cellForDown() resolves overlaps by nearest key
@@ -186,10 +188,11 @@ class KeyboardView @JvmOverloads constructor(
         }
         unitH = h / KeyboardLayout.totalHeightWeight
         // Preserve the previous 56dp-row visual sizes while compacting row geometry.
-        paintLabel.textSize = 17f * density
-        paintHint.textSize = 13f * density
-        paintSpace.textSize = 13f * density
-        paintPopLabel.textSize = 21f * density
+        paintLabel.textSize = KeyboardTypographyPolicy.MAIN_LABEL_TEXT_SIZE_SP * density
+        paintRoot.textSize = KeyboardTypographyPolicy.CANGJIE_ROOT_TEXT_SIZE_SP * density
+        paintHint.textSize = KeyboardTypographyPolicy.LATIN_HINT_TEXT_SIZE_SP * density
+        paintSpace.textSize = KeyboardTypographyPolicy.SPACE_LABEL_TEXT_SIZE_SP * density
+        paintPopLabel.textSize = KeyboardTypographyPolicy.POPUP_LABEL_TEXT_SIZE_SP * density
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -239,13 +242,21 @@ class KeyboardView @JvmOverloads constructor(
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
                 }
                 showCangjieRoots && CANGJIE.containsKey(label) -> {
-                    // Big Cangjie root, centred; small latin hint in the top-right.
-                    paintLabel.color = themeColors.label
+                    // Centred Cangjie root; Latin hint anchored inside the top-right.
+                    paintRoot.color = themeColors.label
                     canvas.drawText(CANGJIE[label]!!, cx,
-                        cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
+                        cy - (paintRoot.ascent() + paintRoot.descent()) / 2, paintRoot)
                     paintHint.color = themeColors.hint
-                    canvas.drawText(shown, cell.rect.right - hintInset,
-                        cell.rect.top + hintInset - paintHint.ascent(), paintHint)
+                    canvas.drawText(
+                        shown,
+                        KeyboardTypographyPolicy.latinHintX(cell.rect.right, density),
+                        KeyboardTypographyPolicy.latinHintBaseline(
+                            cell.rect.top,
+                            density,
+                            paintHint.ascent()
+                        ),
+                        paintHint
+                    )
                 }
                 label == KEY_SHIFT && shiftActive -> {
                     paintLabel.color = themeColors.enterLabel

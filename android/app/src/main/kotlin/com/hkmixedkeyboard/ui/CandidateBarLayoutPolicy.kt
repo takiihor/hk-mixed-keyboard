@@ -19,7 +19,7 @@ object CandidateBarDisplayStatePolicy {
 
 object CandidateBarLayoutPolicy {
     const val VISIBLE_HEIGHT_DP = 42f
-    const val TEXT_SIZE_SP = 20f
+    const val TEXT_SIZE_SP = 21f
     const val VERTICAL_PADDING_DP = 4
     const val SYSTEM_MESSAGE_MAX_LINES = 1
 

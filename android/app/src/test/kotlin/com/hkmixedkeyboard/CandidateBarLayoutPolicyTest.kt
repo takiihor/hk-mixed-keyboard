@@ -40,7 +40,7 @@ class CandidateBarLayoutPolicyTest {
 
     @Test
     fun `candidate typography is comfortably sized and single line`() {
-        assertEquals(20f, CandidateBarLayoutPolicy.TEXT_SIZE_SP)
+        assertEquals(21f, CandidateBarLayoutPolicy.TEXT_SIZE_SP)
         assertEquals(42f, CandidateBarLayoutPolicy.VISIBLE_HEIGHT_DP)
         assertEquals(1, CandidateBarLayoutPolicy.SYSTEM_MESSAGE_MAX_LINES)
     }
