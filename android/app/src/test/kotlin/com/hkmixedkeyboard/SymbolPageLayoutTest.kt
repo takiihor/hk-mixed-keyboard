@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard
 
-import com.hkmixedkeyboard.ui.SymbolPageView
+import com.hkmixedkeyboard.ui.SymbolKeyboardSpec
+import com.hkmixedkeyboard.ui.SymbolPage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -8,18 +9,18 @@ import org.junit.Test
 class SymbolPageLayoutTest {
 
     @Test
-    fun `symbol page first row includes half-width period`() {
-        assertTrue(SymbolPageView.SYMBOL_ROWS.first().contains("."))
+    fun `symbol page data starts with Chinese comma`() {
+        assertEquals("，", SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.first().first().commitText)
     }
 
     @Test
     fun `symbol rows keep ten keys per row`() {
-        assertEquals(listOf(10, 10, 10, 10), SymbolPageView.SYMBOL_ROWS.map { it.size })
+        assertEquals(listOf(10, 10, 10, 10), SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.map { it.size })
     }
 
     @Test
     fun `symbol page has no repeated symbols`() {
-        val symbols = SymbolPageView.SYMBOL_ROWS.flatten().map { it.visualDuplicateKey() }
+        val symbols = SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.flatten().map { it.commitText!!.visualDuplicateKey() }
 
         assertEquals(symbols.distinct(), symbols)
     }
@@ -35,6 +36,6 @@ class SymbolPageLayoutTest {
 
     @Test
     fun `symbol page return key is labelled ABC`() {
-        assertEquals("ABC", SymbolPageView.RETURN_LABEL)
+        assertEquals("ABC", SymbolKeyboardSpec.bottomKeys(SymbolPage.COMMON, com.hkmixedkeyboard.ui.SymbolEnterAction.RETURN.keySpec()).first().label)
     }
 }

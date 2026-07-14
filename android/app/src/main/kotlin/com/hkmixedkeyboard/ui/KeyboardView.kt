@@ -9,9 +9,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.hkmixedkeyboard.BuildConfig
-import com.hkmixedkeyboard.R
 
 class KeyboardView @JvmOverloads constructor(
     context: Context,
@@ -119,16 +117,17 @@ class KeyboardView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
     }
 
-    private val colorKeyBg      = ContextCompat.getColor(context, R.color.key_bg)
-    private val colorSpecialBg  = ContextCompat.getColor(context, R.color.key_bg_special)
-    private val colorSpaceBg    = ContextCompat.getColor(context, R.color.key_bg_space)
-    private val colorPressedBg  = ContextCompat.getColor(context, R.color.key_bg_pressed)
-    private val colorEnterBg    = ContextCompat.getColor(context, R.color.key_bg_enter)
-    private val colorLabel      = ContextCompat.getColor(context, R.color.key_label)
-    private val colorHint       = ContextCompat.getColor(context, R.color.key_radical)
-    private val colorEnterLabel = ContextCompat.getColor(context, R.color.key_label_enter)
-    private val colorPopBg      = ContextCompat.getColor(context, R.color.key_popup_bg)
-    private val colorPopLabel   = ContextCompat.getColor(context, R.color.key_popup_label)
+    private val themeColors = KeyboardThemeColors.from(context)
+    private val colorKeyBg      = themeColors.keyBackground
+    private val colorSpecialBg  = themeColors.specialKeyBackground
+    private val colorSpaceBg    = themeColors.spaceKeyBackground
+    private val colorPressedBg  = themeColors.pressedKeyBackground
+    private val colorEnterBg    = themeColors.enterKeyBackground
+    private val colorLabel      = themeColors.label
+    private val colorHint       = themeColors.hint
+    private val colorEnterLabel = themeColors.enterLabel
+    private val colorPopBg      = themeColors.popupBackground
+    private val colorPopLabel   = themeColors.popupLabel
 
     private val density = resources.displayMetrics.density
     private val cornerRadius = 9f * density

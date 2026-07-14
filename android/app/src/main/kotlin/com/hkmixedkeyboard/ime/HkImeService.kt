@@ -43,6 +43,9 @@ import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardView
 import com.hkmixedkeyboard.ui.ShiftState
 import com.hkmixedkeyboard.ui.ShiftStateController
+import com.hkmixedkeyboard.ui.SymbolKeyboardRouting
+import com.hkmixedkeyboard.ui.SymbolKeyboardState
+import com.hkmixedkeyboard.ui.SymbolEnterAction
 import com.hkmixedkeyboard.ui.SymbolPageView
 import com.hkmixedkeyboard.ui.TypingHapticEngine
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -151,6 +154,8 @@ class HkImeService : InputMethodService() {
 
     private var imeState = ImeStateData()
     private var imeCtx = ImeContext()
+    private var activeEditorInfo: EditorInfo? = null
+    private var symbolKeyboardState = SymbolKeyboardState()
     private val schemeTransition = InputSchemeTransitionCoordinator(Scheme.QUICK)
     private val schemeWrites = Channel<Scheme>(Channel.UNLIMITED)
     private var directLatinCommit = false
@@ -180,6 +185,7 @@ class HkImeService : InputMethodService() {
     // (逐字組詞): after committing 我 the bar offers 們/哋/…; tapping one extends it.
     private var committedPrefix: String = ""
     private var altPanel: View? = null  // symbol page or emoji panel
+    private var symbolPanel: SymbolPageView? = null
 
     // In-memory, non-persistent fallback used if the Room database fails to open,
     // so typing and in-session memory keep working instead of crashing the IME.
@@ -572,6 +578,8 @@ class HkImeService : InputMethodService() {
     override fun onStartInput(attribute: EditorInfo, restarting: Boolean) {
         super.onStartInput(attribute, restarting)
         closeAltPanel()
+        activeEditorInfo = attribute
+        symbolKeyboardState = SymbolKeyboardState()
         val sensitive = SensitiveFieldDetector.isSensitive(attribute)
         directLatinCommit = DirectInputPolicy.shouldUseDirectLatinCommit(
             inputType = attribute.inputType,
@@ -590,6 +598,7 @@ class HkImeService : InputMethodService() {
 
     override fun onFinishInput() {
         super.onFinishInput()
+        activeEditorInfo = null
         resetCompositionState()
     }
 
@@ -1237,26 +1246,33 @@ class HkImeService : InputMethodService() {
 
     private fun showSymbolPage() {
         closeAltPanel()
+        symbolKeyboardState = symbolKeyboardState.enterSymbols()
         val panel = SymbolPageView(this).apply {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
-            // Stay open so several symbols can be tapped in a row; the function row
-            // below provides space / delete / Enter / return without leaving.
-            onSymbolTap = { sym -> insertStandaloneText(sym) }
-            onSpace = { insertStandaloneText(" ") }
-            onBackspace = {
-                // Finalize any in-progress composing buffer first, then delete a
-                // committed character — same handling as the emoji panel.
-                flushComposingBuffer()
-                currentInputConnection?.deleteSurroundingText(1, 0)
-            }
-            onEnter = {
-                flushComposingBuffer()
-                sendDownUpKeyEvents(android.view.KeyEvent.KEYCODE_ENTER)
-            }
-            onClose = { closeAltPanel() }
+            symbolPage = symbolKeyboardState.symbolPage
+            enterAction = SymbolEnterAction.fromImeOptions(activeEditorInfo?.imeOptions ?: 0)
+            onKeyTap = ::handleSymbolKey
         }
+        symbolPanel = panel
         swapToAltPanel(panel)
+    }
+
+    private fun handleSymbolKey(key: com.hkmixedkeyboard.ui.SymbolKeySpec) {
+        when (val event = SymbolKeyboardRouting.eventFor(key)) {
+            is SymbolKeyboardRouting.Event.CommitText -> insertStandaloneText(event.text)
+            SymbolKeyboardRouting.Event.TogglePage -> {
+                symbolKeyboardState = symbolKeyboardState.toggleSymbolPage()
+                symbolPanel?.symbolPage = symbolKeyboardState.symbolPage
+            }
+            SymbolKeyboardRouting.Event.ReturnAlphabet -> {
+                symbolKeyboardState = symbolKeyboardState.returnToAlphabet()
+                closeAltPanel()
+            }
+            SymbolKeyboardRouting.Event.Space -> handleKey(KeyboardView.KEY_SPACE)
+            SymbolKeyboardRouting.Event.Backspace -> handleKey(KeyboardView.KEY_BACKSPACE)
+            SymbolKeyboardRouting.Event.Enter -> handleKey(KeyboardView.KEY_ENTER)
+        }
     }
 
     private fun showEmojiPanel() {
@@ -1335,6 +1351,7 @@ class HkImeService : InputMethodService() {
                 keyboardView.minimumHeight
             ))
         }
+        if (p === symbolPanel) symbolPanel = null
         altPanel = null
     }
 

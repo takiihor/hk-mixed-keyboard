@@ -25,6 +25,18 @@
     <color name="key_popup_bg">#FFFFFF</color>
     <color name="key_popup_label">#202124</color>
 
+    <!-- Symbol keyboard theme tokens. Kept distinct so a future light keyboard
+         can swap the palette without placing colour decisions in a renderer. -->
+    <color name="symbol_keyboard_bg">#15191C</color>
+    <color name="symbol_key_bg">#3C4043</color>
+    <color name="symbol_function_key_bg">#2A2C2E</color>
+    <color name="symbol_key_bg_pressed">#50575C</color>
+    <color name="symbol_key_label">#F2F4F5</color>
+    <color name="symbol_page_indicator_active">#F2F4F5</color>
+    <color name="symbol_page_indicator_inactive">#7B8288</color>
+    <color name="symbol_popup_bg">#464C51</color>
+    <color name="symbol_popup_label">#F2F4F5</color>
+
     <!-- Safe keyboard mode -->
     <color name="safe_mode_bg">#3A2E12</color>
     <color name="safe_mode_text">#F5C26B</color>
