@@ -53,18 +53,12 @@ var versionMinor = (versionProps.getProperty("versionMinor") ?: "7").toInt()
 var buildNumber = (versionProps.getProperty("buildNumber") ?: "0").toInt()
 var buildTime = versionProps.getProperty("buildTime") ?: "unknown"
 
-// Bump only when explicitly requested on a release APK/AAB/install build:
-//   ./gradlew bundleRelease -PversionedBuild=true
-// This keeps repeated verification and test APK builds from changing the store
-// version after the release number has been selected.
-val shouldVersionBuild = providers.gradleProperty("versionedBuild")
-    .map { it.equals("true", ignoreCase = true) }
-    .getOrElse(false)
+// Bump whenever an APK/AAB is explicitly built or installed. Test-only tasks
+// do not change the app version.
 val isVersionedBuildInvocation = gradle.startParameter.taskNames.any { taskName ->
-    taskName.contains("Release", ignoreCase = true) &&
-        listOf("assemble", "bundle", "install").any { taskName.contains(it, ignoreCase = true) }
+    listOf("assemble", "bundle", "install").any { taskName.contains(it, ignoreCase = true) }
 }
-if (shouldVersionBuild && isVersionedBuildInvocation) {
+if (isVersionedBuildInvocation) {
     versionMinor += 1
     buildNumber += 1
     buildTime = SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date())
