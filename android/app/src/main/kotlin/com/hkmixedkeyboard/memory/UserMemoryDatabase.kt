@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [UserMemoryEntity::class, CustomWordEntity::class],
-    version = 3,
+    version = 4,
     // Schemas are exported to app/schemas (see build.gradle.kts) so future version
     // bumps can ship verifiable Room migrations instead of silently wiping data.
     exportSchema = true
@@ -28,8 +30,17 @@ abstract class UserMemoryDatabase : RoomDatabase() {
                 // until a migration is added. Register MIGRATION_x_y here when bumping
                 // `version` above.
                 .fallbackToDestructiveMigrationOnDowngrade()
+                .addMigrations(MIGRATION_3_4)
                 .build()
                 .also { INSTANCE = it }
+        }
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "ALTER TABLE custom_words ADD COLUMN scheme TEXT NOT NULL DEFAULT 'QUICK'"
+                )
+            }
         }
     }
 }

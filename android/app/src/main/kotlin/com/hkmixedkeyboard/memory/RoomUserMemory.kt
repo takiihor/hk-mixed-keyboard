@@ -44,7 +44,8 @@ class RoomUserMemory(
 
     override fun record(buffer: String, candidate: DecodeCandidate, isSensitive: Boolean) {
         if (isSensitive) return
-        persist(index.record(buffer, candidate))
+        index.record(buffer, candidate)
+        index.entriesSnapshot(buffer).forEach(::persist)
     }
 
     override fun cnRatio(buffer: String): Double = exactMatch(buffer)?.cnRatio ?: 0.5

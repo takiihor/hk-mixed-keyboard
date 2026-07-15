@@ -6,6 +6,8 @@ import android.view.inputmethod.EditorInfo
 object SensitiveFieldDetector {
 
     fun isSensitive(info: EditorInfo): Boolean {
+        val privateHints = info.privateImeOptions.orEmpty().lowercase()
+        if (SENSITIVE_PRIVATE_HINTS.any(privateHints::contains)) return true
         val type = info.inputType
         val base = type and InputType.TYPE_MASK_CLASS
         val variation = type and InputType.TYPE_MASK_VARIATION
@@ -28,4 +30,8 @@ object SensitiveFieldDetector {
 
         return false
     }
+
+    private val SENSITIVE_PRIVATE_HINTS = listOf(
+        "creditcard", "credit_card", "payment", "bank", "cvv", "cvc", "otp", "one_time_code"
+    )
 }

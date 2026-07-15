@@ -161,13 +161,13 @@ class EnglishAssistCandidateTest {
     }
 
     @Test
-    fun `built-in Quick phrase prefix remains when no exact English meaning exists`() {
+    fun `Jyutping collision remains tap-only in Quick mode`() {
         val result = buildFullCorpusDecoder(CORPUS_DIR).decode("cai", Scheme.QUICK)
 
-        assertTrue(result.isPrefixOnly)
+        assertFalse(result.isExactCode)
         assertTrue(result.candidates.isNotEmpty())
-        assertTrue(result.candidates.all {
-            it.sourceSchema == SourceSchema.QUICK && it.code.startsWith("cai")
+        assertTrue(result.candidates.any {
+            it.sourceSchema == SourceSchema.JYUTPING && it.code == "cai"
         })
     }
 

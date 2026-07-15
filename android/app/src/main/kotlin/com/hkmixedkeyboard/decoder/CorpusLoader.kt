@@ -28,6 +28,8 @@ data class WhitelistEntry(val word: String, val canonical: String)
 
 data class EnglishAssistEntry(val english: String, val chinese: String, val freq: Double)
 
+data class ChineseAssistEntry(val chinese: String, val english: String, val freq: Double)
+
 data class JyutpingEntry(val jyutping: String, val chinese: String, val freq: Double)
 
 class CorpusLoader(private val ctx: Context) {
@@ -49,6 +51,31 @@ class CorpusLoader(private val ctx: Context) {
     }
     val mixedPhrases: List<MixedPhraseEntry> by lazy { loadMixedPhrases() }
     val whitelist: List<WhitelistEntry> by lazy { loadWhitelist() }
+    private val hkscsSupplement: List<HkscsSupplement.Entry> by lazy {
+        HkscsSupplement.parse(parseCsv("corpus/hkscs_supplement.csv") { it })
+    }
+    /**
+     * Official HKSCS records without an input mapping remain selectable through a
+     * technical Unicode escape. These candidates are intentionally tap-only; the
+     * commit policy accepts only linguistic source schemas for Space/punctuation.
+     */
+    val hkscsUnicodeFallbackIndex: Map<String, DecodeCandidate> by lazy {
+        val routedByCorpus = HashSet<String>(chars.size + jyutping.size)
+        chars.forEach { routedByCorpus.add(it.char) }
+        jyutping.forEach { routedByCorpus.add(it.chinese) }
+        hkscsSupplement.mapNotNull { entry ->
+            entry.unicodeFallbackCode?.takeIf { entry.text !in routedByCorpus }?.let { code ->
+                code to DecodeCandidate(
+                    entry.text,
+                    code,
+                    SourceSchema.HKSCS_UNICODE,
+                    CandidateType.CHAR,
+                    0.0,
+                    false
+                )
+            }
+        }.toMap()
+    }
     val englishAssist: List<EnglishAssistEntry> by lazy {
         cached("english_assist",
             read = { EnglishAssistEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
@@ -58,6 +85,7 @@ class CorpusLoader(private val ctx: Context) {
     val englishCompletionIndex: EnglishCompletionIndex by lazy {
         EnglishCompletionIndex(englishAssist)
     }
+    val chineseAssist: List<ChineseAssistEntry> by lazy { loadChineseAssist() }
     val jyutping: List<JyutpingEntry> by lazy {
         cached("jyutping",
             read = { JyutpingEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
@@ -97,9 +125,21 @@ class CorpusLoader(private val ctx: Context) {
         SortedPrefixIndex(englishAssistIndex.keys)
     }
 
+    // ── Reviewed Chinese → English post-commit assist ─────────────────────
+
+    val chineseAssistIndex: Map<String, List<DecodeCandidate>> by lazy {
+        buildChineseAssistIndex()
+    }
+
     // ── Jyutping romanization indices ──────────────────────────────────────
 
     val jyutpingIndex: Map<String, List<DecodeCandidate>> by lazy { buildJyutpingIndex() }
+    val jyutpingReadingsByText: Map<String, List<String>> by lazy {
+        jyutping.groupBy { it.chinese }
+            .mapValues { (_, entries) ->
+                entries.sortedByDescending { it.freq }.map { it.jyutping }.distinct()
+            }
+    }
     val jyutpingPrefixIndex: SortedPrefixIndex by lazy {
         SortedPrefixIndex(jyutpingIndex.keys)
     }
@@ -161,11 +201,27 @@ class CorpusLoader(private val ctx: Context) {
 
     // ── Loaders ────────────────────────────────────────────────────────────
 
-    private fun loadChars(): List<CharEntry> = parseCsv("corpus/hk_core_chars.csv") { cols ->
-        if (cols.size < 5) null
-        else CharEntry(cols[0], cols[1], cols[2], cols[3].toDoubleOrNull() ?: 0.0,
-            cols[4].trim() == "1")
-    }
+    private fun loadChars(): List<CharEntry> =
+        parseCsv("corpus/hk_core_chars.csv") { cols ->
+            if (cols.size < 5) null
+            else CharEntry(cols[0], cols[1], cols[2], cols[3].toDoubleOrNull() ?: 0.0,
+                cols[4].trim() == "1")
+        } + loadHkscsSupplementChars()
+
+    // Official HKSCS-2016 characters missing from the Quick corpus, added at
+    // frequency 0 so they are reachable/selectable without ever outranking a
+    // common candidate that shares the same Quick code. Fields:
+    // chinese, code_point, quick_code, jyutping.
+    private fun loadHkscsSupplementChars(): List<CharEntry> =
+        hkscsSupplement.asSequence()
+            .filter { it.quickCode.isNotBlank() }
+            .map { CharEntry(it.text, it.quickCode, "", 0.0, false) }
+            .toList()
+
+    private fun loadHkscsSupplementJyutping(): List<JyutpingEntry> =
+        hkscsSupplement.flatMap { entry ->
+            entry.jyutping.map { JyutpingEntry(it, entry.text, 0.0) }
+        }
 
     private fun loadPhrases(): List<PhraseEntry> = parseCsv("corpus/hk_core_phrases.csv") { cols ->
         if (cols.size < 4) null
@@ -184,19 +240,33 @@ class CorpusLoader(private val ctx: Context) {
         else WhitelistEntry(cols[0], if (cols.size > 1) cols[1] else "")
     }
 
-    private fun loadEnglishAssist(): List<EnglishAssistEntry> =
-        parseCsv("corpus/english_assist.csv") { cols ->
+    private fun loadEnglishAssist(): List<EnglishAssistEntry> {
+        fun load(path: String) = parseCsv(path) { cols ->
             if (cols.size < 3) null
             else EnglishAssistEntry(cols[0].lowercase(), cols[1],
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
+        // Reviewed Hong Kong renderings (巴士/的士/雪櫃…) are layered after the raw
+        // CC-CEDICT gloss so their higher frequency ranks them first per key.
+        return load("corpus/english_assist.csv") + load("corpus/english_assist_overrides.csv")
+    }
 
-    private fun loadJyutping(): List<JyutpingEntry> =
-        parseCsv("corpus/jyutping.csv") { cols ->
+    private fun loadChineseAssist(): List<ChineseAssistEntry> =
+        parseCsv("corpus/chinese_assist.csv") { cols ->
+            if (cols.size < 3 || cols[0].isBlank() || cols[1].isBlank()) null
+            else ChineseAssistEntry(cols[0], cols[1], cols[2].toDoubleOrNull() ?: 0.0)
+        }
+
+    private fun loadJyutping(): List<JyutpingEntry> {
+        fun load(path: String) = parseCsv(path) { cols ->
             if (cols.size < 3) null
             else JyutpingEntry(cols[0].lowercase(), cols[1],
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
+        return load("corpus/jyutping.csv") +
+            load("corpus/jyutping_overrides.csv") +
+            loadHkscsSupplementJyutping()
+    }
 
     private fun loadPinyin(): List<PinyinEntry> =
         parseCsv("corpus/pinyin.csv") { cols ->
@@ -241,13 +311,22 @@ class CorpusLoader(private val ctx: Context) {
                         CandidateType.ENGLISH_ASSIST, it.freq, false) }
             }
 
+    private fun buildChineseAssistIndex(): Map<String, List<DecodeCandidate>> =
+        chineseAssist.groupBy { it.chinese }
+            .mapValues { (chinese, entries) ->
+                entries.sortedByDescending { it.freq }
+                    .distinctBy { it.english }
+                    .map { DecodeCandidate(it.english, chinese, SourceSchema.CHINESE_ASSIST,
+                        CandidateType.CHINESE_ASSIST, it.freq, false) }
+            }
+
     private fun buildJyutpingIndex(): Map<String, List<DecodeCandidate>> =
         jyutping.groupBy { it.jyutping }
             .mapValues { (jp, entries) ->
                 entries.sortedByDescending { it.freq }
                     .distinctBy { it.chinese }
                     .map { DecodeCandidate(it.chinese, jp, SourceSchema.JYUTPING,
-                        CandidateType.JYUTPING, it.freq, false) }
+                        CandidateType.JYUTPING, it.freq, false, annotation = jp) }
             }
 
     private fun buildMixedIndex(): Map<String, List<DecodeCandidate>> =
@@ -295,14 +374,13 @@ class CorpusLoader(private val ctx: Context) {
         return rows
     }
 
-    // Cache key. The low bits track the app build (release builds bump BUILD_NUMBER,
-    // so a shipped corpus change invalidates old caches); the high byte is a manual
-    // format/content version — bump CORPUS_CONTENT_VERSION when editing the CSVs
-    // without a release build so local dev doesn't read a stale cache.
+    // Manifest hash changes whenever a declared corpus input/output checksum changes.
+    // Combining it with the binary format version makes stale caches impossible even
+    // when a developer builds without changing the app version.
     private val cacheVersion: Int =
-        (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
+        31 * BuildConfig.CORPUS_HASH.hashCode() + CORPUS_CONTENT_VERSION
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 4
+        const val CORPUS_CONTENT_VERSION = 13
     }
 }

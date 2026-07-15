@@ -3,7 +3,7 @@
 <input-method xmlns:android="http://schemas.android.com/apk/res/android"
     android:settingsActivity="com.hkmixedkeyboard.settings.SettingsActivity"
     android:isDefault="false">
-    <!-- The active scheme (速成 / 粵拼) is switched on-keyboard via the ⌨ key, not
+    <!-- The active scheme (速成 / 粵拼 / 普通話拼音) is switched on-keyboard, not
          through system subtypes, so a single subtype is declared. -->
     <subtype
         android:label="@string/subtype_quick"

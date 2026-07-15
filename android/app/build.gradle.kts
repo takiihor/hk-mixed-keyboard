@@ -1,5 +1,4 @@
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.security.MessageDigest
 import java.util.Properties
 
 plugins {
@@ -19,14 +18,10 @@ kapt {
 // A short, human-readable note about this build, surfaced in the Settings screen
 // (and the APK filename) so the installed version is unmistakable. Edit this line
 // whenever you want the note to describe the latest change.
- val buildRemark = "Pinyin mode, 3-way scheme switching, Space-hold Simplified toggle"
+ val buildRemark = "HKSCS 4,606 coverage, cross-mode bilingual assists, reproducible corpora"
 
-// ── Auto-incrementing version ───────────────────────────────────────────────
-// version.properties holds versionMinor/buildNumber/buildTime. Every time an
-// assemble/bundle/install build is requested, the minor version is bumped (the
-// APK is named app-<variant>-0.<minor>.0.apk, so it goes 0.8.0, 0.9.0, …), the
-// build number (Android versionCode) is bumped, and the timestamp refreshed,
-// then written back — so each built APK carries a higher, unmistakable version.
+// Version metadata is read-only during builds. Release owners update it in an
+// intentional source change; debug, test and lint can never dirty the worktree.
 val versionPropsFile = file("version.properties")
 val versionProps = Properties().apply {
     if (versionPropsFile.exists()) versionPropsFile.inputStream().use { load(it) }
@@ -49,25 +44,21 @@ val hasReleaseSigning = listOf(
     releaseKeyAlias,
     releaseKeyPassword
 ).all { !it.isNullOrBlank() }
-var versionMinor = (versionProps.getProperty("versionMinor") ?: "7").toInt()
-var buildNumber = (versionProps.getProperty("buildNumber") ?: "0").toInt()
-var buildTime = versionProps.getProperty("buildTime") ?: "unknown"
+val releasePackagingTaskNames = setOf("packageRelease", "bundleRelease", "assembleRelease")
+val missingReleaseSigningMessage =
+    "Release signing is required. Set HKKBD_STORE_FILE, HKKBD_STORE_PASSWORD, " +
+        "HKKBD_KEY_ALIAS and HKKBD_KEY_PASSWORD."
+val versionMinor = (versionProps.getProperty("versionMinor") ?: "7").toInt()
+val buildNumber = (versionProps.getProperty("buildNumber") ?: "0").toInt()
+val buildTime = versionProps.getProperty("buildTime") ?: "unknown"
 
-// Bump whenever an APK/AAB is explicitly built or installed. Test-only tasks
-// do not change the app version.
-val isVersionedBuildInvocation = gradle.startParameter.taskNames.any { taskName ->
-    listOf("assemble", "bundle", "install").any { taskName.contains(it, ignoreCase = true) }
-}
-if (isVersionedBuildInvocation) {
-    versionMinor += 1
-    buildNumber += 1
-    buildTime = SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date())
-    versionProps.setProperty("versionMinor", versionMinor.toString())
-    versionProps.setProperty("buildNumber", buildNumber.toString())
-    versionProps.setProperty("buildTime", buildTime)
-    versionPropsFile.outputStream().use {
-        versionProps.store(it, "Auto-incremented on each assemble/bundle/install build")
-    }
+val corpusManifest = rootProject.file("../corpus/sources/corpus_manifest.json")
+val corpusHash = if (corpusManifest.isFile) {
+    MessageDigest.getInstance("SHA-256")
+        .digest(corpusManifest.readBytes())
+        .joinToString("") { "%02x".format(it) }
+} else {
+    "missing-manifest"
 }
 
 // e.g. 0.8.0, 0.9.0, 0.10.0, …
@@ -80,18 +71,18 @@ val appVersionName = "0.$versionMinor.0"
       defaultConfig {
         applicationId = "com.hkmixedkeyboard"
         minSdk = 26
-        // Play policy: new apps/updates must target API 36 from 2026-08-31.
+        // API 36 exceeds the API 35 Play submission floor verified on 2026-07-15.
         targetSdk = 36
         versionCode = buildNumber
         versionName = appVersionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
           buildConfigField("int", "BUILD_NUMBER", "$buildNumber")
           buildConfigField("String", "BUILD_TIME", "\"$buildTime\"")
           buildConfigField("String", "BUILD_REMARK", "\"$buildRemark\"")
+          buildConfigField("String", "CORPUS_HASH", "\"$corpusHash\"")
           // Gate for performance tracing on hot paths. Keep false in release.
           buildConfigField("boolean", "PERF_TRACING", "false")
-          // Optional: enable decode coalescing (cancels older pending decodes). Off by default.
-          buildConfigField("boolean", "DECODE_COALESCE", "false")
 
           // Haptic tuning defaults (overridden in debug below)
           buildConfigField("float", "HAPTIC_INTENSITY", "1.0f") // 0.1–1.0 scale → maps to 26–255 amplitude
@@ -118,11 +109,11 @@ val appVersionName = "0.$versionMinor.0"
 
       buildTypes {
         debug {
+          applicationIdSuffix = ".debug"
           isDebuggable = true
           buildConfigField("boolean", "SHOW_DEBUG_PANEL", "false")
           // Enable perf tracing in debug builds by default.
           buildConfigField("boolean", "PERF_TRACING", "true")
-          buildConfigField("boolean", "DECODE_COALESCE", "false")
 
           // Stronger, crisp haptics for debug without lengthening (avoid overlap)
           buildConfigField("float", "HAPTIC_INTENSITY", "1.0f")
@@ -135,7 +126,6 @@ val appVersionName = "0.$versionMinor.0"
           proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
           buildConfigField("boolean", "SHOW_DEBUG_PANEL", "false")
           buildConfigField("boolean", "PERF_TRACING", "false")
-          buildConfigField("boolean", "DECODE_COALESCE", "false")
           if (hasReleaseSigning) {
             signingConfig = signingConfigs.getByName("release")
           }
@@ -154,10 +144,12 @@ val appVersionName = "0.$versionMinor.0"
         viewBinding = true
     }
 
+    sourceSets {
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
+
     lint {
-        // These are release-process choices, not app-store correctness failures:
-        // target 35 satisfies current Google Play policy, and dependency/KSP
-        // upgrades should be handled as separate compatibility work.
+        // Dependency/KSP upgrades are handled as explicit compatibility work.
         disable += setOf(
             "OldTargetApi",
             "AndroidGradlePluginVersion",
@@ -177,6 +169,27 @@ val appVersionName = "0.$versionMinor.0"
     }
 }
 
+// Reject release packaging before any dependency task can write an unsigned bundle.
+// The task-level guard remains as defense in depth for unusual direct task execution.
+gradle.taskGraph.whenReady {
+    if (!hasReleaseSigning && allTasks.any { task ->
+            task.project == project && task.name in releasePackagingTaskNames
+        }
+    ) {
+        throw GradleException(missingReleaseSigningMessage)
+    }
+}
+
+tasks.configureEach {
+    if (name in releasePackagingTaskNames) {
+        doFirst {
+            if (!hasReleaseSigning) {
+                throw GradleException(missingReleaseSigningMessage)
+            }
+        }
+    }
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -189,4 +202,9 @@ dependencies {
     kapt(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.room.testing)
 }

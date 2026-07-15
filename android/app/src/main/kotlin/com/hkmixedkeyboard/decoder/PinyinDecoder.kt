@@ -1,22 +1,8 @@
 package com.hkmixedkeyboard.decoder
 
-import java.util.Locale
 import java.util.PriorityQueue
 
 data class PinyinEntry(val pinyin: String, val chinese: String, val freq: Double)
-
-object PinyinNormalizer {
-    private val UMLAUT_AFTER_STANDARD_INITIAL = Regex("([jqxy])v")
-
-    fun normalize(input: String): String? {
-        if (input.isEmpty()) return null
-        val lower = input.lowercase(Locale.ROOT)
-            .replace("u:", "v")
-            .replace('ü', 'v')
-        if (!lower.all { it in 'a'..'z' }) return null
-        return lower.replace(UMLAUT_AFTER_STANDARD_INITIAL, "$1u")
-    }
-}
 
 /** Immutable in-memory indices built once from the cached Pinyin rows. */
 class PinyinLexicon(entries: List<PinyinEntry>) {
@@ -26,11 +12,27 @@ class PinyinLexicon(entries: List<PinyinEntry>) {
 
     val prefixes = SortedPrefixIndex(exact.keys)
 
+    private val typoKeysByLength: Map<Int, List<String>> = exact.keys.groupBy(String::length)
+
     private val syllables: Set<String> = exact.entries
         .filter { (_, candidates) -> candidates.any { it.type == CandidateType.CHAR } }
         .mapTo(HashSet()) { it.key }
 
     val segmenter = PinyinSegmenter(syllables)
+
+    fun adjacentTypoCandidates(input: String): List<DecodeCandidate> {
+        if (input.length !in 2..MAX_TYPO_INPUT_LENGTH) return emptyList()
+        val key = typoKeysByLength[input.length].orEmpty().asSequence()
+            .filter { differsByOneAdjacentKey(input, it) }
+            .maxByOrNull { candidate -> exact[candidate].orEmpty().maxOfOrNull { it.frequency } ?: 0.0 }
+            ?: return emptyList()
+        return exact[key].orEmpty().map {
+            it.copy(
+                sourceSchema = SourceSchema.PINYIN_CORRECTION,
+                annotation = "↪ $key"
+            )
+        }
+    }
 
     private fun buildExactIndex(
         entries: List<PinyinEntry>
@@ -58,6 +60,31 @@ class PinyinLexicon(entries: List<PinyinEntry>) {
                     .thenBy { it.text }
             )
         }
+    }
+
+    private fun differsByOneAdjacentKey(input: String, candidate: String): Boolean {
+        var differences = 0
+        for (index in input.indices) {
+            if (input[index] == candidate[index]) continue
+            differences++
+            if (differences > 1 || candidate[index] !in QWERTY_NEIGHBOURS[input[index]].orEmpty()) {
+                return false
+            }
+        }
+        return differences == 1
+    }
+
+    private companion object {
+        const val MAX_TYPO_INPUT_LENGTH = 72
+
+        val QWERTY_NEIGHBOURS = mapOf(
+            'q' to "wa", 'w' to "qeas", 'e' to "wrsd", 'r' to "etdf", 't' to "ryfg",
+            'y' to "tugh", 'u' to "yihj", 'i' to "uojk", 'o' to "ipkl", 'p' to "ol",
+            'a' to "qwsz", 's' to "weadzx", 'd' to "erfsxc", 'f' to "rtgdvc",
+            'g' to "tyfhvb", 'h' to "yugjbn", 'j' to "uihknm", 'k' to "iojlm",
+            'l' to "opk", 'z' to "asx", 'x' to "zsdc", 'c' to "xdfv",
+            'v' to "cfgb", 'b' to "vghn", 'n' to "bhjm", 'm' to "njk"
+        )
     }
 }
 
@@ -112,15 +139,42 @@ class PinyinSegmenter(private val syllables: Set<String>) {
     }
 
     private companion object {
-        const val MAX_BUFFER_LENGTH = 48
-        const val MAX_SYLLABLES = 8
+        // This must stay aligned with Thresholds.PINYIN_MAX_BUFFER_LEN. The
+        // bounded input length keeps dynamic programming inexpensive; allowing
+        // the same number of syllables avoids a second, lower reachability cap.
+        const val MAX_BUFFER_LENGTH = 72
+        const val MAX_SYLLABLES = 72
     }
 }
 
-class PinyinDecoder(private val lexicon: PinyinLexicon) {
+class PinyinDecoder(
+    private val lexicon: PinyinLexicon,
+    private val fuzzyEnabled: () -> Boolean = { false }
+) {
+    @Volatile private var fuzzyOverride: Boolean? = null
+
+    fun setFuzzyEnabled(enabled: Boolean) {
+        fuzzyOverride = enabled
+    }
+
     fun decode(buffer: String): DecodeResult {
-        val normalized = PinyinNormalizer.normalize(buffer)
-            ?: return empty(buffer)
+        val variants = PinyinNormalizer.variants(buffer, fuzzyOverride ?: fuzzyEnabled())
+        if (variants.isEmpty()) return empty(buffer)
+        variants.forEachIndexed { index, normalized ->
+            val decoded = decodeNormalized(buffer, normalized)
+            if (decoded.candidates.isNotEmpty()) {
+                return if (index == 0) decoded else decoded.copy(isExactCode = false)
+            }
+        }
+        val strict = variants.first()
+        val correction = lexicon.adjacentTypoCandidates(strict)
+        if (correction.isNotEmpty()) {
+            return DecodeResult(buffer, Scheme.PINYIN, buffer.length, false, false, correction)
+        }
+        return empty(buffer)
+    }
+
+    private fun decodeNormalized(buffer: String, normalized: String): DecodeResult {
 
         val exactCandidates = lexicon.exact[normalized]
         val prefixCandidates = longerPrefixCandidates(

@@ -32,6 +32,32 @@ class InputSchemeTransitionCoordinatorTest {
     }
 
     @Test
+    fun `direct selection applies and persists the chosen mode`() {
+        val coordinator = InputSchemeTransitionCoordinator(Scheme.QUICK)
+
+        assertEquals(
+            InputSchemeTransitionCoordinator.Action.ApplyAndPersist(Scheme.PINYIN),
+            coordinator.onSelect(Scheme.PINYIN)
+        )
+        assertEquals(Scheme.PINYIN, coordinator.currentScheme)
+    }
+
+    @Test
+    fun `selecting the current or pending mode is ignored`() {
+        val coordinator = InputSchemeTransitionCoordinator(Scheme.QUICK)
+
+        assertEquals(
+            InputSchemeTransitionCoordinator.Action.Ignore,
+            coordinator.onSelect(Scheme.QUICK)
+        )
+        coordinator.onSelect(Scheme.JYUTPING)
+        assertEquals(
+            InputSchemeTransitionCoordinator.Action.Ignore,
+            coordinator.onSelect(Scheme.JYUTPING)
+        )
+    }
+
+    @Test
     fun `stale persisted emission cannot regress a newer requested scheme`() {
         val coordinator = InputSchemeTransitionCoordinator(Scheme.QUICK)
         coordinator.onToggle()

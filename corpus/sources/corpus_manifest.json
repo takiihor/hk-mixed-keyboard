@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "corpus_content_version": 13,
+  "assets": [
+    {
+      "path": "android/app/src/main/assets/corpus/english_assist.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 68752,
+      "bytes": 1635546,
+      "sha256": "6bce7cf8549521c8ce5111d9d18cd463cfc077ebe3a77dbb37c4ae874df11300",
+      "provenance": {
+        "status": "reproducible",
+        "licenses": ["CC-BY-SA-4.0", "LGPL-3.0", "Project-Curated"],
+        "generator": "corpus/tools/build_english_assist_corpus.py",
+        "sources": [
+          {
+            "role": "cedict",
+            "path": "corpus/sources/upstream/cc-cedict-2026-07-12T162325Z.u8.gz",
+            "url": "https://cc-cedict.org/editor/editor_export_cedict.php?c=gz",
+            "date": "2026-07-12T16:23:25Z",
+            "sha256": "90e2881776366f606171a977a1f54786196f428ba604c728a279d4aaff7223a8"
+          },
+          {
+            "role": "frequency-vocabulary",
+            "path": "corpus/sources/upstream/frequencywords-en-50k-525f9b560de45753a5ea01069454e72e9aa541c6.txt",
+            "url": "https://raw.githubusercontent.com/hermitdave/FrequencyWords/525f9b560de45753a5ea01069454e72e9aa541c6/content/2018/en/en_50k.txt",
+            "date": "2026-07-14",
+            "sha256": "5351ff405b1126ef555791dd4d9798a48e3e9a501a9fc481a9da957752cfb458"
+          },
+          {
+            "role": "ranking-frequency",
+            "path": "corpus/sources/upstream/rime-essay-0debef3f5ae37f081758dd8bbd1fe79719410f7c.tar.gz",
+            "url": "https://codeload.github.com/rime/rime-essay/tar.gz/0debef3f5ae37f081758dd8bbd1fe79719410f7c",
+            "date": "2026-07-03T06:24:35Z",
+            "sha256": "4f32414039eb7f8a876acd8e94bd81c78fefafde56a352f7a3b8b2b74ca09c71"
+          }
+        ],
+        "inputs": [
+          {
+            "path": "corpus/internal_stage1/english_assist.csv",
+            "sha256": "d435d36be9db41697c17d63cdd1d99f0129bc41d9cc013d7dd82f45a7cbb70bb"
+          }
+        ]
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/english_assist_overrides.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 43,
+      "bytes": 1083,
+      "sha256": "412b758efb48a088842a075b9db89a4c6b12fb04098fff69d4a1db477f1ad097",
+      "provenance": {
+        "status": "reviewed-curated",
+        "licenses": ["Project-Curated"],
+        "note": "Human-reviewed Hong Kong English->Chinese renderings layered over the reproducible CC-CEDICT assist corpus; raw glosses remain available lower in each key."
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/chinese_assist.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 11,
+      "bytes": 400,
+      "sha256": "435d51773889084688cb31cf609d1c5d8a906f19ab9b9004ada0f795aab8d275",
+      "provenance": {
+        "status": "reviewed-curated",
+        "licenses": ["Project-Curated"],
+        "note": "Human-reviewed, deliberately limited exact-match Hong Kong Chinese-to-English post-commit assist; it does not invert raw dictionary glosses."
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/hk_core_chars.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 18200,
+      "bytes": 384794,
+      "sha256": "90f8f38577c4cf073740baf0d611dc5b3421a4c6231260606a322de5ca03b7a4",
+      "provenance": {
+        "status": "reproducible",
+        "licenses": ["GPL-3.0", "LGPL-3.0"],
+        "generator": "corpus/tools/build_quick_corpus.py",
+        "sources": [
+          {"path": "corpus/sources/upstream/rime-cangjie-52d90a1b1312e74042b38c1cbc8142defbc53171.tar.gz", "url": "https://codeload.github.com/rime/rime-cangjie/tar.gz/52d90a1b1312e74042b38c1cbc8142defbc53171", "date": "2026-06-01T12:41:07Z", "sha256": "18d989bf21d0bb86b402f18be4dd060bf2653896c95448afb01d4da2e6be5464"},
+          {"path": "corpus/sources/upstream/rime-essay-0debef3f5ae37f081758dd8bbd1fe79719410f7c.tar.gz", "url": "https://codeload.github.com/rime/rime-essay/tar.gz/0debef3f5ae37f081758dd8bbd1fe79719410f7c", "date": "2026-07-03T06:24:35Z", "sha256": "4f32414039eb7f8a876acd8e94bd81c78fefafde56a352f7a3b8b2b74ca09c71"}
+        ],
+        "inputs": [{"path": "corpus/internal_stage1/hk_core_chars.csv", "sha256": "abc5340393deb98fe8b5a00b36f22ee6442930f1d261c5d3bcaac0cc1e863448"}]
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/hk_core_phrases.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 40120,
+      "bytes": 936007,
+      "sha256": "ec5e608995c7bd02d813fa03665eed240c4931fa55f2a2e315b394003c35ed98",
+      "provenance": {
+        "status": "reproducible",
+        "licenses": ["GPL-3.0", "LGPL-3.0"],
+        "generator": "corpus/tools/build_quick_corpus.py",
+        "sources": [
+          {"path": "corpus/sources/upstream/rime-cangjie-52d90a1b1312e74042b38c1cbc8142defbc53171.tar.gz", "url": "https://codeload.github.com/rime/rime-cangjie/tar.gz/52d90a1b1312e74042b38c1cbc8142defbc53171", "date": "2026-06-01T12:41:07Z", "sha256": "18d989bf21d0bb86b402f18be4dd060bf2653896c95448afb01d4da2e6be5464"},
+          {"path": "corpus/sources/upstream/rime-essay-0debef3f5ae37f081758dd8bbd1fe79719410f7c.tar.gz", "url": "https://codeload.github.com/rime/rime-essay/tar.gz/0debef3f5ae37f081758dd8bbd1fe79719410f7c", "date": "2026-07-03T06:24:35Z", "sha256": "4f32414039eb7f8a876acd8e94bd81c78fefafde56a352f7a3b8b2b74ca09c71"}
+        ],
+        "inputs": [{"path": "corpus/internal_stage1/hk_core_phrases.csv", "sha256": "ee4091f1d11c269dbdcbffcead0c95d6489bee1c1494fb78259803f5d6d032c4"}]
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/hkscs_supplement.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 4606,
+      "bytes": 91983,
+      "sha256": "d34d018e92a3ca4c55cf6fe8ffcc4e0e37e23da929e3b684a60633a192bd6893",
+      "provenance": {
+        "status": "reproducible",
+        "licenses": ["DATA.GOV.HK-Terms-of-Use"],
+        "generator": "corpus/tools/hkscs_coverage.py",
+        "source": {
+          "path": "corpus/sources/upstream/hkscs2016-a28a3b74.json",
+          "url": "https://data.gov.hk/en-data/dataset/hk-dpo-dpo_hp-hong-kong-supplementary-character-set-related-information",
+          "date": "2026-07-13",
+          "sha256": "a28a3b74e469726c7df2174346e9a3992760f5842c02ac07b834529bc5b931e5"
+        },
+        "inputs": [
+          {"path": "android/app/src/main/assets/corpus/hk_core_chars.csv", "sha256": "90f8f38577c4cf073740baf0d611dc5b3421a4c6231260606a322de5ca03b7a4"},
+          {"path": "android/app/src/main/assets/corpus/jyutping.csv", "sha256": "15acfe5a1186c254b89891cd871cfa30e63e4b2a5bd87c737992e4506031e40a"}
+        ]
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/jyutping.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 89778,
+      "bytes": 2019789,
+      "sha256": "15acfe5a1186c254b89891cd871cfa30e63e4b2a5bd87c737992e4506031e40a",
+      "provenance": {
+        "status": "reproducible",
+        "licenses": ["CC-BY-4.0"],
+        "generator": "corpus/tools/build_jyutping_corpus.py",
+        "source": {
+          "path": "corpus/sources/upstream/rime-cantonese-c99b16e44d2df77a5cb8fb0867dd2bab7a112cb0.tar.gz",
+          "url": "https://codeload.github.com/rime/rime-cantonese/tar.gz/c99b16e44d2df77a5cb8fb0867dd2bab7a112cb0",
+          "date": "2026-07-02T11:05:50Z",
+          "sha256": "83fddd062104abac17fbc0c039f2c22c57671e96c5395a00abc326fd9ceeedfd"
+        }
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/jyutping_overrides.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 30,
+      "bytes": 1979,
+      "sha256": "bc9c9bd02f400d44c92c9966be11356a107354b6b6a459ee9e2b9ddd0488873f",
+      "provenance": {
+        "status": "reviewed-curated",
+        "licenses": ["Project-Curated"],
+        "note": "Human-reviewed Hong Kong Cantonese ranking overrides kept separate from the upstream snapshot."
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/mixed_phrases.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 65,
+      "bytes": 1623,
+      "sha256": "10d7c98a709dc48328f68b5e2cea2b93b9deed0addc85de5c4407d4faa75a04c",
+      "provenance": {
+        "status": "reviewed-curated",
+        "licenses": ["Project-Curated"],
+        "note": "Project-curated Hong Kong Chinese-English mixed phrases."
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/pinyin.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 122082,
+      "bytes": 3007869,
+      "sha256": "a2a0aedc900bc075f49f9583d1af65a8f80f2fca04d2835844865dc913ffafad",
+      "provenance": {
+        "status": "reproducible",
+        "licenses": ["CC-BY-SA-4.0"],
+        "generator": "corpus/tools/build_pinyin_corpus.py",
+        "source": {
+          "path": "corpus/sources/upstream/cc-cedict-2026-07-12T162325Z.u8.gz",
+          "url": "https://cc-cedict.org/editor/editor_export_cedict.php?c=gz",
+          "date": "2026-07-12T16:23:25Z",
+          "sha256": "90e2881776366f606171a977a1f54786196f428ba604c728a279d4aaff7223a8"
+        },
+        "inputs": [
+          {"path": "android/app/src/main/assets/corpus/hk_core_chars.csv", "sha256": "90f8f38577c4cf073740baf0d611dc5b3421a4c6231260606a322de5ca03b7a4"},
+          {"path": "android/app/src/main/assets/corpus/hk_core_phrases.csv", "sha256": "ec5e608995c7bd02d813fa03665eed240c4931fa55f2a2e315b394003c35ed98"}
+        ]
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/corpus/whitelist_en.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 41,
+      "bytes": 348,
+      "sha256": "82ad5c8dd423d0f2f4d53a21d2faded45ebe790ad07deb4b0f148b03fbb1d4b6",
+      "provenance": {
+        "status": "reviewed-curated",
+        "licenses": ["Project-Curated"],
+        "note": "Project-curated literal-English collision whitelist."
+      }
+    },
+    {
+      "path": "android/app/src/main/assets/t2s/t2s_map.tsv",
+      "format": "tsv",
+      "header": false,
+      "data_rows": 4394,
+      "bytes": 39744,
+      "sha256": "f969158a0c81263c018752d5f490cc3eb438ea20528afc7e9b9b1ca55b27778c",
+      "provenance": {
+        "status": "reproducible",
+        "licenses": ["Apache-2.0"],
+        "generator": "corpus/tools/build_t2s_map.py",
+        "sources": [
+          {
+            "role": "opencc",
+            "path": "corpus/sources/upstream/opencc-ea6af199fefd6ab9b79015b5b93fef8b6b95c8b5.tar.gz",
+            "url": "https://codeload.github.com/BYVoid/OpenCC/tar.gz/ea6af199fefd6ab9b79015b5b93fef8b6b95c8b5",
+            "date": "2026-07-14",
+            "sha256": "09ff1819bf8de167daeb1e0dfccb8ee1ec70f8ce7537f3c1abc3c5a7ba1a90dc"
+          }
+        ]
+      }
+    }
+  ]
+}

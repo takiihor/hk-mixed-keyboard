@@ -15,6 +15,7 @@ import build_pinyin_corpus as generator  # noqa: E402
 from build_pinyin_corpus import (  # noqa: E402
     MAX_ASSET_BYTES,
     MAX_FANOUT,
+    MAX_KEY_LENGTH,
     MAX_ROWS,
     build_corpus,
     normalize_pinyin,
@@ -25,6 +26,10 @@ from build_pinyin_corpus import (  # noqa: E402
 
 FIXTURE = Path(__file__).parent / "fixtures" / "cedict_sample.u8"
 REAL_ASSET = TOOLS_DIR.parents[1] / "android/app/src/main/assets/corpus/pinyin.csv"
+REAL_CEDICT = TOOLS_DIR.parents[1] / "corpus/sources/upstream/cc-cedict-2026-07-12T162325Z.u8.gz"
+REAL_CEDICT_URL = "https://cc-cedict.org/editor/editor_export_cedict.php?c=gz"
+REAL_CEDICT_DATE = "2026-07-12T16:23:25Z"
+REAL_CEDICT_SHA256 = "90e2881776366f606171a977a1f54786196f428ba604c728a279d4aaff7223a8"
 
 
 class NormalizePinyinTest(unittest.TestCase):
@@ -159,6 +164,34 @@ class BuildCorpusTest(unittest.TestCase):
         rows = list(csv.DictReader(line for line in io.StringIO(content) if not line.startswith("#")))
         self.assertNotIn(("xx", "昔"), {(row["pinyin"], row["chinese"]) for row in rows})
 
+    def test_filters_non_han_headwords_before_shipping(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "non-han.u8"
+            source.write_text(
+                FIXTURE.read_text(encoding="utf-8")
+                .replace("#! entries=8", "#! entries=9")
+                + "P P [pi1] /letter P/\n",
+                encoding="utf-8",
+            )
+            content = self._build(root / "pinyin.csv", source=source).decode("utf-8")
+
+        rows = list(csv.DictReader(line for line in io.StringIO(content) if not line.startswith("#")))
+        self.assertNotIn(("pi", "P"), {(row["pinyin"], row["chinese"]) for row in rows})
+
+    def test_rejects_canonical_key_over_the_composition_ceiling(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "overlong.u8"
+            source.write_text(
+                FIXTURE.read_text(encoding="utf-8")
+                .replace("#! entries=8", "#! entries=9")
+                + f"長 長 [{'a1' * (MAX_KEY_LENGTH + 1)}] /overlong/\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "key length budget"):
+                self._build(root / "pinyin.csv", source=source)
+
     def test_uses_hk_core_frequency_before_length_class_fallbacks(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "pinyin.csv"
@@ -290,9 +323,27 @@ class RuntimeBudgetTest(unittest.TestCase):
             rows = list(csv.DictReader(line for line in source if not line.startswith("#")))
         fanout = collections.Counter(row["pinyin"] for row in rows)
         validate_runtime_budgets(len(rows), REAL_ASSET.stat().st_size, max(fanout.values()))
+        self.assertLessEqual(max(len(row["pinyin"]) for row in rows), MAX_KEY_LENGTH)
+        self.assertTrue(all(generator.is_han_only(row["chinese"]) for row in rows))
 
 
 class RealAssetRankingTest(unittest.TestCase):
+    def test_pinned_inputs_regenerate_the_shipped_asset(self):
+        with tempfile.TemporaryDirectory() as directory:
+            generated = Path(directory) / "pinyin.csv"
+            build_corpus(
+                cedict_path=REAL_CEDICT,
+                char_frequency_path=TOOLS_DIR.parents[1]
+                / "android/app/src/main/assets/corpus/hk_core_chars.csv",
+                phrase_frequency_path=TOOLS_DIR.parents[1]
+                / "android/app/src/main/assets/corpus/hk_core_phrases.csv",
+                output_path=generated,
+                source_url=REAL_CEDICT_URL,
+                source_date=REAL_CEDICT_DATE,
+                source_sha256=REAL_CEDICT_SHA256,
+            )
+            self.assertEqual(REAL_ASSET.read_bytes(), generated.read_bytes())
+
     def test_persisted_frequency_ranks_mandarin_candidates_first(self):
         with REAL_ASSET.open(encoding="utf-8", newline="") as source:
             rows = list(csv.DictReader(line for line in source if not line.startswith("#")))

@@ -23,7 +23,7 @@ class SimplifiedOutputToggleControllerTest {
         fixture.controller.toggle(currentlyEnabled = false)
 
         assertEquals(
-            listOf(SimplifiedOutputToggleController.Result(true, "簡體輸出：開")),
+            listOf(SimplifiedOutputToggleController.Result(true)),
             fixture.applied
         )
         assertEquals(0, fixture.loadingCount)
@@ -36,7 +36,7 @@ class SimplifiedOutputToggleControllerTest {
         fixture.controller.toggle(currentlyEnabled = true)
 
         assertEquals(
-            listOf(SimplifiedOutputToggleController.Result(false, "繁體輸出：開")),
+            listOf(SimplifiedOutputToggleController.Result(false)),
             fixture.applied
         )
         assertEquals(0, fixture.loadingCount)

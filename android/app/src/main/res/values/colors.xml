@@ -10,10 +10,10 @@
     <color name="key_bg_special">#26282A</color>    <!-- shift, backspace, ?123, emoji -->
     <color name="key_bg_space">#303134</color>      <!-- space bar -->
     <color name="key_bg_pressed">#5F6368</color>    <!-- pressed pop -->
-    <color name="key_bg_enter">#1B9E83</color>      <!-- enter / action key (teal) -->
+    <color name="key_bg_enter">#006B5B</color>      <!-- enter / action key (AA teal) -->
 
     <color name="key_label">#E8EAED</color>         <!-- main glyph (Cangjie root) -->
-    <color name="key_radical">#9AA0A6</color>       <!-- small latin hint, top-right -->
+    <color name="key_radical">#BDC1C6</color>       <!-- small latin hint, top-right -->
     <color name="key_label_enter">#FFFFFF</color>   <!-- enter glyph -->
 
     <!-- Candidate bar -->
@@ -33,7 +33,7 @@
     <color name="symbol_key_bg_pressed">#50575C</color>
     <color name="symbol_key_label">#F2F4F5</color>
     <color name="symbol_page_indicator_active">#F2F4F5</color>
-    <color name="symbol_page_indicator_inactive">#7B8288</color>
+    <color name="symbol_page_indicator_inactive">#AAB0B5</color>
     <color name="symbol_popup_bg">#464C51</color>
     <color name="symbol_popup_label">#F2F4F5</color>
 

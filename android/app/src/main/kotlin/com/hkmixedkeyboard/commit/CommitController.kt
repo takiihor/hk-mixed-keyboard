@@ -2,6 +2,9 @@ package com.hkmixedkeyboard.commit
 
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
+import com.hkmixedkeyboard.decoder.JyutpingNormalizer
+import com.hkmixedkeyboard.decoder.PinyinNormalizer
+import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.memory.IUserMemory
 
@@ -17,7 +20,7 @@ class CommitController(
         var committedText: String? = null
         var memoryWrite = MemoryWriteDecision(false)
 
-        if (s.buffer.length >= Thresholds.MAX_BUFFER_LEN) {
+        if (s.buffer.length >= Thresholds.maxBufferLength(ctx.scheme)) {
             val flush = commitLiteralBuffer(s.buffer, learn = false, state = s)
             s = flush.newState
             committedText = flush.committedText
@@ -231,16 +234,19 @@ class CommitController(
         candidate: DecodeCandidate,
         buffer: String
     ): Boolean {
-        val expectedSource = when (ctx.scheme) {
-            com.hkmixedkeyboard.decoder.Scheme.QUICK -> SourceSchema.QUICK
-            com.hkmixedkeyboard.decoder.Scheme.CANGJIE -> SourceSchema.CANGJIE
-            com.hkmixedkeyboard.decoder.Scheme.JYUTPING -> SourceSchema.JYUTPING
-            com.hkmixedkeyboard.decoder.Scheme.PINYIN -> SourceSchema.PINYIN
-            com.hkmixedkeyboard.decoder.Scheme.MIXED_EXPERIMENTAL ->
-                SourceSchema.MIXED_PHRASE
+        val expectedSources = when (ctx.scheme) {
+            Scheme.QUICK -> setOf(SourceSchema.QUICK, SourceSchema.CUSTOM_QUICK)
+            Scheme.CANGJIE -> setOf(SourceSchema.CANGJIE)
+            Scheme.JYUTPING -> setOf(SourceSchema.JYUTPING, SourceSchema.CUSTOM_JYUTPING)
+            Scheme.PINYIN -> setOf(SourceSchema.PINYIN, SourceSchema.CUSTOM_PINYIN)
+            Scheme.MIXED_EXPERIMENTAL -> setOf(SourceSchema.MIXED_PHRASE)
         }
-        return candidate.sourceSchema == expectedSource &&
-            candidate.code.equals(buffer, ignoreCase = true)
+        val normalizedBuffer = when (ctx.scheme) {
+            Scheme.JYUTPING -> JyutpingNormalizer.normalize(buffer)?.key
+            Scheme.PINYIN -> PinyinNormalizer.normalize(buffer)
+            else -> buffer.lowercase()
+        } ?: return false
+        return candidate.sourceSchema in expectedSources && candidate.code == normalizedBuffer
     }
 
     companion object {

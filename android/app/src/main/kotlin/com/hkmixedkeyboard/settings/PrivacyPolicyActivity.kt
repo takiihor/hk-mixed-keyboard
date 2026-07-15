@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard.settings
 
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,19 +15,25 @@ class PrivacyPolicyActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
 
         val body = runCatching {
             assets.open("legal/privacy_policy.txt").bufferedReader().use { it.readText() }
         }.getOrElse { "Failed to load privacy policy: ${it.message}" }
 
+        val contentPadding = (16 * resources.displayMetrics.density).toInt()
         val text = TextView(this).apply {
             this.text = body
             textSize = 13f
             setTextIsSelectable(true)
-            val pad = (16 * resources.displayMetrics.density).toInt()
-            setPadding(pad, pad, pad, pad)
+        }
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(contentPadding, contentPadding, contentPadding, contentPadding)
+            addView(text)
         }
 
-        setContentView(ScrollView(this).apply { addView(text) })
+        setContentView(ScrollView(this).apply { addView(root) })
+        SettingsScreenInsets.apply(this, root, contentPadding)
     }
 }

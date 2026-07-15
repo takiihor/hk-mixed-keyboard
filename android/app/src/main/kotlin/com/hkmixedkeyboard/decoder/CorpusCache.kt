@@ -42,7 +42,7 @@ object CorpusCache {
                 if (d.readInt() != MAGIC) return null
                 if (d.readInt() != version) return null
                 val n = d.readInt()
-                if (n < 0) return null
+                if (n !in 0..MAX_CACHE_ROWS) return null
                 val out = ArrayList<T>(n)
                 repeat(n) { out.add(readRow(d)) }
                 if (d.readInt() != MAGIC) return null // complete-file sentinel
@@ -78,4 +78,6 @@ object CorpusCache {
             // best-effort; caching is an optimization only
         }
     }
+
+    private const val MAX_CACHE_ROWS = 500_000
 }

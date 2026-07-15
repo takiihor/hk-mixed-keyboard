@@ -24,6 +24,13 @@ class InputSchemeTransitionCoordinator(initialScheme: Scheme) {
         return Action.ApplyAndPersist(next)
     }
 
+    fun onSelect(scheme: Scheme): Action {
+        if (scheme == (pendingScheme ?: currentScheme)) return Action.Ignore
+        pendingScheme = scheme
+        currentScheme = scheme
+        return Action.ApplyAndPersist(scheme)
+    }
+
     fun onPersisted(scheme: Scheme): Action {
         lastPersistedScheme = scheme
         val pending = pendingScheme

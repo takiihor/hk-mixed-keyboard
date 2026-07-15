@@ -26,6 +26,7 @@ class CandidateGridView(private val context: Context) {
             field = value
             applyTheme()
         }
+    private val glyphPaint = android.graphics.Paint()
 
     private fun selectionHaptic(view: View) {
         val engine = haptics
@@ -52,13 +53,25 @@ class CandidateGridView(private val context: Context) {
         }
         this.grid = grid
 
-        candidates.forEach { cand ->
+        candidates.forEachIndexed { index, cand ->
+            val label = CandidatePresentation.label(cand) { glyphPaint.hasGlyph(it) }
             val cell = TextView(context).apply {
-                text = cand.text
+                text = label
+                contentDescription = context.getString(
+                    com.hkmixedkeyboard.R.string.candidate_position,
+                    index + 1,
+                    candidates.size,
+                    cand.text
+                ) + cand.annotation?.let {
+                    context.getString(com.hkmixedkeyboard.R.string.candidate_reading, it)
+                }.orEmpty()
                 setTextColor(candidateTextColor(cand))
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
                 setPadding(padH, padV, padH, padV)
                 gravity = Gravity.CENTER
+                minimumHeight = dp(48)
+                isFocusable = true
+                isClickable = true
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = layoutSpec.cellBaseWidth
                     columnSpec = GridLayout.spec(

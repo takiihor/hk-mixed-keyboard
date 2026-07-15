@@ -1,5 +1,5 @@
-# Traditional→Simplified map — OpenCC TSCharacters+TSPhrases (Apache-2.0)
-# Same-length pairs only; identity phrases kept as protective overrides.
+# Traditional→Simplified map derived from pinned OpenCC TSCharacters + TSPhrases.
+# Phrase rows are retained as greedy overrides; the first OpenCC target is used.
 酒逢知己千鍾少話不投機半句多	酒逢知己千锺少话不投机半句多
 大目乾連冥間救母變文	大目乾连冥间救母变文
 衹見樹木不見森林	只见树木不见森林
@@ -68,12 +68,16 @@
 顛乾倒坤	颠乾倒坤
 顛倒乾坤	颠倒乾坤
 不瞭解	不了解
+乾佑縣	乾佑县
+乾安縣	乾安县
+乾安鎮	乾安镇
 乾清宮	乾清宫
 乾盛世	乾盛世
 二噁英	二𫫇英
 八濛山	八濛山
 千鍾粟	千锺粟
 反覆性	反复性
+尼乾子	尼乾子
 尼乾陀	尼乾陀
 張法乾	张法乾
 憑藉着	凭借着
@@ -117,6 +121,7 @@
 乾圖	乾图
 乾坤	乾坤
 乾宅	乾宅
+乾州	乾州
 乾斷	乾断
 乾旦	乾旦
 乾曜	乾曜
@@ -134,7 +139,6 @@
 反覆	反复
 哪吒	哪吒
 回覆	回复
-射覆	射复
 幺麼	幺麽
 康乾	康乾
 彷彿	仿佛
@@ -959,6 +963,7 @@
 彥	彦
 彫	雕
 彲	彨
+彷	彷
 彿	佛
 後	后
 徑	径
@@ -1540,6 +1545,7 @@
 牀	床
 牆	墙
 牘	牍
+牴	牴
 牽	牵
 犖	荦
 犛	牦
@@ -1693,6 +1699,7 @@
 瞜	䁖
 瞞	瞒
 瞤	𥆧
+瞭	瞭
 瞶	瞆
 瞼	睑
 矇	蒙
@@ -1734,6 +1741,7 @@
 礬	矾
 礮	𪿫
 礱	砻
+祇	祇
 祕	秘
 祿	禄
 禍	祸
@@ -2241,6 +2249,7 @@
 薵	䓓
 薹	苔
 薺	荠
+藉	藉
 藍	蓝
 藎	荩
 藝	艺
@@ -2325,6 +2334,7 @@
 衚	胡
 衛	卫
 衝	冲
+衹	衹
 袞	衮
 裊	袅
 裏	里
@@ -2357,6 +2367,7 @@
 襲	袭
 襴	襕
 襵	𫌇
+覆	覆
 覈	核
 見	见
 覎	觃
@@ -3297,6 +3308,7 @@
 闢	辟
 闤	阛
 闥	闼
+阪	阪
 陘	陉
 陝	陕
 陞	升

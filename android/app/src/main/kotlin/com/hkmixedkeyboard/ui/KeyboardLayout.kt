@@ -7,7 +7,7 @@ object KeyboardLayout {
     const val KEY_SPACE = " "
     const val KEY_EMOJI = "😊"
     const val KEY_SYMBOL = "符"
-    // Input-scheme switch (速成 ↔ 粵拼). Sentinel label; KeyboardView draws the live
+    // Input-scheme switch (速成 → 粵拼 → 普通話拼音). Sentinel label; KeyboardView draws the live
     // scheme indicator (modeLabel) over it instead of this glyph.
     const val KEY_MODE = "⌨"
     const val KEY_COMMA = "，"

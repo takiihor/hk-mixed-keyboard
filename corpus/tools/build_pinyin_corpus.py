@@ -22,6 +22,7 @@ REQUIRED_METADATA = {"entries", "version", "subversion", "format", "charset", "d
 MAX_ROWS = 130_000
 MAX_ASSET_BYTES = 4 * 1024 * 1024
 MAX_FANOUT = 256
+MAX_KEY_LENGTH = 72
 CANONICAL_FIRST_CANDIDATES = {"mao": "貓"}
 CANONICAL_OVERRIDE_FREQUENCY = 1.0
 RAW_PINYIN_CHARACTERS = re.compile(r"[A-Za-züÜ0-9: ,·'\-]+")
@@ -87,6 +88,23 @@ def is_canonical_pinyin(value: str) -> bool:
             for start in range(first_start, end)
         )
     return reachable[-1]
+
+
+def is_han_only(value: str) -> bool:
+    """Match the runtime's Han-only candidate contract before shipping rows."""
+    if not value:
+        return False
+    for character in value:
+        codepoint = ord(character)
+        if not (
+            0x3400 <= codepoint <= 0x9FFF
+            or 0xF900 <= codepoint <= 0xFAFF
+            or 0x20000 <= codepoint <= 0x2EBEF
+            or 0x30000 <= codepoint <= 0x323AF
+            or codepoint == 0x3007
+        ):
+            return False
+    return True
 
 
 def validate_raw_pinyin(value: str) -> None:
@@ -203,6 +221,8 @@ def build_corpus(
                 raise ValueError(f"malformed CC-CEDICT record at line {line_number}")
             parsed_entry_count += 1
             traditional, raw_pinyin = match.groups()
+            if not is_han_only(traditional):
+                continue
             try:
                 validate_raw_pinyin(raw_pinyin)
             except ValueError as error:
@@ -212,6 +232,11 @@ def build_corpus(
                 raise ValueError(f"invalid normalized reading at line {line_number}")
             if not is_canonical_pinyin(pinyin):
                 continue
+            if len(pinyin) > MAX_KEY_LENGTH:
+                raise ValueError(
+                    "Pinyin key length budget exceeded: "
+                    f"{len(pinyin)} > {MAX_KEY_LENGTH} at line {line_number}"
+                )
             entries.add((pinyin, traditional))
 
     expected_entry_count = _validate_metadata(metadata, source_date)
@@ -248,7 +273,7 @@ def build_corpus(
     output = io.StringIO(newline="")
     output.write("# Mandarin Pinyin dictionary derived from CC-CEDICT (CC BY-SA 4.0)\n")
     output.write("# Toneless continuous keys; u: and ü are normalized to v.\n")
-    output.write("# Noncanonical readings are excluded using a Mandarin syllable inventory.\n")
+    output.write("# Noncanonical readings and non-Han headwords are excluded before shipping.\n")
     output.write(f"# Source URL: {source_url}\n")
     output.write(f"# Source date: {metadata['date']}\n")
     output.write(f"# Source SHA-256: {source_sha256}\n")
@@ -260,7 +285,7 @@ def build_corpus(
     output.write("# Canonical persisted override: mao->貓=1.0000.\n")
     output.write(
         f"# Runtime budgets: rows<={MAX_ROWS}; bytes<={MAX_ASSET_BYTES}; "
-        f"fanout<={MAX_FANOUT}.\n"
+        f"fanout<={MAX_FANOUT}; key_length<={MAX_KEY_LENGTH}.\n"
     )
     writer = csv.writer(output, lineterminator="\n")
     writer.writerow(("pinyin", "chinese", "freq"))

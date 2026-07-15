@@ -40,8 +40,21 @@ class Classifier(private val decoder: DecoderContract) {
         candidates: List<DecodeCandidate>,
         scheme: Scheme
     ): List<DecodeCandidate> =
-        if (scheme == Scheme.PINYIN) candidates else candidates.sortedWith(
-            compareByDescending<DecodeCandidate> { if (it.isHkCore) 1 else 0 }
-                .thenByDescending { it.frequency }
-        )
+        when (scheme) {
+            // PinyinDecoder already preserves exact/composed/prefix ordering.
+            Scheme.PINYIN -> candidates
+            // Keep English→Chinese assists available, but never let their corpus
+            // frequency displace a valid Jyutping interpretation of the buffer.
+            Scheme.JYUTPING -> candidates.sortedWith(
+                compareBy<DecodeCandidate> {
+                    if (it.sourceSchema == com.hkmixedkeyboard.decoder.SourceSchema.ENGLISH_ASSIST) 1 else 0
+                }
+                    .thenByDescending { if (it.isHkCore) 1 else 0 }
+                    .thenByDescending { it.frequency }
+            )
+            else -> candidates.sortedWith(
+                compareByDescending<DecodeCandidate> { if (it.isHkCore) 1 else 0 }
+                    .thenByDescending { it.frequency }
+            )
+        }
 }

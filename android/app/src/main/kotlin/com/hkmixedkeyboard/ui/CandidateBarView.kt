@@ -2,6 +2,7 @@ package com.hkmixedkeyboard.ui
 
 import android.content.Context
 import android.text.TextUtils
+import android.graphics.Canvas
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -30,6 +31,8 @@ class CandidateBarView @JvmOverloads constructor(
     private var renderSnapshot: CandidateRenderSnapshot? = null
     private var displayedCandidates: List<DecodeCandidate> = emptyList()
     private var systemMessageStyle: SystemMessageStyle? = null
+    private val glyphPaint = android.graphics.Paint()
+    private var candidateRenderMetricPending = false
 
     var displayState: CandidateBarDisplayState = CandidateBarDisplayState.EMPTY
         private set
@@ -106,10 +109,20 @@ class CandidateBarView @JvmOverloads constructor(
             row.removeViewAt(row.childCount - 1)
         }
         candidates.forEachIndexed { index, cand ->
-            bindCandidateView(row.getChildAt(index) as TextView, cand)
+            bindCandidateView(row.getChildAt(index) as TextView, cand, index)
         }
         bindExpandView(row.getChildAt(candidates.size) as TextView)
         scrollTo(0, 0)
+        candidateRenderMetricPending = true
+        invalidate()
+    }
+
+    override fun dispatchDraw(canvas: Canvas) {
+        super.dispatchDraw(canvas)
+        if (candidateRenderMetricPending) {
+            candidateRenderMetricPending = false
+            com.hkmixedkeyboard.performance.LatencyLogger.firstCandidateRender()
+        }
     }
 
     fun clear() {
@@ -148,7 +161,7 @@ class CandidateBarView @JvmOverloads constructor(
         setBackgroundColor(themeColors.candidateBackground)
         when (displayState) {
             CandidateBarDisplayState.CANDIDATES_OR_COMPOSING -> displayedCandidates.forEachIndexed { index, candidate ->
-                (row.getChildAt(index) as? TextView)?.let { bindCandidateView(it, candidate) }
+                (row.getChildAt(index) as? TextView)?.let { bindCandidateView(it, candidate, index) }
             }
             else -> Unit
         }
@@ -157,8 +170,22 @@ class CandidateBarView @JvmOverloads constructor(
         }
     }
 
-    private fun bindCandidateView(tv: TextView, cand: DecodeCandidate) {
-        bindLabel(tv, cand.text)
+    private fun bindCandidateView(tv: TextView, cand: DecodeCandidate, index: Int) {
+        val visibleLabel = CandidatePresentation.label(cand) { glyphPaint.hasGlyph(it) }
+        bindLabel(tv, visibleLabel)
+        tv.contentDescription = buildString {
+            append(context.getString(
+                R.string.candidate_position,
+                index + 1,
+                displayedCandidates.size,
+                cand.text
+            ))
+            cand.annotation?.takeIf { it.isNotBlank() }?.let {
+                append(context.getString(R.string.candidate_reading, it))
+            }
+            if (index == 0) append(context.getString(R.string.candidate_first))
+        }
+        tv.isSelected = index == 0
         if (cand.type == CandidateType.EN_LITERAL) {
             tv.setTextColor(colorText)
             tv.background = android.graphics.drawable.GradientDrawable().apply {
@@ -184,6 +211,7 @@ class CandidateBarView @JvmOverloads constructor(
 
     private fun bindExpandView(tv: TextView) {
         bindLabel(tv, "▾")
+        tv.contentDescription = context.getString(R.string.candidate_expand)
         tv.setTextColor(colorText)
         tv.background = null
         tv.setPadding(padH, padV, padH, padV)
@@ -204,7 +232,9 @@ class CandidateBarView @JvmOverloads constructor(
         tv.gravity = Gravity.CENTER_VERTICAL
         tv.setSingleLine(true)
         tv.ellipsize = TextUtils.TruncateAt.END
-        tv.isFocusable = false
+        tv.isFocusable = true
+        tv.isClickable = true
+        tv.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
     }
 
     private fun candidateLayoutParams(margin: Int) =
@@ -238,7 +268,7 @@ class CandidateBarView @JvmOverloads constructor(
         gravity = Gravity.CENTER_VERTICAL
         maxLines = CandidateBarLayoutPolicy.SYSTEM_MESSAGE_MAX_LINES
         ellipsize = TextUtils.TruncateAt.END
-        isFocusable = false
+        isFocusable = true
         layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT

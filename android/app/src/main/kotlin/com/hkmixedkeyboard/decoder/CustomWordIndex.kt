@@ -1,7 +1,7 @@
 package com.hkmixedkeyboard.decoder
 
 /**
- * Immutable lookup for user custom words (自訂詞庫), keyed by Quick code.
+ * Immutable lookup for user custom words (自訂詞庫), keyed by normalized scheme code.
  * Built from the custom_words table and swapped wholesale when it changes, so it is
  * safe to read on the decode thread while a new one is assembled on the main thread.
  */

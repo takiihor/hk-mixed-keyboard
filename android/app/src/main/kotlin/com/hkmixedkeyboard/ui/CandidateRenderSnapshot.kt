@@ -9,7 +9,8 @@ data class CandidateRenderSnapshot(
         val text: String,
         val type: String,
         val source: String,
-        val isHkCore: Boolean
+        val isHkCore: Boolean,
+        val annotation: String?
     )
 
     companion object {
@@ -19,7 +20,8 @@ data class CandidateRenderSnapshot(
                     text = it.text,
                     type = it.type.name,
                     source = it.sourceSchema.name,
-                    isHkCore = it.isHkCore
+                    isHkCore = it.isHkCore,
+                    annotation = it.annotation
                 )
             }
         )

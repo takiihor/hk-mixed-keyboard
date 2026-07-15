@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard.settings
 
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ class OpenSourceLicensesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
 
         val notice = runCatching {
             val files = listOf(
@@ -27,15 +29,20 @@ class OpenSourceLicensesActivity : AppCompatActivity() {
             }
         }.getOrElse { "Failed to load notices: ${it.message}" }
 
+        val contentPadding = (16 * resources.displayMetrics.density).toInt()
         val text = TextView(this).apply {
             this.text = notice
             textSize = 12f
             typeface = android.graphics.Typeface.MONOSPACE
             setTextIsSelectable(true)
-            val pad = (16 * resources.displayMetrics.density).toInt()
-            setPadding(pad, pad, pad, pad)
+        }
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(contentPadding, contentPadding, contentPadding, contentPadding)
+            addView(text)
         }
 
-        setContentView(ScrollView(this).apply { addView(text) })
+        setContentView(ScrollView(this).apply { addView(root) })
+        SettingsScreenInsets.apply(this, root, contentPadding)
     }
 }

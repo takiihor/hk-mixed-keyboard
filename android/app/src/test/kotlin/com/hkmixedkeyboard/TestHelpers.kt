@@ -208,8 +208,10 @@ fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
         for (k in quickIndex.keys) for (i in 1..k.length) add(k.substring(0, i))
     }
 
-    // English assist
-    val enAssistRaw = readEnglishAssist("$corpusDir/english_assist.csv")
+    // English assist (base gloss + reviewed Hong Kong overrides, mirroring
+    // CorpusLoader.loadEnglishAssist so HK renderings rank first by frequency).
+    val enAssistRaw = readEnglishAssist("$corpusDir/english_assist.csv") +
+        readEnglishAssist("$corpusDir/english_assist_overrides.csv")
     val englishAssistIndex: Map<String, List<DecodeCandidate>> = enAssistRaw
         .groupBy { it.first }
         .mapValues { (eng, entries) ->

@@ -49,10 +49,11 @@ class JyutpingSegmentationCorpusTest {
     @Test
     fun `a non-dictionary phrase that the old engine missed now segments`() {
         assumeTrue(readings.isNotEmpty())
-        // "neihou" is not a key in the dictionary, proving segmentation is what makes
-        // it work (the exact/prefix paths would return nothing).
+        // "hounei" is not a key in the dictionary (unlike the reviewed direct
+        // phrase "neihou"), proving segmentation is what makes it work — the
+        // exact/prefix paths would return nothing.
         assertEquals(emptyList<Triple<String, String, Double>>(),
-            readJyutping("$corpusDir/jyutping.csv").filter { it.first == "neihou" })
-        assertNotNull(seg.segment("neihou"))
+            readJyutping("$corpusDir/jyutping.csv").filter { it.first == "hounei" })
+        assertNotNull(seg.segment("hounei"))
     }
 }

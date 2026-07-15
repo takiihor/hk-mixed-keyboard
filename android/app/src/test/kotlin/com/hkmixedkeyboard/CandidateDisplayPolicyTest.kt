@@ -178,6 +178,25 @@ class CandidateDisplayPolicyTest {
     }
 
     @Test
+    fun `expanded grid retains supplementary HKSCS candidate beyond the bar cap`() {
+        val baseCandidates = (1..90).map { i ->
+            cnChar("候$i", "mi", freq = (100 - i).toDouble())
+        }
+        val hkscsSupplement = cnChar("𠀾", "mi", freq = 0.0)
+
+        val expanded = policy.order(
+            buffer = "mi",
+            learned = emptyList(),
+            english = emptyList(),
+            decoded = baseCandidates + hkscsSupplement,
+            literal = enLiteralCand("mi"),
+            limit = CandidateDisplayPolicy.EXPANDED_LIMIT
+        )
+
+        assertEquals(90, expanded.indexOfFirst { it.text == "𠀾" })
+    }
+
+    @Test
     fun `next character predictions promote learned choices`() {
         val result = policy.orderPredictions(
             learned = listOf(MemorySuggestion(cnChar("估", "我"), 3)),

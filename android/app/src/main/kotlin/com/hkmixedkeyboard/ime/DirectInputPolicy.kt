@@ -3,8 +3,13 @@ package com.hkmixedkeyboard.ime
 import android.text.InputType
 
 object DirectInputPolicy {
-    fun shouldCommitKeyDirectly(label: String, directLatinCommit: Boolean): Boolean =
-        isAsciiDigit(label) || (directLatinCommit && isAsciiLetter(label))
+    fun shouldCommitKeyDirectly(
+        label: String,
+        directLatinCommit: Boolean,
+        compositionBuffer: String = ""
+    ): Boolean =
+        (isAsciiDigit(label) && (directLatinCommit || !isUnicodeFallbackPrefix(compositionBuffer))) ||
+            (directLatinCommit && isAsciiLetter(label))
 
     fun shouldUseDirectLatinCommit(
         inputType: Int,
@@ -26,6 +31,9 @@ object DirectInputPolicy {
 
     private fun isAsciiLetter(label: String): Boolean =
         label.length == 1 && (label[0] in 'a'..'z' || label[0] in 'A'..'Z')
+
+    private fun isUnicodeFallbackPrefix(buffer: String): Boolean =
+        UNICODE_FALLBACK_PREFIX.matches(buffer)
 
     private fun isPasswordStyleText(inputType: Int): Boolean {
         val base = inputType and InputType.TYPE_MASK_CLASS
@@ -57,4 +65,6 @@ object DirectInputPolicy {
         "shell",
         "ssh"
     )
+
+    private val UNICODE_FALLBACK_PREFIX = Regex("(?i)u[0-9a-f]{0,4}")
 }

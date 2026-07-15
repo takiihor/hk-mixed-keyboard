@@ -41,13 +41,13 @@
         <!-- Custom word management -->
         <activity
             android:name=".settings.CustomWordActivity"
-            android:label="自訂詞庫"
+            android:label="@string/custom_words_label"
             android:exported="false" />
 
         <!-- Dictionary export / import -->
         <activity
             android:name=".settings.DictionaryExportActivity"
-            android:label="匯出 / 匯入詞庫"
+            android:label="@string/dictionary_transfer_label"
             android:exported="false" />
 
         <!-- Open-source data attributions (NOTICE) -->

@@ -47,8 +47,8 @@ class SymbolPageView(context: Context) : View(context) {
             if (field == value) return
             field = value
             rebuildKeys()
-            contentDescription = SymbolKeyboardSpec.pageAnnouncement(value)
-            announceForAccessibility(SymbolKeyboardSpec.pageAnnouncement(value))
+            contentDescription = localizedPageAnnouncement(value)
+            announceForAccessibility(localizedPageAnnouncement(value))
             invalidate()
         }
 
@@ -107,7 +107,7 @@ class SymbolPageView(context: Context) : View(context) {
     init {
         isClickable = true
         importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES
-        contentDescription = SymbolKeyboardSpec.pageAnnouncement(symbolPage)
+        contentDescription = localizedPageAnnouncement(symbolPage)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -370,12 +370,21 @@ class SymbolPageView(context: Context) : View(context) {
         SymbolKeyIcon.GO -> R.drawable.ic_symbol_go
     }
 
+    private fun usesEnglishAccessibility(): Boolean =
+        resources.configuration.locales[0].language == "en"
+
+    private fun localizedPageAnnouncement(page: SymbolPage): String =
+        SymbolKeyboardSpec.pageAnnouncement(page, english = usesEnglishAccessibility())
+
+    private fun localizedKeyDescription(key: SymbolKeySpec): String =
+        SymbolKeyboardSpec.accessibilityDescription(key, english = usesEnglishAccessibility())
+
     private inner class SymbolAccessibilityNodeProvider : AccessibilityNodeProvider() {
         override fun createAccessibilityNodeInfo(virtualViewId: Int): AccessibilityNodeInfo? {
             if (virtualViewId == View.NO_ID) {
                 return AccessibilityNodeInfo.obtain(this@SymbolPageView).apply {
                     className = SymbolPageView::class.java.name
-                    contentDescription = SymbolKeyboardSpec.pageAnnouncement(symbolPage)
+                    contentDescription = localizedPageAnnouncement(symbolPage)
                     renderedKeys.indices.forEach { addChild(this@SymbolPageView, it) }
                 }
             }
@@ -384,7 +393,7 @@ class SymbolPageView(context: Context) : View(context) {
                 setSource(this@SymbolPageView, virtualViewId)
                 setParent(this@SymbolPageView)
                 className = "android.widget.Button"
-                contentDescription = SymbolKeyboardSpec.accessibilityDescription(key.spec)
+                contentDescription = localizedKeyDescription(key.spec)
                 isClickable = true
                 isEnabled = true
                 isLongClickable = key.spec.longPressAlternatives.isNotEmpty()
@@ -396,7 +405,11 @@ class SymbolPageView(context: Context) : View(context) {
 
         override fun findAccessibilityNodeInfosByText(text: String, virtualViewId: Int): List<AccessibilityNodeInfo> =
             renderedKeys.mapIndexedNotNull { index, key ->
-                if (key.spec.accessibilityLabel.contains(text, ignoreCase = true)) createAccessibilityNodeInfo(index) else null
+                if (localizedKeyDescription(key.spec).contains(text, ignoreCase = true)) {
+                    createAccessibilityNodeInfo(index)
+                } else {
+                    null
+                }
             }
 
         override fun performAction(virtualViewId: Int, action: Int, arguments: android.os.Bundle?): Boolean {
@@ -410,7 +423,7 @@ class SymbolPageView(context: Context) : View(context) {
                 AccessibilityNodeInfo.ACTION_LONG_CLICK -> {
                     if (key.spec.longPressAlternatives.isEmpty()) false
                     else {
-                        announceForAccessibility(SymbolKeyboardSpec.accessibilityDescription(key.spec))
+                        announceForAccessibility(localizedKeyDescription(key.spec))
                         true
                     }
                 }

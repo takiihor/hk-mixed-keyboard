@@ -8,6 +8,7 @@ import com.hkmixedkeyboard.ui.toColors
 import com.hkmixedkeyboard.settings.KeyboardTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class KeyboardThemeColorsTest {
@@ -40,8 +41,25 @@ class KeyboardThemeColorsTest {
     fun `iPhone style light theme keeps priority candidates blue`() {
         val light = KeyboardTheme.IOS_LIGHT.toColors()
 
-        assertEquals(0xFF0B57D0.toInt(), light.candidatePriorityText)
+        assertEquals(0xFF0645AD.toInt(), light.candidatePriorityText)
         assertNotEquals(light.candidateText, light.candidatePriorityText)
+    }
+
+    @Test
+    fun `essential text meets WCAG AA contrast in every theme`() {
+        KeyboardTheme.entries.map { it.toColors() }.forEach { colors ->
+            listOf(
+                colors.label to colors.keyBackground,
+                colors.hint to colors.keyBackground,
+                colors.enterLabel to colors.enterKeyBackground,
+                colors.candidateText to colors.candidateBackground,
+                colors.candidatePriorityText to colors.candidateBackground,
+                colors.symbolLabel to colors.symbolKeyBackground,
+                colors.safeModeText to colors.safeModeBackground
+            ).forEach { (foreground, background) ->
+                assertTrue("contrast must be >= 4.5", contrast(foreground, background) >= 4.5)
+            }
+        }
     }
 
     @Test
@@ -122,4 +140,18 @@ class KeyboardThemeColorsTest {
         symbolPopupBackground = 18,
         symbolPopupLabel = 19
     )
+
+    private fun contrast(foreground: Int, background: Int): Double {
+        fun luminance(color: Int): Double {
+            fun channel(shift: Int): Double {
+                val value = ((color ushr shift) and 0xFF) / 255.0
+                return if (value <= 0.04045) value / 12.92
+                else Math.pow((value + 0.055) / 1.055, 2.4)
+            }
+            return 0.2126 * channel(16) + 0.7152 * channel(8) + 0.0722 * channel(0)
+        }
+        val first = luminance(foreground)
+        val second = luminance(background)
+        return (maxOf(first, second) + 0.05) / (minOf(first, second) + 0.05)
+    }
 }

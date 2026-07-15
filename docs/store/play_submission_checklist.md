@@ -1,96 +1,55 @@
-# Google Play submission checklist
+# Google Play Submission Checklist
 
-Use this with the release AAB from `android/app/build/outputs/bundle/release/`.
+Status: **NO-GO** until `docs/release/go_no_go.md` changes against a signed final AAB.
 
 ## App identity
 
-- App name: HK Mixed Keyboard
-- Package name: `com.hkmixedkeyboard`
-- Current release version: `0.56.0`
-- Current version code: `71`
-- Category: Tools / Keyboard / Input method
+- Store name: HK Quick Jyutping Pinyin / HK 混合鍵盤：速成／粵拼／普通話拼音
+- Package: `com.hkmixedkeyboard`
+- Planned engineering candidate: `0.64.0` / version code `79`
+- minSdk 26; targetSdk/compileSdk 36
+- Category: Tools / keyboard/input method
 
-## Privacy policy
+## Privacy and Data Safety
 
-Google Play requires a public privacy-policy URL in Play Console. Host
-`docs/store/privacy_policy.html` as a public web page and use that URL in:
+- Source manifest permits `VIBRATE`, has no `INTERNET`, and disables backup.
+- Final AAB permissions and dependency tree must be checked by
+  `scripts/verify_release.sh` and signed in the evidence index.
+- Public privacy URL: https://takiihor.github.io/hk-mixed-keyboard/store/privacy_policy.html
+- Redeploy `docs/store/privacy_policy.html`, then verify the public response exactly
+  matches the final in-app/store policy. The automated URL attempt on 2026-07-15
+  timed out, so reachability/content remains OPEN.
+- Complete Play Data Safety from `docs/release/play_data_safety.md` only after the
+  final AAB check.
 
-- Play Console > Policy and programs > App content > Privacy Policy
-- Store listing privacy-policy field, if shown
+## Listing and artefacts
 
-The same policy content is available in the app from Settings > 私隱政策.
+- Text sources: `name_*`, `short_*`, `long_*` in this directory.
+- Icon and feature graphic exist, but all phone/tablet screenshots must be recaptured
+  from APKs generated from the final signed AAB and must show all three modes.
+- Do not publish or advertise “best-in-class” while any locked benchmark,
+  competitor-relative, reviewer, device, accessibility, legal or beta gate is open.
 
-## Data Safety
+## Build and verify
 
-Based on the current manifest and source:
-
-- Data collection: No user data collected off device.
-- Data sharing: No data shared.
-- Network access: No `INTERNET` permission.
-- Ads: No ads.
-- Analytics: No analytics SDK.
-- Account creation: No.
-- User data deletion: In-app local deletion is available from Settings >
-  清除所有個人詞庫. No server-side account/data deletion URL is needed because the app
-  has no accounts and no server-side storage.
-- Security practices: Data is processed on device only. Cloud backup and device
-  transfer are disabled by manifest backup rules.
-
-Important: if a future build adds network, analytics, crash reporting, ads, or
-third-party SDKs, update the Data Safety form before uploading.
-
-## Permissions
-
-- `android.permission.VIBRATE`: optional key-press haptic feedback.
-- `android.permission.BIND_INPUT_METHOD`: required by Android for the IME service.
-  This is bound by the system and is not a normal user-granted permission.
-
-## Open-source notices
-
-The app includes open-source notices and full license texts at:
-
-- `android/app/src/main/assets/licenses/NOTICE.txt`
-- `android/app/src/main/assets/licenses/GPL-3.0.txt`
-- `android/app/src/main/assets/licenses/CC-BY-SA-4.0.txt`
-- `android/app/src/main/assets/licenses/CC-BY-4.0.txt`
-- `android/app/src/main/assets/licenses/ODbL-1.0.txt`
-
-The in-app Settings > 開源授權與資料來源 screen displays these notices.
-
-## Upload artifacts
-
-- Play upload AAB: `android/app/build/outputs/bundle/release/app-release.aab`
-- Tester APK: `android/app/build/outputs/apk/release/app-release-0.56.0.apk`
-
-Before uploading, verify that both artifacts report the release version/version code
-listed above and contain every feature advertised by the store listing. For a Pinyin
-release, both commands below must print a `pinyin.csv` entry:
+Update `android/app/version.properties` once in a reviewed source commit. Gradle is
+read-only and never auto-increments it. In a clean tagged checkout with external
+signing environment variables:
 
 ```bash
-unzip -l android/app/build/outputs/bundle/release/app-release.aab | grep 'base/assets/corpus/pinyin.csv'
-unzip -l android/app/build/outputs/apk/release/app-release-*.apk | grep 'assets/corpus/pinyin.csv'
-```
-
-The upload keystore is outside the repo at:
-
-- Environment file: `~/.local/share/hk-mixed-keyboard/upload-key.env`
-- Keystore file path is recorded inside that env file.
-
-Source the env file before building release artifacts:
-
-```bash
-set -a
-. ~/.local/share/hk-mixed-keyboard/upload-key.env
-set +a
 cd android
-./gradlew bundleRelease assembleRelease
+./gradlew clean test lintRelease connectedDebugAndroidTest bundleRelease
+cd ..
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests
+scripts/verify_release.sh android/app/build/outputs/bundle/release/app-release.aab
 ```
 
-To intentionally bump the public release version before a new store upload:
+Generate tester/device APKs from that AAB with the pinned bundletool. Never use a
+separately built debug or release APK as evidence for the uploaded bundle.
 
-```bash
-./gradlew bundleRelease assembleRelease -PversionedBuild=true
-```
+## Required approvals
 
-Use `-PversionedBuild=true` exactly once for a release. Subsequent verification
-rebuilds should omit it so they do not select another public version.
+Complete the three-mode locked/competitor results, physical device matrix,
+performance targets, TalkBack/Switch Access review, corpus/legal approval, signed
+artifact/certificate record and 100-person two-week closed beta. Link every result
+to the exact Git commit and AAB SHA-256.

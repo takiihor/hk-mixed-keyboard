@@ -1,5 +1,7 @@
 package com.hkmixedkeyboard.ui
 
+import java.util.Locale
+
 enum class SymbolPage {
     COMMON,
     EXTENDED;
@@ -129,14 +131,55 @@ object SymbolKeyboardSpec {
 
     fun page(page: SymbolPage): SymbolPageSpec = pages.getValue(page)
 
-    fun pageAnnouncement(page: SymbolPage): String = when (page) {
-        SymbolPage.COMMON -> "符號第 1 頁，共用標點"
-        SymbolPage.EXTENDED -> "符號第 2 頁，數學貨幣及特殊符號"
+    fun pageAnnouncement(page: SymbolPage, english: Boolean = false): String =
+        if (english) {
+            when (page) {
+                SymbolPage.COMMON -> "Symbols page 1, common punctuation"
+                SymbolPage.EXTENDED -> "Symbols page 2, mathematics, currency and special symbols"
+            }
+        } else {
+            when (page) {
+                SymbolPage.COMMON -> "符號第 1 頁，共用標點"
+                SymbolPage.EXTENDED -> "符號第 2 頁，數學貨幣及特殊符號"
+            }
+        }
+
+    fun accessibilityDescription(key: SymbolKeySpec, english: Boolean = false): String {
+        val base = if (english) englishAccessibilityLabel(key) else key.accessibilityLabel
+        if (key.longPressAlternatives.isEmpty()) return base
+        val alternatives = key.longPressAlternatives.joinToString(if (english) ", " else "、") {
+            if (english) englishAccessibilityLabel(it) else it.accessibilityLabel
+        }
+        return if (english) "$base; hold for $alternatives" else "$base，長按可選 $alternatives"
     }
 
-    fun accessibilityDescription(key: SymbolKeySpec): String =
-        if (key.longPressAlternatives.isEmpty()) key.accessibilityLabel
-        else "${key.accessibilityLabel}，長按可選 ${key.longPressAlternatives.joinToString("、") { it.accessibilityLabel }}"
+    private fun englishAccessibilityLabel(key: SymbolKeySpec): String = when (key.role) {
+        SymbolKeyRole.TEXT -> key.commitText?.let(::unicodeName) ?: "Symbol"
+        SymbolKeyRole.RETURN_TO_ALPHABET -> "Return to alphabet keyboard"
+        SymbolKeyRole.TOGGLE_PAGE -> if (key.pageIndicator.firstOrNull() == true) {
+            "Switch to symbols page 2"
+        } else {
+            "Switch to symbols page 1"
+        }
+        SymbolKeyRole.SPACE -> "Space"
+        SymbolKeyRole.BACKSPACE -> "Delete"
+        SymbolKeyRole.ENTER -> when (key.accessibilityLabel) {
+            "搜尋" -> "Search"
+            "傳送" -> "Send"
+            "下一步" -> "Next"
+            "完成" -> "Done"
+            "前往" -> "Go"
+            else -> "Enter"
+        }
+    }
+
+    private fun unicodeName(text: String): String {
+        val codePoint = text.codePointAt(0)
+        return Character.getName(codePoint)
+            ?.lowercase(Locale.ENGLISH)
+            ?.replaceFirstChar { it.titlecase(Locale.ENGLISH) }
+            ?: "Symbol $text"
+    }
 
     fun pageKey(page: SymbolPage): SymbolKeySpec = when (page) {
         SymbolPage.COMMON -> SymbolKeySpec(

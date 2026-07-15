@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard.ime
 
 import com.hkmixedkeyboard.decoder.DecodeCandidate
+import com.hkmixedkeyboard.decoder.JyutpingNormalizer
 import com.hkmixedkeyboard.decoder.PinyinNormalizer
 import com.hkmixedkeyboard.decoder.PinyinLexicon
 import com.hkmixedkeyboard.decoder.Scheme
@@ -34,17 +35,17 @@ object PinyinImePolicy {
         candidates: List<DecodeCandidate>,
         learned: List<MemorySuggestion> = emptyList()
     ): DecodeCandidate? {
-        val expectedSource = when (scheme) {
-            Scheme.QUICK -> SourceSchema.QUICK
-            Scheme.JYUTPING -> SourceSchema.JYUTPING
-            Scheme.PINYIN -> SourceSchema.PINYIN
+        val expectedSources = when (scheme) {
+            Scheme.QUICK -> setOf(SourceSchema.QUICK, SourceSchema.CUSTOM_QUICK)
+            Scheme.JYUTPING -> setOf(SourceSchema.JYUTPING, SourceSchema.CUSTOM_JYUTPING)
+            Scheme.PINYIN -> setOf(SourceSchema.PINYIN, SourceSchema.CUSTOM_PINYIN)
             else -> return null
         }
-        val normalized = if (scheme == Scheme.PINYIN) {
-            PinyinNormalizer.normalize(buffer) ?: return null
-        } else {
-            buffer.lowercase()
-        }
+        val normalized = when (scheme) {
+            Scheme.PINYIN -> PinyinNormalizer.normalize(buffer)
+            Scheme.JYUTPING -> JyutpingNormalizer.normalize(buffer)?.key
+            else -> buffer.lowercase()
+        } ?: return null
         if (scheme == Scheme.QUICK && normalized in EnglishLexicon.ENGLISH_WORDS) {
             return null
         }
@@ -54,7 +55,7 @@ object PinyinImePolicy {
             }
         }
         return candidates.firstOrNull {
-            it.sourceSchema == expectedSource && it.code == normalized
+            it.sourceSchema in expectedSources && it.code == normalized
         }
     }
 }

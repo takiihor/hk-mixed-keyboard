@@ -18,15 +18,19 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
 
     override val schemeName = "CorpusBackedDecoder (Stage 2)"
 
-    // User-defined words (自訂詞庫), keyed by their Quick code. Set by the IME from
-    // the custom_words table; consulted before the built-in Quick dictionary so a
-    // user's own code → word mapping always wins and is Space-committable. Read on
+    // User-defined words (自訂詞庫), keyed by normalized code for each scheme. Set by
+    // the IME from the custom_words table; consulted before the built-in dictionary
+    // so a user's own code → word mapping always wins and is Space-committable. Read on
     // the decode thread, written on the main thread — @Volatile swaps the whole
     // immutable index atomically.
-    @Volatile private var customWords: CustomWordIndex = CustomWordIndex.EMPTY
+    @Volatile private var customWordsByScheme: Map<Scheme, CustomWordIndex> = emptyMap()
 
     fun setCustomWords(byCode: Map<String, List<DecodeCandidate>>) {
-        customWords = CustomWordIndex(byCode)
+        setCustomWordsByScheme(mapOf(Scheme.QUICK to byCode))
+    }
+
+    fun setCustomWordsByScheme(byScheme: Map<Scheme, Map<String, List<DecodeCandidate>>>) {
+        customWordsByScheme = byScheme.mapValues { CustomWordIndex(it.value) }
     }
 
     override fun isSchemeAvailable(scheme: Scheme) =
@@ -36,46 +40,161 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
     override fun decode(buffer: String, scheme: Scheme): DecodeResult {
         if (scheme == Scheme.MIXED_EXPERIMENTAL) return empty(buffer, scheme)
 
-        if (scheme == Scheme.PINYIN) return corpus.pinyinDecoder.decode(buffer)
+        val lower = buffer.lowercase()
+        if (HkscsSupplement.isUnicodeFallbackInput(lower)) {
+            corpus.hkscsUnicodeFallbackIndex[lower]?.let { fallback ->
+                return DecodeResult(buffer, scheme, buffer.length, false, false, listOf(fallback))
+            }
+        }
+
+        if (scheme == Scheme.PINYIN) {
+            val normalized = PinyinNormalizer.normalize(buffer)
+            val customIndex = customWordsByScheme[Scheme.PINYIN]
+            val custom = normalized?.let {
+                customIndex?.exact(it)
+            }.orEmpty()
+            if (custom.isNotEmpty()) {
+                return appendEnglishAssist(
+                    DecodeResult(buffer, scheme, buffer.length, true, false, custom),
+                    normalized.orEmpty()
+                )
+            }
+            val decoded = corpus.pinyinDecoder.decode(buffer)
+            val customPrefix = normalized?.let { customIndex?.prefixMatches(it) }.orEmpty()
+                .filterNot { candidate -> custom.any { it.text == candidate.text } }
+            val combined = if (customPrefix.isEmpty()) decoded else decoded.copy(
+                isPrefixOnly = decoded.candidates.isEmpty() || decoded.isPrefixOnly,
+                candidates = (customPrefix + decoded.candidates).distinctBy { it.text }
+            )
+            return appendEnglishAssist(combined, normalized ?: lower)
+        }
 
         // JYUTPING primary mode: treat Latin buffer as Jyutping and surface
         // characters directly as committable (cnExactParsed=true) so Space commits.
         if (scheme == Scheme.JYUTPING) {
-            val lower = buffer.lowercase()
+            val normalizedInput = JyutpingNormalizer.normalize(buffer)
+                ?: return appendEnglishAssist(empty(buffer, scheme), lower)
+            val normalized = normalizedInput.key
+            val customIndex = customWordsByScheme[Scheme.JYUTPING]
+            val custom = customIndex?.exact(normalized).orEmpty()
+            if (custom.isNotEmpty()) {
+                return appendEnglishAssist(
+                    DecodeResult(buffer, scheme, buffer.length, true, false, custom),
+                    normalized
+                )
+            }
             // Exact match
-            corpus.jyutpingIndex[lower]?.let { cands ->
-                val mapped = cands.map { it.copy(sourceSchema = SourceSchema.JYUTPING, type = CandidateType.CHAR) }
-                return DecodeResult(buffer, scheme, buffer.length, true, false, mapped)
+            corpus.jyutpingIndex[normalized]?.let { cands ->
+                val typedAnnotation = JyutpingAnnotation.forInput(buffer)
+                val mapped = cands.map {
+                    it.copy(
+                        sourceSchema = SourceSchema.JYUTPING,
+                        type = if (it.text.codePointCount(0, it.text.length) == 1) {
+                            CandidateType.CHAR
+                        } else {
+                            CandidateType.PHRASE
+                        },
+                        annotation = typedAnnotation ?: JyutpingAnnotation.reverseLookup(
+                            it.text,
+                            corpus.jyutpingReadingsByText
+                        )
+                    )
+                }
+                return appendEnglishAssist(
+                    DecodeResult(buffer, scheme, buffer.length, true, false, mapped),
+                    normalized
+                )
+            }
+            JYUTPING_ABBREVIATIONS[normalized]?.let { fullCode ->
+                val abbreviationCandidates = corpus.jyutpingIndex[fullCode].orEmpty().map {
+                    it.copy(annotation = "↪ $fullCode")
+                }
+                if (abbreviationCandidates.isNotEmpty()) {
+                    return appendEnglishAssist(
+                        DecodeResult(
+                            buffer,
+                            scheme,
+                            buffer.length,
+                            false,
+                            false,
+                            abbreviationCandidates
+                        ),
+                        normalized
+                    )
+                }
             }
             // Prefix matches (incremental: a still-incomplete code that begins a
             // dictionary key, including concatenated phrase keys like "hoenggong").
-            if (corpus.jyutpingPrefixIndex.hasPrefix(lower)) {
-                val pref = corpus.jyutpingPrefixIndex.matching(lower, limit = 24)
+            if (corpus.jyutpingPrefixIndex.hasPrefix(normalized)) {
+                val pref = corpus.jyutpingPrefixIndex.matching(normalized, limit = 24)
                     .flatMap { corpus.jyutpingIndex[it].orEmpty() }
                 if (pref.isNotEmpty()) {
-                    val mapped = pref.map { it.copy(sourceSchema = SourceSchema.JYUTPING, type = CandidateType.CHAR) }
-                    return DecodeResult(buffer, scheme, buffer.length, false, true, mapped)
+                    val customPrefix = customIndex?.prefixMatches(normalized).orEmpty()
+                    val mapped = pref.map {
+                        it.copy(
+                            sourceSchema = SourceSchema.JYUTPING,
+                            type = if (it.text.codePointCount(0, it.text.length) == 1) {
+                                CandidateType.CHAR
+                            } else {
+                                CandidateType.PHRASE
+                            },
+                            annotation = JyutpingAnnotation.reverseLookup(
+                                it.text,
+                                corpus.jyutpingReadingsByText
+                            )
+                        )
+                    }
+                    return appendEnglishAssist(
+                        DecodeResult(
+                            buffer,
+                            scheme,
+                            buffer.length,
+                            false,
+                            true,
+                            (customPrefix + mapped).distinctBy { it.text }
+                        ),
+                        normalized
+                    )
                 }
+            }
+            val customPrefix = customIndex?.prefixMatches(normalized).orEmpty()
+            if (customPrefix.isNotEmpty()) {
+                return appendEnglishAssist(
+                    DecodeResult(buffer, scheme, buffer.length, false, true, customPrefix),
+                    normalized
+                )
             }
             // Multi-syllable segmentation: continuous romanization that is neither a
             // single syllable nor a dictionary phrase key (e.g. "neihou" → 你好).
-            composeSegmentedPhrase(lower)?.let { return it }
-            return empty(buffer, scheme)
+            composeSegmentedPhrase(buffer, normalized)?.let {
+                return appendEnglishAssist(it, normalized)
+            }
+            return appendEnglishAssist(empty(buffer, scheme), normalized)
         }
 
         // 1. Direct CJK input
         if (buffer.isNotEmpty() && buffer.all { it.code > 0x2E80 })
             return decodeCjkDirect(buffer, scheme)
 
-        val lower = buffer.lowercase()
-
         // 2. Exact match — user custom words first, then the built-in Quick dictionary.
         //    Both are committable (cnExactParsed=true), so Space commits the top one.
+        val customWords = customWordsByScheme[Scheme.QUICK] ?: CustomWordIndex.EMPTY
         val customExact = customWords.exact(lower)
         val quickExact = corpus.quickIndex[lower]
-        if (customExact.isNotEmpty() || quickExact != null) {
-            return DecodeResult(buffer, scheme, buffer.length, true, false,
-                customExact + quickExact.orEmpty())
+        // Reviewed English→Cantonese mixed phrases are deliberately available only
+        // from the Quick layout. They remain MIXED_PHRASE tap targets, never an
+        // exact Space/punctuation resolution.
+        val mixedExact = if (scheme == Scheme.QUICK) corpus.mixedIndex[lower].orEmpty()
+        else emptyList()
+        if (customExact.isNotEmpty() || quickExact != null || mixedExact.isNotEmpty()) {
+            return DecodeResult(
+                buffer,
+                scheme,
+                buffer.length,
+                customExact.isNotEmpty() || quickExact != null,
+                false,
+                customExact + quickExact.orEmpty() + mixedExact
+            )
         }
 
         // 3. Prefix match — custom words first, then Quick prefixes.
@@ -126,24 +245,10 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         // own 動作 before action→作用, and an English word like "cat" keeps its
         // meanings ahead of Cantonese homophones (cat = 柒/七) that a Quick-mode
         // typist didn't intend.
-        val englishExact = mutableListOf<DecodeCandidate>()
-        val englishPrefix = mutableListOf<DecodeCandidate>()
         val jyutpingExact = mutableListOf<DecodeCandidate>()
         val jyutpingPrefix = mutableListOf<DecodeCandidate>()
 
-        // English assist — exact
-        corpus.englishAssistIndex[lower]?.let { englishExact.addAll(it) }
-
-        // English assist — prefix completions. Run even when there is an exact
-        // match so typing "disc" surfaces discuss→討論 alongside the exact
-        // disc→碟片 (English autocomplete → Chinese meaning).
-        if (lower.length >= 3 && corpus.englishAssistPrefixIndex.hasPrefix(lower)) {
-            corpus.englishAssistPrefixIndex.matching(lower, limit = 24)
-                .asSequence()
-                .filter { it != lower }
-                .flatMap { corpus.englishAssistIndex[it].orEmpty().asSequence() }
-                .forEach { englishPrefix.add(it) }
-        }
+        val (englishAssist, englishPrefixOnly) = englishAssistCandidates(lower)
 
         // Jyutping — exact
         corpus.jyutpingIndex[lower]?.let { jyutpingExact.addAll(it) }
@@ -154,20 +259,51 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
                 .flatMapTo(jyutpingPrefix) { corpus.jyutpingIndex[it].orEmpty() }
         }
 
-        val hasExact = englishExact.isNotEmpty() || jyutpingExact.isNotEmpty()
-        if (!hasExact && englishPrefix.isEmpty() && jyutpingPrefix.isEmpty())
+        val hasEnglishExact = englishAssist.isNotEmpty() && !englishPrefixOnly
+        val hasExact = hasEnglishExact || jyutpingExact.isNotEmpty()
+        if (!hasExact && englishAssist.isEmpty() && jyutpingPrefix.isEmpty())
             return Pair(emptyList(), false)
 
         // English (exact → prefix) then Jyutping (exact → prefix); frequency orders
         // within each group. distinctBy keeps the first, highest-priority copy.
-        val deduped = (englishExact.sortedByDescending { it.frequency } +
-            englishPrefix.sortedByDescending { it.frequency } +
+        val deduped = (englishAssist +
             jyutpingExact.sortedByDescending { it.frequency } +
             jyutpingPrefix.sortedByDescending { it.frequency })
             .distinctBy { it.text }
             .take(15)
 
         return Pair(deduped, !hasExact)
+    }
+
+    /** English→Chinese assist candidates are always additive and tap-only. */
+    private fun appendEnglishAssist(result: DecodeResult, lower: String): DecodeResult {
+        val (assist, _) = englishAssistCandidates(lower)
+        if (assist.isEmpty()) return result
+        return result.copy(candidates = (result.candidates + assist).distinctBy { it.text })
+    }
+
+    /**
+     * Exact meaning then completion matches, kept separate so romanization modes
+     * can append them after their own candidates without changing Space semantics.
+     */
+    private fun englishAssistCandidates(lower: String): Pair<List<DecodeCandidate>, Boolean> {
+        val exact = corpus.englishAssistIndex[lower].orEmpty()
+        val prefix = if (lower.length >= 3 && corpus.englishAssistPrefixIndex.hasPrefix(lower)) {
+            corpus.englishAssistPrefixIndex.matching(lower, limit = 24)
+                .asSequence()
+                .filter { it != lower }
+                .flatMap { corpus.englishAssistIndex[it].orEmpty().asSequence() }
+                .toList()
+        } else {
+            emptyList()
+        }
+        if (exact.isEmpty() && prefix.isEmpty()) return Pair(emptyList(), false)
+        return Pair(
+            (exact.sortedByDescending { it.frequency } + prefix.sortedByDescending { it.frequency })
+                .distinctBy { it.text }
+                .take(15),
+            exact.isEmpty()
+        )
     }
 
     /**
@@ -177,7 +313,7 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
      * user still has choices. Returns null if the buffer doesn't fully segment or any
      * syllable lacks a single-character reading.
      */
-    private fun composeSegmentedPhrase(lower: String): DecodeResult? {
+    private fun composeSegmentedPhrase(buffer: String, lower: String): DecodeResult? {
         val segments = corpus.jyutpingSegmenter.segment(lower) ?: return null
 
         // Per-syllable single-character readings, most frequent first.
@@ -200,12 +336,22 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
 
         var freq = 1.0
         val candidates = ordered.take(MAX_COMPOSED).map { text ->
-            DecodeCandidate(text, lower, SourceSchema.JYUTPING, CandidateType.PHRASE,
-                freq.also { freq -= 0.01 }, false)
+            DecodeCandidate(
+                text,
+                lower,
+                SourceSchema.JYUTPING,
+                CandidateType.PHRASE,
+                freq.also { freq -= 0.01 },
+                false,
+                annotation = JyutpingAnnotation.reverseLookup(
+                    text,
+                    corpus.jyutpingReadingsByText
+                )
+            )
         }
         // isExactCode=true + PHRASE type ⇒ cnHasPhraseMatch, so the composed phrase
         // surfaces as the top candidate in the bar (one tap to commit).
-        return DecodeResult(lower, Scheme.JYUTPING, lower.length, true, false, candidates)
+        return DecodeResult(buffer, Scheme.JYUTPING, buffer.length, true, false, candidates)
     }
 
     private fun decodeCjkDirect(buffer: String, scheme: Scheme): DecodeResult {
@@ -236,5 +382,10 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         // phrase, and the overall cap on composed candidates.
         const val ALT_PER_SYLLABLE = 4
         const val MAX_COMPOSED = 12
+        val JYUTPING_ABBREVIATIONS = mapOf(
+            "nh" to "neihou",
+            "mg" to "mgoi",
+            "dgaai" to "dimgaai"
+        )
     }
 }

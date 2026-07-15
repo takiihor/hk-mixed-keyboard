@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
@@ -30,12 +31,17 @@ object Keys {
     // signal instead of querying Room every time the keyboard opens.
     val CUSTOM_WORDS_TOKEN = longPreferencesKey("custom_words_token")
     val KEYBOARD_THEME = stringPreferencesKey("keyboard_theme")
+    val PINYIN_FUZZY = booleanPreferencesKey("pinyin_fuzzy")
+    val KEYBOARD_HEIGHT_PERCENT = intPreferencesKey("keyboard_height_percent")
+    val ONE_HANDED_MODE = stringPreferencesKey("one_handed_mode")
 }
 
 enum class KeyboardTheme {
     DARK,
     IOS_LIGHT
 }
+
+enum class OneHandedMode { OFF, LEFT, RIGHT }
 
 class ChangeTokenTracker {
     private var lastToken: Long? = null
@@ -55,7 +61,10 @@ data class KeyboardPrefs(
     val simplifiedOutput: Boolean = false,
     val memoryClearToken: Long = 0L,
     val customWordsToken: Long = 0L,
-    val theme: KeyboardTheme = KeyboardTheme.DARK
+    val theme: KeyboardTheme = KeyboardTheme.DARK,
+    val pinyinFuzzy: Boolean = false,
+    val keyboardHeightPercent: Int = 100,
+    val oneHandedMode: OneHandedMode = OneHandedMode.OFF
 )
 
 object KeyboardSettings {
@@ -72,7 +81,13 @@ object KeyboardSettings {
                 simplifiedOutput = p[Keys.SIMPLIFIED_OUTPUT] ?: false,
                 memoryClearToken = p[Keys.MEMORY_CLEAR_TOKEN] ?: 0L,
                 customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L,
-                theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME])
+                theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME]),
+                pinyinFuzzy = p[Keys.PINYIN_FUZZY] ?: false,
+                keyboardHeightPercent = (p[Keys.KEYBOARD_HEIGHT_PERCENT] ?: 100)
+                    .coerceIn(85, 120),
+                oneHandedMode = runCatching {
+                    OneHandedMode.valueOf(p[Keys.ONE_HANDED_MODE] ?: OneHandedMode.OFF.name)
+                }.getOrDefault(OneHandedMode.OFF)
             )
         }
 
@@ -101,6 +116,15 @@ object KeyboardSettings {
 
     suspend fun setTheme(ctx: Context, theme: KeyboardTheme) =
         ctx.settingsDataStore.edit { it[Keys.KEYBOARD_THEME] = KeyboardThemePreference.serialize(theme) }
+
+    suspend fun setPinyinFuzzy(ctx: Context, enabled: Boolean) =
+        ctx.settingsDataStore.edit { it[Keys.PINYIN_FUZZY] = enabled }
+
+    suspend fun setKeyboardHeightPercent(ctx: Context, percent: Int) =
+        ctx.settingsDataStore.edit { it[Keys.KEYBOARD_HEIGHT_PERCENT] = percent.coerceIn(85, 120) }
+
+    suspend fun setOneHandedMode(ctx: Context, mode: OneHandedMode) =
+        ctx.settingsDataStore.edit { it[Keys.ONE_HANDED_MODE] = mode.name }
 
     // Monotonic counters rather than timestamps: two bumps within the same
     // millisecond would produce equal tokens and ChangeTokenTracker would miss the
