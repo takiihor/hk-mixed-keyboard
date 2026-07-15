@@ -5,10 +5,11 @@ import com.hkmixedkeyboard.decoder.PinyinNormalizer
 import com.hkmixedkeyboard.decoder.PinyinLexicon
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.decoder.SourceSchema
+import com.hkmixedkeyboard.engine.EnglishLexicon
 import com.hkmixedkeyboard.settings.InputSchemePreference
 import com.hkmixedkeyboard.memory.MemorySuggestion
 
-/** Decisions that keep Pinyin's exact-commit behavior separate from Quick mode. */
+/** Candidate/display decisions shared by the three production input modes. */
 object PinyinImePolicy {
     fun isCorpusReady(lexicon: PinyinLexicon): Boolean = lexicon.isUsable
 
@@ -33,13 +34,27 @@ object PinyinImePolicy {
         candidates: List<DecodeCandidate>,
         learned: List<MemorySuggestion> = emptyList()
     ): DecodeCandidate? {
-        if (scheme != Scheme.PINYIN) return null
-        val normalized = PinyinNormalizer.normalize(buffer) ?: return null
-        filterLearnedSuggestions(scheme, learned).firstOrNull()?.let {
-            return it.candidate
+        val expectedSource = when (scheme) {
+            Scheme.QUICK -> SourceSchema.QUICK
+            Scheme.JYUTPING -> SourceSchema.JYUTPING
+            Scheme.PINYIN -> SourceSchema.PINYIN
+            else -> return null
+        }
+        val normalized = if (scheme == Scheme.PINYIN) {
+            PinyinNormalizer.normalize(buffer) ?: return null
+        } else {
+            buffer.lowercase()
+        }
+        if (scheme == Scheme.QUICK && normalized in EnglishLexicon.ENGLISH_WORDS) {
+            return null
+        }
+        if (scheme == Scheme.PINYIN) {
+            filterLearnedSuggestions(scheme, learned).firstOrNull()?.let {
+                return it.candidate
+            }
         }
         return candidates.firstOrNull {
-            it.sourceSchema == SourceSchema.PINYIN && it.code == normalized
+            it.sourceSchema == expectedSource && it.code == normalized
         }
     }
 }

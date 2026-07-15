@@ -140,7 +140,7 @@ class HkImeService : InputMethodService() {
     @Volatile private var quickWarm = false
     @Volatile private var jyutpingWarm = false
     @Volatile private var pinyinWarm = false
-    private val pinyinSpaceIntent = PinyinSpaceIntentController()
+    private val candidateCommitIntent = CandidateCommitIntentController()
     private var compositionSession = 0L
     private var compositionDecodeGeneration = 0L
     private val candidateRequestGate = CandidateRequestGate()
@@ -630,6 +630,39 @@ class HkImeService : InputMethodService() {
         resetCompositionState()
     }
 
+    override fun onUpdateSelection(
+        oldSelStart: Int,
+        oldSelEnd: Int,
+        newSelStart: Int,
+        newSelEnd: Int,
+        candidatesStart: Int,
+        candidatesEnd: Int
+    ) {
+        super.onUpdateSelection(
+            oldSelStart,
+            oldSelEnd,
+            newSelStart,
+            newSelEnd,
+            candidatesStart,
+            candidatesEnd
+        )
+        if (imeState.buffer.isEmpty() || !CompositionSelectionPolicy.shouldCancel(
+                newSelStart,
+                newSelEnd,
+                candidatesStart,
+                candidatesEnd
+            )
+        ) return
+
+        resetCompositionState()
+        lastCandidates = emptyList()
+        candidateGrid?.dismiss()
+        if (::candidateBar.isInitialized) {
+            if (imeCtx.isSensitiveField) candidateBar.showSafeMode()
+            else candidateBar.clearSystemMessage()
+        }
+    }
+
     override fun onWindowHidden() {
         super.onWindowHidden()
         if (::candidateBar.isInitialized) {
@@ -642,7 +675,7 @@ class HkImeService : InputMethodService() {
 
     private fun handleKey(label: String) {
         LatencyLogger.keyDown()
-        if (label != KeyboardView.KEY_SPACE) pinyinSpaceIntent.cancel()
+        if (!isCandidateCommitIntentKey(label)) candidateCommitIntent.cancel()
         if (soundEnabled) {
             audioManager?.playSoundEffect(android.media.AudioManager.FX_KEYPRESS_STANDARD)
         }
@@ -650,10 +683,7 @@ class HkImeService : InputMethodService() {
             KeyboardView.KEY_BACKSPACE -> ctrl.onBackspace(imeState,
                 cursorJustAfterAutoCommit = isAtAutoCommitPosition())
             KeyboardView.KEY_SPACE    -> {
-                if (imeCtx.scheme == Scheme.PINYIN && imeState.buffer.isNotEmpty()) {
-                    handlePinyinSpace()
-                    return
-                }
+                if (requestCandidateCommitIfComposing(CandidateCommitIntent.Space)) return
                 ctrl.onSpace(imeState)
             }
             KeyboardView.KEY_ENTER    -> ctrl.onEnter(imeState)
@@ -666,11 +696,29 @@ class HkImeService : InputMethodService() {
                 return
             }
             // The combined ？！ key commits ？ on tap; KeyboardView emits ！ on hold.
-            KeyboardView.KEY_QUESTION -> ctrl.onPunctuation("？", imeState, precedingContext())
-            "." -> ctrl.onPunctuation(".", imeState, PrecedingContext.LATIN)
+            KeyboardView.KEY_QUESTION -> {
+                if (requestCandidateCommitIfComposing(
+                        CandidateCommitIntent.Punctuation("？")
+                    )
+                ) return
+                ctrl.onPunctuation("？", imeState, precedingContext())
+            }
+            "." -> {
+                if (requestCandidateCommitIfComposing(
+                        CandidateCommitIntent.Punctuation(".")
+                    )
+                ) return
+                ctrl.onPunctuation(".", imeState, PrecedingContext.LATIN)
+            }
             KeyboardView.KEY_COMMA,
             KeyboardView.KEY_PERIOD,
-            KeyboardView.KEY_EXCLAIM  -> ctrl.onPunctuation(label, imeState, precedingContext())
+            KeyboardView.KEY_EXCLAIM  -> {
+                if (requestCandidateCommitIfComposing(
+                        CandidateCommitIntent.Punctuation(label)
+                    )
+                ) return
+                ctrl.onPunctuation(label, imeState, precedingContext())
+            }
             else                      -> {
                 val typed = applyShiftCase(label)
                 if (DirectInputPolicy.shouldCommitKeyDirectly(typed, directLatinCommit)) {
@@ -742,28 +790,64 @@ class HkImeService : InputMethodService() {
         ic.sendKeyEvent(android.view.KeyEvent(android.view.KeyEvent.ACTION_UP, keyCode))
     }
 
-    private fun handlePinyinSpace() {
+    private fun isCandidateCommitScheme(scheme: Scheme): Boolean =
+        scheme == Scheme.QUICK || scheme == Scheme.JYUTPING || scheme == Scheme.PINYIN
+
+    private fun isCandidateCommitIntentKey(label: String): Boolean = when (label) {
+        KeyboardView.KEY_SPACE,
+        KeyboardView.KEY_QUESTION,
+        KeyboardView.KEY_COMMA,
+        KeyboardView.KEY_PERIOD,
+        KeyboardView.KEY_EXCLAIM,
+        "." -> true
+        else -> false
+    }
+
+    private fun requestCandidateCommitIfComposing(intent: CandidateCommitIntent): Boolean {
+        if (!isCandidateCommitScheme(imeCtx.scheme) || imeState.buffer.isEmpty()) return false
+        handleCandidateCommit(intent)
+        return true
+    }
+
+    private fun handleCandidateCommit(intent: CandidateCommitIntent) {
         val buffer = imeState.buffer
         val generation = if (compositionDecodeGeneration > 0L) {
             compositionDecodeGeneration
         } else {
             scheduleDecode(buffer)
         }
-        when (val action = pinyinSpaceIntent.request(buffer, compositionSession, generation)) {
-            is PinyinSpaceIntentController.Action.Ready -> resolvePinyinSpace(action.token)
-            PinyinSpaceIntentController.Action.AwaitDecode -> {
+        when (val action = candidateCommitIntent.request(
+            intent,
+            buffer,
+            compositionSession,
+            generation
+        )) {
+            is CandidateCommitIntentController.Action.Ready ->
+                resolveCandidateCommit(action.token)
+            CandidateCommitIntentController.Action.AwaitDecode -> {
                 if (::candidateBar.isInitialized && !schemeWarm()) candidateBar.showLoading()
             }
         }
     }
 
-    private fun resolvePinyinSpace(token: PinyinSpaceIntentController.Token) {
-        val resolution = pinyinSpaceIntent.consume(token) ?: return
-        if (imeCtx.scheme != Scheme.PINYIN ||
+    private fun resolveCandidateCommit(token: CandidateCommitIntentController.Token) {
+        val resolution = candidateCommitIntent.consume(token) ?: return
+        if (!isCandidateCommitScheme(imeCtx.scheme) ||
             imeState.buffer != token.key.buffer ||
-            compositionSession != token.key.session) return
-        val out = ctrl.onSpace(imeState, resolution.candidate)
-        committedPrefix = if (isCjk(out.committedText)) out.committedText!! else ""
+            compositionSession != token.key.session ||
+            !candidateRequestGate.isCurrent(token.key.generation)) return
+        val out = when (val intent = resolution.intent) {
+            CandidateCommitIntent.Space -> ctrl.onSpace(imeState, resolution.candidate)
+            is CandidateCommitIntent.Punctuation -> ctrl.onPunctuation(
+                intent.canonical,
+                imeState,
+                precedingContext(),
+                resolution.candidate
+            )
+        }
+        committedPrefix = if (resolution.intent == CandidateCommitIntent.Space &&
+            isCjk(out.committedText)
+        ) out.committedText!! else ""
         applyOutput(out)
         LatencyLogger.visualFeedback()
     }
@@ -891,7 +975,7 @@ class HkImeService : InputMethodService() {
     }
 
     private fun handleCandidateTap(candidate: DecodeCandidate) {
-        pinyinSpaceIntent.cancel()
+        candidateCommitIntent.cancel()
         candidateGrid?.dismiss()
         // No active composition → this is a next-character prediction tap; commit
         // it directly and extend the chain so the bar offers the following char.
@@ -964,29 +1048,28 @@ class HkImeService : InputMethodService() {
 
     private fun applyOutput(out: CommitOutput) {
         val ic = currentInputConnection ?: return
+        val applied = SimplifiedCommitOutputPolicy.convert(out, ::outputText)
 
         ic.beginBatchEdit()
 
         // 1. Revert an earlier auto-commit (backspace): drop any composing region,
         //    then delete the already-committed characters before the cursor.
-        if (out.deletedBefore > 0) {
+        if (applied.deletedBefore > 0) {
             ic.finishComposingText()
-            ic.deleteSurroundingText(out.deletedBefore, 0)
+            ic.deleteSurroundingText(applied.deletedBefore, 0)
         }
 
         // 2. Commit finalized text. commitText() replaces the active composing
         //    region (the in-progress code/word) with the committed string.
-        out.committedText?.let { text ->
-            if (text == "\n" && !out.swallowEnter) {
+        applied.committedText?.let { text ->
+            if (text == "\n" && !applied.swallowEnter) {
                 ic.finishComposingText()
                 // A real ENTER key event inserts a newline in multi-line fields
                 // (notes, chat) and triggers the action in single-line ones —
                 // unlike sendDefaultEditorAction, which does nothing in notes.
                 sendDownUpKeyEvents(android.view.KeyEvent.KEYCODE_ENTER)
             } else if (text.isNotEmpty()) {
-                // Same-length t2s conversion keeps deletedBefore revert counts
-                // valid (the controller records the traditional text's length).
-                ic.commitText(outputText(text), 1)
+                ic.commitText(text, 1)
             }
         }
 
@@ -994,24 +1077,24 @@ class HkImeService : InputMethodService() {
         //    user sees what they are typing (underlined) instead of a blank field
         //    until commit. Empty buffer with no commit means clear any leftover
         //    composition (e.g. backspaced to empty).
-        val buf = out.newState.buffer
+        val buf = applied.newState.buffer
         if (buf.isNotEmpty()) {
             ic.setComposingText(buf, 1)
-        } else if (out.committedText == null) {
+        } else if (applied.committedText == null) {
             ic.setComposingText("", 1)
             ic.finishComposingText()
         }
 
         ic.endBatchEdit()
 
-        val endedComposition = imeState.buffer.isNotEmpty() && out.newState.buffer.isEmpty()
-        imeState = out.newState
+        val endedComposition = imeState.buffer.isNotEmpty() && applied.newState.buffer.isEmpty()
+        imeState = applied.newState
         if (endedComposition) {
             compositionSession++
             compositionDecodeGeneration = 0L
-            pinyinSpaceIntent.cancel()
+            candidateCommitIntent.cancel()
         }
-        updateCandidateBar(out)
+        updateCandidateBar(applied)
         updateDebugPanel()
     }
 
@@ -1067,7 +1150,7 @@ class HkImeService : InputMethodService() {
         val decodeScheme = imeCtx.scheme
         if (decodeScheme == Scheme.PINYIN && !pinyinCorpusReady()) {
             pinyinWarm = false
-            publishPinyinResolution(buffer, gen, session, candidate = null)
+            publishCandidateCommitResolution(buffer, gen, session, candidate = null)
             publishPinyinUnavailable(buffer, gen)
             finishDecode()
             return
@@ -1078,7 +1161,7 @@ class HkImeService : InputMethodService() {
             if (decodeScheme != Scheme.PINYIN) throw e
             android.util.Log.e(TAG, "Pinyin decode failed", e)
             pinyinWarm = false
-            publishPinyinResolution(buffer, gen, session, candidate = null)
+            publishCandidateCommitResolution(buffer, gen, session, candidate = null)
             publishPinyinUnavailable(buffer, gen)
             finishDecode()
             return
@@ -1087,13 +1170,13 @@ class HkImeService : InputMethodService() {
             buffer,
             CandidateDisplayPolicy.EXPANDED_LIMIT
         )
-        if (decodeScheme == Scheme.PINYIN) {
-            publishPinyinResolution(
+        if (isCandidateCommitScheme(decodeScheme)) {
+            publishCandidateCommitResolution(
                 buffer,
                 gen,
                 session,
                 PinyinImePolicy.spaceCandidate(
-                    scheme = Scheme.PINYIN,
+                    scheme = decodeScheme,
                     buffer = buffer,
                     candidates = cr.cnCandidates,
                     learned = learned
@@ -1138,14 +1221,14 @@ class HkImeService : InputMethodService() {
         finishDecode()
     }
 
-    private fun publishPinyinResolution(
+    private fun publishCandidateCommitResolution(
         buffer: String,
         gen: Long,
         session: Long,
         candidate: DecodeCandidate?
     ) {
-        val token = pinyinSpaceIntent.onDecoded(buffer, session, gen, candidate) ?: return
-        mainThread.post { resolvePinyinSpace(token) }
+        val token = candidateCommitIntent.onDecoded(buffer, session, gen, candidate) ?: return
+        mainThread.post { resolveCandidateCommit(token) }
     }
 
     private fun publishPinyinUnavailable(buffer: String, gen: Long) {
@@ -1262,7 +1345,7 @@ class HkImeService : InputMethodService() {
 
     private fun resetCompositionState() {
         cancelCandidateDecode()
-        pinyinSpaceIntent.cancel()
+        candidateCommitIntent.cancel()
         compositionSession++
         compositionDecodeGeneration = 0L
         imeState = ImeStateData()
@@ -1431,7 +1514,7 @@ class HkImeService : InputMethodService() {
         decodePendingSession = 0L
         decodeInFlight = false
         compositionDecodeGeneration = 0L
-        pinyinSpaceIntent.cancel()
+        candidateCommitIntent.cancel()
         candidateRequestGate.invalidate()
     }
 }

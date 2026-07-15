@@ -75,9 +75,17 @@ class CommitController(
         state: ImeStateData,
         autoCommitCandidate: DecodeCandidate? = null
     ): CommitOutput {
-        if (ctx.scheme == com.hkmixedkeyboard.decoder.Scheme.PINYIN &&
-            autoCommitCandidate?.sourceSchema == SourceSchema.PINYIN) {
-            return doCommitCandidate(autoCommitCandidate, state.copy(lastAutoCommit = null))
+        if (autoCommitCandidate != null && isExactCandidateForActiveScheme(
+                autoCommitCandidate,
+                state.buffer
+            )
+        ) {
+            val committedText = canonicalText(autoCommitCandidate)
+            return doCommitCandidate(
+                autoCommitCandidate,
+                state.copy(lastAutoCommit = null),
+                AutoCommitRecord(committedText, state.buffer)
+            )
         }
         if (state.buffer.isEmpty()) {
             return doCommitRaw(" ", resetContext = false, state = state)
@@ -94,7 +102,8 @@ class CommitController(
     fun onPunctuation(
         p: String,
         state: ImeStateData,
-        precedingContext: PrecedingContext = PrecedingContext.NEUTRAL
+        precedingContext: PrecedingContext = PrecedingContext.NEUTRAL,
+        autoCommitCandidate: DecodeCandidate? = null
     ): CommitOutput {
         var s = state
         var committedPrefix = ""
@@ -105,11 +114,22 @@ class CommitController(
         var punctuationContext = precedingContext
 
         if (state.buffer.isNotEmpty()) {
-            val committed = commitLiteralBuffer(state.buffer, learn = true, state = s)
+            val candidateToCommit = autoCommitCandidate?.takeIf {
+                isExactCandidateForActiveScheme(it, state.buffer)
+            }
+            val committed = if (candidateToCommit != null) {
+                doCommitCandidate(candidateToCommit, s.copy(lastAutoCommit = null))
+            } else {
+                commitLiteralBuffer(state.buffer, learn = true, state = s)
+            }
             committedPrefix = committed.committedText.orEmpty()
             memoryWrite = committed.memoryWrite
             s = committed.newState
-            punctuationContext = PrecedingContext.LATIN
+            punctuationContext = if (candidateToCommit != null) {
+                PrecedingContext.CJK
+            } else {
+                PrecedingContext.LATIN
+            }
         }
 
         val glyph = punctuationFor(p, punctuationContext)
@@ -205,6 +225,22 @@ class CommitController(
     private fun canonicalText(cand: DecodeCandidate): String {
         val lower = cand.text.lowercase()
         return CANONICAL_CASE[lower] ?: cand.text
+    }
+
+    private fun isExactCandidateForActiveScheme(
+        candidate: DecodeCandidate,
+        buffer: String
+    ): Boolean {
+        val expectedSource = when (ctx.scheme) {
+            com.hkmixedkeyboard.decoder.Scheme.QUICK -> SourceSchema.QUICK
+            com.hkmixedkeyboard.decoder.Scheme.CANGJIE -> SourceSchema.CANGJIE
+            com.hkmixedkeyboard.decoder.Scheme.JYUTPING -> SourceSchema.JYUTPING
+            com.hkmixedkeyboard.decoder.Scheme.PINYIN -> SourceSchema.PINYIN
+            com.hkmixedkeyboard.decoder.Scheme.MIXED_EXPERIMENTAL ->
+                SourceSchema.MIXED_PHRASE
+        }
+        return candidate.sourceSchema == expectedSource &&
+            candidate.code.equals(buffer, ignoreCase = true)
     }
 
     companion object {

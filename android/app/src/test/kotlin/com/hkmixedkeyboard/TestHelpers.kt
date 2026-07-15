@@ -71,9 +71,9 @@ fun assistCandidates(buffer: String, candidates: List<DecodeCandidate>) =
 
 // ── Controller factory ────────────────────────────────────────────────────
 
-// `classify` is retained for call-site compatibility but no longer affects the
-// controller: Space/punctuation now always commit the literal buffer, so commits
-// don't consult the classifier (candidate selection happens in the bar instead).
+// `classify` is retained for call-site compatibility but does not affect the
+// controller. The service supplies a fresh, policy-approved candidate explicitly;
+// without one, Space and punctuation conservatively commit the literal buffer.
 fun makeCtrl(
     memory: UserMemory = UserMemory(),
     ctx: ImeContext = ImeContext(),
