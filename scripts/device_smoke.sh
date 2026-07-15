@@ -74,15 +74,24 @@ for cycle in $(seq 1 20); do
   adb shell input keyevent KEYCODE_HOME
   adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1 \
     >> "$OUT/lifecycle-switches.txt"
-  focused_window=""
+  input_focus=""
   for _ in $(seq 1 40); do
-    focused_window="$(adb shell dumpsys window windows | tr -d '\r' | awk '/mCurrentFocus=/{print; exit}')"
-    [[ "$focused_window" == *"$PACKAGE"* ]] && break
+    input_focus="$(adb shell dumpsys input | tr -d '\r' | awk '
+      /FocusedApplications:/ { in_focus = 1; next }
+      in_focus && /displayId=0/ && app == "" { app = $0 }
+      in_focus && /FocusedWindows:/ {
+        window = $0
+        if ($0 !~ /<none>/) { getline; window = window " " $0 }
+        print app " " window
+        exit
+      }
+    ')"
+    [[ "$input_focus" == *"$PACKAGE"* && "$input_focus" != *"<none>"* ]] && break
     sleep 0.1
   done
-  printf 'cycle=%s focus=%s\n' "$cycle" "$focused_window" \
+  printf 'cycle=%s focus=%s\n' "$cycle" "$input_focus" \
     >> "$OUT/lifecycle-switches.txt"
-  [[ "$focused_window" == *"$PACKAGE"* ]] || {
+  [[ "$input_focus" == *"$PACKAGE"* && "$input_focus" != *"<none>"* ]] || {
     echo "app did not regain window focus during lifecycle cycle $cycle" >&2
     exit 1
   }
