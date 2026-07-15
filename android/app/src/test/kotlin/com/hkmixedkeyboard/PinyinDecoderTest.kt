@@ -51,8 +51,19 @@ class PinyinDecoderTest {
     fun `normalizer rejects invalid tone digits and non pinyin input`() {
         assertNull(PinyinNormalizer.normalize("mao0"))
         assertNull(PinyinNormalizer.normalize("mao6"))
+        assertNull(PinyinNormalizer.normalize("n3ihao"))
+        assertNull(PinyinNormalizer.normalize("ni3h3ao"))
+        assertNull(PinyinNormalizer.normalize("n'ihao"))
         assertNull(PinyinNormalizer.normalize("ni_hao"))
         assertNull(PinyinNormalizer.normalize(""))
+    }
+
+    @Test
+    fun `malformed tone placement cannot exact match or compose`() {
+        val result = decoder(PinyinEntry("nihao", "你好", 1.0)).decode("n3ihao")
+
+        assertFalse(result.isExactCode)
+        assertTrue(result.candidates.isEmpty())
     }
 
     @Test

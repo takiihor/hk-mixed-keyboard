@@ -26,9 +26,11 @@ object JyutpingNormalizer {
         var canEndSyllable = false
         var previousWasSeparator = false
 
-        fun flush(tone: Int? = null): Boolean {
+        fun flush(tone: Int? = null, requireCanonical: Boolean = false): Boolean {
             if (current.isEmpty()) return false
-            syllables += current.toString()
+            val syllable = current.toString()
+            if (requireCanonical && syllable !in JyutpingSyllables.all) return false
+            syllables += syllable
             toneBySyllable += tone
             tone?.let(tones::add)
             current.setLength(0)
@@ -44,7 +46,7 @@ object JyutpingNormalizer {
                     previousWasSeparator = false
                 }
                 ch in '1'..'6' -> {
-                    if (!flush(ch.digitToInt())) return null
+                    if (!flush(ch.digitToInt(), requireCanonical = true)) return null
                     explicitBoundaries = true
                     canEndSyllable = true
                     previousWasSeparator = false
@@ -53,7 +55,7 @@ object JyutpingNormalizer {
                     if (index == 0 || index == lower.lastIndex || !canEndSyllable || previousWasSeparator) {
                         return null
                     }
-                    if (current.isNotEmpty()) flush()
+                    if (current.isNotEmpty() && !flush(requireCanonical = true)) return null
                     explicitBoundaries = true
                     canEndSyllable = false
                     previousWasSeparator = true
@@ -61,7 +63,7 @@ object JyutpingNormalizer {
                 else -> return null
             }
         }
-        if (current.isNotEmpty()) flush()
+        if (current.isNotEmpty() && !flush(requireCanonical = explicitBoundaries)) return null
         if (key.isEmpty()) return null
         return NormalizedJyutping(
             key.toString(),

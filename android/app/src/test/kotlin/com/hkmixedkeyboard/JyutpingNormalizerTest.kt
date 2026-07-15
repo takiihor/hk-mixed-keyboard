@@ -24,6 +24,9 @@ class JyutpingNormalizerTest {
     fun `rejects invalid tones and punctuation`() {
         assertNull(JyutpingNormalizer.normalize("nei0"))
         assertNull(JyutpingNormalizer.normalize("hou7"))
+        assertNull(JyutpingNormalizer.normalize("n5eihou"))
+        assertNull(JyutpingNormalizer.normalize("nei5h2ou"))
+        assertNull(JyutpingNormalizer.normalize("n'eihou"))
         assertNull(JyutpingNormalizer.normalize("nei_hou"))
         assertNull(JyutpingNormalizer.normalize(""))
     }

@@ -25,6 +25,18 @@ class CustomWordSchemeTest {
     }
 
     @Test
+    fun `misplaced tone digits cannot become custom word codes`() {
+        assertTrue(
+            CustomWordValidator.validate(Scheme.JYUTPING, "你好", "n5eihou") is
+                CustomWordValidator.Result.Invalid
+        )
+        assertTrue(
+            CustomWordValidator.validate(Scheme.PINYIN, "你好", "n3ihao") is
+                CustomWordValidator.Result.Invalid
+        )
+    }
+
+    @Test
     fun `continuous canonical romanization remains valid`() {
         assertEquals(
             CustomWordValidator.Result.Valid("我哋", "ngodei", Scheme.JYUTPING),

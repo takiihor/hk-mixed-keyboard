@@ -17,25 +17,41 @@ object PinyinNormalizer {
         "zh" to "z", "ch" to "c", "sh" to "s",
         "eng" to "en", "ing" to "in", "ang" to "an"
     )
+    private val palatalUmlaut = Regex("([jqxy])v")
 
     fun normalize(input: String): String? {
         if (input.isBlank()) return null
         val lower = input.lowercase(Locale.ROOT).replace("u:", "v")
         val output = StringBuilder(lower.length)
+        val currentSyllable = StringBuilder()
         var syllableHasLetter = false
         var previousWasBoundary = false
         var previousWasSeparator = false
+        var hasExplicitBoundary = false
+
+        fun flushExplicitSyllable(): Boolean {
+            if (currentSyllable.isEmpty()) return false
+            val syllable = canonicalize(currentSyllable.toString())
+            if (syllable !in MandarinSyllables.all) return false
+            currentSyllable.setLength(0)
+            hasExplicitBoundary = true
+            return true
+        }
+
         lower.forEachIndexed { index, raw ->
             val ch = toneMarks[raw] ?: raw
             when {
                 ch in 'a'..'z' -> {
                     output.append(ch)
+                    currentSyllable.append(ch)
                     syllableHasLetter = true
                     previousWasBoundary = false
                     previousWasSeparator = false
                 }
                 ch in '1'..'5' -> {
-                    if (!syllableHasLetter || previousWasBoundary) return null
+                    if (!syllableHasLetter || previousWasBoundary || !flushExplicitSyllable()) {
+                        return null
+                    }
                     syllableHasLetter = false
                     previousWasBoundary = true
                     previousWasSeparator = false
@@ -43,6 +59,8 @@ object PinyinNormalizer {
                 ch in separators -> {
                     if (index == 0 || index == lower.lastIndex ||
                         previousWasSeparator || !syllableHasLetter && !previousWasBoundary) return null
+                    if (currentSyllable.isNotEmpty() && !flushExplicitSyllable()) return null
+                    hasExplicitBoundary = true
                     syllableHasLetter = false
                     previousWasBoundary = true
                     previousWasSeparator = true
@@ -51,7 +69,11 @@ object PinyinNormalizer {
             }
         }
         if (output.isEmpty()) return null
-        return output.toString().replace(Regex("([jqxy])v"), "$1u")
+        if (hasExplicitBoundary && currentSyllable.isNotEmpty() &&
+            canonicalize(currentSyllable.toString()) !in MandarinSyllables.all) {
+            return null
+        }
+        return canonicalize(output.toString())
     }
 
     fun variants(input: String, fuzzyEnabled: Boolean): List<String> {
@@ -66,4 +88,6 @@ object PinyinNormalizer {
     }
 
     private const val MAX_VARIANTS = 8
+
+    private fun canonicalize(value: String): String = value.replace(palatalUmlaut, "$1u")
 }

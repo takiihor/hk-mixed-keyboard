@@ -22,6 +22,7 @@ import com.hkmixedkeyboard.ime.CandidateCommitPolicy
 import com.hkmixedkeyboard.memory.UserMemory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class ProductionPathThreeModeE2ETest {
@@ -72,6 +73,22 @@ class ProductionPathThreeModeE2ETest {
             emptyList<String>(),
             decoder.decode("neimaa", Scheme.JYUTPING).candidates.map { it.text }
         )
+    }
+
+    @Test
+    fun `misplaced tone digits cannot reach a committable production candidate`() {
+        listOf(
+            Scheme.JYUTPING to "n5eihou",
+            Scheme.PINYIN to "n3ihao"
+        ).forEach { (scheme, buffer) ->
+            val result = decoder.decode(buffer, scheme)
+
+            assertEquals("$scheme candidates", emptyList<String>(), result.candidates.map { it.text })
+            assertNull(
+                "$scheme malformed tone input must not auto-commit",
+                CandidateCommitPolicy.selectForAutoCommit(scheme, buffer, result.candidates)
+            )
+        }
     }
 
     @Test
