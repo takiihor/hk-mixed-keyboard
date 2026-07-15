@@ -44,7 +44,18 @@ trap finish_result EXIT
   echo "wm_density=$(adb shell wm density | tr -d '\r')"
 } > "$OUT/device.txt"
 
-adb logcat -c || adb shell logcat -c
+logcat_cleared=false
+for _ in $(seq 1 10); do
+  if adb logcat -c || adb shell logcat -c; then
+    logcat_cleared=true
+    break
+  fi
+  sleep 0.25
+done
+[[ "$logcat_cleared" == true ]] || {
+  echo "could not clear device logcat before stress" >&2
+  exit 1
+}
 adb install -r "$APK" > "$OUT/install.txt"
 adb shell am force-stop "$PACKAGE"
 adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1 \
