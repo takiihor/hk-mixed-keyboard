@@ -114,12 +114,55 @@ adb shell am send-trim-memory "$PACKAGE" COMPLETE > "$OUT/trim-memory.txt" 2>&1 
   echo "could not resolve the app PID before process recreation" >&2
   exit 1
 }
-adb shell am force-stop "$PACKAGE"
-for _ in $(seq 1 20); do
-  [[ -z "$(adb shell pidof "$PACKAGE" | tr -d '\r')" ]] && break
-  sleep 0.25
+
+# Leave the app task and require HOME to remain focused before force-stop. On
+# Android 8 an activity launch can still be queued after Monkey exits; killing
+# the process during that transition lets ActivityManager recreate the queued
+# activity immediately and makes the process-recreation check race the shell.
+adb shell input keyevent KEYCODE_HOME
+home_focus_checks=0
+for _ in $(seq 1 40); do
+  input_focus="$(adb shell dumpsys input | tr -d '\r' | awk '
+    /FocusedApplication:/ { legacy_app = $0; next }
+    legacy_app != "" && /FocusedWindow:/ {
+      print legacy_app " " $0
+      exit
+    }
+    /FocusedApplications:/ { in_focus = 1; next }
+    in_focus && /displayId=0/ && app == "" { app = $0 }
+    in_focus && /FocusedWindows:/ {
+      window = $0
+      if ($0 !~ /<none>/) { getline; window = window " " $0 }
+      print app " " window
+      exit
+    }
+  ')"
+  if [[ -n "$input_focus" && "$input_focus" != *"$PACKAGE"* &&
+        "$input_focus" != *"<none>"* && "$input_focus" != *"<null>"* ]]; then
+    home_focus_checks=$((home_focus_checks + 1))
+    [[ "$home_focus_checks" -ge 5 ]] && break
+  else
+    home_focus_checks=0
+  fi
+  sleep 0.1
 done
-[[ -z "$(adb shell pidof "$PACKAGE" | tr -d '\r')" ]] || {
+[[ "$home_focus_checks" -ge 5 ]] || {
+  echo "HOME focus did not stabilize before process recreation" >&2
+  exit 1
+}
+
+adb shell am force-stop "$PACKAGE"
+absent_pid_checks=0
+for _ in $(seq 1 40); do
+  if [[ -z "$(adb shell pidof "$PACKAGE" | tr -d '\r')" ]]; then
+    absent_pid_checks=$((absent_pid_checks + 1))
+    [[ "$absent_pid_checks" -ge 5 ]] && break
+  else
+    absent_pid_checks=0
+  fi
+  sleep 0.1
+done
+[[ "$absent_pid_checks" -ge 5 ]] || {
   echo "app process survived force-stop" >&2
   exit 1
 }
