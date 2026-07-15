@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard.settings
 
 import android.os.Bundle
+import android.view.textclassifier.TextClassifier
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -14,22 +15,24 @@ import kotlinx.coroutines.withContext
  * Displays bundled open-source data notices and license texts.
  */
 class OpenSourceLicensesActivity : AppCompatActivity() {
+    private lateinit var licensesText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
 
         val contentPadding = (16 * resources.displayMetrics.density).toInt()
-        val text = TextView(this).apply {
+        licensesText = TextView(this).apply {
             this.text = getString(com.hkmixedkeyboard.R.string.corpus_loading)
             textSize = 12f
             typeface = android.graphics.Typeface.MONOSPACE
+            setTextClassifier(TextClassifier.NO_OP)
             setTextIsSelectable(true)
         }
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(contentPadding, contentPadding, contentPadding, contentPadding)
-            addView(text)
+            addView(licensesText)
         }
 
         setContentView(ScrollView(this).apply { addView(root) })
@@ -50,9 +53,20 @@ class OpenSourceLicensesActivity : AppCompatActivity() {
                     }
                 }
             }
-            text.text = notice.getOrElse {
+            licensesText.text = notice.getOrElse {
                 getString(com.hkmixedkeyboard.R.string.notices_load_failed)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        licensesText.setTextIsSelectable(true)
+    }
+
+    override fun onPause() {
+        // End any pending selection animation before this activity loses its window token.
+        licensesText.setTextIsSelectable(false)
+        super.onPause()
     }
 }

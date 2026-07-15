@@ -4,7 +4,9 @@ import android.app.Activity
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.textclassifier.TextClassifier
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
@@ -25,6 +27,8 @@ import com.hkmixedkeyboard.settings.PrivacyPolicyActivity
 import com.hkmixedkeyboard.settings.SettingsActivity
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertSame
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -84,6 +88,48 @@ class SettingsReleaseRegressionTest {
                 )
             }
         }
+    }
+
+    @Test
+    fun legalDocumentSelectionIsCancelledBeforeTheWindowPauses() {
+        assertLifecycleSafeSelection(PrivacyPolicyActivity::class.java)
+        assertLifecycleSafeSelection(OpenSourceLicensesActivity::class.java)
+    }
+
+    private fun assertLifecycleSafeSelection(activityClass: Class<out Activity>) {
+        ActivityScenario.launch(activityClass).use { scenario ->
+            scenario.onActivity { activity ->
+                val text = findOnlyTextView(activity)
+                assertTrue(text.isTextSelectable)
+                assertSame(TextClassifier.NO_OP, text.textClassifier)
+            }
+
+            scenario.moveToState(androidx.lifecycle.Lifecycle.State.STARTED)
+            scenario.onActivity { activity ->
+                assertFalse(findOnlyTextView(activity).isTextSelectable)
+            }
+
+            scenario.moveToState(androidx.lifecycle.Lifecycle.State.RESUMED)
+            scenario.onActivity { activity ->
+                val text = findOnlyTextView(activity)
+                assertTrue(text.isTextSelectable)
+                assertSame(TextClassifier.NO_OP, text.textClassifier)
+            }
+        }
+    }
+
+    private fun findOnlyTextView(activity: Activity): TextView {
+        val root = activity.findViewById<ViewGroup>(android.R.id.content)
+        val texts = mutableListOf<TextView>()
+        fun collect(view: View) {
+            if (view is TextView) texts += view
+            if (view is ViewGroup) {
+                for (index in 0 until view.childCount) collect(view.getChildAt(index))
+            }
+        }
+        collect(root)
+        assertEquals("${activity.javaClass.simpleName} legal text count", 1, texts.size)
+        return texts.single()
     }
 
     private fun assertFirstContentBelowSystemBars(activityClass: Class<out Activity>) {
