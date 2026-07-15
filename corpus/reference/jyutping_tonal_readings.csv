@@ -1,6 +1,6 @@
 # Jyutping tonal reference derived from rime-cantonese (CC BY 4.0).
-# Preservation export: full 1-6 tone marks and every explicit reading per
-# character. NOT bundled into the APK; the runtime decode corpus stays toneless.
+# Preservation/runtime export: full 1-6 tone marks and every explicit reading
+# per character. Loaded lazily; the primary decode corpus remains toneless.
 # Source URL: https://codeload.github.com/rime/rime-cantonese/tar.gz/c99b16e44d2df77a5cb8fb0867dd2bab7a112cb0
 # Source commit: c99b16e44d2df77a5cb8fb0867dd2bab7a112cb0
 # Source date: 2026-07-02T11:05:50Z

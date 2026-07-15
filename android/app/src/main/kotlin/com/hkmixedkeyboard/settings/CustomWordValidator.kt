@@ -1,6 +1,8 @@
 package com.hkmixedkeyboard.settings
 
 import com.hkmixedkeyboard.decoder.JyutpingNormalizer
+import com.hkmixedkeyboard.decoder.JyutpingSyllables
+import com.hkmixedkeyboard.decoder.MandarinSyllables
 import com.hkmixedkeyboard.decoder.PinyinNormalizer
 import com.hkmixedkeyboard.decoder.Scheme
 import java.util.Locale
@@ -48,9 +50,11 @@ object CustomWordValidator {
             } ?: return Result.Invalid(Error.QUICK_CODE)
             Scheme.JYUTPING -> rawCode.takeIf { it.length <= MAX_ROMANIZATION_CODE_LENGTH }
                 ?.let { JyutpingNormalizer.normalize(it)?.key }
+                ?.takeIf(JyutpingSyllables::covers)
                 ?: return Result.Invalid(Error.JYUTPING_CODE)
             Scheme.PINYIN -> rawCode.takeIf { it.length <= MAX_ROMANIZATION_CODE_LENGTH }
                 ?.let(PinyinNormalizer::normalize)
+                ?.takeIf(MandarinSyllables::covers)
                 ?: return Result.Invalid(Error.PINYIN_CODE)
             else -> return Result.Invalid(Error.SCHEME)
         }

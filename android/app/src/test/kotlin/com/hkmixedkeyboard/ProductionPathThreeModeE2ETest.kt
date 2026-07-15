@@ -39,7 +39,7 @@ class ProductionPathThreeModeE2ETest {
     }
 
     @Test
-    fun `Jyutping segmented production path supports tap Space punctuation and Backspace`() {
+    fun `Jyutping exact phrase path supports tap Space punctuation and Backspace`() {
         assertProductionPath(
             scheme = Scheme.JYUTPING,
             buffer = "neihou",
@@ -55,6 +55,22 @@ class ProductionPathThreeModeE2ETest {
             buffer = "nihao",
             expected = "你好",
             spaceSuffix = ""
+        )
+    }
+
+    @Test
+    fun `romanization sentence composition requires reviewed phrase evidence`() {
+        assertEquals(
+            "你好嗎",
+            decoder.decode("neihoumaa", Scheme.JYUTPING).candidates.first().text
+        )
+        assertEquals(
+            "你好嗎",
+            decoder.decode("nihaoma", Scheme.PINYIN).candidates.first().text
+        )
+        assertEquals(
+            emptyList<String>(),
+            decoder.decode("neimaa", Scheme.JYUTPING).candidates.map { it.text }
         )
     }
 
@@ -154,13 +170,20 @@ class ProductionPathThreeModeE2ETest {
                 "jyutping",
                 listOf(
                     JyutpingEntry("nei", "你", 1.0),
-                    JyutpingEntry("hou", "好", 1.0)
+                    JyutpingEntry("hou", "好", 1.0),
+                    JyutpingEntry("maa", "嗎", 1.0),
+                    JyutpingEntry("neihou", "你好", 1.2)
                 )
             )
             loader.replaceLazy("englishAssist", emptyList<EnglishAssistEntry>())
             loader.replaceLazy(
                 "pinyinLexicon",
-                PinyinLexicon(listOf(PinyinEntry("nihao", "你好", 1.0)))
+                PinyinLexicon(
+                    listOf(
+                        PinyinEntry("nihao", "你好", 1.0),
+                        PinyinEntry("ma", "嗎", 1.0)
+                    )
+                )
             )
         }
     }

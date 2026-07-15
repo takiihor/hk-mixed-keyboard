@@ -56,7 +56,10 @@ class ChineseEnglishAssistTest {
         )
 
         assertEquals(listOf("站", "bus"), candidates.map { it.text })
-        assertEquals("中→英 bus", CandidatePresentation.label(translation) { true })
+        assertEquals(
+            "中→英 bus",
+            CandidatePresentation.label(translation, hasGlyph = { true })
+        )
     }
 
     @Test

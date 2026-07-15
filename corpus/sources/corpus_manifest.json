@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "corpus_content_version": 13,
+  "corpus_content_version": 14,
   "assets": [
     {
       "path": "android/app/src/main/assets/corpus/english_assist.csv",
@@ -159,6 +159,25 @@
         "status": "reviewed-curated",
         "licenses": ["Project-Curated"],
         "note": "Human-reviewed Hong Kong Cantonese ranking overrides kept separate from the upstream snapshot."
+      }
+    },
+    {
+      "path": "corpus/reference/jyutping_tonal_readings.csv",
+      "format": "csv",
+      "header": true,
+      "data_rows": 27006,
+      "bytes": 484979,
+      "sha256": "cb77ae03498b8a0ffa644fd0c2f2f916e0bbab6f0e94928a0d529d246853dbf3",
+      "provenance": {
+        "status": "reproducible",
+        "licenses": ["CC-BY-4.0"],
+        "generator": "corpus/tools/build_jyutping_tones.py",
+        "source": {
+          "path": "corpus/sources/upstream/rime-cantonese-c99b16e44d2df77a5cb8fb0867dd2bab7a112cb0.tar.gz",
+          "url": "https://codeload.github.com/rime/rime-cantonese/tar.gz/c99b16e44d2df77a5cb8fb0867dd2bab7a112cb0",
+          "date": "2026-07-02T11:05:50Z",
+          "sha256": "83fddd062104abac17fbc0c039f2c22c57671e96c5395a00abc326fd9ceeedfd"
+        }
       }
     },
     {

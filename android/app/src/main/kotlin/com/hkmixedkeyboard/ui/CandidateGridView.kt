@@ -54,7 +54,11 @@ class CandidateGridView(private val context: Context) {
         this.grid = grid
 
         candidates.forEachIndexed { index, cand ->
-            val label = CandidatePresentation.label(cand) { glyphPaint.hasGlyph(it) }
+            val label = CandidatePresentation.label(
+                cand,
+                glyphPaint::hasGlyph,
+                context.getString(com.hkmixedkeyboard.R.string.chinese_to_english)
+            )
             val cell = TextView(context).apply {
                 text = label
                 contentDescription = context.getString(

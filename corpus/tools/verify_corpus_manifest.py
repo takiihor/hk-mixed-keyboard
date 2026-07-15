@@ -18,6 +18,7 @@ DEFAULT_MANIFEST = Path("corpus/sources/corpus_manifest.json")
 SHIPPED_ASSET_DIRS = (
     Path("android/app/src/main/assets/corpus"),
     Path("android/app/src/main/assets/t2s"),
+    Path("corpus/reference"),
 )
 VALID_FORMATS = {"csv": ",", "tsv": "\t"}
 VALID_PROVENANCE = {

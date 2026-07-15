@@ -20,6 +20,8 @@ class PinyinLexicon(entries: List<PinyinEntry>) {
 
     val segmenter = PinyinSegmenter(syllables)
 
+    val phraseComposer = PhraseEvidenceComposer(exact)
+
     fun adjacentTypoCandidates(input: String): List<DecodeCandidate> {
         if (input.length !in 2..MAX_TYPO_INPUT_LENGTH) return emptyList()
         val key = typoKeysByLength[input.length].orEmpty().asSequence()
@@ -264,34 +266,16 @@ class PinyinDecoder(
     }
 
     private fun compose(buffer: String, normalized: String): DecodeResult? {
-        val segments = lexicon.segmenter.segment(normalized) ?: return null
-        val perSyllable = segments.map { syllable ->
-            lexicon.exact[syllable].orEmpty()
-                .asSequence()
-                .filter { it.type == CandidateType.CHAR }
-                .take(ALT_PER_SYLLABLE)
-                .toList()
-        }
-        if (perSyllable.any { it.isEmpty() }) return null
-
-        val top = perSyllable.map { it.first().text }
-        val composed = LinkedHashSet<String>()
-        composed += top.joinToString("")
-        for (alternate in perSyllable.last()) {
-            composed += (top.dropLast(1) + alternate.text).joinToString("")
-        }
-        for (alternate in perSyllable.first()) {
-            composed += (listOf(alternate.text) + top.drop(1)).joinToString("")
-        }
-
-        val candidates = composed.take(MAX_COMPOSED).mapIndexed { index, text ->
+        val compositions = lexicon.phraseComposer.compose(normalized)
+        if (compositions.isEmpty()) return null
+        val candidates = compositions.map { composition ->
             DecodeCandidate(
-                text = text,
+                text = composition.text,
                 code = normalized,
                 sourceSchema = SourceSchema.PINYIN,
                 type = CandidateType.PHRASE,
-                frequency = 1.0 - index * 0.01,
-                isHkCore = false
+                frequency = composition.score,
+                isHkCore = composition.isHkCore
             )
         }
         return DecodeResult(
@@ -315,8 +299,6 @@ class PinyinDecoder(
 
     private companion object {
         const val PREFIX_CANDIDATE_LIMIT = 24
-        const val ALT_PER_SYLLABLE = 4
-        const val MAX_COMPOSED = 12
 
         val PREFIX_QUALITY = compareBy<DecodeCandidate> { it.frequency }
             .thenByDescending { it.code }

@@ -5,6 +5,10 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Displays the privacy policy (assets/legal/privacy_policy.txt) inside the app.
@@ -17,13 +21,9 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
 
-        val body = runCatching {
-            assets.open("legal/privacy_policy.txt").bufferedReader().use { it.readText() }
-        }.getOrElse { "Failed to load privacy policy: ${it.message}" }
-
         val contentPadding = (16 * resources.displayMetrics.density).toInt()
         val text = TextView(this).apply {
-            this.text = body
+            this.text = getString(com.hkmixedkeyboard.R.string.corpus_loading)
             textSize = 13f
             setTextIsSelectable(true)
         }
@@ -35,5 +35,15 @@ class PrivacyPolicyActivity : AppCompatActivity() {
 
         setContentView(ScrollView(this).apply { addView(root) })
         SettingsScreenInsets.apply(this, root, contentPadding)
+        lifecycleScope.launch {
+            val body = withContext(Dispatchers.IO) {
+                runCatching {
+                    assets.open("legal/privacy_policy.txt").bufferedReader().use { it.readText() }
+                }
+            }
+            text.text = body.getOrElse {
+                getString(com.hkmixedkeyboard.R.string.privacy_load_failed)
+            }
+        }
     }
 }

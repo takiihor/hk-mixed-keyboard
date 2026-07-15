@@ -19,17 +19,44 @@ jobs:
           distribution: temurin
           java-version: "17"
       - uses: gradle/actions/setup-gradle@v4
-      - name: JVM tests and lint
+      - name: JVM tests, coverage, lint and debug APK
         working-directory: android
-        run: ./gradlew testDebugUnitTest lintDebug --stacktrace
+        run: >-
+          ./gradlew testDebugUnitTest testReleaseUnitTest
+          createDebugUnitTestCoverageReport lintDebug lintRelease assembleDebug --stacktrace
       - name: Corpus integrity and tooling
         run: |
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests
           python3 corpus/tools/verify_corpus_manifest.py
-      - name: Manifest privacy guard
+          python3 corpus/tools/verify_benchmark_templates.py
+          sha256sum --check docs/release/legal_assets.sha256
+      - name: Source and merged-binary privacy guards
         run: |
           ! rg -n 'android.permission.INTERNET' android/app/src/main/AndroidManifest.xml
           rg -n 'android:allowBackup="false"' android/app/src/main/AndroidManifest.xml
+          APK="$(find android/app/build/outputs/apk/debug -maxdepth 1 -name '*.apk' -print -quit)"
+          scripts/verify_apk_policy.sh "$APK" com.hkmixedkeyboard.debug
+      - name: Source-derived regression benchmark reports
+        run: |
+          mkdir -p android/app/build/reports/benchmarks
+          python3 corpus/tools/run_three_mode_coverage_benchmark.py \
+            | tee android/app/build/reports/benchmarks/three-mode-source-coverage.txt
+          python3 corpus/tools/run_jyutping_benchmark.py --require-top1 1.0 \
+            | tee android/app/build/reports/benchmarks/jyutping-reviewed-regression.txt
+      - name: Unsigned release fails closed
+        run: |
+          if (cd android && ./gradlew bundleRelease --stacktrace) \
+              > android/app/build/reports/unsigned-release-guard.txt 2>&1; then
+            echo "bundleRelease unexpectedly succeeded without signing configuration" >&2
+            exit 1
+          fi
+          rg -n 'Release signing is required' android/app/build/reports/unsigned-release-guard.txt
+          ! find android/app/build/outputs/bundle/release -name '*.aab' -print -quit 2>/dev/null \
+            | rg .
+      - name: Builds never mutate version or corpus metadata
+        run: |
+          git diff --exit-code -- android/app/version.properties
+          git diff --exit-code -- corpus/sources/corpus_manifest.json
       - name: Archive reports
         if: always()
         uses: actions/upload-artifact@v4

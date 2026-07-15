@@ -18,7 +18,7 @@ kapt {
 // A short, human-readable note about this build, surfaced in the Settings screen
 // (and the APK filename) so the installed version is unmistakable. Edit this line
 // whenever you want the note to describe the latest change.
- val buildRemark = "HKSCS 4,606 coverage, cross-mode bilingual assists, reproducible corpora"
+ val buildRemark = "HKSCS 4,606 coverage, tone-aware Jyutping, phrase-evidence Pinyin"
 
 // Version metadata is read-only during builds. Release owners update it in an
 // intentional source change; debug, test and lint can never dirty the worktree.
@@ -44,7 +44,12 @@ val hasReleaseSigning = listOf(
     releaseKeyAlias,
     releaseKeyPassword
 ).all { !it.isNullOrBlank() }
-val releasePackagingTaskNames = setOf("packageRelease", "bundleRelease", "assembleRelease")
+val releasePackagingTaskNames = setOf(
+    "packageRelease",
+    "packageReleaseBundle",
+    "bundleRelease",
+    "assembleRelease"
+)
 val missingReleaseSigningMessage =
     "Release signing is required. Set HKKBD_STORE_FILE, HKKBD_STORE_PASSWORD, " +
         "HKKBD_KEY_ALIAS and HKKBD_KEY_PASSWORD."
@@ -111,6 +116,7 @@ val appVersionName = "0.$versionMinor.0"
         debug {
           applicationIdSuffix = ".debug"
           isDebuggable = true
+          enableUnitTestCoverage = true
           buildConfigField("boolean", "SHOW_DEBUG_PANEL", "false")
           // Enable perf tracing in debug builds by default.
           buildConfigField("boolean", "PERF_TRACING", "true")
@@ -145,6 +151,9 @@ val appVersionName = "0.$versionMinor.0"
     }
 
     sourceSets {
+        // The pinned tonal Jyutping reference is shared directly with the runtime
+        // to avoid a second drifting copy in app/src/main/assets.
+        getByName("main").assets.srcDir(rootProject.file("../corpus/reference"))
         getByName("androidTest").assets.srcDir("$projectDir/schemas")
     }
 

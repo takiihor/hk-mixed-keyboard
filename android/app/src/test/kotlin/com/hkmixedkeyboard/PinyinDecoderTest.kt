@@ -182,7 +182,7 @@ class PinyinDecoderTest {
     }
 
     @Test
-    fun `valid continuous syllables compose a bounded fallback phrase`() {
+    fun `character-only syllables cannot invent a fallback phrase`() {
         val result = decoder(
             PinyinEntry("ni", "你", 0.9),
             PinyinEntry("ni", "尼", 0.5),
@@ -190,24 +190,25 @@ class PinyinDecoderTest {
             PinyinEntry("men", "門", 0.5)
         ).decode("nimen")
 
-        assertTrue(result.isExactCode)
-        assertTrue(result.cnHasPhraseMatch)
-        assertEquals("你們", result.candidates.first().text)
-        assertTrue(result.candidates.size <= 12)
-        assertTrue(result.candidates.all { it.type == CandidateType.PHRASE })
+        assertFalse(result.isExactCode)
+        assertTrue(result.candidates.isEmpty())
     }
 
     @Test
-    fun `invalid or over ceiling segmentation returns no candidates`() {
+    fun `reviewed phrase evidence composes continuous input within ceiling`() {
         val decoder = decoder(
-            PinyinEntry("ni", "你", 0.9),
-            PinyinEntry("men", "們", 0.9)
+            PinyinEntry("nihao", "你好", 0.9),
+            PinyinEntry("ma", "嗎", 0.9)
         )
 
-        assertTrue(decoder.decode("nix").candidates.isEmpty())
-        assertTrue(decoder.decode("nimen".repeat(14)).candidates.isNotEmpty())
-        assertTrue(decoder.decode("nimen".repeat(15)).candidates.isEmpty())
-        assertTrue(decoder.decode("ni0men").candidates.isEmpty())
+        val result = decoder.decode("nihaoma")
+        assertTrue(result.isExactCode)
+        assertTrue(result.cnHasPhraseMatch)
+        assertEquals("你好嗎", result.candidates.first().text)
+        assertTrue(result.candidates.size <= 12)
+        assertTrue(decoder.decode("nihaoma".repeat(10)).candidates.isNotEmpty())
+        assertTrue(decoder.decode("nihaoma".repeat(11)).candidates.isEmpty())
+        assertTrue(decoder.decode("nihao0ma").candidates.isEmpty())
     }
 
     @Test

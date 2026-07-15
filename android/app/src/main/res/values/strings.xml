@@ -18,6 +18,9 @@
     <string name="quick_label">速成</string>
     <string name="jyutping_label">粵拼</string>
     <string name="pinyin_label">普通話拼音</string>
+    <string name="quick_short_label">速</string>
+    <string name="jyutping_short_label">粵</string>
+    <string name="pinyin_short_label">拼</string>
     <string name="primary_input">主要輸入法</string>
     <string name="keyboard_theme">鍵盤主題</string>
     <string name="simplified_output">簡體輸出（打繁出簡）</string>
@@ -82,6 +85,8 @@
     <string name="import_unsafe_text">第 %1$d 行的詞語不安全</string>
     <string name="import_row_error">第 %1$d 行：%2$s</string>
     <string name="import_too_large">匯入檔案不可超過 1 MiB</string>
+    <string name="privacy_load_failed">無法載入私隱政策。</string>
+    <string name="notices_load_failed">無法載入開源授權與資料來源。</string>
     <string name="theme_dark">深色</string>
     <string name="theme_light">淺色（iPhone 風格）</string>
     <string name="theme_dark_preview">深色鍵盤配色</string>
@@ -93,6 +98,7 @@
     <string name="candidate_reading">，讀音 %1$s</string>
     <string name="candidate_first">，首選</string>
     <string name="candidate_expand">展開全部候選；再次按下可收合</string>
+    <string name="chinese_to_english">中→英</string>
     <string name="keyboard_accessibility">鍵盤</string>
     <string name="mode_announcement">輸入模式 %1$s</string>
     <string name="shift_on">Shift 開啟</string>

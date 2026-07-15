@@ -8,6 +8,7 @@ import com.hkmixedkeyboard.decoder.CorpusBackedDecoder
 import com.hkmixedkeyboard.decoder.CorpusLoader
 import com.hkmixedkeyboard.decoder.DecodeCandidate
 import com.hkmixedkeyboard.decoder.HkscsSupplement
+import com.hkmixedkeyboard.decoder.PhraseEntry
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.engine.CandidateDisplayPolicy
@@ -68,6 +69,22 @@ class HkscsSupplementTest {
         val fallback = decoder.decode("u200cd", Scheme.QUICK).candidates.single()
         assertEquals("𠃍", fallback.text)
         assertEquals(SourceSchema.HKSCS_UNICODE, fallback.sourceSchema)
+        assertEquals(
+            "𠀾",
+            decoder.decode("𠀾", Scheme.QUICK).candidates.single().text
+        )
+    }
+
+    @Test
+    fun `next-character prediction never splits a supplementary code point`() {
+        val loader = bareLoader().also {
+            it.setLazy("phrases", lazyOf(listOf(PhraseEntry("𠀾好", "mivnd", 1.0, true))))
+        }
+
+        assertEquals(listOf("好"), loader.nextCharIndex.getValue("𠀾").map { it.text })
+        assertTrue(loader.nextCharIndex.keys.none { key ->
+            key.any(Character::isSurrogate) && key.codePointCount(0, key.length) != 1
+        })
     }
 
     @Test

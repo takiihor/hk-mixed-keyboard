@@ -41,7 +41,14 @@ class KeyboardView @JvmOverloads constructor(
 
     // Live indicator drawn on the scheme-switch key (速 = 速成, 粵 = 粵拼, 拼 = 普通話拼音).
     var modeLabel: String = "速"
-        set(value) { field = value; notifyAccessibilityStateChanged(context.getString(com.hkmixedkeyboard.R.string.mode_announcement, value)) }
+        set(value) { field = value; notifyAccessibilityStateChanged() }
+    var accessibilityModeLabel: String = "速成"
+        set(value) {
+            field = value
+            notifyAccessibilityStateChanged(
+                context.getString(com.hkmixedkeyboard.R.string.mode_announcement, value)
+            )
+        }
 
     // Shift state, driven by the IME. When active the letter faces render uppercase
     // and the ⇧ key is highlighted; `locked` (caps-lock) is shown a touch stronger.
@@ -515,8 +522,11 @@ class KeyboardView @JvmOverloads constructor(
 
     private fun notifyAccessibilityStateChanged(announcement: String? = null) {
         if (!isAttachedToWindow) return
-        sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED)
-        announcement?.let(::announceForAccessibility)
+        if (announcement == null) {
+            sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED)
+        } else {
+            AccessibilityCompat.publishState(this, announcement)
+        }
     }
 
     private fun virtualIdFor(cellIndex: Int): Int = cellIndex + 1
@@ -529,16 +539,15 @@ class KeyboardView @JvmOverloads constructor(
             label = cell.def.label,
             showCangjieRoots = showCangjieRoots,
             spaceLabel = spaceLabel,
-            modeLabel = modeLabel,
+            modeLabel = accessibilityModeLabel,
             shiftActive = shiftActive,
             shiftLocked = shiftLocked,
             text = localizedAccessibilityText
         )
 
-    @Suppress("DEPRECATION") // Platform virtual-node creation remains required on minSdk 26.
     private fun sendVirtualAccessibilityEvent(virtualViewId: Int, eventType: Int) {
         val cell = cellForVirtualId(virtualViewId) ?: return
-        val event = AccessibilityEvent.obtain(eventType).apply {
+        val event = AccessibilityCompat.event(eventType).apply {
             packageName = context.packageName
             className = android.widget.Button::class.java.name
             contentDescription = accessibilityDescription(cell)
@@ -548,7 +557,6 @@ class KeyboardView @JvmOverloads constructor(
         parent?.requestSendAccessibilityEvent(this, event) ?: sendAccessibilityEventUnchecked(event)
     }
 
-    @Suppress("DEPRECATION") // Platform virtual-node creation remains required on minSdk 26.
     private inner class KeyboardAccessibilityProvider : AccessibilityNodeProvider() {
         override fun createAccessibilityNodeInfo(virtualViewId: Int): AccessibilityNodeInfo? =
             when (virtualViewId) {
@@ -625,8 +633,8 @@ class KeyboardView @JvmOverloads constructor(
             }
         }
 
-        private fun createHostNode(): AccessibilityNodeInfo = AccessibilityNodeInfo.obtain().apply {
-            setSource(this@KeyboardView)
+        private fun createHostNode(): AccessibilityNodeInfo =
+            AccessibilityCompat.hostNode(this@KeyboardView).apply {
             packageName = context.packageName
             className = KeyboardView::class.java.name
             contentDescription = context.getString(com.hkmixedkeyboard.R.string.keyboard_accessibility)
@@ -637,13 +645,14 @@ class KeyboardView @JvmOverloads constructor(
 
         private fun createKeyNode(virtualViewId: Int): AccessibilityNodeInfo? {
             val cell = cellForVirtualId(virtualViewId) ?: return null
-            return AccessibilityNodeInfo.obtain().apply {
-                setSource(this@KeyboardView, virtualViewId)
+            return AccessibilityCompat.virtualNode(this@KeyboardView, virtualViewId).apply {
                 setParent(this@KeyboardView)
                 packageName = context.packageName
                 className = android.widget.Button::class.java.name
                 contentDescription = accessibilityDescription(cell)
-                setBoundsInParent(
+                AccessibilityCompat.setBoundsInScreen(
+                    this,
+                    this@KeyboardView,
                     Rect(
                         cell.hitRect.left.coerceAtLeast(0f).toInt(),
                         cell.hitRect.top.coerceAtLeast(0f).toInt(),

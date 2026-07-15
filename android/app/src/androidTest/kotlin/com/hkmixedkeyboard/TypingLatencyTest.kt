@@ -32,6 +32,9 @@ class TypingLatencyTest {
                 (android.os.SystemClock.elapsedRealtimeNanos() - start) / 1_000_000L
             )
         }
-        assertTrue(distribution.snapshot().p95Ms <= 150L)
+        val snapshot = distribution.snapshot()
+        assertTrue("p50 ${snapshot.p50Ms} ms", snapshot.p50Ms <= 30L)
+        assertTrue("p95 ${snapshot.p95Ms} ms", snapshot.p95Ms <= 75L)
+        assertTrue("p99 ${snapshot.p99Ms} ms", snapshot.p99Ms <= 150L)
     }
 }

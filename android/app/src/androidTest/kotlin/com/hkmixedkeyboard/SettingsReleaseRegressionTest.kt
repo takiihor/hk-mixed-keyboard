@@ -1,12 +1,14 @@
 package com.hkmixedkeyboard
 
 import android.app.Activity
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -22,6 +24,7 @@ import com.hkmixedkeyboard.settings.OpenSourceLicensesActivity
 import com.hkmixedkeyboard.settings.PrivacyPolicyActivity
 import com.hkmixedkeyboard.settings.SettingsActivity
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -29,8 +32,9 @@ import org.junit.runner.RunWith
 class SettingsReleaseRegressionTest {
     @Test
     fun customWordDisplayFieldIsCompletelyVisibleAndClickable() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         ActivityScenario.launch(CustomWordActivity::class.java).use {
-            onView(withHint("詞語（如: 我哋）"))
+            onView(withHint(context.getString(R.string.custom_display_hint)))
                 .check(matches(isCompletelyDisplayed()))
                 .perform(click())
         }
@@ -38,19 +42,25 @@ class SettingsReleaseRegressionTest {
 
     @Test
     fun clearingPersonalDictionaryRequiresConfirmationAndCanBeCancelled() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         ActivityScenario.launch(SettingsActivity::class.java).use {
-            onView(withText("清除所有個人詞庫")).perform(scrollTo(), click())
-            onView(withText("確定清除所有個人詞庫？")).check(matches(isDisplayed()))
-            onView(withText("取消")).perform(click())
+            onView(withText(context.getString(R.string.clear_personal_dictionary)))
+                .perform(scrollTo())
+            onView(withText(context.getString(R.string.clear_personal_dictionary)))
+                .perform(click())
+            onView(withText(context.getString(R.string.clear_title)))
+                .check(matches(isDisplayed()))
+            onView(withText(context.getString(R.string.cancel))).perform(click())
         }
     }
 
     @Test
     fun setupExposesSeparateEnableSelectActionsAndPracticeField() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         ActivityScenario.launch(SettingsActivity::class.java).use {
-            onView(withText("在設定中啟用此鍵盤")).check(matches(isDisplayed()))
-            onView(withText("選擇目前鍵盤")).check(matches(isDisplayed()))
-            onView(withHint("在此安全練習：ai／nei5hou2／ni3hao3"))
+            onView(withText(context.getString(R.string.setup_enable))).check(matches(isDisplayed()))
+            onView(withText(context.getString(R.string.setup_select))).check(matches(isDisplayed()))
+            onView(withHint(context.getString(R.string.practice_hint)))
                 .check(matches(isDisplayed()))
         }
     }
@@ -61,6 +71,19 @@ class SettingsReleaseRegressionTest {
         assertFirstContentBelowSystemBars(DictionaryExportActivity::class.java)
         assertFirstContentBelowSystemBars(PrivacyPolicyActivity::class.java)
         assertFirstContentBelowSystemBars(OpenSourceLicensesActivity::class.java)
+    }
+
+    @Test
+    fun settingsWindowExcludesUnneededFrameworkScrollCapture() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
+        ActivityScenario.launch(SettingsActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                assertEquals(
+                    View.SCROLL_CAPTURE_HINT_EXCLUDE_DESCENDANTS,
+                    activity.window.decorView.scrollCaptureHint
+                )
+            }
+        }
     }
 
     private fun assertFirstContentBelowSystemBars(activityClass: Class<out Activity>) {

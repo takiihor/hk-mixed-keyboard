@@ -7,10 +7,11 @@
 - A mode key cycles Quick (速) → Jyutping (粵) → Pinyin (拼).
 - Holding the mode key opens a direct picker; Settings also offers keyboard-height
   and left/right one-handed controls.
-- Quick, exact/segmented Jyutping, and Pinyin candidates share the same
+- Quick, exact/phrase-evidence Jyutping, and Pinyin candidates share the same
   resolved-candidate commit path for tap, Space, and punctuation.
-- Jyutping accepts optional tone digits and boundaries and exposes pronunciation
-  annotations. Pinyin accepts tone marks/digits, boundaries, optional strict-first
+- Jyutping accepts optional tone digits and boundaries, uses explicit tones to
+  rank matching readings, and exposes tonal pronunciation annotations. Pinyin
+  accepts tone marks/digits, boundaries, optional strict-first
   fuzzy pairs and a tap-only nearby-key correction.
 - Custom entries are validated per scheme and bounded, atomic UTF-8 CSV import is
   supported. Learning is local, capped, reversible and disabled in sensitive fields.

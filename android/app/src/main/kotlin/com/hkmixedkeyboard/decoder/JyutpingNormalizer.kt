@@ -6,6 +6,7 @@ data class NormalizedJyutping(
     val key: String,
     val syllables: List<String>,
     val tones: List<Int>,
+    val toneBySyllable: List<Int?>,
     val explicitBoundaries: Boolean
 )
 
@@ -19,6 +20,7 @@ object JyutpingNormalizer {
         val key = StringBuilder(lower.length)
         val syllables = mutableListOf<String>()
         val tones = mutableListOf<Int>()
+        val toneBySyllable = mutableListOf<Int?>()
         val current = StringBuilder()
         var explicitBoundaries = false
         var canEndSyllable = false
@@ -27,6 +29,7 @@ object JyutpingNormalizer {
         fun flush(tone: Int? = null): Boolean {
             if (current.isEmpty()) return false
             syllables += current.toString()
+            toneBySyllable += tone
             tone?.let(tones::add)
             current.setLength(0)
             return true
@@ -60,6 +63,12 @@ object JyutpingNormalizer {
         }
         if (current.isNotEmpty()) flush()
         if (key.isEmpty()) return null
-        return NormalizedJyutping(key.toString(), syllables, tones, explicitBoundaries)
+        return NormalizedJyutping(
+            key.toString(),
+            syllables,
+            tones,
+            toneBySyllable,
+            explicitBoundaries
+        )
     }
 }

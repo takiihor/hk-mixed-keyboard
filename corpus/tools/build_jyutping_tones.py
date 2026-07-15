@@ -6,9 +6,10 @@ users can type without tone digits. That normalization discards the 1-6 tone
 marks and multiple readings that are part of the cultural-preservation record.
 
 This generator preserves that data as a versioned, checksummed reference export
-under ``corpus/reference/`` (not bundled into the APK). Every character keeps
-all of its explicit tonal readings in source order, and supplementary-plane
-characters are handled by Unicode code point rather than UTF-16 length.
+under ``corpus/reference/``. The same compact file is bundled as a lazy runtime
+asset for explicit-tone ranking. Every character keeps all of its explicit tonal
+readings in source order, and supplementary-plane characters are handled by
+Unicode code point rather than UTF-16 length.
 """
 
 from __future__ import annotations
@@ -133,8 +134,8 @@ def build_reference(
     buffer = io.StringIO(newline="")
     header = (
         "# Jyutping tonal reference derived from rime-cantonese (CC BY 4.0).",
-        "# Preservation export: full 1-6 tone marks and every explicit reading per",
-        "# character. NOT bundled into the APK; the runtime decode corpus stays toneless.",
+        "# Preservation/runtime export: full 1-6 tone marks and every explicit reading",
+        "# per character. Loaded lazily; the primary decode corpus remains toneless.",
         f"# Source URL: {source_url}",
         f"# Source commit: {source_commit}",
         f"# Source date: {source_date}",

@@ -14,6 +14,10 @@ class JyutpingNormalizerTest {
         assertEquals("neihou", JyutpingNormalizer.normalize("nei-hou")?.key)
         assertEquals("neihou", JyutpingNormalizer.normalize("NEI'HOU")?.key)
         assertEquals(listOf(5, 2), JyutpingNormalizer.normalize("nei5hou2")?.tones)
+        assertEquals(
+            listOf(null, 2),
+            JyutpingNormalizer.normalize("nei hou2")?.toneBySyllable
+        )
     }
 
     @Test

@@ -1,11 +1,13 @@
 package com.hkmixedkeyboard
 
+import android.graphics.Rect
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityNodeProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hkmixedkeyboard.ui.KeyboardLayout
+import com.hkmixedkeyboard.ui.KeyboardAccessibilityLabels
 import com.hkmixedkeyboard.ui.KeyboardView
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -44,10 +46,19 @@ class KeyboardAccessibilityNodeProviderTest {
 
             val firstKey = nonNullProvider.createAccessibilityNodeInfo(1)
             assertNotNull(firstKey)
-            assertEquals("數字1鍵", firstKey!!.contentDescription)
+            assertEquals(
+                KeyboardAccessibilityLabels.descriptionFor(
+                    "1",
+                    text = KeyboardAccessibilityLabels.from(instrumentation.targetContext)
+                ),
+                firstKey!!.contentDescription
+            )
             assertTrue(firstKey.actionList.any {
                 it.id == AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK.id
             })
+            val bounds = Rect()
+            firstKey.getBoundsInScreen(bounds)
+            assertTrue("virtual key must expose non-empty screen bounds", !bounds.isEmpty)
 
             assertTrue(nonNullProvider.performAction(
                 1,

@@ -32,14 +32,13 @@ class PinyinCorpusTest {
     }
 
     @Test
-    fun `segmentable input composes before appending longer dictionary prefixes`() {
-        val result = decoder.decode("tianan")
+    fun `phrase evidence composes continuous input without per-character synthesis`() {
+        val result = decoder.decode("nihaoma")
 
         assertTrue(result.isExactCode)
         assertTrue(result.cnHasPhraseMatch)
-        assertTrue(result.candidates.size >= 2)
-        assertEquals("天安", result.candidates.first().text)
-        assertTrue(result.candidates.drop(1).any { it.text == "天安門" })
+        assertEquals("你好嗎", result.candidates.first().text)
+        assertTrue(decoder.decode("tianan").candidates.none { it.text == "天安" })
     }
 
     @Test

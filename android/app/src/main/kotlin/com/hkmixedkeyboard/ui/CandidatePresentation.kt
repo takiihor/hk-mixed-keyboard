@@ -11,10 +11,14 @@ import com.hkmixedkeyboard.decoder.SourceSchema
  * an unambiguous Unicode label (for example `U+2003E`).
  */
 object CandidatePresentation {
-    fun label(candidate: DecodeCandidate, hasGlyph: (String) -> Boolean): String {
+    fun label(
+        candidate: DecodeCandidate,
+        hasGlyph: (String) -> Boolean,
+        chineseAssistPrefix: String = "中→英"
+    ): String {
         val textLabel = label(candidate.text, hasGlyph)
         val directionLabel = if (candidate.sourceSchema == SourceSchema.CHINESE_ASSIST) {
-            "中→英 $textLabel"
+            "$chineseAssistPrefix $textLabel"
         } else {
             textLabel
         }

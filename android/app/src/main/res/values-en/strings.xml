@@ -22,6 +22,9 @@
     <string name="quick_label">Quick</string>
     <string name="jyutping_label">Jyutping</string>
     <string name="pinyin_label">Mandarin Pinyin</string>
+    <string name="quick_short_label">Q</string>
+    <string name="jyutping_short_label">J</string>
+    <string name="pinyin_short_label">P</string>
     <string name="primary_input">Primary input mode</string>
     <string name="keyboard_theme">Keyboard theme</string>
     <string name="simplified_output">Simplified output</string>
@@ -86,6 +89,8 @@
     <string name="import_unsafe_text">Row %1$d has unsafe text</string>
     <string name="import_row_error">Row %1$d: %2$s</string>
     <string name="import_too_large">Import files are limited to 1 MiB</string>
+    <string name="privacy_load_failed">Unable to load the privacy policy.</string>
+    <string name="notices_load_failed">Unable to load open-source licences and data sources.</string>
     <string name="theme_dark">Dark</string>
     <string name="theme_light">Light (iPhone style)</string>
     <string name="theme_dark_preview">Dark keyboard colours</string>
@@ -97,6 +102,7 @@
     <string name="candidate_reading">, reading %1$s</string>
     <string name="candidate_first">, first choice</string>
     <string name="candidate_expand">Expand all candidates; activate again to collapse</string>
+    <string name="chinese_to_english">Chinese→English</string>
     <string name="keyboard_accessibility">Keyboard</string>
     <string name="mode_announcement">Input mode %1$s</string>
     <string name="shift_on">Shift on</string>

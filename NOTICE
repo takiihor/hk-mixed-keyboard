@@ -66,18 +66,7 @@ Acknowledgement: This application acknowledges DATA.GOV.HK and the Hong Kong
           Government / Digital Policy Office as the source of HKSCS data.
 
 
-6. FrequencyWords — English frequency vocabulary
--------------------------------------------------
-Used for: eligible English keys in the reproducible English → Chinese assist.
-Project:  https://github.com/hermitdave/FrequencyWords
-Source:   content/2018/en/en_50k.txt at commit
-          525f9b560de45753a5ea01069454e72e9aa541c6
-          SHA-256 5351ff405b1126ef555791dd4d9798a48e3e9a501a9fc481a9da957752cfb458
-License:  Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
-          https://creativecommons.org/licenses/by-sa/4.0/
-
-
-7. OpenCC — Traditional↔Simplified conversion data
+6. OpenCC — Traditional↔Simplified conversion data
 ---------------------------------------------------
 Used for: optional Simplified-Chinese output mode (繁→簡 conversion table,
           assets/t2s/t2s_map.tsv, derived from TSCharacters + TSPhrases).
@@ -88,6 +77,17 @@ License:  Apache License 2.0
           https://www.apache.org/licenses/LICENSE-2.0
 
 
+7. FrequencyWords — English frequency vocabulary
+-------------------------------------------------
+Used for: eligible English keys in the reproducible English → Chinese assist.
+Project:  https://github.com/hermitdave/FrequencyWords
+Source:   content/2018/en/en_50k.txt at commit
+          525f9b560de45753a5ea01069454e72e9aa541c6
+          SHA-256 5351ff405b1126ef555791dd4d9798a48e3e9a501a9fc481a9da957752cfb458
+License:  Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
+          https://creativecommons.org/licenses/by-sa/4.0/
+
+
 Modifications
 -------------
 The above data sets were filtered, re-ranked by frequency, reformatted to CSV,
@@ -96,5 +96,11 @@ cases supplemented with curated entries. The derived dictionary
 files distributed with this app remain subject to the licenses above, including
 their attribution and (where applicable) share-alike / open-database terms.
 
+Local license texts are bundled beside this notice:
+GPL-3.0.txt, CC-BY-SA-4.0.txt, CC-BY-4.0.txt, ODbL-1.0.txt, and Apache-2.0.txt.
+The derived CSV database files are included in the app under assets/corpus/
+and in the source repository under android/app/src/main/assets/corpus/.
+
 衍生詞庫檔案經篩選、重新排序、轉為 CSV 格式並補充部分人工條目，仍受上述
 授權條款約束（包括署名及相應的相同方式分享 / 開放資料庫條款）。
+授權全文與此通知一同內置；衍生 CSV 詞庫位於 assets/corpus/。

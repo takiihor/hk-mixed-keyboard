@@ -11,6 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.File
 
 class JyutpingRankingRegressionTest {
     private val expectedTop = linkedMapOf(
@@ -62,6 +63,17 @@ class JyutpingRankingRegressionTest {
     }
 
     @Test
+    fun `explicit tones rank the matching reading and annotate mismatches truthfully`() {
+        val hai6 = decoder.decode("hai6", Scheme.JYUTPING)
+        assertEquals("係", hai6.candidates.first().text)
+        assertEquals("hai6", hai6.candidates.first().annotation)
+        assertTrue(hai6.candidates.single { it.text == "閪" }.annotation!!.contains("hai1"))
+
+        assertEquals("喺", candidates("hai2").first())
+        assertEquals("閪", candidates("hai1").first())
+    }
+
+    @Test
     fun `direct phrases fix toneless continuous-synthesis errors`() {
         synthesisFixes.forEach { (input, expected) ->
             assertEquals(
@@ -109,8 +121,24 @@ class JyutpingRankingRegressionTest {
         val englishAssistField = CorpusLoader::class.java.getDeclaredField("englishAssist\$delegate")
         englishAssistField.isAccessible = true
         englishAssistField.set(loader, lazyOf(emptyList<EnglishAssistEntry>()))
+        val tonalField = CorpusLoader::class.java.getDeclaredField(
+            "jyutpingTonalReadingsByText\$delegate"
+        )
+        tonalField.isAccessible = true
+        tonalField.set(loader, lazyOf(readTonalReadings()))
         return CorpusBackedDecoder(loader)
     }
+
+    private fun readTonalReadings(): Map<String, List<String>> =
+        File("../../corpus/reference/jyutping_tonal_readings.csv").useLines { lines ->
+            lines.filter { it.isNotBlank() && !it.startsWith("#") }
+                .drop(1)
+                .mapNotNull { line ->
+                    val columns = line.split(',', limit = 3)
+                    if (columns.size < 3) null else columns[0] to columns[2].split(' ')
+                }
+                .toMap()
+        }
 
     private companion object {
         val unsafe: Any by lazy {

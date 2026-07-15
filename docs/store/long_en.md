@@ -1,7 +1,7 @@
 Highlights
 - Three direct modes: Quick, standard Jyutping and Hanyu Pinyin for Hong Kong Traditional output
 - Quick 2-code: first+last codes for common characters
-- Jyutping accepts optional tone digits 1–6 and separators; Pinyin accepts tone marks/digits, apostrophes and continuous input
+- Jyutping accepts optional tone digits 1–6 and separators, and tone digits refine ranking; Pinyin accepts tone marks/digits, apostrophes and continuous input
 - On-keyboard mode button cycles Quick (速) → Jyutping (粵) → Pinyin (拼)
 - Hold the mode button to choose a mode directly; adjust keyboard height or one-handed layout in Settings
 - Traditional Chinese by default; switch Simplified output in Settings or by holding Space

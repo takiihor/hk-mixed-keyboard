@@ -171,7 +171,11 @@ class CandidateBarView @JvmOverloads constructor(
     }
 
     private fun bindCandidateView(tv: TextView, cand: DecodeCandidate, index: Int) {
-        val visibleLabel = CandidatePresentation.label(cand) { glyphPaint.hasGlyph(it) }
+        val visibleLabel = CandidatePresentation.label(
+            cand,
+            glyphPaint::hasGlyph,
+            context.getString(R.string.chinese_to_english)
+        )
         bindLabel(tv, visibleLabel)
         tv.contentDescription = buildString {
             append(context.getString(

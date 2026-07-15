@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
@@ -48,7 +49,7 @@ class SymbolPageView(context: Context) : View(context) {
             field = value
             rebuildKeys()
             contentDescription = localizedPageAnnouncement(value)
-            announceForAccessibility(localizedPageAnnouncement(value))
+            AccessibilityCompat.publishState(this, localizedPageAnnouncement(value))
             invalidate()
         }
 
@@ -108,6 +109,7 @@ class SymbolPageView(context: Context) : View(context) {
         isClickable = true
         importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES
         contentDescription = localizedPageAnnouncement(symbolPage)
+        AccessibilityCompat.enablePoliteLiveRegion(this)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -382,24 +384,29 @@ class SymbolPageView(context: Context) : View(context) {
     private inner class SymbolAccessibilityNodeProvider : AccessibilityNodeProvider() {
         override fun createAccessibilityNodeInfo(virtualViewId: Int): AccessibilityNodeInfo? {
             if (virtualViewId == View.NO_ID) {
-                return AccessibilityNodeInfo.obtain(this@SymbolPageView).apply {
+                return AccessibilityCompat.hostNode(this@SymbolPageView).apply {
                     className = SymbolPageView::class.java.name
                     contentDescription = localizedPageAnnouncement(symbolPage)
                     renderedKeys.indices.forEach { addChild(this@SymbolPageView, it) }
                 }
             }
             val key = renderedKeys.getOrNull(virtualViewId) ?: return null
-            return AccessibilityNodeInfo.obtain().apply {
-                setSource(this@SymbolPageView, virtualViewId)
+            return AccessibilityCompat.virtualNode(this@SymbolPageView, virtualViewId).apply {
                 setParent(this@SymbolPageView)
                 className = "android.widget.Button"
                 contentDescription = localizedKeyDescription(key.spec)
                 isClickable = true
                 isEnabled = true
                 isLongClickable = key.spec.longPressAlternatives.isNotEmpty()
-                setBoundsInParent(key.geometry.hitRect.toAndroidRect())
+                AccessibilityCompat.setBoundsInScreen(
+                    this,
+                    this@SymbolPageView,
+                    key.geometry.hitRect.toAndroidRect()
+                )
                 addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK)
-                if (key.spec.longPressAlternatives.isNotEmpty()) addAction(AccessibilityNodeInfo.ACTION_LONG_CLICK)
+                if (key.spec.longPressAlternatives.isNotEmpty()) {
+                    addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_LONG_CLICK)
+                }
             }
         }
 
@@ -423,7 +430,10 @@ class SymbolPageView(context: Context) : View(context) {
                 AccessibilityNodeInfo.ACTION_LONG_CLICK -> {
                     if (key.spec.longPressAlternatives.isEmpty()) false
                     else {
-                        announceForAccessibility(localizedKeyDescription(key.spec))
+                        AccessibilityCompat.publishState(
+                            this@SymbolPageView,
+                            localizedKeyDescription(key.spec)
+                        )
                         true
                     }
                 }
@@ -435,7 +445,11 @@ class SymbolPageView(context: Context) : View(context) {
     private fun SymbolRect.toAndroidRect(): Rect = Rect(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density + 0.5f).toInt()
-    private fun sp(value: Float): Float = value * resources.displayMetrics.scaledDensity
+    private fun sp(value: Float): Float = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_SP,
+        value,
+        resources.displayMetrics
+    )
 
     private companion object {
         val COMPLEX_BRACKETS = setOf("〔", "〕", "〈", "〉", "【", "】", "〖", "〗", "（", "）")

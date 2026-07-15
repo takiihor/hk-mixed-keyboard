@@ -4,10 +4,9 @@ object JyutpingAnnotation {
     fun forInput(input: String): String? {
         val normalized = JyutpingNormalizer.normalize(input) ?: return null
         return if (normalized.tones.isNotEmpty()) {
-            val tones = normalized.tones.iterator()
-            normalized.syllables.joinToString(" ") { syllable ->
-                if (tones.hasNext()) "$syllable${tones.next()}" else syllable
-            }
+            normalized.syllables.mapIndexed { index, syllable ->
+                normalized.toneBySyllable[index]?.let { "$syllable$it" } ?: syllable
+            }.joinToString(" ")
         } else {
             normalized.syllables.joinToString(" ")
         }

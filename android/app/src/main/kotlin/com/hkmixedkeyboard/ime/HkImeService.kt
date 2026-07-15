@@ -304,6 +304,7 @@ class HkImeService : InputMethodService() {
                                 InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
                             keyboardView.spaceLabel = spaceLabelText()
                             keyboardView.modeLabel = schemeShort(imeCtx.scheme)
+                            keyboardView.accessibilityModeLabel = schemeName(imeCtx.scheme)
                             keyboardView.invalidate()
                         }
                         if (::candidateBar.isInitialized) {
@@ -406,6 +407,7 @@ class HkImeService : InputMethodService() {
             corpus.jyutpingIndex
             corpus.jyutpingPrefixIndex
             corpus.jyutpingSegmenter
+            corpus.jyutpingToneIndex
         }
         jyutpingWarm = true
         PerfTracer.mark("warm_jyutping_done")
@@ -476,6 +478,7 @@ class HkImeService : InputMethodService() {
                 InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
             spaceLabel = spaceLabelText()
             modeLabel = schemeShort(imeCtx.scheme)
+            accessibilityModeLabel = schemeName(imeCtx.scheme)
             keyListener = object : KeyboardView.KeyListener {
                 override fun onKey(label: String) = handleKey(label)
                 override fun onKeyLongPress(label: String) = handleKeyLongPress(label)
@@ -587,6 +590,7 @@ class HkImeService : InputMethodService() {
                 InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
             spaceLabel = spaceLabelText()
             modeLabel = schemeShort(imeCtx.scheme)
+            accessibilityModeLabel = schemeName(imeCtx.scheme)
             keyListener = object : KeyboardView.KeyListener {
                 override fun onKey(label: String) = handleKey(label)
                 override fun onKeyLongPress(label: String) = handleKeyLongPress(label)
@@ -986,6 +990,7 @@ class HkImeService : InputMethodService() {
                 InputSchemePreference.showsCangjieRoots(newScheme)
             keyboardView.spaceLabel = spaceLabelText()
             keyboardView.modeLabel = schemeShort(newScheme)
+            keyboardView.accessibilityModeLabel = schemeName(newScheme)
             keyboardView.invalidate()
         }
         if (changed && ::candidateBar.isInitialized) candidateBar.clearSystemMessage()
@@ -1026,8 +1031,13 @@ class HkImeService : InputMethodService() {
             }
         )
 
-    private fun schemeShort(scheme: Scheme): String =
-        InputSchemePreference.shortLabel(scheme)
+    private fun schemeShort(scheme: Scheme): String = getString(
+        when (scheme) {
+            Scheme.JYUTPING -> com.hkmixedkeyboard.R.string.jyutping_short_label
+            Scheme.PINYIN -> com.hkmixedkeyboard.R.string.pinyin_short_label
+            else -> com.hkmixedkeyboard.R.string.quick_short_label
+        }
+    )
 
     private fun isAsciiLetter(label: String): Boolean =
         label.length == 1 && label[0] in 'A'..'Z'

@@ -25,6 +25,8 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
     // immutable index atomically.
     @Volatile private var customWordsByScheme: Map<Scheme, CustomWordIndex> = emptyMap()
 
+    private val jyutpingPhraseComposer by lazy { PhraseEvidenceComposer(corpus.jyutpingIndex) }
+
     fun setCustomWords(byCode: Map<String, List<DecodeCandidate>>) {
         setCustomWordsByScheme(mapOf(Scheme.QUICK to byCode))
     }
@@ -86,7 +88,26 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
             // Exact match
             corpus.jyutpingIndex[normalized]?.let { cands ->
                 val typedAnnotation = JyutpingAnnotation.forInput(buffer)
-                val mapped = cands.map {
+                val usesTones = normalizedInput.toneBySyllable.any { it != null }
+                val ranked = if (usesTones) {
+                    cands.withIndex().sortedWith(
+                        compareByDescending<IndexedValue<DecodeCandidate>> {
+                            if (JYUTPING_TONAL_PREFERENCES[typedAnnotation] == it.value.text) 1
+                            else 0
+                        }.thenByDescending {
+                            corpus.jyutpingToneIndex.classify(it.value.text, normalizedInput)
+                                .rankingPriority
+                        }.thenBy { it.index }
+                    ).map { it.value }
+                } else {
+                    cands
+                }
+                val mapped = ranked.map {
+                    val toneMatch = if (usesTones) {
+                        corpus.jyutpingToneIndex.classify(it.text, normalizedInput)
+                    } else {
+                        JyutpingToneMatch.UNKNOWN
+                    }
                     it.copy(
                         sourceSchema = SourceSchema.JYUTPING,
                         type = if (it.text.codePointCount(0, it.text.length) == 1) {
@@ -94,10 +115,10 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
                         } else {
                             CandidateType.PHRASE
                         },
-                        annotation = typedAnnotation ?: JyutpingAnnotation.reverseLookup(
-                            it.text,
-                            corpus.jyutpingReadingsByText
-                        )
+                        annotation = when {
+                            usesTones && toneMatch == JyutpingToneMatch.MATCH -> typedAnnotation
+                            else -> jyutpingAnnotation(it.text)
+                        }
                     )
                 }
                 return appendEnglishAssist(
@@ -138,10 +159,7 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
                             } else {
                                 CandidateType.PHRASE
                             },
-                            annotation = JyutpingAnnotation.reverseLookup(
-                                it.text,
-                                corpus.jyutpingReadingsByText
-                            )
+                            annotation = jyutpingAnnotation(it.text)
                         )
                     }
                     return appendEnglishAssist(
@@ -164,9 +182,9 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
                     normalized
                 )
             }
-            // Multi-syllable segmentation: continuous romanization that is neither a
-            // single syllable nor a dictionary phrase key (e.g. "neihou" → 你好).
-            composeSegmentedPhrase(buffer, normalized)?.let {
+            // Phrase-evidence composition: cover the whole continuous input with
+            // dictionary chunks, including at least one reviewed phrase chunk.
+            composeEvidencePhrase(buffer, normalized)?.let {
                 return appendEnglishAssist(it, normalized)
             }
             return appendEnglishAssist(empty(buffer, scheme), normalized)
@@ -306,59 +324,28 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         )
     }
 
-    /**
-     * Segments a continuous Jyutping buffer and composes phrase candidates from the
-     * per-syllable readings. The primary candidate joins each syllable's top reading
-     * (求其-style); a handful of alternates vary the first and last syllable so the
-     * user still has choices. Returns null if the buffer doesn't fully segment or any
-     * syllable lacks a single-character reading.
-     */
-    private fun composeSegmentedPhrase(buffer: String, lower: String): DecodeResult? {
-        val segments = corpus.jyutpingSegmenter.segment(lower) ?: return null
-
-        // Per-syllable single-character readings, most frequent first.
-        val perSyllable = segments.map { syl ->
-            corpus.jyutpingIndex[syl].orEmpty()
-                .asSequence()
-                .filter { it.text.length == 1 }
-                .sortedByDescending { it.frequency }
-                .toList()
-        }
-        if (perSyllable.any { it.isEmpty() }) return null
-
-        val tops = perSyllable.map { it.first().text }
-        val ordered = LinkedHashSet<String>()
-        ordered.add(tops.joinToString(""))                              // primary
-        for (alt in perSyllable.last().take(ALT_PER_SYLLABLE))          // vary last
-            ordered.add((tops.dropLast(1) + alt.text).joinToString(""))
-        for (alt in perSyllable.first().take(ALT_PER_SYLLABLE))         // vary first
-            ordered.add((listOf(alt.text) + tops.drop(1)).joinToString(""))
-
-        var freq = 1.0
-        val candidates = ordered.take(MAX_COMPOSED).map { text ->
+    private fun composeEvidencePhrase(buffer: String, lower: String): DecodeResult? {
+        val compositions = jyutpingPhraseComposer.compose(lower)
+        if (compositions.isEmpty()) return null
+        val candidates = compositions.map { composition ->
             DecodeCandidate(
-                text,
+                composition.text,
                 lower,
                 SourceSchema.JYUTPING,
                 CandidateType.PHRASE,
-                freq.also { freq -= 0.01 },
-                false,
-                annotation = JyutpingAnnotation.reverseLookup(
-                    text,
-                    corpus.jyutpingReadingsByText
-                )
+                composition.score,
+                composition.isHkCore,
+                annotation = jyutpingAnnotation(composition.text) ?: "↪ $lower"
             )
         }
-        // isExactCode=true + PHRASE type ⇒ cnHasPhraseMatch, so the composed phrase
-        // surfaces as the top candidate in the bar (one tap to commit).
         return DecodeResult(buffer, Scheme.JYUTPING, buffer.length, true, false, candidates)
     }
 
     private fun decodeCjkDirect(buffer: String, scheme: Scheme): DecodeResult {
-        if (buffer.length == 1) {
+        if (buffer.codePointCount(0, buffer.length) == 1) {
             val charEntry = corpus.charByText[buffer]
             if (charEntry != null) {
-                return DecodeResult(buffer, scheme, 1, true, false, listOf(
+                return DecodeResult(buffer, scheme, buffer.length, true, false, listOf(
                     DecodeCandidate(charEntry.char, charEntry.quickCode,
                         SourceSchema.QUICK, CandidateType.CHAR, charEntry.freq, charEntry.isHkCore)
                 ))
@@ -374,18 +361,23 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         return empty(buffer, scheme)
     }
 
+    private fun jyutpingAnnotation(text: String): String? =
+        JyutpingAnnotation.reverseLookup(text, corpus.jyutpingTonalReadingsByText)
+            ?: JyutpingAnnotation.reverseLookup(text, corpus.jyutpingReadingsByText)
+
     private fun empty(buffer: String, scheme: Scheme) =
         DecodeResult(buffer, scheme, buffer.length, false, false, emptyList())
 
     private companion object {
-        // Alternate readings to offer for the first and last syllable of a composed
-        // phrase, and the overall cap on composed candidates.
-        const val ALT_PER_SYLLABLE = 4
-        const val MAX_COMPOSED = 12
         val JYUTPING_ABBREVIATIONS = mapOf(
             "nh" to "neihou",
             "mg" to "mgoi",
             "dgaai" to "dimgaai"
         )
+
+        // Explicit tone input is deliberate. Keep this tiny reviewed layer
+        // separate from safe toneless ranking so hai remains 喺-first while hai1
+        // selects the idiomatic Hong Kong written form of the requested profanity.
+        val JYUTPING_TONAL_PREFERENCES = mapOf("hai1" to "閪")
     }
 }

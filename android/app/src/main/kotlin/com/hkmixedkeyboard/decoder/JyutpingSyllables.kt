@@ -1,0 +1,45 @@
+package com.hkmixedkeyboard.decoder
+
+/** Canonical toneless Jyutping syllables represented in the reviewed corpus. */
+object JyutpingSyllables {
+    val all: Set<String> = """
+        a aa aai aak aam aan aang aap aat aau ai ak am an ang ap at au
+        baa baai baak baan baang baat baau bai bak bam ban bang bat bau be bei bek beng bi bik bin bing bit biu bo bok bon bong bou bui buk bun bung but
+        caa caai caak caam caan caang caap caat caau cai cak cam can cang cap cat cau ce cek ceng ceoi ceon ceot ci cik cim cin cing cip cit ciu co coek coeng coet coi cok cong cou cuk cung cyu cyun cyut
+        daa daai daak daam daan daap daat dai dak dam dan dang dap dat dau de dei dek deng deoi deon deot deu di dik dim din ding dip dit diu do doe doek doeng doi dok dong dou duk dung dyun dyut
+        e ei
+        faa faai faak faan faat fai fan fang fat fau fe fei fik fing fit fiu fo fok fong fu fui fuk fun fung fut
+        ga gaa gaai gaak gaam gaan gaang gaap gaat gaau gai gak gam gan gang gap gat gau ge gei geng geoi gep gi gik gim gin ging gip git giu go goe goek goeng goi gok gon gong got gou gu gui guk gun gung gut gwaa gwaai gwaak gwaan gwaang gwaat gwai gwak gwan gwang gwat gwe gwei gwi gwik gwing gwit gwo gwok gwong gyun gyut
+        haa haai haak haam haan haang haap haau hai hak ham han hang hap hat hau he hei hek heng heoi hi hik him hin hing hip hit hiu hm hng ho hoe hoeng hoi hok hon hong hot hou huk hung hyun hyut
+        jaa jaai jaak jaang jaap jaau jai jam jan jap jat jau je jeng jeoi jeon ji jik jim jin jing jip jit jiu jo joek joeng juk jung jyu jyun jyut
+        kaa kaai kaak kaam kaat kaau kai kak kam kan kang kap kat kau ke kei kek keoi kep keu kik kim kin king kip kit kiu ko koe koek koeng koi kok kong ku kui kuk kung kut kwaa kwaai kwaak kwaang kwai kwan kwang kwik kwok kwong kyun kyut
+        la laa laai laak laam laan laang laap laat laau lai lak lam lan lang lap lat lau le lei lek lem leng leoi leon leot leu li lik lim lin ling lip lit liu lo loe loek loeng loi lok long lou lu luk lung lyun lyut
+        m ma maa maai maak maan maang maat maau mai mak mam man mang mat mau me mei meng meu mi mik min ming mit miu mo mok mong mou mui muk mun mung mut
+        naa naai naam naan naap naat naau nai nak nam nan nang nap nat nau ne nei neng neoi neot ng ngaa ngaai ngaak ngaam ngaan ngaang ngaap ngaat ngaau ngai ngak ngam ngan ngang ngap ngat ngau nge ngit ngo ngoi ngok ngon ngong ngot ngou ni nik nim nin ning nip nit niu no noek noeng noi nok nong nou nuk nung nyun
+        o oet oi ok on ong ou
+        paa paai paak paan paang paat paau pai pan pang pat pau pe pei pek peng pet pik pin ping pit piu po poi pok pong pou pui puk pun pung put
+        saa saai saak saam saan saang saap saat saau sai sak sam san sang sap sat sau se sei sek seng seoi seon seot si sik sim sin sing sip sit siu so soe soek soeng soi sok song sou suk sung syu syun syut
+        taa taai taam taan taap taat tai tam tan tang tap tau tek teng teoi teon teot ti tik tim tin ting tip tit tiu to toe toi tok tong tou tuk tung tyun tyut
+        uk ung
+        waa waai waak waan waang waat wai wak wan wang wat we wet wi wik wing wo wok wong wu wui wun wut
+        zaa zaai zaak zaam zaan zaang zaap zaat zaau zai zak zam zan zang zap zat zau ze zek zem zeng zeoi zeon zeot zep zi zik zim zin zing zip zit ziu zo zoe zoek zoeng zoet zoi zok zong zou zuk zung zyu zyun zyut
+    """.trimIndent().split(Regex("\\s+")).toSet()
+
+    private val maxLength = all.maxOf(String::length)
+
+    /** True only when the complete key can be segmented into canonical syllables. */
+    fun covers(key: String): Boolean {
+        if (key.isEmpty()) return false
+        val reachable = BooleanArray(key.length + 1)
+        reachable[0] = true
+        for (end in 1..key.length) {
+            for (start in maxOf(0, end - maxLength) until end) {
+                if (reachable[start] && key.substring(start, end) in all) {
+                    reachable[end] = true
+                    break
+                }
+            }
+        }
+        return reachable[key.length]
+    }
+}

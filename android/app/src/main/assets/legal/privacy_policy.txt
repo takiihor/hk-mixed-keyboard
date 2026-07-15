@@ -22,7 +22,7 @@ HK Mixed Keyboard（「本應用程式」）是一款 Android 輸入法（鍵盤
   裝置。
 • 個人詞庫 / 學習詞語 — 您選用的候選及其輸入碼，以及手動新增的速成、
   粵拼或拼音詞條，可儲存於 App 私有 Room 資料庫 hk_user_memory.db，只用於
-  本機排序。您可在設定檢視、編輯、匯出及刪除自訂詞條，或清除所有學習及
+  本機排序。您可在設定檢視、新增、匯出及刪除自訂詞條，或清除所有學習及
   自訂詞庫。
 • 設定 — 模式、主題、震動、聲音、鍵盤高度、單手模式及簡體輸出等偏好只
   儲存於 App 私有 DataStore。
@@ -74,7 +74,7 @@ What the app processes
 • Personal dictionary / learned words — Selected candidates and their input
   codes, plus manually added Quick, Jyutping or Pinyin entries, may be stored in
   the app-private Room database hk_user_memory.db for local ranking. Settings can
-  edit, export or delete custom entries and clear all learned and custom data.
+  view, add, export or delete custom entries and clear all learned and custom data.
 • Settings — Mode, theme, vibration, sound, keyboard height, one-handed mode and
   Simplified-output preferences are stored in the app-private DataStore.
 • Retention — Data remains until you delete an entry, clear all personal

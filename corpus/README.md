@@ -185,16 +185,15 @@ python3 corpus/tools/build_jyutping_corpus.py \
   --source-sha256 '83fddd062104abac17fbc0c039f2c22c57671e96c5395a00abc326fd9ceeedfd'
 ```
 
-### jyutping_tonal_readings.csv (preservation reference)
+### jyutping_tonal_readings.csv (preservation and tone-aware runtime reference)
 
-The shipped `jyutping.csv` is deliberately toneless so users type without tone
-digits, which discards the 1-6 tone marks and multiple readings. To keep that
-cultural-preservation record, `corpus/reference/jyutping_tonal_readings.csv`
-exports every character with all of its explicit tonal readings (in source
-order) and its Unicode code points, including supplementary-plane characters.
-It is a versioned, checksummed **repository export — not bundled into the
-APK** — so the tone data survives independently of the runtime decoder. Rebuild
-it byte-for-byte from the same pinned `rime-cantonese` archive:
+The main `jyutping.csv` remains toneless so tone digits are optional. The compact
+`corpus/reference/jyutping_tonal_readings.csv` preserves every character's
+explicit 1–6 readings and Unicode code points, including supplementary-plane
+characters. Gradle also bundles this single pinned reference as a runtime asset:
+it is loaded lazily only after explicit tone input, ranks matching readings ahead
+of mismatches, and supplies truthful tone annotations. Rebuild it byte-for-byte
+from the same pinned `rime-cantonese` archive:
 
 ```bash
 python3 corpus/tools/build_jyutping_tones.py \

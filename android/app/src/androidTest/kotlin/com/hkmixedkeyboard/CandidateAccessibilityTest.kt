@@ -17,8 +17,9 @@ class CandidateAccessibilityTest {
     @Test
     fun candidateExposesPositionReadingSelectionAndOperableTarget() {
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            val context = InstrumentationRegistry.getInstrumentation().targetContext
             val bar = CandidateBarView(
-                InstrumentationRegistry.getInstrumentation().targetContext
+                context
             )
             bar.setCandidates(
                 listOf(
@@ -35,7 +36,9 @@ class CandidateAccessibilityTest {
             bar.layout(0, 0, 800, 48)
             val row = bar.getChildAt(0) as LinearLayout
             val candidate = row.getChildAt(0)
-            assertTrue(candidate.contentDescription.contains("候選 1 / 1"))
+            assertTrue(candidate.contentDescription.contains(
+                context.getString(R.string.candidate_position, 1, 1, "喺")
+            ))
             assertTrue(candidate.contentDescription.contains("hai6"))
             assertTrue(candidate.isSelected)
             assertTrue(candidate.isClickable && candidate.isFocusable)

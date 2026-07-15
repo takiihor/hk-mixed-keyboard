@@ -140,6 +140,12 @@ class CorpusLoader(private val ctx: Context) {
                 entries.sortedByDescending { it.freq }.map { it.jyutping }.distinct()
             }
     }
+    val jyutpingTonalReadingsByText: Map<String, List<String>> by lazy {
+        loadJyutpingTonalReadings()
+    }
+    val jyutpingToneIndex: JyutpingToneIndex by lazy {
+        JyutpingToneIndex(jyutpingTonalReadingsByText)
+    }
     val jyutpingPrefixIndex: SortedPrefixIndex by lazy {
         SortedPrefixIndex(jyutpingIndex.keys)
     }
@@ -149,7 +155,10 @@ class CorpusLoader(private val ctx: Context) {
     // (e.g. "hoenggong"→香港) only map to multi-char text, so they are excluded.
     val jyutpingSyllableSet: Set<String> by lazy {
         jyutpingIndex.entries
-            .filter { (_, cands) -> cands.any { it.text.length == 1 } }
+            .filter { (key, cands) ->
+                key in JyutpingSyllables.all &&
+                cands.any { it.text.codePointCount(0, it.text.length) == 1 }
+            }
             .mapTo(HashSet()) { it.key }
     }
 
@@ -169,14 +178,13 @@ class CorpusLoader(private val ctx: Context) {
         // prefix -> (nextChar -> best phrase frequency)
         val acc = HashMap<String, HashMap<String, Double>>()
         for (p in phrases) {
-            val s = p.phrase
-            val n = s.length
-            if (n < 2) continue
+            val codePoints = p.phrase.codePoints().toArray()
+            if (codePoints.size < 2) continue
             // Predict the next char after prefixes of length 1..3 (words ≤ 4 chars).
-            val maxPrefix = minOf(3, n - 1)
+            val maxPrefix = minOf(3, codePoints.size - 1)
             for (i in 1..maxPrefix) {
-                val prefix = s.substring(0, i)
-                val next = s.substring(i, i + 1)
+                val prefix = String(codePoints, 0, i)
+                val next = String(codePoints, i, 1)
                 val m = acc.getOrPut(prefix) { HashMap() }
                 if (p.freq > (m[next] ?: 0.0)) m[next] = p.freq
             }
@@ -268,6 +276,18 @@ class CorpusLoader(private val ctx: Context) {
             loadHkscsSupplementJyutping()
     }
 
+    private fun loadJyutpingTonalReadings(): Map<String, List<String>> =
+        parseCsv("jyutping_tonal_readings.csv") { cols ->
+            val text = cols.getOrNull(0)?.trim().orEmpty()
+            val readings = cols.getOrNull(2).orEmpty()
+                .split(' ')
+                .map(String::trim)
+                .filter { it.matches(TONAL_JYUTPING) }
+                .distinct()
+            if (text.codePointCount(0, text.length) != 1 || readings.isEmpty()) null
+            else text to readings
+        }.toMap()
+
     private fun loadPinyin(): List<PinyinEntry> =
         parseCsv("corpus/pinyin.csv") { cols ->
             if (cols.size < 3) null
@@ -351,7 +371,11 @@ class CorpusLoader(private val ctx: Context) {
                 parse(cols)?.let { result.add(it) }
             }
         } catch (e: Exception) {
-            android.util.Log.e("CorpusLoader", "Failed to load $assetPath: ${e.message}")
+            // Android's local-JVM stubs throw from Log.*. A diagnostic must never
+            // turn a recoverable asset miss into a decoder failure.
+            runCatching {
+                android.util.Log.e("CorpusLoader", "Failed to load $assetPath: ${e.message}")
+            }
         }
         return result
     }
@@ -381,6 +405,7 @@ class CorpusLoader(private val ctx: Context) {
         31 * BuildConfig.CORPUS_HASH.hashCode() + CORPUS_CONTENT_VERSION
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 13
+        const val CORPUS_CONTENT_VERSION = 14
+        val TONAL_JYUTPING = Regex("[a-z]+[1-6]")
     }
 }
