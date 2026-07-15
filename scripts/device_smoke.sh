@@ -52,18 +52,41 @@ adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1 \
 adb shell dumpsys package "$PACKAGE" > "$OUT/package.txt"
 adb shell dumpsys meminfo "$PACKAGE" > "$OUT/meminfo-before.txt"
 # Keep the stress stream inside the app. Android documents system keys, major
-# navigation and catch-all events as classes that can target system services;
-# touch/motion/basic navigation plus activity switches retain UI/lifecycle load
-# without turning an unrelated system app ANR into an app result.
+# navigation and catch-all events as classes that can target system services.
+# One percent app-switch events still exercises 100 randomized task transitions;
+# a larger share can issue shell relaunches faster than Android can finish its
+# window transitions and creates a framework focus wedge instead of useful load.
 adb shell monkey -p "$PACKAGE" -s 260715 --throttle 20 \
   --ignore-crashes --ignore-timeouts \
-  --pct-touch 50 --pct-motion 20 --pct-trackball 0 --pct-nav 10 \
-  --pct-majornav 0 --pct-syskeys 0 --pct-appswitch 20 --pct-anyevent 0 \
+  --pct-touch 55 --pct-motion 24 --pct-trackball 0 --pct-nav 20 \
+  --pct-majornav 0 --pct-syskeys 0 --pct-appswitch 1 --pct-anyevent 0 \
   10000 > "$OUT/monkey.txt"
 rg -n '^Events injected: 10000$' "$OUT/monkey.txt" >/dev/null || {
   echo "Monkey did not complete all 10,000 events" >&2
   exit 1
 }
+
+# Pace explicit lifecycle transitions and require the app to regain a focused
+# window after each launch. This detects the same recovery defect without
+# conflating it with an impossible burst of overlapping shell transitions.
+: > "$OUT/lifecycle-switches.txt"
+for cycle in $(seq 1 20); do
+  adb shell input keyevent KEYCODE_HOME
+  adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1 \
+    >> "$OUT/lifecycle-switches.txt"
+  focused_window=""
+  for _ in $(seq 1 40); do
+    focused_window="$(adb shell dumpsys window windows | tr -d '\r' | awk '/mCurrentFocus=/{print; exit}')"
+    [[ "$focused_window" == *"$PACKAGE"* ]] && break
+    sleep 0.1
+  done
+  printf 'cycle=%s focus=%s\n' "$cycle" "$focused_window" \
+    >> "$OUT/lifecycle-switches.txt"
+  [[ "$focused_window" == *"$PACKAGE"* ]] || {
+    echo "app did not regain window focus during lifecycle cycle $cycle" >&2
+    exit 1
+  }
+done
 adb shell dumpsys meminfo "$PACKAGE" > "$OUT/meminfo-after.txt"
 adb logcat -d -v threadtime '*:V' > "$OUT/logcat-full-stress.txt"
 stress_pid="$(adb shell pidof "$PACKAGE" | tr -d '\r' | awk '{print $1}')"
