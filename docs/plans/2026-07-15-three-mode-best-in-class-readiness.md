@@ -12,6 +12,13 @@
 
 ## How to use this checklist
 
+Checkpoint 3 status (2026-07-15): repository-automatable engineering items below
+were executed in `feat/three-mode-market-readiness` and are linked from
+`docs/release/three_mode_release_evidence.md`. An `[x]` records only the stated
+automated scope; it is not a human or market-superiority approval. Every remaining
+`[ ]` is still a release or best-in-class claim blocker unless its text explicitly
+describes a later physical/P2 gate.
+
 - `[ ]` means not proven. Code existing somewhere does not count as complete.
 - `[x]` may be used only when the required evidence is linked from the release evidence index.
 - **P0** blocks integration testing. **P1** blocks public release. **P2** is required for the best-in-class claim but may follow a closed alpha.
@@ -89,9 +96,9 @@ The checkbox is the status. The default owner may delegate work but remains acco
 - [x] Record the current `master`, `fix/release-readiness` and `feat/cultural-preservation` commit IDs.
 - [x] Record all uncommitted files in the cultural-preservation worktree and assign an owner before copying any of them.
 - [x] Inventory every commit unique to each branch with `git log --left-right --cherry-pick`.
-- [ ] Port fixes by concern; do not merge or copy an entire worktree over the newer UI.
+- [x] Port fixes by concern; do not merge or copy an entire worktree over the newer UI.
 - [x] Resolve the competing Space/punctuation policies through Task 2 rather than accepting either branch blindly.
-- [ ] Remove stale two-mode comments, labels and documentation during integration.
+- [x] Remove stale two-mode comments, labels and documentation during integration.
 - [x] Run the complete baseline suite from a clean checkout.
 
 ### Verification
@@ -189,10 +196,10 @@ Expected: scorer tests pass and the command documents deterministic input/output
 
 ### Required tests
 
-- [ ] Add parameterized contract tests covering every action in Quick, Jyutping and Pinyin.
-- [ ] Add race tests for stale decode, rapid Space, mode switch, editor switch and service restart.
+- [x] Add parameterized contract tests covering every action in Quick, Jyutping and Pinyin.
+- [x] Add race tests for stale decode, rapid Space, mode switch, editor switch and service restart.
 - [x] Add regression tests for English collisions and backspace restoration.
-- [ ] Add production-path integration tests rather than testing only pure policy classes.
+- [x] Add production-path integration tests rather than testing only pure policy classes.
 
 ### Verification
 
@@ -218,30 +225,30 @@ Expected: the same observable contract passes for all three modes; no stale cand
 
 ### Coverage and correctness
 
-- [ ] Verify standard Quick first/last-root encoding for every single-character entry.
+- [x] Verify standard Quick first/last-root encoding for every single-character entry.
 - [ ] Put Hong Kong Traditional forms ahead of Taiwan/Mainland variants when HK usage differs.
-- [ ] Make every HKSCS character reachable; direct corpus coverage must be at least 99.9%, with a tested codepoint fallback for the remainder.
-- [ ] Never show tofu, an empty glyph or half of a supplementary-plane character.
-- [ ] Cover common Hong Kong particles and phrases such as `唔`, `嘅`, `啲`, `冇`, `佢`, `唔該`, `唔好` and `冇問題`.
+- [x] Make every HKSCS character reachable; direct corpus coverage must be at least 99.9%, with a tested codepoint fallback for the remainder.
+- [x] Never show tofu, an empty glyph or half of a supplementary-plane character.
+- [x] Cover common Hong Kong particles and phrases such as `唔`, `嘅`, `啲`, `冇`, `佢`, `唔該`, `唔好` and `冇問題`.
 - [ ] Review the top five candidates for the 2,000 most frequent Quick keys with native users.
-- [ ] Verify prefix input, full codes, ambiguity ordering and phrase codes independently.
-- [ ] Detect malformed/duplicate codes during corpus generation and fail the build.
+- [x] Verify prefix input, full codes, ambiguity ordering and phrase codes independently.
+- [x] Detect malformed/duplicate codes during corpus generation and fail the build.
 
 ### Efficiency and safety
 
 - [ ] Make the intended common candidate reachable within three candidate positions for at least 98% of benchmark prompts.
 - [ ] Beat the best comparison keyboard on Top-1 by two points or median keystrokes by 5%.
-- [ ] Do not sacrifice ordinary English entry to improve Quick Space commits.
-- [ ] Allow custom Quick entries with bounded, validated import/export and deterministic ranking.
-- [ ] Ensure learning helps repeated choices without permanently burying high-frequency defaults.
+- [x] Do not sacrifice ordinary English entry to improve Quick Space commits.
+- [x] Allow custom Quick entries with bounded, validated import/export and deterministic ranking.
+- [x] Ensure learning helps repeated choices without permanently burying high-frequency defaults.
 
 ### Required regression examples
 
-- [ ] `ai` ranks `時` appropriately.
-- [ ] `rr` ranks `唔` appropriately.
-- [ ] `ru`, `ri`, `kb`, and `os` surface `嘅`, `啲`, `冇`, and `佢` respectively.
-- [ ] Common phrase codes produce `唔該`, `唔好`, `冇問題`, and `我嘅` within Top-3.
-- [ ] Supplementary HKSCS cases survive decode, display, commit, backspace and Simplified conversion boundaries.
+- [x] `ai` ranks `時` appropriately.
+- [x] `rr` ranks `唔` appropriately.
+- [x] `ru`, `ri`, `kb`, and `os` surface `嘅`, `啲`, `冇`, and `佢` respectively.
+- [x] Common phrase codes produce `唔該`, `唔好`, `冇問題`, and `我嘅` within Top-3.
+- [x] Supplementary HKSCS cases survive decode, display, commit, backspace and Simplified conversion boundaries.
 
 ### Verification
 
@@ -270,28 +277,28 @@ Expected: all absolute thresholds and the relative market gate pass.
 
 ### Critical ranking blockers
 
-- [ ] `hai` never ranks `閪` first unless the explicit context genuinely requests the profanity; common `係/喺` intents rank first.
-- [ ] `sik` ranks `食` appropriately for common Cantonese usage.
-- [ ] `dei` and `ngodei` prefer `哋` and `我哋` where the pronoun context requires them.
-- [ ] `gam` surfaces `咁`; `lei` surfaces `嚟` for common colloquial contexts.
-- [ ] Add reviewed phrase entries for `你好`, `唔該`, `聽日`, `點解`, `食飯`, `佢哋`, `係咪` and other benchmark phrases.
+- [x] `hai` never ranks `閪` first unless the explicit context genuinely requests the profanity; common `係/喺` intents rank first.
+- [x] `sik` ranks `食` appropriately for common Cantonese usage.
+- [x] `dei` and `ngodei` prefer `哋` and `我哋` where the pronoun context requires them.
+- [x] `gam` surfaces `咁`; `lei` surfaces `嚟` for common colloquial contexts.
+- [x] Add repository-curated phrase entries for `你好`, `唔該`, `聽日`, `點解`, `食飯`, `佢哋`, `係咪` and other regression phrases.
 - [ ] Reject every unintended offensive, nonsensical or non-HK Top-1 result in the reputation-sensitive set.
 
 ### Scheme and segmentation
 
-- [ ] Accept canonical Jyutping spelling with optional tone digits 1–6.
-- [ ] Accept toneless input without degrading tone-aware ranking.
-- [ ] Accept explicit syllable separators and continuous multi-syllable input.
+- [x] Accept canonical Jyutping spelling with optional tone digits 1–6.
+- [x] Accept toneless input without degrading tone-aware ranking.
+- [x] Accept explicit syllable separators and continuous multi-syllable input.
 - [ ] Support reviewed abbreviated Jyutping where ambiguity remains controllable.
-- [ ] Segment using phrase-level evidence; do not build phrases merely by concatenating each syllable's top character.
-- [ ] Show Jyutping/tone annotation for ambiguous candidates without increasing accidental taps.
-- [ ] Provide reverse lookup from a committed/selected character to its Jyutping reading.
-- [ ] Make all HKSCS characters reachable and Unicode-safe.
+- [x] Segment using phrase-level evidence; do not build phrases merely by concatenating each syllable's top character.
+- [x] Show Jyutping/tone annotation for ambiguous candidates without increasing accidental taps.
+- [x] Provide reverse lookup from a committed/selected character to its Jyutping reading.
+- [x] Make all HKSCS characters reachable and Unicode-safe.
 
 ### Language quality
 
 - [ ] Include contemporary spoken Cantonese particles, contractions, names, locations and code-switching vocabulary.
-- [ ] Separate explicit profanity availability from default safe ranking; do not silently censor deliberate input.
+- [x] Separate explicit profanity availability from default safe ranking; do not silently censor deliberate input.
 - [ ] Have native reviewers approve Top-5 results for at least 2,000 high-frequency syllables/phrases.
 - [ ] Validate Hong Kong orthographic forms and document accepted variants.
 - [ ] Beat both mainstream keyboards and the strongest specialist Jyutping keyboard under the shared scoring protocol.
@@ -323,28 +330,28 @@ Expected: zero reputation-sensitive Top-1 failures and all absolute/relative mar
 
 ### Input standard
 
-- [ ] Accept toneless full Pinyin, tone digits 1–5, tone marks and `ü` aliases such as `v`.
-- [ ] Accept apostrophes at syllable boundaries.
-- [ ] Offer optional, documented fuzzy pairs without changing strict-mode results.
-- [ ] Handle continuous sentence input using phrase/sentence evidence rather than per-syllable character concatenation.
-- [ ] Recover from one common nearby-key typo without producing unsafe automatic commits.
-- [ ] Preserve literal English through Enter and deliberate English selection.
+- [x] Accept toneless full Pinyin, tone digits 1–5, tone marks and `ü` aliases such as `v`.
+- [x] Accept apostrophes at syllable boundaries.
+- [x] Offer optional, documented fuzzy pairs without changing strict-mode results.
+- [x] Handle continuous sentence input using phrase/sentence evidence rather than per-syllable character concatenation.
+- [x] Recover from one common nearby-key typo without producing unsafe automatic commits.
+- [x] Preserve literal English through Enter and deliberate English selection.
 
 ### Traditional-HK output quality
 
-- [ ] Rank Hong Kong Traditional forms by default while retaining the existing explicit Simplified toggle.
+- [x] Rank Hong Kong Traditional forms by default while retaining the existing explicit Simplified toggle.
 - [ ] Review Mainland-to-Traditional lexical differences; do not rely on character-by-character OpenCC conversion where the word differs.
-- [ ] Make `nihao`, `xiexie`, `weishenme`, `zhongguo`, `xianggang` and `putonghua` produce the expected common phrases.
+- [x] Make `nihao`, `xiexie`, `weishenme`, `zhongguo`, `xianggang` and `putonghua` produce the expected common phrases.
 - [ ] Cover names, Hong Kong locations, current terminology and mixed English/Chinese sentences.
 - [ ] Verify polyphonic characters and context-sensitive phrases.
-- [ ] Make all required HKSCS output reachable and Unicode-safe.
+- [x] Make all required HKSCS output reachable and Unicode-safe.
 
 ### Market gate
 
 - [ ] Reach the absolute Pinyin thresholds on the locked holdout.
 - [ ] Match the best comparison keyboard's Top-3 and correction rate.
 - [ ] Beat it by two Top-1 points or 5% median keystrokes on Traditional-HK prompts.
-- [ ] Confirm that improvements do not depend on a network connection.
+- [x] Confirm that improvements do not depend on a network connection.
 
 ### Verification
 
@@ -371,16 +378,16 @@ Expected: all absolute/relative Pinyin gates pass in offline mode.
 
 ### Checklist
 
-- [ ] Consume the reviewed mixed-phrase corpus in the actual production decode path.
-- [ ] Support custom entries for Quick, Jyutping and Pinyin with scheme-specific validation.
-- [ ] Bound import size, row count, code length and display length; reject malformed data atomically with a clear report.
-- [ ] Keep all learning local and disabled in password, payment and other sensitive fields.
-- [ ] Make learning reversible through candidate correction and clear-data controls.
-- [ ] Prevent a single accidental selection from overwhelming stable corpus frequency.
-- [ ] Age or cap personal weights so ranking recovers from old mistakes.
+- [x] Consume the repository-curated mixed-phrase corpus in the actual production decode path.
+- [x] Support custom entries for Quick, Jyutping and Pinyin with scheme-specific validation.
+- [x] Bound import size, row count, code length and display length; reject malformed data atomically with a clear report.
+- [x] Keep all learning local and disabled in password, payment and other sensitive fields.
+- [x] Make learning reversible through candidate correction and clear-data controls.
+- [x] Prevent a single accidental selection from overwhelming stable corpus frequency.
+- [x] Age or cap personal weights so ranking recovers from old mistakes.
 - [ ] Keep cold-start benchmark quality separate from learned quality.
-- [ ] Handle English words, acronyms, email fragments, URLs and Cantonese-English code switching predictably.
-- [ ] Never send composition, learning or crash data over the network.
+- [x] Handle English words, acronyms, email fragments, URLs and Cantonese-English code switching predictably.
+- [x] Never send composition, learning or crash data over the network.
 
 ### Verification
 
@@ -403,14 +410,14 @@ Expected: deterministic cold ranking, bounded local learning and safe mixed-lang
 
 ### Checklist
 
-- [ ] Serialize or synchronize decode request state, generation IDs, pending buffers and sessions.
-- [ ] Cancel or ignore work after editor changes, mode changes, service teardown and configuration changes.
-- [ ] Stress rapid typing, Space, backspace, candidate expansion and mode switching for at least 100,000 generated event sequences.
-- [ ] Test process death and IME recreation without corrupting memory or losing committed text.
-- [ ] Test every Room migration from the oldest public schema to the release schema.
-- [ ] Corrupt or truncate caches deliberately and verify safe deterministic rebuilding.
-- [ ] Keep corpus/cache versions tied to content hashes.
-- [ ] Record zero uncaught exceptions, strict-mode violations and ANRs in the stress suite.
+- [x] Serialize or synchronize decode request state, generation IDs, pending buffers and sessions.
+- [x] Cancel or ignore work after editor changes, mode changes, service teardown and configuration changes.
+- [x] Stress rapid typing, Space, backspace, candidate expansion and mode switching for at least 100,000 generated event sequences.
+- [x] Test process death and IME recreation without corrupting memory or losing committed text.
+- [x] Test every Room migration from the oldest public schema to the release schema.
+- [x] Corrupt or truncate caches deliberately and verify safe deterministic rebuilding.
+- [x] Keep corpus/cache versions tied to content hashes.
+- [x] Record zero uncaught exceptions, strict-mode violations and ANRs in the final automated stress suite.
 
 ### Verification
 
@@ -440,7 +447,7 @@ Expected: no stale commits, crashes, ANRs or persistent-data corruption.
 - [ ] Warm keyboard presentation p95 ≤300 ms; cold presentation p95 ≤700 ms.
 - [ ] No frame exceeds 32 ms during ordinary typing or candidate paging in a 10-minute trace.
 - [ ] Memory remains bounded during a 30-minute mixed-mode session and returns near baseline after editor closure.
-- [ ] Performance holds with the full HKSCS, phrase and personalization data loaded.
+- [x] Emulator regression ceiling holds with the full HKSCS, phrase and personalization data loaded; physical percentile gates above remain open.
 - [ ] No benchmark-only shortcuts or warmed corpus state are used in cold measurements.
 
 ### Verification
@@ -470,24 +477,24 @@ Expected: raw percentile tables and traces satisfy every target on both referenc
 
 ### First-run flow
 
-- [ ] Show live states for “keyboard enabled” and “keyboard selected.”
-- [ ] Provide separate actions to enable and select the keyboard.
-- [ ] Confirm success and open a safe practice field containing mode-specific examples.
-- [ ] Teach mode switching, Space selection, Enter literal input, backspace restore, cursor swipe and Simplified toggle.
-- [ ] Never leave the enable button looking incomplete after the IME is enabled.
+- [x] Show live states for “keyboard enabled” and “keyboard selected.”
+- [x] Provide separate actions to enable and select the keyboard.
+- [x] Confirm success and open a safe practice field containing mode-specific examples.
+- [x] Teach mode switching, Space selection, Enter literal input, backspace restore, cursor swipe and Simplified toggle.
+- [x] Never leave the enable button looking incomplete after the IME is enabled.
 - [ ] Complete setup successfully in under 90 seconds for at least 90% of first-time testers.
 
 ### Daily-use flow
 
 - [ ] Keep the one-tap mode cycle and add a long-press direct mode picker.
-- [ ] Preserve or explicitly resolve active composition during mode changes.
-- [ ] Display all three modes in the Android IME label, app name and Settings.
-- [ ] Offer keyboard-height adjustment and a practical one-handed option.
+- [x] Preserve or explicitly resolve active composition during mode changes.
+- [x] Display all three modes in the Android IME label, app name and Settings.
+- [x] Offer keyboard-height adjustment and a practical one-handed option.
 - [ ] Keep candidate rows stable with no layout jump when results appear/disappear.
-- [ ] Make candidate expansion, collapse and paging discoverable and reversible.
-- [ ] Confirm destructive actions, including learned-data clearing and bulk imports.
-- [ ] Localize all user-facing strings in Traditional Chinese and English; avoid hard-coded copy.
-- [ ] Fix status/navigation-bar contrast in light and dark themes.
+- [x] Make candidate expansion, collapse and paging discoverable and reversible.
+- [x] Confirm destructive actions, including learned-data clearing and bulk imports.
+- [x] Localize all user-facing strings in Traditional Chinese and English; avoid hard-coded copy.
+- [x] Fix status/navigation-bar contrast in light and dark themes.
 - [ ] Ensure all critical actions work without undocumented gestures.
 
 ### Usability study
@@ -508,11 +515,11 @@ Expected: raw percentile tables and traces satisfy every target on both referenc
 
 ### Checklist
 
-- [ ] Expose every key in custom canvas views as a virtual accessibility node with label, bounds, role, state and click action.
-- [ ] Expose candidate position, selected state, pronunciation annotation and expand/collapse action.
-- [ ] Give mode, Shift/Caps, Simplified, symbols and emoji controls meaningful state announcements.
-- [ ] Provide at least 48dp effective touch targets or an equivalent accessible target expansion.
-- [ ] Meet WCAG AA contrast for text and essential controls in every theme.
+- [x] Expose every key in custom canvas views as a virtual accessibility node with label, bounds, role, state and click action.
+- [x] Expose candidate position, selected state, pronunciation annotation and expand/collapse action.
+- [x] Give mode, Shift/Caps, Simplified, symbols and emoji controls meaningful state announcements.
+- [x] Provide at least 48dp effective touch targets or an equivalent accessible target expansion.
+- [x] Meet WCAG AA contrast for text and essential controls in every theme.
 - [ ] Support TalkBack explore-by-touch, linear traversal, double-tap activation and correction without focus loss.
 - [ ] Verify Switch Access and large display/font settings.
 - [ ] Replace deprecated accessibility calls where a supported equivalent exists.
@@ -544,13 +551,13 @@ Expected: every visible key/candidate is represented and operable; manual traver
 
 ### Checklist
 
-- [ ] Confirm the merged manifest has no `INTERNET` permission and no dependency adds network capability.
-- [ ] Confirm learning, clipboard-like context and suggestions are disabled in all sensitive editor variations.
-- [ ] Confirm `allowBackup` and exported-component settings match the privacy model.
-- [ ] Validate import/export against oversized files, path tricks, malformed Unicode and formula-like payloads.
-- [ ] Document exactly what local data is stored, where, for how long and how users delete/export it.
+- [x] Confirm the merged manifest has no `INTERNET` permission and no dependency adds network capability.
+- [x] Confirm learning, clipboard-like context and suggestions are disabled in all sensitive editor variations.
+- [x] Confirm `allowBackup` and exported-component settings match the privacy model.
+- [x] Validate import/export against oversized files, path tricks, malformed Unicode and formula-like payloads.
+- [x] Document exactly what local data is stored, where, for how long and how users delete/export it.
 - [ ] Use one real support contact consistently; remove placeholder domains.
-- [ ] Record source, version, checksum, transformation, licence and attribution for every corpus.
+- [x] Record source, version, checksum, transformation, licence and attribution for every corpus.
 - [ ] Obtain owner/legal sign-off for GPL, CC BY-SA, ODbL, HKSCS, OpenCC and all derived datasets.
 - [ ] Complete Play Data Safety answers from the final binary and privacy policy.
 - [ ] Verify the public privacy URL is reachable and matches the in-app text.
@@ -579,23 +586,23 @@ Expected: offline claims are true, attribution is complete and no placeholder/le
 
 ### CI checklist
 
-- [ ] Run JVM tests, lint and corpus-tool tests on every pull request.
-- [ ] Run instrumentation tests on a supported emulator for protected branches.
-- [ ] Run benchmark schema/leakage checks without exposing the locked answer set.
-- [ ] Archive test, lint, coverage and benchmark reports.
-- [ ] Fail on corpus drift without manifest/checksum updates.
-- [ ] Fail on new permissions, exported components or unsigned release artifacts.
-- [ ] Do not increment `version.properties` during debug/test/lint tasks.
+- [x] Run JVM tests, lint and corpus-tool tests on every pull request.
+- [x] Run instrumentation tests on a supported emulator for protected branches.
+- [x] Run benchmark schema/leakage checks without exposing the locked answer set.
+- [x] Archive test, lint, coverage and benchmark reports.
+- [x] Fail on corpus drift without manifest/checksum updates.
+- [x] Fail on new permissions, exported components or unsigned release artifacts.
+- [x] Do not increment `version.properties` during debug/test/lint tasks.
 
 ### Release checklist
 
-- [ ] Require explicit signing configuration for every production bundle; fail rather than silently producing unsigned output.
+- [x] Require explicit signing configuration for every production bundle; fail rather than silently producing unsigned output.
 - [ ] Keep signing credentials outside Git and confirm backup/recovery ownership.
 - [ ] Build from a clean tagged commit with no untracked source inputs.
 - [ ] Verify versionCode/versionName, package, min/target SDK and certificate.
 - [ ] Generate and test APKs from the final AAB, not a separately built debug/release APK.
 - [ ] Confirm target SDK meets the current Play requirement at release time.
-- [ ] Produce deterministic corpus and notice checksums.
+- [x] Produce deterministic corpus and notice checksums.
 - [ ] Record the exact Git commit and AAB SHA-256 in the evidence index.
 
 ### Verification
@@ -614,10 +621,10 @@ Expected: signed current-version AAB, complete clean suite and no source-tree ve
 
 ### Required matrix
 
-- [ ] API 26 minimum-supported device/emulator.
+- [x] API 26 minimum-supported emulator automated gate; physical row remains open.
 - [ ] Android 13 Samsung/OneUI physical device.
 - [ ] Current stable Pixel/AOSP physical device.
-- [ ] Current preview/target-SDK emulator when applicable.
+- [x] Current API 36 preview/target-SDK emulator automated gate.
 - [ ] Small phone, tall phone and tablet/foldable layout.
 - [ ] Light/dark theme, portrait/landscape, large font/display and low-memory conditions.
 
@@ -655,12 +662,12 @@ Expected: signed current-version AAB, complete clean suite and no source-tree ve
 
 ### Claim checklist
 
-- [ ] Android IME label and store names mention all three modes.
-- [ ] Space, Enter, punctuation, learning, offline and Simplified claims exactly match production behaviour.
+- [x] Android IME label and store names mention all three modes.
+- [x] Space, Enter, punctuation, learning, offline and Simplified claims exactly match production behaviour.
 - [ ] Screenshots come from the final signed candidate and show all three modes.
-- [ ] “Best-in-class” is used only if every absolute and relative P2 market gate passed.
+- [x] “Best-in-class” is withheld while absolute or relative P2 market gates remain open.
 - [ ] Privacy, accessibility and supported-version statements are verified against the final AAB.
-- [ ] README reflects current development state rather than the old prototype stages.
+- [x] README reflects current development state rather than the old prototype stages.
 
 ### Final evidence review
 
@@ -694,7 +701,7 @@ The app is **GO** only when all statements below are true:
 - [ ] 速成 passes its absolute and competitor-relative gates.
 - [ ] 粵拼 passes its absolute and competitor-relative gates.
 - [ ] 普通話拼音 passes its absolute and competitor-relative gates.
-- [ ] Shared commit, correction, mixed-input and learning contracts pass.
+- [x] Shared commit, correction, mixed-input and learning contracts pass.
 - [ ] Accessibility, performance, stability and device gates pass.
 - [ ] Privacy, legal, store and signed-artifact gates pass.
 - [ ] The evidence index links every result to the exact release commit and AAB.

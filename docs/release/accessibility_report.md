@@ -1,12 +1,13 @@
 # Accessibility Qualification
 
 Status: virtual keyboard/symbol nodes and operable candidate controls are
-implemented and the API 35 automated checks pass; assistive-technology review is
-OPEN.
+implemented and the API 26/35/36 automated checks pass; assistive-technology
+review is OPEN.
 
-Automated checkpoint `44b0acc` passed virtual-key routing, candidate position /
-reading / selection semantics, 48dp target policy and theme contrast tests. These
-checks do not certify real TalkBack/Switch Access traversal or focus behaviour.
+Checkpoint 3 passed virtual keyboard and symbol-node routing, screen bounds,
+candidate position/reading/selection semantics, localized state announcements,
+48dp target policy and theme contrast tests. These checks do not certify real
+TalkBack/Switch Access traversal or focus behaviour.
 
 Verify on the final candidate in light/dark, portrait/landscape and large font/display:
 

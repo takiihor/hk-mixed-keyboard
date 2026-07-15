@@ -17,8 +17,9 @@ Status: **NO-GO** until `docs/release/go_no_go.md` changes against a signed fina
   `scripts/verify_release.sh` and signed in the evidence index.
 - Public privacy URL: https://takiihor.github.io/hk-mixed-keyboard/store/privacy_policy.html
 - Redeploy `docs/store/privacy_policy.html`, then verify the public response exactly
-  matches the final in-app/store policy. The automated URL attempt on 2026-07-15
-  timed out, so reachability/content remains OPEN.
+  matches the final in-app/store policy. On 2026-07-15 the URL returned HTTP 200,
+  but its SHA-256 differed and it still displayed `Last updated: 2026-06-16`;
+  current-content deployment remains OPEN.
 - Complete Play Data Safety from `docs/release/play_data_safety.md` only after the
   final AAB check.
 
@@ -40,7 +41,7 @@ signing environment variables:
 cd android
 ./gradlew clean test lintRelease connectedDebugAndroidTest bundleRelease
 cd ..
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests scripts/tests
 scripts/verify_release.sh android/app/build/outputs/bundle/release/app-release.aab
 ```
 

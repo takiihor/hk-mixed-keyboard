@@ -11,6 +11,8 @@ Status: engineering workflow implemented; production credentials and approvals r
 - Keep the upload keystore and recovery material outside Git. Set
   `HKKBD_STORE_FILE`, `HKKBD_STORE_PASSWORD`, `HKKBD_KEY_ALIAS`, and
   `HKKBD_KEY_PASSWORD` only in the controlled release environment.
+- Set `HKKBD_EXPECTED_CERT_SHA256` to the approved 64-hex signing-certificate
+  digest. Verification fails closed if it or the keystore inputs are absent.
 - Pin an official bundletool release and set `BUNDLETOOL_JAR` to its verified jar.
 - Intentionally update `android/app/version.properties`; builds never mutate it.
 
@@ -20,15 +22,18 @@ Status: engineering workflow implemented; production credentials and approvals r
 cd android
 ./gradlew clean test lintRelease connectedDebugAndroidTest bundleRelease
 cd ..
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests scripts/tests
 python3 corpus/tools/verify_corpus_manifest.py
+python3 corpus/tools/verify_benchmark_templates.py
+sha256sum --check docs/release/legal_assets.sha256
 scripts/verify_release.sh android/app/build/outputs/bundle/release/app-release.aab \
   | tee docs/release/final_artifact_metadata.txt
 ```
 
-Create installable APKs from that exact AAB with bundletool, install the universal
-APK plus device-specific splits on the supported-device matrix, then repeat the
-three-mode smoke, migration, privacy, accessibility and supplementary-HKSCS checks.
+`verify_release.sh` creates and signature/policy-checks a universal APK from that
+exact AAB. Install it plus device-specific splits on the supported-device matrix,
+then repeat the three-mode smoke, migration, privacy, accessibility and
+supplementary-HKSCS checks.
 Do not substitute a separately built APK.
 
 ## Evidence and submission

@@ -1,12 +1,13 @@
 # Performance Qualification
 
-Status: an API 35 emulator warm-decode ceiling passes; required physical-device
+Status: API 26/35/36 emulator warm-decode ceilings pass; required physical-device
 measurements are OPEN.
 
-Automated checkpoint `44b0acc`: 300 warm full-corpus decodes rotating Quick
-`rryo`, Jyutping `nei5hou2` and Pinyin `ni3hao3` passed the instrumentation p95
-ceiling of 150 ms on `sdk_gphone64_x86_64` API 35. This emulator assertion is a
-regression guard, not the reference-device market performance gate.
+Checkpoint 3 ran 300 warm full-corpus decodes per emulator execution: 100 each
+for Quick `rryo`, Jyutping `nei5hou2` and Pinyin `ni3hao3`. That is 900 decodes
+across API 26, 35 and 36. Every emulator passed the instrumentation p95 ceiling
+of 150 ms. These assertions are regression guards, not the reference-device
+market performance gate.
 
 ## Required devices and targets
 
