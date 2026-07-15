@@ -14,7 +14,13 @@ class Classification:
     framework_only: tuple[str, ...]
 
 
-def classify(text: str, package: str, namespace: str) -> Classification:
+def classify(
+    text: str,
+    package: str,
+    namespace: str,
+    system_text: str = "",
+    monkey_text: str = "",
+) -> Classification:
     lines = text.splitlines()
     actionable: list[str] = []
     framework_only: list[str] = []
@@ -43,6 +49,16 @@ def classify(text: str, package: str, namespace: str) -> Classification:
             framework_only.append(rendered)
         else:
             actionable.append(rendered)
+    for line in system_text.splitlines():
+        if (
+            f"ANR in {package}" in line
+            or f"Process: {package}," in line
+            or f"Cmdline: {package}" in line
+        ):
+            actionable.append(line)
+    for line in monkey_text.splitlines():
+        if f"// CRASH: {package}" in line or f"// NOT RESPONDING: {package}" in line:
+            actionable.append(line)
     return Classification(tuple(actionable), tuple(framework_only))
 
 
@@ -58,12 +74,28 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--namespace", default="com.hkmixedkeyboard")
     parser.add_argument("--markers", type=Path, required=True)
     parser.add_argument("--framework-markers", type=Path, required=True)
+    parser.add_argument("--system-log", type=Path)
+    parser.add_argument("--monkey-log", type=Path)
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    result = classify(args.log.read_text(encoding="utf-8", errors="replace"), args.package, args.namespace)
+    system_text = (
+        args.system_log.read_text(encoding="utf-8", errors="replace")
+        if args.system_log else ""
+    )
+    monkey_text = (
+        args.monkey_log.read_text(encoding="utf-8", errors="replace")
+        if args.monkey_log else ""
+    )
+    result = classify(
+        args.log.read_text(encoding="utf-8", errors="replace"),
+        args.package,
+        args.namespace,
+        system_text,
+        monkey_text,
+    )
     write_blocks(args.markers, result.actionable)
     write_blocks(args.framework_markers, result.framework_only)
     if result.actionable:

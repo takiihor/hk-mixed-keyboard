@@ -52,6 +52,7 @@ adb shell dumpsys meminfo "$PACKAGE" > "$OUT/meminfo-before.txt"
 # touch/motion/basic navigation plus activity switches retain UI/lifecycle load
 # without turning an unrelated system app ANR into an app result.
 adb shell monkey -p "$PACKAGE" -s 260715 --throttle 20 \
+  --ignore-crashes --ignore-timeouts \
   --pct-touch 50 --pct-motion 20 --pct-trackball 0 --pct-nav 10 \
   --pct-majornav 0 --pct-syskeys 0 --pct-appswitch 20 --pct-anyevent 0 \
   10000 > "$OUT/monkey.txt"
@@ -60,6 +61,7 @@ rg -n '^Events injected: 10000$' "$OUT/monkey.txt" >/dev/null || {
   exit 1
 }
 adb shell dumpsys meminfo "$PACKAGE" > "$OUT/meminfo-after.txt"
+adb logcat -d -v threadtime '*:V' > "$OUT/logcat-full-stress.txt"
 stress_pid="$(adb shell pidof "$PACKAGE" | tr -d '\r' | awk '{print $1}')"
 if [[ -n "$stress_pid" ]]; then
   adb logcat -d --pid="$stress_pid" -v threadtime '*:V' > "$OUT/logcat-stress-app.txt"
@@ -82,7 +84,9 @@ python3 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/verify_device_log.py" \
   "$OUT/logcat-app-combined.txt" \
   --package "$PACKAGE" \
   --markers "$OUT/fatal-markers.txt" \
-  --framework-markers "$OUT/framework-strictmode-markers.txt"
+  --framework-markers "$OUT/framework-strictmode-markers.txt" \
+  --system-log "$OUT/logcat-full-stress.txt" \
+  --monkey-log "$OUT/monkey.txt"
 
 trap - EXIT
 printf 'status=PASS\n' > "$RESULT_FILE"

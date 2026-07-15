@@ -45,3 +45,27 @@ def test_non_disk_strictmode_and_app_failures_are_actionable() -> None:
     result = classify(text, "com.hkmixedkeyboard.debug", "com.hkmixedkeyboard")
     assert len(result.actionable) == 3
     assert result.framework_only == ()
+
+
+def test_full_system_and_monkey_logs_only_flag_the_app_package() -> None:
+    result = classify(
+        "",
+        "com.hkmixedkeyboard.debug",
+        "com.hkmixedkeyboard",
+        system_text="\n".join(
+            [
+                "E ActivityManager: ANR in com.google.android.gms",
+                "E AndroidRuntime: Process: com.google.android.bluetooth, PID: 12",
+                "E ActivityManager: ANR in com.hkmixedkeyboard.debug",
+                "F DEBUG: Cmdline: com.hkmixedkeyboard.debug",
+            ]
+        ),
+        monkey_text="\n".join(
+            [
+                "// CRASH: com.google.android.bluetooth (pid 12)",
+                "// CRASH: com.hkmixedkeyboard.debug (pid 34)",
+            ]
+        ),
+    )
+    assert len(result.actionable) == 3
+    assert result.framework_only == ()
