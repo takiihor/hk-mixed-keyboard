@@ -18,6 +18,11 @@ human-review, competitor-comparison and device gates must remain visibly open.
 | T0-BRANCH | `7f1629783504db26b8c271836b9780d20aa40559` | Git worktree | PASS — isolated branch created from reviewed `master` | This document, Baseline branch inventory | Codex | 2026-07-15 |
 | T0-UNIT | `7f1629783504db26b8c271836b9780d20aa40559` | JVM debug + release | PASS — 652 executions, 0 failures, 0 errors | `android/app/build/test-results/` | Codex | 2026-07-15 |
 | T0-LINT | `7f1629783504db26b8c271836b9780d20aa40559` | Android lintDebug | PASS with 30 warnings and 0 errors | `android/app/build/reports/lint-results-debug.html` | Codex | 2026-07-15 |
+| T1-SCORER | `6d9c412` | Python corpus-tool suite | PASS — 30 tests and 63 subtests; deterministic JSON/Markdown scorer added | `corpus/tools/tests/`, `corpus/benchmarks/README.md` | Codex | 2026-07-15 |
+| T1-HOLDOUT | `6d9c412` | Independent language review | OPEN — schema exists; four holdout files intentionally contain headers only | `corpus/benchmarks/*_holdout.tsv` | Native reviewers required | 2026-07-15 |
+| T1-COMPETITOR | `6d9c412` | Blinded competitor comparison | OPEN — protocol/template exists; no result collected | `docs/release/competitor_baseline.md` | QA/language lead required | 2026-07-15 |
+| T2-COMMIT | `c5466f3` | JVM debug + release | PASS — 676 executions, 0 failures, 0 errors | `android/app/build/test-results/` | Codex | 2026-07-15 |
+| T2-LINT | `c5466f3` | Android lintDebug | PASS with 30 pre-existing warnings and 0 errors | `android/app/build/reports/lint-results-debug.html` | Codex | 2026-07-15 |
 
 ## Baseline branch inventory
 
@@ -118,3 +123,16 @@ accessibility calls in `SymbolPageView`.
 - [ ] Physical Samsung, Pixel/AOSP and assistive-technology reviews are completed.
 - [ ] Legal/data owners sign corpus provenance and store disclosures.
 - [ ] Closed beta reaches the required tester/session thresholds.
+
+## Checkpoint 1 summary
+
+- Integration work is isolated from the user's existing dirty `master` worktree.
+- The benchmark scorer and collection protocol are implemented; independent
+  language data and competitor measurements remain open by design.
+- Space and punctuation now coordinate with a matching decode in Quick, Jyutping
+  and Pinyin. Quick English collisions remain literal, and stale generation,
+  session or buffer results cannot commit.
+- Automatic Space selection records reversible composition state. The record is
+  converted with Simplified output so Backspace compares/deletes emitted text.
+- Cursor movement outside the composing span invalidates the old session before
+  a delayed result can write at the former location.

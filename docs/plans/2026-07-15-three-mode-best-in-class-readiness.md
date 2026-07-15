@@ -85,14 +85,14 @@ The checkbox is the status. The default owner may delegate work but remains acco
 
 ### Checklist
 
-- [ ] Create an isolated integration worktree from current `master`; do not develop in either divergent worktree.
-- [ ] Record the current `master`, `fix/release-readiness` and `feat/cultural-preservation` commit IDs.
-- [ ] Record all uncommitted files in the cultural-preservation worktree and assign an owner before copying any of them.
-- [ ] Inventory every commit unique to each branch with `git log --left-right --cherry-pick`.
+- [x] Create an isolated integration worktree from current `master`; do not develop in either divergent worktree.
+- [x] Record the current `master`, `fix/release-readiness` and `feat/cultural-preservation` commit IDs.
+- [x] Record all uncommitted files in the cultural-preservation worktree and assign an owner before copying any of them.
+- [x] Inventory every commit unique to each branch with `git log --left-right --cherry-pick`.
 - [ ] Port fixes by concern; do not merge or copy an entire worktree over the newer UI.
-- [ ] Resolve the competing Space/punctuation policies through Task 2 rather than accepting either branch blindly.
+- [x] Resolve the competing Space/punctuation policies through Task 2 rather than accepting either branch blindly.
 - [ ] Remove stale two-mode comments, labels and documentation during integration.
-- [ ] Run the complete baseline suite from a clean checkout.
+- [x] Run the complete baseline suite from a clean checkout.
 
 ### Verification
 
@@ -139,12 +139,12 @@ git commit -m "chore: establish three-mode release integration baseline"
 
 ### Scorer checklist
 
-- [ ] Score Top-1, Top-3, Top-5, reciprocal rank, OOV and invalid output.
-- [ ] Score keystrokes per committed Chinese character, correction actions, wrong automatic commits and task-completion time.
+- [x] Score Top-1, Top-3, Top-5, reciprocal rank, OOV and invalid output.
+- [x] Score keystrokes per committed Chinese character, correction actions, wrong automatic commits and task-completion time.
 - [ ] Report cold and learned results separately.
-- [ ] Report results by frequency band, phrase length, HK colloquial category and HKSCS status.
+- [x] Report results by frequency band, phrase length, HK colloquial category and HKSCS status.
 - [ ] Fail on duplicate IDs, missing expected forms, leaked holdout rows or invalid Unicode.
-- [ ] Emit machine-readable JSON and a human-readable Markdown report.
+- [x] Emit machine-readable JSON and a human-readable Markdown report.
 
 ### Competitor comparison checklist
 
@@ -176,22 +176,22 @@ Expected: scorer tests pass and the command documents deterministic input/output
 
 ### Contract checklist
 
-- [ ] Tapping a candidate always commits that exact, current candidate.
-- [ ] Space selects the current safe Chinese candidate in all three Chinese modes and does not insert an unwanted visible space.
-- [ ] Enter commits the literal Latin buffer when the user intentionally wants raw input.
-- [ ] Punctuation first commits the current safe Chinese candidate, then emits punctuation matching surrounding language width.
-- [ ] A stale asynchronous result can never be committed after the buffer, mode, editor or session changes.
-- [ ] Backspace immediately after automatic selection restores the original composition and candidate list.
-- [ ] English words such as `ok`, `hi` and `go` are not converted accidentally.
-- [ ] Empty-buffer Space, punctuation and Enter behave like a normal keyboard.
-- [ ] Mode switching with an active composition follows an explicit, documented commit/cancel policy and never silently loses text.
-- [ ] Sensitive fields disable learning, predictions and candidate history.
+- [x] Tapping a candidate always commits that exact, current candidate.
+- [x] Space selects the current safe Chinese candidate in all three Chinese modes and does not insert an unwanted visible space.
+- [x] Enter commits the literal Latin buffer when the user intentionally wants raw input.
+- [x] Punctuation first commits the current safe Chinese candidate, then emits punctuation matching surrounding language width.
+- [x] A stale asynchronous result can never be committed after the buffer, mode, editor or session changes.
+- [x] Backspace immediately after automatic selection restores the original composition and candidate list.
+- [x] English words such as `ok`, `hi` and `go` are not converted accidentally.
+- [x] Empty-buffer Space, punctuation and Enter behave like a normal keyboard.
+- [x] Mode switching with an active composition follows an explicit, documented commit/cancel policy and never silently loses text.
+- [x] Sensitive fields disable learning, predictions and candidate history.
 
 ### Required tests
 
 - [ ] Add parameterized contract tests covering every action in Quick, Jyutping and Pinyin.
 - [ ] Add race tests for stale decode, rapid Space, mode switch, editor switch and service restart.
-- [ ] Add regression tests for English collisions and backspace restoration.
+- [x] Add regression tests for English collisions and backspace restoration.
 - [ ] Add production-path integration tests rather than testing only pure policy classes.
 
 ### Verification
