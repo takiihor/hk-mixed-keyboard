@@ -3,6 +3,7 @@ package com.hkmixedkeyboard.settings
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -40,7 +41,12 @@ class CustomWordActivity : AppCompatActivity() {
         })
 
         // Add new word form
-        val displayInput = EditText(this).apply { hint = getString(com.hkmixedkeyboard.R.string.custom_display_hint) }
+        val displayInput = EditText(this).apply {
+            hint = getString(com.hkmixedkeyboard.R.string.custom_display_hint)
+            setSingleLine(true)
+            imeOptions = EditorInfo.IME_ACTION_NEXT
+            disableSystemTextSuggestions()
+        }
         val schemes = listOf(Scheme.QUICK, Scheme.JYUTPING, Scheme.PINYIN)
         val schemePicker = Spinner(this).apply {
             adapter = ArrayAdapter(
@@ -54,7 +60,12 @@ class CustomWordActivity : AppCompatActivity() {
             )
             contentDescription = getString(com.hkmixedkeyboard.R.string.custom_scheme_description)
         }
-        val codeInput = EditText(this).apply { hint = getString(com.hkmixedkeyboard.R.string.custom_code_hint) }
+        val codeInput = EditText(this).apply {
+            hint = getString(com.hkmixedkeyboard.R.string.custom_code_hint)
+            setSingleLine(true)
+            imeOptions = EditorInfo.IME_ACTION_DONE
+            disableSystemTextSuggestions()
+        }
         val addBtn = Button(this).apply {
             text = getString(com.hkmixedkeyboard.R.string.add)
             setOnClickListener {

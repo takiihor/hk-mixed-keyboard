@@ -2,9 +2,12 @@ package com.hkmixedkeyboard
 
 import android.app.Activity
 import android.os.Build
+import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.textclassifier.TextClassifier
+import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.view.ViewCompat
@@ -41,6 +44,33 @@ class SettingsReleaseRegressionTest {
             onView(withHint(context.getString(R.string.custom_display_hint)))
                 .check(matches(isCompletelyDisplayed()))
                 .perform(click())
+        }
+    }
+
+    @Test
+    fun appOwnedTextFieldsAvoidTheLegacySpellingSuggestionPopup() {
+        ActivityScenario.launch(SettingsActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val fields = findEditTexts(activity)
+                assertEquals(1, fields.size)
+                assertNoSystemSuggestions(fields.single())
+            }
+        }
+
+        ActivityScenario.launch(CustomWordActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val fields = findEditTexts(activity)
+                assertEquals(2, fields.size)
+                fields.forEach(::assertNoSystemSuggestions)
+                assertEquals(
+                    EditorInfo.IME_ACTION_NEXT,
+                    fields[0].imeOptions and EditorInfo.IME_MASK_ACTION
+                )
+                assertEquals(
+                    EditorInfo.IME_ACTION_DONE,
+                    fields[1].imeOptions and EditorInfo.IME_MASK_ACTION
+                )
+            }
         }
     }
 
@@ -130,6 +160,26 @@ class SettingsReleaseRegressionTest {
         collect(root)
         assertEquals("${activity.javaClass.simpleName} legal text count", 1, texts.size)
         return texts.single()
+    }
+
+    private fun findEditTexts(activity: Activity): List<EditText> {
+        val root = activity.findViewById<ViewGroup>(android.R.id.content)
+        val fields = mutableListOf<EditText>()
+        fun collect(view: View) {
+            if (view is EditText) fields += view
+            if (view is ViewGroup) {
+                for (index in 0 until view.childCount) collect(view.getChildAt(index))
+            }
+        }
+        collect(root)
+        return fields
+    }
+
+    private fun assertNoSystemSuggestions(field: EditText) {
+        assertEquals(
+            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS,
+            field.inputType and InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+        )
     }
 
     private fun assertFirstContentBelowSystemBars(activityClass: Class<out Activity>) {

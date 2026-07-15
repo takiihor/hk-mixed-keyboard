@@ -67,6 +67,7 @@ class SettingsActivity : AppCompatActivity() {
             hint = getString(com.hkmixedkeyboard.R.string.practice_hint)
             minLines = 2
             contentDescription = getString(com.hkmixedkeyboard.R.string.practice_description)
+            disableSystemTextSuggestions()
         })
 
         root.addView(spacer())
