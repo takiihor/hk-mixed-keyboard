@@ -413,7 +413,7 @@ Expected: deterministic cold ranking, bounded local learning and safe mixed-lang
 - [x] Serialize or synchronize decode request state, generation IDs, pending buffers and sessions.
 - [x] Cancel or ignore work after editor changes, mode changes, service teardown and configuration changes.
 - [x] Stress rapid typing, Space, backspace, candidate expansion and mode switching for at least 100,000 generated event sequences.
-- [x] Test process death and IME recreation without corrupting memory or losing committed text.
+- [ ] Test actual system-selected IME process death/rebind in a host editor without losing or duplicating committed or composing text; Room reopen and settings-app relaunch are regression guards only.
 - [x] Test every Room migration from the oldest public schema to the release schema.
 - [x] Corrupt or truncate caches deliberately and verify safe deterministic rebuilding.
 - [x] Keep corpus/cache versions tied to content hashes.
@@ -634,7 +634,7 @@ Expected: signed current-version AAB, complete clean suite and no source-tree ve
 - [ ] All three modes pass representative smoke scripts.
 - [ ] HKSCS and supplementary characters render without tofu using device fonts.
 - [ ] Haptics, sound, cursor swipe, long presses and touch boundaries are correct.
-- [ ] Rotation, app switching, editor switching and process death do not lose or duplicate text.
+- [ ] Rotation, app switching, editor switching and actual system-IME process death/rebind do not lose or duplicate text.
 - [ ] TalkBack and Switch Access complete the core typing flow.
 - [ ] No crash, ANR, StrictMode violation or database migration failure occurs.
 

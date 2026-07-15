@@ -1,8 +1,8 @@
 # Checkpoint 3 Verification — Three-Mode Input Quality and Stability
 
-Final APK-source commit: `91050c061b48d0eb148c58a22dd29c2bb58b4846`
+Final APK-source commit: `2d7768b98bc2d38a7dfdd618aa5a10b9132dd9ff`
 
-Final device-harness commit: `f3b337ad4d4774e19705f30dd26c5c1717f68d53`
+Final device-harness commit: `5a58799d5259bb74eb1f4181b676a652e17af602`
 
 Date: 2026-07-15 (Asia/Hong_Kong)
 
@@ -16,7 +16,7 @@ signed production AAB or the closed beta. The public-release decision remains
 
 | Area | Exact result |
 |---|---|
-| JVM debug + release | PASS — 441 tests per variant; 882 total, 0 skipped/failures/errors |
+| JVM debug + release | PASS — 444 tests per variant; 888 total, 0 skipped/failures/errors |
 | Python corpus/release tools | PASS — 74 tests and 63 subtests |
 | Android lint | PASS — debug and release: 0 errors, 37 warnings each |
 | Source-derived three-mode regression | PASS — 540/540 Top-1 and Top-3; explicitly not an independent holdout |
@@ -24,7 +24,7 @@ signed production AAB or the closed beta. The public-release decision remains
 | API 26 instrumentation | PASS — 14/14, 0 skipped/failures |
 | API 35 instrumentation | PASS — 14/14, 0 skipped/failures |
 | API 36 instrumentation | PASS — 14/14, 0 skipped/failures |
-| API 26/35/36 deterministic lifecycle stress | PASS — 10,000 events and 20 paced focus recoveries per API; 30,000 events and 60 recoveries total; memory trim and verified force-stop/relaunch completed |
+| API 26/35/36 deterministic lifecycle stress | PASS — 10,000 events and 20 paced focus recoveries per API; 30,000 events and 60 recoveries total; memory trim and verified settings-app force-stop/relaunch completed |
 | App failure scan | PASS — zero app crash, ANR or actionable StrictMode markers on every API; zero framework-only blocks in the final runs |
 | Debug APK policy | PASS — `VIBRATE` only, no `INTERNET`, backup disabled, approved exported components, minSdk 26, targetSdk 36 |
 | Corpus/notice checksum integrity | PASS — manifest, benchmark-template leakage guard and bundled legal-asset checksums; legal approval remains open |
@@ -35,24 +35,28 @@ The debug artifact exercised on all three emulators was:
 
 ```text
 android/app/build/outputs/apk/debug/app-debug-0.64.0.apk
-SHA-256 a30c24546dd7862ad5df76398876c28de2008d5a723b1d43c12ca4fbd1d7ebfe
+SHA-256 2d7ef29dda3843507593e3ab57d1bf84ca2a3dfe659939652a1b438588a67e52
 ```
 
-All three `device.txt` files record APK source `91050c0`, harness `f3b337a`,
-`apk_sources_dirty=false`, `harness_dirty=false` and the same APK hash. The general
-`git_dirty=true` flag is caused only by the release documents being reconciled
-during the runs; it does not cover an uncommitted APK or harness input. Raw device
-logs live under ignored `android/app/build/evidence/api*/`; this committed report is
-their durable summary.
+All three `device.txt` files record APK source `2d7768b`, harness `5a58799`,
+`git_dirty=false`, `apk_sources_dirty=false`, `harness_dirty=false` and the same
+APK hash. Raw device logs live under ignored
+`android/app/build/evidence/api*/`; this committed report is their durable
+summary.
 
-Verified process recreation produced new PIDs on every API: API 26 `15143 ->
-16860`, API 35 `9198 -> 11237`, and API 36 `14724 -> 16061`. Each final app and
-framework marker file is empty. During checkpoint hardening, the stronger gate
-first exposed an Android 16 selection-toolbar `BadTokenException` and an Android 8
-spelling-popup span crash. Lifecycle-safe selection, no-spellcheck/no-smart-action
-text fields and dedicated instrumentation regressions fixed both. An unrealistic
-20%/20 ms Monkey task-switch burst was also replaced with 100 randomized switches
-and 20 paced, InputDispatcher-verified focus recoveries per API.
+Verified settings-app process recreation produced new PIDs on every API: API 26
+`19374 -> 20866`, API 35 `3331 -> 5836`, and API 36 `3629 -> 5997`. This does not
+enable/select `HkImeService` in a host editor and therefore does not prove live
+system-IME death/rebind or preservation of composing text; that checklist gate
+is OPEN. Each final app and framework marker file is empty. During checkpoint
+hardening, the stronger gate first exposed an Android 16 selection-toolbar
+`BadTokenException` and an Android 8 spelling-popup span crash. Lifecycle-safe
+selection, no-spellcheck/no-smart-action text fields and dedicated
+instrumentation regressions fixed both. An unrealistic 20%/20 ms Monkey
+task-switch burst was also replaced with 100 randomized switches and 20 paced,
+InputDispatcher-verified focus recoveries per API. The final harness additionally
+waits for stable HOME focus and stable PID absence so Android 8 cannot race a
+queued launcher transition against force-stop.
 
 These PASS results are automated engineering evidence recorded by Codex. They are
 not human QA, language, accessibility, legal, product or release-owner sign-off.
@@ -67,6 +71,9 @@ not human QA, language, accessibility, legal, product or release-owner sign-off.
   ranking without degrading normal toneless input.
 - Added canonical Jyutping/Pinyin validation and Unicode code-point-safe HKSCS
   prediction, display and direct-decode boundaries.
+- Rejected misplaced Jyutping and Pinyin tone digits before normalization can
+  turn malformed spelling into an exact, auto-committable candidate or custom
+  word code.
 - Completed localized mode labels, candidate direction labels, virtual keyboard
   and symbol nodes, screen bounds, state announcements and 48dp automated checks.
 - Added API 26–28 safe settings insets, API 29+ edge-to-edge insets, asynchronous
@@ -88,7 +95,9 @@ not human QA, language, accessibility, legal, product or release-owner sign-off.
   keyboards. Each mode must match/exceed best-competitor Top-3 and beat Top-1 by
   two points or median keystrokes by 5%, without correction/latency regression.
 - Complete physical Samsung/OneUI and Pixel/AOSP testing plus small/tall/tablet or
-  foldable layouts, fonts, haptics, rotation, migration, TalkBack and Switch Access.
+  foldable layouts, fonts, haptics, rotation, migration, TalkBack and Switch
+  Access. Include a real host-editor test that kills/rebinds the selected system
+  IME while checking committed and composing text for loss or duplication.
 - Measure the specified latency, frame and memory percentiles on reference physical
   devices with raw traces; emulator ceilings are regression guards only.
 - Moderate setup/daily-use studies with at least 15 new and 15 experienced

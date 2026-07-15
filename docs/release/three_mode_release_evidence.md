@@ -34,16 +34,17 @@ human-review, competitor-comparison and device gates must remain visibly open.
 | T12-PIPELINE | `44b0acc` | CI config, lint/build, unsigned-release negative test | PASS — missing signing aborts before artifact creation; signed-AAB path OPEN | `.github/workflows/android.yml`, `scripts/verify_release.sh`, `docs/release/checkpoint_2_verification.md` | Codex / release owner required | 2026-07-15 |
 | T13-EMU | `44b0acc` | API 35 `sdk_gphone64_x86_64` | PASS — 8/8 instrumentation; required physical matrix/beta OPEN | `docs/release/device_beta_matrix.md`, `docs/release/checkpoint_2_verification.md` | Codex / QA required | 2026-07-15 |
 | T14-CLAIMS | `44b0acc` | Store/README/privacy consistency audit | PASS — engineering copy synchronized and NO-GO stated; owner sign-off OPEN | `docs/release/go_no_go.md`, `docs/release/checkpoint_2_verification.md` | Codex / product owner required | 2026-07-15 |
-| T3-5-AUTO-3 | `91050c0` | Final app-source JVM/corpus regressions | PASS — phrase-evidence composition, tone-aware Jyutping, canonical validation and Unicode/HKSCS boundaries; 882 JVM executions plus 540/540 source-derived and 30/30 repository-curated Jyutping regressions | `docs/release/checkpoint_3_verification.md` | Codex (automated scope only) | 2026-07-15 |
-| T3-5-MARKET-3 | `91050c0` | Independent native holdouts and paired current competitors | OPEN — four public templates remain header-only; no native/competitor result or superiority claim | `corpus/benchmarks/*_holdout.tsv`, `docs/release/competitor_baseline.md` | Native/QA reviewers required | 2026-07-15 |
-| T7-DEVICE-3 | `91050c0`, `f3b337a` | API 26/35/36 deterministic device stress | PASS — same APK; 10,000 events plus 20 paced focus recoveries per API, memory trim, verified new PID after force-stop/relaunch, zero app/framework markers | `docs/release/checkpoint_3_verification.md` | Codex (automated scope only) | 2026-07-15 |
-| T8-EMU-3 | `91050c0` | API 26/35/36, 300 warm full-corpus decodes per emulator | PASS — 100 per mode per emulator and p95 ceiling ≤150 ms; physical raw-trace gate OPEN | `docs/release/performance_results.md`, `docs/release/checkpoint_3_verification.md` | Codex / performance owner required | 2026-07-15 |
-| T9-SETUP-3 | `91050c0` | API 26/35/36 setup/settings instrumentation | PASS — localized separate enable/select flow, practice field, safe text entry, destructive confirmation and system-bar layout; 15+15 moderated study OPEN | `docs/release/checkpoint_3_verification.md` | Codex / UX owner required | 2026-07-15 |
-| T10-A11Y-3 | `91050c0` | API 26/35/36 nodes/semantics + JVM target/contrast checks | PASS — automated scope; physical TalkBack/Switch Access user or specialist sign-off OPEN | `docs/release/accessibility_report.md`, `docs/release/checkpoint_3_verification.md` | Codex / accessibility owner required | 2026-07-15 |
-| T11-PRIVACY-3 | `91050c0` | Merged debug APK, dependency, corpus and notice audit | PASS — approved permission/export surface and offline dependencies; public policy is reachable but stale, legal/final-AAB gates OPEN | `docs/release/legal_signoff.md`, `docs/release/checkpoint_3_verification.md` | Codex / owners required | 2026-07-15 |
-| T12-PIPELINE-3 | `f3b337a` | CI, binary policy, signing/AAB and device-log guards | PASS — 74 Python tests plus 63 subtests; unsigned release fails closed; production signing/certificate/final-AAB execution OPEN | `.github/workflows/android.yml`, `scripts/verify_release.sh`, `scripts/device_smoke.sh` | Codex / release owner required | 2026-07-15 |
-| T13-EMU-3 | `91050c0`, `f3b337a` | API 26/35/36 emulators | PASS — 14/14 instrumentation, 10,000 events and 20 focus recoveries per API on APK SHA-256 `a30c2454…d7ebfe`; physical matrix/beta OPEN | `docs/release/device_beta_matrix.md`, `docs/release/checkpoint_3_verification.md` | Codex (automated scope only) / QA required | 2026-07-15 |
-| T14-CLAIMS-3 | `91050c0`, `f3b337a` | Claims and evidence review | PASS — implemented behavior/copy synchronized and external blockers explicit; this is Codex self-review, product/release approval is OPEN and decision remains NO-GO | `docs/release/go_no_go.md`, `docs/release/checkpoint_3_verification.md` | Codex / product and release owners required | 2026-07-15 |
+| T3-5-AUTO-3 | `2d7768b` | Final app-source JVM/corpus regressions | PASS — phrase-evidence composition, tone-aware Jyutping, canonical/misplaced-tone validation and Unicode/HKSCS boundaries; 888 JVM executions plus 540/540 source-derived and 30/30 repository-curated Jyutping regressions | `docs/release/checkpoint_3_verification.md` | Codex (automated scope only) | 2026-07-15 |
+| T3-5-MARKET-3 | `2d7768b` | Independent native holdouts and paired current competitors | OPEN — four public templates remain header-only; no native/competitor result or superiority claim | `corpus/benchmarks/*_holdout.tsv`, `docs/release/competitor_baseline.md` | Native/QA reviewers required | 2026-07-15 |
+| T7-DEVICE-3 | `2d7768b`, `5a58799` | API 26/35/36 deterministic settings-app stress | PASS — same APK; 10,000 events plus 20 paced focus recoveries per API, memory trim, verified new settings-app PID after force-stop/relaunch, zero app/framework markers | `docs/release/checkpoint_3_verification.md` | Codex (automated scope only) | 2026-07-15 |
+| T7-IME-REBIND-3 | `2d7768b` | Selected system IME in a third-party host editor | OPEN — Room reopen and settings-app PID recreation do not prove live `HkImeService` death/rebind or composing-text preservation | `docs/plans/2026-07-15-three-mode-best-in-class-readiness.md`, `docs/release/device_beta_matrix.md` | QA required | 2026-07-15 |
+| T8-EMU-3 | `2d7768b` | API 26/35/36, 300 warm full-corpus decodes per emulator | PASS — 100 per mode per emulator and p95 ceiling ≤150 ms; physical raw-trace gate OPEN | `docs/release/performance_results.md`, `docs/release/checkpoint_3_verification.md` | Codex / performance owner required | 2026-07-15 |
+| T9-SETUP-3 | `2d7768b` | API 26/35/36 setup/settings instrumentation | PASS — localized separate enable/select flow, practice field, safe text entry, destructive confirmation and system-bar layout; 15+15 moderated study OPEN | `docs/release/checkpoint_3_verification.md` | Codex / UX owner required | 2026-07-15 |
+| T10-A11Y-3 | `2d7768b` | API 26/35/36 nodes/semantics + JVM target/contrast checks | PASS — automated scope; physical TalkBack/Switch Access user or specialist sign-off OPEN | `docs/release/accessibility_report.md`, `docs/release/checkpoint_3_verification.md` | Codex / accessibility owner required | 2026-07-15 |
+| T11-PRIVACY-3 | `2d7768b` | Merged debug APK, dependency, corpus and notice audit | PASS — approved permission/export surface and offline dependencies; public policy is reachable but stale, legal/final-AAB gates OPEN | `docs/release/legal_signoff.md`, `docs/release/checkpoint_3_verification.md` | Codex / owners required | 2026-07-15 |
+| T12-PIPELINE-3 | `5a58799` | CI, binary policy, signing/AAB and device-log guards | PASS — 74 Python tests plus 63 subtests; condition-based API 26 recreation and bounded log-reset guards; unsigned release fails closed; production signing/certificate/final-AAB execution OPEN | `.github/workflows/android.yml`, `scripts/verify_release.sh`, `scripts/device_smoke.sh` | Codex / release owner required | 2026-07-15 |
+| T13-EMU-3 | `2d7768b`, `5a58799` | API 26/35/36 emulators | PASS — 14/14 instrumentation, 10,000 events and 20 focus recoveries per API on APK SHA-256 `2d7ef29…67e52`; physical matrix/beta OPEN | `docs/release/device_beta_matrix.md`, `docs/release/checkpoint_3_verification.md` | Codex (automated scope only) / QA required | 2026-07-15 |
+| T14-CLAIMS-3 | `2d7768b`, `5a58799` | Claims and evidence review | PASS — implemented behavior/copy synchronized, live-IME rebind remains explicit, and external blockers remain open; this is Codex self-review, product/release approval is OPEN and decision remains NO-GO | `docs/release/go_no_go.md`, `docs/release/checkpoint_3_verification.md` | Codex / product and release owners required | 2026-07-15 |
 
 ## Baseline branch inventory
 
@@ -170,12 +171,14 @@ accessibility calls in `SymbolPageView`.
 
 ## Checkpoint 3 summary
 
-- Final APK-source engineering is committed at `91050c0`; the final device
-  harness is `f3b337a`.
+- Final APK-source engineering is committed at `2d7768b`; the final device
+  harness is `5a58799`.
 - Fresh debug/release JVM, Python, lint, source-derived regression, APK policy and
   unsigned-release guards pass. API 26/35/36 each pass 14 instrumentation tests,
   10,000 deterministic events and 20 paced focus recoveries against APK SHA-256
-  `a30c2454…d7ebfe`, with verified new PIDs and zero final app/framework markers.
+  `2d7ef29…67e52`, with verified new settings-app PIDs and zero final
+  app/framework markers. A true selected-system-IME death/rebind test remains
+  OPEN and is not inferred from settings-app recreation.
   Raw logs remain in ignored build output; `checkpoint_3_verification.md` is the
   committed durable summary.
 - Independent native/competitor, physical-device/performance/accessibility,

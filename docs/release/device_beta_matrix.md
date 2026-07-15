@@ -5,15 +5,17 @@ two-week beta evidence is OPEN.
 
 ## Automated emulator evidence
 
-| Environment | Instrumentation | Random events | Focus recovery | Process recreation | App/framework markers |
+| Environment | Instrumentation | Random events | Focus recovery | Settings-app recreation | App/framework markers |
 |---|---|---|---|---|---|
-| API 26 emulator | PASS 14/14 | PASS 10,000 | PASS 20/20 | PASS `15143 -> 16860` | PASS 0 |
-| API 35 emulator | PASS 14/14 | PASS 10,000 | PASS 20/20 | PASS `9198 -> 11237` | PASS 0 |
-| API 36 emulator | PASS 14/14 | PASS 10,000 | PASS 20/20 | PASS `14724 -> 16061` | PASS 0 |
+| API 26 emulator | PASS 14/14 | PASS 10,000 | PASS 20/20 | PASS `19374 -> 20866` | PASS 0 |
+| API 35 emulator | PASS 14/14 | PASS 10,000 | PASS 20/20 | PASS `3331 -> 5836` | PASS 0 |
+| API 36 emulator | PASS 14/14 | PASS 10,000 | PASS 20/20 | PASS `3629 -> 5997` | PASS 0 |
 
 All automated rows used APK SHA-256
-`a30c24546dd7862ad5df76398876c28de2008d5a723b1d43c12ca4fbd1d7ebfe`.
+`2d7ef29dda3843507593e3ab57d1bf84ca2a3dfe659939652a1b438588a67e52`.
 The app-source and harness inputs were clean; no human QA sign-off is implied.
+The recreation column covers the launcher/settings process only, not a selected
+`HkImeService` bound to a third-party host editor.
 
 ## Required manual and physical evidence
 
@@ -30,6 +32,8 @@ For every row exercise light/dark, portrait/landscape, large font/display and
 low-memory process death. Smoke Quick `ai/rr`, Jyutping `nei5hou2/hai`, and Pinyin
 `ni3hao3/xianggang`; verify supplementary HKSCS display/commit/backspace, haptics,
 sound, cursor swipe, long presses, rotation, editor switching and migration.
+Also kill and rebind the selected system IME while a host editor retains
+committed and composing text; fail on any loss, duplication or stale commit.
 
 Closed beta cannot pass until at least 100 opted-in testers complete two weeks and
 10,000 content-free session counters, with ≥99.95% crash-free sessions, no unresolved
