@@ -180,6 +180,7 @@ class SettingsReleaseRegressionTest {
             InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS,
             field.inputType and InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         )
+        assertSame(TextClassifier.NO_OP, field.textClassifier)
     }
 
     private fun assertFirstContentBelowSystemBars(activityClass: Class<out Activity>) {
