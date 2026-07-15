@@ -23,6 +23,17 @@ human-review, competitor-comparison and device gates must remain visibly open.
 | T1-COMPETITOR | `6d9c412` | Blinded competitor comparison | OPEN — protocol/template exists; no result collected | `docs/release/competitor_baseline.md` | QA/language lead required | 2026-07-15 |
 | T2-COMMIT | `c5466f3` | JVM debug + release | PASS — 676 executions, 0 failures, 0 errors | `android/app/build/test-results/` | Codex | 2026-07-15 |
 | T2-LINT | `c5466f3` | Android lintDebug | PASS with 30 pre-existing warnings and 0 errors | `android/app/build/reports/lint-results-debug.html` | Codex | 2026-07-15 |
+| T3-5-AUTO | `44b0acc` | JVM mode market-gate/regression tests | PASS — automated Quick/Jyutping/Pinyin correctness gates included in 862 clean executions | `docs/release/checkpoint_2_verification.md` | Codex | 2026-07-15 |
+| T3-5-MARKET | `44b0acc` | Independent native holdouts and paired competitors | OPEN — header-only holdouts and protocol exist; no market-superiority result claimed | `corpus/benchmarks/*_holdout.tsv`, `docs/release/competitor_baseline.md` | Native/QA reviewers required | 2026-07-15 |
+| T6-RANKING | `44b0acc` | JVM custom-word/memory/mixed-input/sensitive-field tests | PASS — scheme-aware bounded custom data and reversible capped learning | `docs/release/checkpoint_2_verification.md` | Codex | 2026-07-15 |
+| T7-INTEGRITY | `44b0acc` | JVM 100k-event stress + API 35 Room migration | PASS — automated scope | `docs/release/checkpoint_2_verification.md` | Codex | 2026-07-15 |
+| T8-EMU | `44b0acc` | API 35 emulator, 300 warm full-corpus decodes | PASS — p95 ceiling ≤150 ms; physical reference-device qualification remains OPEN | `docs/release/performance_results.md`, `docs/release/checkpoint_2_verification.md` | Codex | 2026-07-15 |
+| T9-SETUP | `44b0acc` | API 35 setup/settings instrumentation | PASS — automated flow; moderated user study remains OPEN | `docs/release/checkpoint_2_verification.md` | Codex | 2026-07-15 |
+| T10-A11Y | `44b0acc` | API 35 virtual-key/candidate instrumentation + JVM contrast checks | PASS — automated scope; TalkBack/Switch Access specialist review OPEN | `docs/release/accessibility_report.md`, `docs/release/checkpoint_2_verification.md` | Codex | 2026-07-15 |
+| T11-PRIVACY | `44b0acc` | Source + debug APK manifest/dependency audit | PASS — debug APK has no `INTERNET`, backup disabled; final signed-AAB/legal/public-URL gates OPEN | `docs/release/checkpoint_2_verification.md`, `docs/release/legal_signoff.md` | Codex / owners required | 2026-07-15 |
+| T12-PIPELINE | `44b0acc` | CI config, lint/build, unsigned-release negative test | PASS — missing signing aborts before artifact creation; signed-AAB path OPEN | `.github/workflows/android.yml`, `scripts/verify_release.sh`, `docs/release/checkpoint_2_verification.md` | Codex / release owner required | 2026-07-15 |
+| T13-EMU | `44b0acc` | API 35 `sdk_gphone64_x86_64` | PASS — 8/8 instrumentation; required physical matrix/beta OPEN | `docs/release/device_beta_matrix.md`, `docs/release/checkpoint_2_verification.md` | Codex / QA required | 2026-07-15 |
+| T14-CLAIMS | `44b0acc` | Store/README/privacy consistency audit | PASS — engineering copy synchronized and NO-GO stated; owner sign-off OPEN | `docs/release/go_no_go.md`, `docs/release/checkpoint_2_verification.md` | Codex / product owner required | 2026-07-15 |
 
 ## Baseline branch inventory
 
@@ -136,3 +147,13 @@ accessibility calls in `SymbolPageView`.
   converted with Simplified output so Backspace compares/deletes emitted text.
 - Cursor movement outside the composing span invalidates the old session before
   a delayed result can write at the former location.
+
+## Checkpoint 2 summary
+
+- Repository-automatable engineering for Tasks 3–14 is committed at `44b0acc`.
+- Fresh debug/release JVM, debug/release lint, API 35 instrumentation, corpus,
+  manifest, dependency and fail-closed signing checks are recorded in
+  `docs/release/checkpoint_2_verification.md`.
+- Automated gates pass within their stated scope. Independent market, physical
+  device, accessibility-user, legal, signed-artifact and beta gates remain open,
+  so the product decision remains NO-GO.

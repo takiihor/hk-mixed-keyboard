@@ -10,6 +10,10 @@ Status: protocol ready; physical-device and two-week beta evidence is OPEN.
 | API 36/current target emulator | OPEN | OPEN | OPEN | OPEN | OPEN | OPEN | |
 | Small/tall/tablet or foldable layouts | OPEN | OPEN | OPEN | OPEN | OPEN | OPEN | |
 
+Additional automated evidence: API 35 `sdk_gphone64_x86_64` passed 8/8 connected
+instrumentation tests at checkpoint `44b0acc`. It is not substituted for any
+required row above.
+
 For every row exercise light/dark, portrait/landscape, large font/display and
 low-memory process death. Smoke Quick `ai/rr`, Jyutping `nei5hou2/hai`, and Pinyin
 `ni3hao3/xianggang`; verify supplementary HKSCS display/commit/backspace, haptics,

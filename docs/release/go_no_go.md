@@ -2,10 +2,11 @@
 
 Decision: **NO-GO** as of 2026-07-15.
 
-Engineering remediation for three-mode input, corpus provenance, bounded local
-learning/import, lifecycle coordination, accessibility surfaces, setup controls and
-fail-closed CI/release tooling is in progress on the integration branch. “Best-in-
-class” is not an approved product claim.
+Repository-automatable remediation for three-mode input, corpus provenance,
+bounded local learning/import, lifecycle coordination, accessibility surfaces,
+setup controls and fail-closed CI/release tooling is implemented and passes the
+automated checkpoint recorded at `44b0acc`. “Best-in-class” is not an approved
+product claim.
 
 The release remains blocked by evidence that software changes cannot manufacture:
 

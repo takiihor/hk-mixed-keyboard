@@ -1,6 +1,12 @@
 # Performance Qualification
 
-Status: instrumentation and percentile capture are implemented; physical-device measurements are OPEN.
+Status: an API 35 emulator warm-decode ceiling passes; required physical-device
+measurements are OPEN.
+
+Automated checkpoint `44b0acc`: 300 warm full-corpus decodes rotating Quick
+`rryo`, Jyutping `nei5hou2` and Pinyin `ni3hao3` passed the instrumentation p95
+ceiling of 150 ms on `sdk_gphone64_x86_64` API 35. This emulator assertion is a
+regression guard, not the reference-device market performance gate.
 
 ## Required devices and targets
 
