@@ -26,7 +26,7 @@ jobs:
           createDebugUnitTestCoverageReport lintDebug lintRelease assembleDebug --stacktrace
       - name: Corpus integrity and tooling
         run: |
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests scripts/tests
           python3 corpus/tools/verify_corpus_manifest.py
           python3 corpus/tools/verify_benchmark_templates.py
           sha256sum --check docs/release/legal_assets.sha256

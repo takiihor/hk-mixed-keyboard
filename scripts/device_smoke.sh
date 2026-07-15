@@ -78,11 +78,11 @@ else
   adb logcat -d -v threadtime '*:E' > "$OUT/logcat-app.txt"
 fi
 cat "$OUT/logcat-stress-app.txt" "$OUT/logcat-app.txt" > "$OUT/logcat-app-combined.txt"
-if rg -n 'FATAL EXCEPTION|ANR in|StrictMode policy violation' "$OUT/logcat-app-combined.txt" \
-    > "$OUT/fatal-markers.txt"; then
-  echo "App crash, ANR or StrictMode marker found; see $OUT/fatal-markers.txt" >&2
-  exit 1
-fi
+python3 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/verify_device_log.py" \
+  "$OUT/logcat-app-combined.txt" \
+  --package "$PACKAGE" \
+  --markers "$OUT/fatal-markers.txt" \
+  --framework-markers "$OUT/framework-strictmode-markers.txt"
 
 trap - EXIT
 printf 'status=PASS\n' > "$RESULT_FILE"
