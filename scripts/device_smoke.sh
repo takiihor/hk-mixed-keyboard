@@ -69,11 +69,31 @@ else
   : > "$OUT/logcat-stress-app.txt"
 fi
 adb shell am send-trim-memory "$PACKAGE" COMPLETE > "$OUT/trim-memory.txt" 2>&1 || true
-adb shell am kill "$PACKAGE"
+[[ -n "$stress_pid" ]] || {
+  echo "could not resolve the app PID before process recreation" >&2
+  exit 1
+}
+adb shell am force-stop "$PACKAGE"
+for _ in $(seq 1 20); do
+  [[ -z "$(adb shell pidof "$PACKAGE" | tr -d '\r')" ]] && break
+  sleep 0.25
+done
+[[ -z "$(adb shell pidof "$PACKAGE" | tr -d '\r')" ]] || {
+  echo "app process survived force-stop" >&2
+  exit 1
+}
 adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1 \
   > "$OUT/relaunch-after-process-kill.txt"
 adb shell dumpsys meminfo "$PACKAGE" > "$OUT/meminfo-after-recreation.txt"
 pid="$(adb shell pidof "$PACKAGE" | tr -d '\r' | awk '{print $1}')"
+{
+  echo "before_force_stop_pid=$stress_pid"
+  echo "after_relaunch_pid=$pid"
+} > "$OUT/process-recreation.txt"
+[[ -n "$pid" && "$pid" != "$stress_pid" ]] || {
+  echo "process recreation did not produce a new app PID" >&2
+  exit 1
+}
 if [[ -n "$pid" ]]; then
   adb logcat -d --pid="$pid" -v threadtime '*:V' > "$OUT/logcat-app.txt"
 else
