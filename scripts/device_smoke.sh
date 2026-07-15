@@ -77,6 +77,11 @@ for cycle in $(seq 1 20); do
   input_focus=""
   for _ in $(seq 1 40); do
     input_focus="$(adb shell dumpsys input | tr -d '\r' | awk '
+      /FocusedApplication:/ { legacy_app = $0; next }
+      legacy_app != "" && /FocusedWindow:/ {
+        print legacy_app " " $0
+        exit
+      }
       /FocusedApplications:/ { in_focus = 1; next }
       in_focus && /displayId=0/ && app == "" { app = $0 }
       in_focus && /FocusedWindows:/ {
@@ -86,12 +91,12 @@ for cycle in $(seq 1 20); do
         exit
       }
     ')"
-    [[ "$input_focus" == *"$PACKAGE"* && "$input_focus" != *"<none>"* ]] && break
+    [[ "$input_focus" == *"$PACKAGE"* && "$input_focus" != *"<none>"* && "$input_focus" != *"<null>"* ]] && break
     sleep 0.1
   done
   printf 'cycle=%s focus=%s\n' "$cycle" "$input_focus" \
     >> "$OUT/lifecycle-switches.txt"
-  [[ "$input_focus" == *"$PACKAGE"* && "$input_focus" != *"<none>"* ]] || {
+  [[ "$input_focus" == *"$PACKAGE"* && "$input_focus" != *"<none>"* && "$input_focus" != *"<null>"* ]] || {
     echo "app did not regain window focus during lifecycle cycle $cycle" >&2
     exit 1
   }
