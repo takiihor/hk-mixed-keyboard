@@ -14,6 +14,7 @@ object CandidateCommitPolicy {
         candidate.sourceSchema != SourceSchema.CHINESE_ASSIST && candidate.text.containsHan()
 
     fun isEligibleForSpace(candidate: DecodeCandidate?, scheme: Scheme, buffer: String): Boolean {
+        if (scheme == Scheme.QUICK) return false
         return isEligibleForPunctuation(candidate, scheme, buffer)
     }
 
@@ -53,9 +54,9 @@ object CandidateCommitPolicy {
         val selected = if (scheme == Scheme.PINYIN) {
             PinyinImePolicy.spaceCandidate(scheme, buffer, candidates, learned)
         } else {
-            candidates.firstOrNull { isEligibleForPunctuation(it, scheme, buffer) }
+            candidates.firstOrNull { isEligibleForSpace(it, scheme, buffer) }
         }
-        return selected?.takeIf { isEligibleForPunctuation(it, scheme, buffer) }
+        return selected?.takeIf { isEligibleForSpace(it, scheme, buffer) }
     }
 }
 

@@ -212,7 +212,8 @@ class CandidateDisplayPolicyTest {
             learned = listOf(MemorySuggestion(cnChar("估", "or", isHkCore = false), 3)),
             english = emptyList(),
             decoded = listOf(cnChar("嗰", "or", isHkCore = false, freq = 0.95)),
-            literal = enLiteralCand("or")
+            literal = enLiteralCand("or"),
+            chineseFirst = true
         )
 
         assertEquals("估", result.first().text)

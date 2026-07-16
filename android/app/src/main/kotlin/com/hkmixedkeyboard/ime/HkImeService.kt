@@ -915,6 +915,7 @@ class HkImeService : InputMethodService() {
     }
 
     private fun requestCandidateCommitIfComposing(intent: CandidateCommitIntent): Boolean {
+        if (intent == CandidateCommitIntent.Space && imeCtx.scheme == Scheme.QUICK) return false
         if (!isCandidateCommitScheme(imeCtx.scheme) || imeState.buffer.isEmpty()) return false
         handleCandidateCommit(intent)
         return true
