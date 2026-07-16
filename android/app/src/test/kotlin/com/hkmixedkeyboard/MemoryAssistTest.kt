@@ -106,7 +106,7 @@ class MemoryAssistTest {
         val out = ctrl.onSpace(state)
 
         assertEquals("Space should stay literal even when memory has a hard override",
-            "communication ", out.committedText)
+            "communication", out.committedText)
     }
 
     // ── 3. Mixed taps do not reach hard override confidence ───────────────
@@ -172,7 +172,7 @@ class MemoryAssistTest {
         val out = ctrl.onSpace(state)
 
         assertEquals("Seeded memory override must not fire on Space",
-            "communication ", out.committedText)
-        assertEquals("Literal Space commit is still learned", true, out.memoryWrite.shouldWrite)
+            "communication", out.committedText)
+        assertEquals("Literal Quick commit is still learned", true, out.memoryWrite.shouldWrite)
     }
 }

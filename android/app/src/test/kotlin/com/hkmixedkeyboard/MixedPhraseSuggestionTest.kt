@@ -33,7 +33,7 @@ class MixedPhraseSuggestionTest {
     }
 
     @Test
-    fun `mixed phrase remains tap only for Space and punctuation`() {
+    fun `mixed phrase remains tap-only while Quick Space commits the raw buffer`() {
         val candidate = decoder().decode("send", Scheme.QUICK).candidates.single()
         val state = ImeStateData(buffer = "send", imeState = ImeState.COMPOSING)
         val controller = makeCtrl(
@@ -42,7 +42,7 @@ class MixedPhraseSuggestionTest {
         )
 
         assertFalse(CandidateCommitPolicy.isEligibleForSpace(candidate, Scheme.QUICK, "send"))
-        assertEquals("send ", controller.onSpace(state, candidate).committedText)
+        assertEquals("send", controller.onSpace(state, candidate).committedText)
         assertEquals("send.", controller.onPunctuation("。", state, autoCommitCandidate = candidate).committedText)
     }
 

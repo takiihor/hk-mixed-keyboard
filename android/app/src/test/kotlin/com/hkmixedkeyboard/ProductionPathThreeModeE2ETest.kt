@@ -32,12 +32,43 @@ class ProductionPathThreeModeE2ETest {
     private val classifier by lazy { Classifier(decoder) }
 
     @Test
-    fun `Quick production path supports tap Space punctuation and Backspace`() {
-        assertProductionPath(
-            scheme = Scheme.QUICK,
-            buffer = "rryo",
-            expected = "唔該",
-            spaceSuffix = ""
+    fun `Quick production path keeps candidates tappable while Space commits raw input`() {
+        val buffer = "rryo"
+        val expected = "唔該"
+        val candidates = classifier.classify(buffer, Scheme.QUICK).cnCandidates
+        val candidate = candidates.first { it.text == expected }
+        val state = ImeStateData(buffer = buffer, imeState = ImeState.COMPOSING)
+
+        assertEquals(expected, CommitController(
+            UserMemory(),
+            ImeContext(scheme = Scheme.QUICK)
+        ).onCandidateTap(candidate, state).committedText)
+        assertNull(CandidateCommitPolicy.selectForAutoCommit(
+            Scheme.QUICK,
+            buffer,
+            candidates
+        ))
+
+        val spaceController = CommitController(UserMemory(), ImeContext(scheme = Scheme.QUICK))
+        val spaced = spaceController.onSpace(state, candidate)
+        assertEquals(buffer, spaced.committedText)
+        assertNull(spaced.newState.lastAutoCommit)
+
+        val ordinaryBackspace = spaceController.onBackspace(
+            spaced.newState,
+            cursorJustAfterAutoCommit = true
+        )
+        assertEquals(DeletionRequest(DeletionUnit.CODE_POINTS, 1), ordinaryBackspace.deletion)
+        assertEquals("", ordinaryBackspace.newState.buffer)
+        assertEquals(ImeState.PREDICTING, ordinaryBackspace.newState.imeState)
+
+        assertEquals(
+            "$expected。",
+            CommitController(UserMemory(), ImeContext(scheme = Scheme.QUICK)).onPunctuation(
+                "。",
+                state,
+                autoCommitCandidate = candidate
+            ).committedText
         )
     }
 
@@ -46,8 +77,7 @@ class ProductionPathThreeModeE2ETest {
         assertProductionPath(
             scheme = Scheme.JYUTPING,
             buffer = "neihou",
-            expected = "你好",
-            spaceSuffix = ""
+            expected = "你好"
         )
     }
 
@@ -56,8 +86,7 @@ class ProductionPathThreeModeE2ETest {
         assertProductionPath(
             scheme = Scheme.PINYIN,
             buffer = "nihao",
-            expected = "你好",
-            spaceSuffix = ""
+            expected = "你好"
         )
     }
 
@@ -94,7 +123,7 @@ class ProductionPathThreeModeE2ETest {
     }
 
     @Test
-    fun `custom entries are exact and committable in every Chinese mode`() {
+    fun `custom entries remain exact while Quick Space stays raw`() {
         val customDecoder = CorpusBackedDecoder(productionCorpus())
         customDecoder.setCustomWordsByScheme(
             mapOf(
@@ -116,24 +145,41 @@ class ProductionPathThreeModeE2ETest {
             Triple(Scheme.PINYIN, "xiang1 gang3", "香港")
         ).forEach { (scheme, buffer, expected) ->
             val result = customDecoder.decode(buffer, scheme)
-            assertEquals("$scheme custom candidate", expected, result.candidates.first().text)
+            val candidate = result.candidates.first()
+            assertEquals("$scheme custom candidate", expected, candidate.text)
             assertEquals(
                 "$scheme exact custom code",
                 true,
                 result.cnExactParsed || result.cnHasPhraseMatch
             )
-            assertNotNull(
-                "$scheme custom candidate must be safely Space-committable",
-                CandidateCommitPolicy.selectForAutoCommit(scheme, buffer, result.candidates)
-            )
+            val resolved = CandidateCommitPolicy.selectForAutoCommit(scheme, buffer, result.candidates)
+            if (scheme == Scheme.QUICK) {
+                assertNull("Quick custom candidate must not be Space-committable", resolved)
+                assertEquals(
+                    expected,
+                    CommitController(UserMemory(), ImeContext(scheme = scheme))
+                        .onCandidateTap(candidate, ImeStateData(buffer, imeState = ImeState.COMPOSING))
+                        .committedText
+                )
+            } else {
+                assertNotNull("$scheme custom candidate must be safely Space-committable", resolved)
+                assertEquals(
+                    expected,
+                    CommitController(UserMemory(), ImeContext(scheme = scheme))
+                        .onSpace(
+                            ImeStateData(buffer, imeState = ImeState.COMPOSING),
+                            resolved
+                        )
+                        .committedText
+                )
+            }
         }
     }
 
     private fun assertProductionPath(
         scheme: Scheme,
         buffer: String,
-        expected: String,
-        spaceSuffix: String
+        expected: String
     ) {
         val classified = classifier.classify(buffer, scheme)
         val resolved = CandidateCommitPolicy.selectForAutoCommit(
@@ -150,7 +196,7 @@ class ProductionPathThreeModeE2ETest {
 
         val spaceController = CommitController(UserMemory(), ImeContext(scheme = scheme))
         val spaced = spaceController.onSpace(state, resolved)
-        assertEquals(expected + spaceSuffix, spaced.committedText)
+        assertEquals(expected, spaced.committedText)
 
         val punctuationController = CommitController(UserMemory(), ImeContext(scheme = scheme))
         assertEquals(
@@ -167,7 +213,7 @@ class ProductionPathThreeModeE2ETest {
             cursorJustAfterAutoCommit = true
         )
         assertEquals(
-            DeletionRequest(DeletionUnit.UTF16_UNITS, (expected + spaceSuffix).length),
+            DeletionRequest(DeletionUnit.UTF16_UNITS, expected.length),
             restored.deletion
         )
         assertEquals(buffer, restored.newState.buffer)
