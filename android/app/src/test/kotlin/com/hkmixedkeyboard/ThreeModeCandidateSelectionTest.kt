@@ -12,11 +12,10 @@ import org.junit.Test
 
 class ThreeModeCandidateSelectionTest {
     @Test
-    fun `exact Quick candidate is eligible for Space selection`() {
+    fun `Quick never resolves a Space candidate`() {
         val candidate = candidate("唔", "rr", SourceSchema.QUICK, CandidateType.CHAR)
 
-        assertEquals(
-            candidate,
+        assertNull(
             PinyinImePolicy.spaceCandidate(Scheme.QUICK, "rr", listOf(candidate))
         )
     }
@@ -31,17 +30,6 @@ class ThreeModeCandidateSelectionTest {
             candidate,
             PinyinImePolicy.spaceCandidate(Scheme.JYUTPING, "neihou", listOf(candidate))
         )
-    }
-
-    @Test
-    fun `common Quick English collisions remain literal on Space`() {
-        listOf("ok" to "仗", "hi" to "我", "go" to "個").forEach { (code, text) ->
-            val candidate = candidate(text, code, SourceSchema.QUICK, CandidateType.CHAR)
-
-            assertNull(
-                PinyinImePolicy.spaceCandidate(Scheme.QUICK, code, listOf(candidate))
-            )
-        }
     }
 
     private fun candidate(

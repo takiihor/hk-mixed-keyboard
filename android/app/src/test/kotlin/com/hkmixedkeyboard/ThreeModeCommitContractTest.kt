@@ -13,17 +13,24 @@ import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.memory.UserMemory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 
 class ThreeModeCommitContractTest {
     @Test
-    fun `Space commits an exact Quick candidate supplied by the active composition`() {
-        assertSpaceCommit(
-            scheme = Scheme.QUICK,
-            buffer = "rr",
-            candidate = candidate("唔", "rr", SourceSchema.QUICK, CandidateType.CHAR)
+    fun `Space in Quick commits the raw buffer even when a candidate is supplied`() {
+        val ctrl = makeCtrl(memory = UserMemory(), ctx = ImeContext(scheme = Scheme.QUICK))
+
+        val out = ctrl.onSpace(
+            ImeStateData(buffer = "rr", imeState = ImeState.COMPOSING),
+            candidate("唔", "rr", SourceSchema.QUICK, CandidateType.CHAR)
         )
+
+        assertEquals("rr", out.committedText)
+        assertEquals("", out.newState.buffer)
+        assertEquals("rr", out.newState.prevCommitted)
+        assertNull(out.newState.lastAutoCommit)
     }
 
     @Test

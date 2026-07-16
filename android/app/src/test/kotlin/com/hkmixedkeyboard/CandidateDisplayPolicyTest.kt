@@ -14,20 +14,16 @@ class CandidateDisplayPolicyTest {
     private val policy = CandidateDisplayPolicy()
 
     @Test
-    fun `two letters show personalized and decoded Chinese before English`() {
+    fun `two Quick letters keep Chinese candidates ahead of the literal`() {
         val result = policy.order(
-            buffer = "rr",
-            learned = listOf(
-                MemorySuggestion(cnChar("唔", "rr"), 5),
-                MemorySuggestion(enLiteralCand("array"), 8)
-            ),
-            english = listOf(enLiteralCand("array")),
-            decoded = listOf(cnChar("呂", "rr")),
-            literal = enLiteralCand("rr")
+            buffer = "eg",
+            learned = listOf(MemorySuggestion(cnChar("唔", "eg"), 5)),
+            english = emptyList(),
+            decoded = listOf(cnChar("額", "eg")),
+            literal = enLiteralCand("eg")
         )
 
-        assertEquals(listOf("唔", "呂"), result.take(2).map { it.text })
-        assertTrue(result.indexOfFirst { it.text == "array" } > 1)
+        assertEquals(listOf("唔", "額"), result.take(2).map { it.text })
     }
 
     @Test
