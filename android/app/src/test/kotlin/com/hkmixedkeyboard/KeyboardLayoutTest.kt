@@ -106,7 +106,7 @@ class KeyboardLayoutTest {
     }
 
     @Test
-    fun `compact geometry preserves every key width and horizontal position`() {
+    fun `compact geometry preserves representative key widths and positions`() {
         val cells = KeyboardLayout.buildCells(width = 1000f, height = 240f)
         val q = cells.single { it.key.label == "Q" }
         val a = cells.single { it.key.label == "A" }
