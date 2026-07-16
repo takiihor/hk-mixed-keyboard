@@ -6,6 +6,12 @@ Final device-harness commit: `5a58799d5259bb74eb1f4181b676a652e17af602`
 
 Date: 2026-07-15 (Asia/Hong_Kong)
 
+> Historical checkpoint only. A fresh remediation qualification on 2026-07-16
+> is recorded in `three_mode_release_evidence.md`. It passed API 26
+> instrumentation/smoke but failed API 35 and API 36 full instrumentation with
+> headless Espresso focus loss, and failed API 35 smoke after relaunch. Those
+> newer results take precedence; release remains **NO-GO**.
+
 Decision scope: repository-automatable engineering and emulator evidence for
 Tasks 3–14. This checkpoint does not replace independent native-language review,
 paired competitor testing, physical-device qualification, legal approval, a

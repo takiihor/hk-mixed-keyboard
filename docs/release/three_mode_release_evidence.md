@@ -6,6 +6,42 @@
 
 **Baseline date:** 2026-07-15 (Asia/Hong_Kong)
 
+## 2026-07-16 market-readiness remediation qualification
+
+Candidate Git commit tested: `a1c727dfd95215a1ad71fcbb292715bf737f55e9`
+
+Debug APK exercised:
+
+```text
+android/app/build/outputs/apk/debug/app-debug-0.64.0.apk
+SHA-256 1176bd9cb4dfc8e829a89fa2355eec3ad051eac9c55080ba54983cfd418f6e71
+```
+
+No signed release AAB was produced or supplied, so there is no AAB hash and no
+record may be considered release evidence. The following are fresh engineering
+results only; they supersede historical PASS statements in this file where the
+same command/environment is claimed.
+
+| Gate | Command/environment | Observed result | Limitation / evidence |
+|---|---|---|---|
+| JVM + lint | `cd android && ./gradlew test lintDebug` | PASS — exit 0, 135 debug and 135 release JVM cases; lintDebug completed | Build output, 2026-07-16 |
+| Unicode/editor regressions | Same JVM run | PASS — `SurroundingTextDeletionPolicyTest` covers BMP, emoji and supplementary-HKSCS fallback; `EditorLayoutPolicyTest` covers number, phone, email, URI, password and Next-IME policy | 6 deletion-policy + 4 editor-policy cases per variant |
+| Python/corpus | `PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q corpus/tools/tests scripts/tests` | PASS — 84 tests and 71 subtests | 2026-07-16 output |
+| Manifest/templates | `python3 corpus/tools/verify_corpus_manifest.py`; `python3 corpus/tools/verify_benchmark_templates.py` | PASS — corpus manifest verified; public templates remain header-only with `evidence status OPEN` | No benchmark answers or market claim created |
+| API 26 instrumentation | `ANDROID_SERIAL=emulator-5554 ... ./gradlew connectedDebugAndroidTest` | PASS — 16/16 | `hk_api26` Android 8.0 emulator |
+| API 35 instrumentation | `ANDROID_SERIAL=emulator-5556 ... ./gradlew connectedDebugAndroidTest` | FAIL — 3/16 Settings UI interactions | `RootViewWithoutFocusException` after 10 seconds for custom-word click, dictionary-clear confirmation and setup visibility. After emulator reboot, Task 2 semantic regression passed 1/1 and Task 3 keyboard action/accessibility checks passed 2/2. |
+| API 36 instrumentation | `ANDROID_SERIAL=emulator-5558 ... ./gradlew connectedDebugAndroidTest` | FAIL — 3/16 same Settings UI interactions | Same headless `RootViewWithoutFocusException`; do not count as qualified. |
+| API 26 smoke | `scripts/device_smoke.sh ... task6-api26` | PASS | 10,000 events, 20 focus recoveries, new PID `21582 -> 23199`; no app crash, ANR or actionable StrictMode marker |
+| API 35 smoke | `scripts/device_smoke.sh ... task6-api35` | FAIL | 10,000 events and 20 recovery cycles completed, then post-relaunch `dumpsys meminfo` returned `No process found` before the process was available; `result.txt` is `status=FAIL`. |
+| API 36 smoke | `scripts/device_smoke.sh ... task6-api36` | PASS | 10,000 events, 20 focus recoveries, new PID `2603 -> 5391`; no app crash, ANR or actionable StrictMode marker |
+| External release bundle | `scripts/verify_release_evidence.py` via `scripts/verify_release.sh` | FAIL-CLOSED (intentional) | First missing gate is `native_review`; the repository contains no approved external-record directory. |
+
+The API 35/36 instrumentation failures and API 35 smoke failure keep emulator
+qualification failed. Physical devices, selected-system-IME host-editor rebind,
+independent native review/competitor data, accessibility specialist review,
+legal signature, signed-AAB metadata and beta results are all **OPEN**. The
+public-release decision remains **NO-GO**.
+
 This file is the evidence ledger for
 `docs/plans/2026-07-15-three-mode-best-in-class-readiness.md`. A checked gate
 requires a result tied to the exact commit, device or test environment. Open
