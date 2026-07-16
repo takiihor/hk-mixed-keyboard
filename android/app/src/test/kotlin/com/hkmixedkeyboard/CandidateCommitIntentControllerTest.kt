@@ -43,6 +43,27 @@ class CandidateCommitIntentControllerTest {
     }
 
     @Test
+    fun `punctuation intent can use a different candidate than Space`() {
+        val controller = CandidateCommitIntentController()
+        val intent = CandidateCommitIntent.Punctuation("。")
+        controller.request(intent, "rryo", 1, 4)
+
+        val token = controller.onDecoded(
+            "rryo",
+            1,
+            4,
+            spaceCandidate = null,
+            punctuationCandidate = DecodeCandidate(
+                "唔該", "rryo", SourceSchema.QUICK, CandidateType.PHRASE, 1.0, true
+            )
+        )
+        val resolution = controller.consume(token!!)
+
+        assertEquals(intent, resolution?.intent)
+        assertEquals("唔該", resolution?.candidate?.text)
+    }
+
+    @Test
     fun `further input cancels a token before main thread consumption`() {
         val controller = CandidateCommitIntentController()
         controller.request(CandidateCommitIntent.Space, "ni", 1, 4)

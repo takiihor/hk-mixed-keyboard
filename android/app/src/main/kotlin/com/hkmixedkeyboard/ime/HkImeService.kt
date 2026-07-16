@@ -1337,7 +1337,7 @@ class HkImeService : InputMethodService() {
             LatencyLogger.decodeStart()
             if (decodeScheme == Scheme.PINYIN && !pinyinCorpusReady()) {
                 pinyinWarm = false
-                publishCandidateCommitResolution(buffer, gen, session, candidate = null)
+                publishCandidateCommitResolution(buffer, gen, session, spaceCandidate = null)
                 publishPinyinUnavailable(buffer, gen)
                 return
             }
@@ -1347,7 +1347,7 @@ class HkImeService : InputMethodService() {
                 if (decodeScheme != Scheme.PINYIN) throw e
                 android.util.Log.e(TAG, "Pinyin decode failed", e)
                 pinyinWarm = false
-                publishCandidateCommitResolution(buffer, gen, session, candidate = null)
+                publishCandidateCommitResolution(buffer, gen, session, spaceCandidate = null)
                 publishPinyinUnavailable(buffer, gen)
                 return
             }
@@ -1356,16 +1356,25 @@ class HkImeService : InputMethodService() {
                 CandidateDisplayPolicy.EXPANDED_LIMIT
             )
             if (isCandidateCommitScheme(decodeScheme)) {
+                val spaceCandidate = PinyinImePolicy.spaceCandidate(
+                    scheme = decodeScheme,
+                    buffer = buffer,
+                    candidates = cr.cnCandidates,
+                    learned = learned
+                )
+                val punctuationCandidate = when (decodeScheme) {
+                    Scheme.QUICK -> cr.cnCandidates.firstOrNull {
+                        CandidateCommitPolicy.isEligibleForPunctuation(it, decodeScheme, buffer)
+                    }
+                    Scheme.JYUTPING, Scheme.PINYIN -> spaceCandidate
+                    else -> null
+                }
                 publishCandidateCommitResolution(
                     buffer,
                     gen,
                     session,
-                    PinyinImePolicy.spaceCandidate(
-                        scheme = decodeScheme,
-                        buffer = buffer,
-                        candidates = cr.cnCandidates,
-                        learned = learned
-                    )
+                    spaceCandidate,
+                    punctuationCandidate
                 )
             }
             // The index for this scheme is now loaded (this decode built it if warm-up
@@ -1411,9 +1420,16 @@ class HkImeService : InputMethodService() {
         buffer: String,
         gen: Long,
         session: Long,
-        candidate: DecodeCandidate?
+        spaceCandidate: DecodeCandidate?,
+        punctuationCandidate: DecodeCandidate? = spaceCandidate
     ) {
-        val token = candidateCommitIntent.onDecoded(buffer, session, gen, candidate) ?: return
+        val token = candidateCommitIntent.onDecoded(
+            buffer,
+            session,
+            gen,
+            spaceCandidate,
+            punctuationCandidate
+        ) ?: return
         mainThread.post { resolveCandidateCommit(token) }
     }
 

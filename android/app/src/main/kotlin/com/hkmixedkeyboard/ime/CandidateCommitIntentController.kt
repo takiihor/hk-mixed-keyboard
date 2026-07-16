@@ -23,7 +23,11 @@ class CandidateCommitIntentController {
         data class Ready(val token: Token) : Action()
     }
 
-    private data class Cached(val key: Key, val candidate: DecodeCandidate?)
+    private data class Cached(
+        val key: Key,
+        val spaceCandidate: DecodeCandidate?,
+        val punctuationCandidate: DecodeCandidate?
+    )
     private data class Pending(
         val key: Key,
         val requestId: Long,
@@ -54,11 +58,20 @@ class CandidateCommitIntentController {
         session: Long,
         generation: Long,
         candidate: DecodeCandidate?
+    ): Token? = onDecoded(buffer, session, generation, candidate, candidate)
+
+    @Synchronized
+    fun onDecoded(
+        buffer: String,
+        session: Long,
+        generation: Long,
+        spaceCandidate: DecodeCandidate?,
+        punctuationCandidate: DecodeCandidate?
     ): Token? {
         val key = Key(buffer, session, generation)
         val activeRequest = pending
         if (activeRequest != null && activeRequest.key != key) return null
-        cached = Cached(key, candidate)
+        cached = Cached(key, spaceCandidate, punctuationCandidate)
         val request = activeRequest ?: return null
         return Token(key, request.requestId)
     }
@@ -69,7 +82,11 @@ class CandidateCommitIntentController {
         if (request?.key != token.key || request.requestId != token.requestId) return null
         val ready = cached?.takeIf { it.key == token.key } ?: return null
         pending = null
-        return Resolution(request.intent, ready.candidate)
+        val candidate = when (request.intent) {
+            CandidateCommitIntent.Space -> ready.spaceCandidate
+            is CandidateCommitIntent.Punctuation -> ready.punctuationCandidate
+        }
+        return Resolution(request.intent, candidate)
     }
 
     @Synchronized
