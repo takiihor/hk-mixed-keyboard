@@ -14,25 +14,25 @@ class TypingHapticEngineTest {
     }
 
     @Test
-    fun `repeated taps cancel previous vibration before each tick`() {
+    fun `repeated taps do not cancel device-tuned haptics`() {
         val backend = FakeBackend()
         val engine = TypingHapticEngine(backend)
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        assertEquals(listOf("cancel", "primitive", "cancel", "primitive"), backend.events)
+        assertEquals(listOf("primitive", "primitive"), backend.events)
     }
 
     @Test
-    fun `cancel-before-tick can be disabled`() {
+    fun `cancel-before-tick remains available when explicitly enabled`() {
         val backend = FakeBackend()
-        val engine = TypingHapticEngine(backend, cancelBeforeTick = false)
+        val engine = TypingHapticEngine(backend, cancelBeforeTick = true)
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        assertEquals(listOf("primitive", "primitive"), backend.events)
+        assertEquals(listOf("cancel", "primitive", "cancel", "primitive"), backend.events)
     }
 
     @Test
@@ -42,7 +42,7 @@ class TypingHapticEngineTest {
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        assertEquals(listOf("cancel", "predefined"), backend.events)
+        assertEquals(listOf("predefined"), backend.events)
     }
 
     @Test
@@ -72,7 +72,7 @@ class TypingHapticEngineTest {
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        assertEquals(listOf("cancel", "primitive", "view"), backend.events)
+        assertEquals(listOf("primitive", "view"), backend.events)
     }
 
     @Test
@@ -98,7 +98,7 @@ class TypingHapticEngineTest {
     @Test
     fun `cancel failure during tick does not block the tick`() {
         val backend = FakeBackend(failCancel = true)
-        val engine = TypingHapticEngine(backend)
+        val engine = TypingHapticEngine(backend, cancelBeforeTick = true)
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 

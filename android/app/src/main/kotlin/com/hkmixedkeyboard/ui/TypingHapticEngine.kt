@@ -33,14 +33,15 @@ interface TypingHapticBackend {
  * not block for the vibration's duration — so dispatching it inline keeps the tap
  * feedback as immediate as possible.
  *
- * When [cancelBeforeTick] is true, a previous vibration is cancelled before every
- * new tick — essential for rapid typing where hardware motor queues cause lagging
- * that trails behind visible key presses. The binder call adds < 1 ms and prevents
- * overlapping buzz.
+ * Direct haptics are submitted without cancelling the previous effect by default,
+ * keeping rapid typing to one vibrator binder operation per key press. Callers that
+ * target an actuator which requires explicit interruption can opt into
+ * [cancelBeforeTick]. Lifecycle cancellation remains explicit in [cancel] and
+ * [release].
  */
 class TypingHapticEngine(
     private val backend: TypingHapticBackend,
-    private val cancelBeforeTick: Boolean = true,
+    private val cancelBeforeTick: Boolean = false,
     private val onSubmitted: () -> Unit = {}
 ) {
     fun perform(enabled: Boolean, viewFallback: () -> Unit) {
@@ -107,9 +108,8 @@ class TypingHapticEngine(
     }
 
     private fun performDirect(cancel: () -> Unit, vibrate: () -> Unit, viewFallback: () -> Unit) {
-        // Cancel any still-running motor pulse so the next tick starts clean.
-        // This binder call costs < 1 ms and prevents overlapping buzz during fast
-        // typing — critical when the actuator queues rather than interrupts.
+        // The default no-op keeps rapid typing to a single binder submission. An
+        // explicit cancel remains available for actuator-specific compatibility.
         try {
             cancel()
         } catch (_: RuntimeException) {
