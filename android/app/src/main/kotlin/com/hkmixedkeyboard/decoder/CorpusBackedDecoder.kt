@@ -20,8 +20,8 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
 
     // User-defined words (自訂詞庫), keyed by normalized code for each scheme. Set by
     // the IME from the custom_words table; consulted before the built-in dictionary
-    // so a user's own code → word mapping always wins and is Space-committable. Read on
-    // the decode thread, written on the main thread — @Volatile swaps the whole
+    // so a user's own code → word mapping wins candidate ranking and remains selectable by tap.
+    // Read on the decode thread, written on the main thread — @Volatile swaps the whole
     // immutable index atomically.
     @Volatile private var customWordsByScheme: Map<Scheme, CustomWordIndex> = emptyMap()
 
@@ -195,7 +195,8 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
             return decodeCjkDirect(buffer, scheme)
 
         // 2. Exact match — user custom words first, then the built-in Quick dictionary.
-        //    Both are committable (cnExactParsed=true), so Space commits the top one.
+        //    Both decode as exact candidates (cnExactParsed=true); in Quick they remain tap
+        //    candidates and may use the separate punctuation path where policy allows.
         val customWords = customWordsByScheme[Scheme.QUICK] ?: CustomWordIndex.EMPTY
         val customExact = customWords.exact(lower)
         val quickExact = corpus.quickIndex[lower]
