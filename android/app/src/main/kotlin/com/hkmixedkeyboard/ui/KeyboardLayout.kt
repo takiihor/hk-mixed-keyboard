@@ -156,10 +156,10 @@ object KeyboardLayout {
             listOf(
                 KEY_SYMBOL to 1.2f,
                 KEY_EMOJI to 0.8f,
-                KEY_MODE to 0.8f,
-                KEY_SPACE to 4.25f,
-                KEY_PERIOD to 0.8f,
-                KEY_COMMA to 0.8f
+                KEY_MODE to 1.05f,
+                KEY_SPACE to 3.50f,
+                KEY_PERIOD to 1.05f,
+                KEY_COMMA to 1.05f
             )
         )
 

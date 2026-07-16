@@ -34,10 +34,13 @@ class KeyboardLayoutTest {
     }
 
     @Test
-    fun `space bar width`() {
-        val space = KeyboardLayout.rows[4].keys.single { it.label == " " }
+    fun `text action row uses the requested key widths`() {
+        val actionRow = KeyboardLayout.rows[4].keys
 
-        assertEquals(4.25f, space.widthUnits)
+        assertEquals(1.05f, actionRow.single { it.label == KeyboardLayout.KEY_MODE }.widthUnits)
+        assertEquals(3.50f, actionRow.single { it.label == KeyboardLayout.KEY_SPACE }.widthUnits)
+        assertEquals(1.05f, actionRow.single { it.label == KeyboardLayout.KEY_PERIOD }.widthUnits)
+        assertEquals(1.05f, actionRow.single { it.label == KeyboardLayout.KEY_COMMA }.widthUnits)
     }
 
     @Test
@@ -107,11 +110,17 @@ class KeyboardLayoutTest {
         val cells = KeyboardLayout.buildCells(width = 1000f, height = 240f)
         val q = cells.single { it.key.label == "Q" }
         val a = cells.single { it.key.label == "A" }
+        val mode = cells.single { it.key.label == KeyboardLayout.KEY_MODE }
         val space = cells.single { it.key.label == KeyboardLayout.KEY_SPACE }
+        val period = cells.single { it.key.label == KeyboardLayout.KEY_PERIOD }
+        val comma = cells.single { it.key.label == KeyboardLayout.KEY_COMMA }
 
         assertEquals(100f, q.bounds.right - q.bounds.left, 0.001f)
         assertEquals(50f, a.bounds.left, 0.001f)
-        assertEquals(425f, space.bounds.right - space.bounds.left, 0.001f)
+        assertEquals(105f, mode.bounds.right - mode.bounds.left, 0.001f)
+        assertEquals(350f, space.bounds.right - space.bounds.left, 0.001f)
+        assertEquals(105f, period.bounds.right - period.bounds.left, 0.001f)
+        assertEquals(105f, comma.bounds.right - comma.bounds.left, 0.001f)
     }
 
     @Test
