@@ -23,7 +23,7 @@ class CandidateDisplayPolicyTest {
             literal = enLiteralCand("eg")
         )
 
-        assertEquals(listOf("唔", "額"), result.take(2).map { it.text })
+        assertEquals(listOf("唔", "額", "eg"), result.take(3).map { it.text })
     }
 
     @Test

@@ -13,11 +13,13 @@ import org.junit.Test
 class ThreeModeCandidateSelectionTest {
     @Test
     fun `Quick never resolves a Space candidate`() {
-        val candidate = candidate("唔", "rr", SourceSchema.QUICK, CandidateType.CHAR)
+        listOf(SourceSchema.QUICK, SourceSchema.CUSTOM_QUICK).forEach { source ->
+            val candidate = candidate("唔", "rr", source, CandidateType.CHAR)
 
-        assertNull(
-            PinyinImePolicy.spaceCandidate(Scheme.QUICK, "rr", listOf(candidate))
-        )
+            assertNull(
+                PinyinImePolicy.spaceCandidate(Scheme.QUICK, "rr", listOf(candidate))
+            )
+        }
     }
 
     @Test
