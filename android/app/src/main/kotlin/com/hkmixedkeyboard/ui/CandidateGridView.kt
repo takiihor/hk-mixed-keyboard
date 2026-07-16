@@ -26,6 +26,14 @@ class CandidateGridView(private val context: Context) {
             field = value
             applyTheme()
         }
+    var showJyutpingCandidateReadings: Boolean = false
+        set(value) {
+            if (field == value) return
+            field = value
+            candidateCells.forEach { (cell, candidate) ->
+                cell.text = candidateLabel(candidate)
+            }
+        }
     private val glyphPaint = android.graphics.Paint()
 
     private fun selectionHaptic(view: View) {
@@ -54,11 +62,7 @@ class CandidateGridView(private val context: Context) {
         this.grid = grid
 
         candidates.forEachIndexed { index, cand ->
-            val label = CandidatePresentation.label(
-                cand,
-                glyphPaint::hasGlyph,
-                context.getString(com.hkmixedkeyboard.R.string.chinese_to_english)
-            )
+            val label = candidateLabel(cand)
             val cell = TextView(context).apply {
                 text = label
                 contentDescription = context.getString(
@@ -158,6 +162,14 @@ class CandidateGridView(private val context: Context) {
     private fun candidateTextColor(candidate: DecodeCandidate): Int =
         if (CandidateVisualPolicy.isPriority(candidate)) themeColors.candidatePriorityText
         else themeColors.candidateText
+
+    private fun candidateLabel(candidate: DecodeCandidate): String =
+        CandidatePresentation.label(
+            candidate,
+            glyphPaint::hasGlyph,
+            context.getString(com.hkmixedkeyboard.R.string.chinese_to_english),
+            showJyutpingCandidateReadings
+        )
 
     private fun CandidateGridSizeMode.toLayoutSize(): Int = when (this) {
         CandidateGridSizeMode.MATCH_PARENT -> ViewGroup.LayoutParams.MATCH_PARENT

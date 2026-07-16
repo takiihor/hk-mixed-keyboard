@@ -13,6 +13,7 @@
     <string name="practice_description">鍵盤練習欄</string>
     <string name="input_settings">輸入設定</string>
     <string name="show_roots">顯示倉頡字根</string>
+    <string name="jyutping_candidate_readings">顯示粵拼候選讀音</string>
     <string name="key_vibration">按鍵震動</string>
     <string name="key_sound">按鍵聲音</string>
     <string name="quick_label">速成</string>

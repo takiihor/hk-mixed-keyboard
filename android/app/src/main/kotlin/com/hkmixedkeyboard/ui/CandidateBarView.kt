@@ -43,6 +43,19 @@ class CandidateBarView @JvmOverloads constructor(
             applyTheme()
         }
 
+    var showJyutpingCandidateReadings: Boolean = false
+        set(value) {
+            if (field == value) return
+            field = value
+            if (displayState == CandidateBarDisplayState.CANDIDATES_OR_COMPOSING) {
+                displayedCandidates.forEachIndexed { index, candidate ->
+                    (row.getChildAt(index) as? TextView)?.let {
+                        bindCandidateView(it, candidate, index)
+                    }
+                }
+            }
+        }
+
     private enum class SystemMessageStyle { DEFAULT, SAFE_MODE }
 
     private fun selectionHaptic(view: View) {
@@ -174,7 +187,8 @@ class CandidateBarView @JvmOverloads constructor(
         val visibleLabel = CandidatePresentation.label(
             cand,
             glyphPaint::hasGlyph,
-            context.getString(R.string.chinese_to_english)
+            context.getString(R.string.chinese_to_english),
+            showJyutpingCandidateReadings
         )
         bindLabel(tv, visibleLabel)
         tv.contentDescription = buildString {

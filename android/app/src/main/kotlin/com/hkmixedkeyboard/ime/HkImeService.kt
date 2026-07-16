@@ -174,6 +174,7 @@ class HkImeService : InputMethodService() {
     private var directLatinCommit = false
     private var vibrationEnabled = true
     private var showCangjieRoots = true
+    private var showJyutpingCandidateReadings = false
     private var currentThemeColors: KeyboardThemeColors = KeyboardTheme.DARK.toColors()
     private var keyboardHeightPercent = 100
     private var oneHandedMode = OneHandedMode.OFF
@@ -283,6 +284,7 @@ class HkImeService : InputMethodService() {
                         vibrationEnabled = prefs.vibration
                         soundEnabled = prefs.sound
                         showCangjieRoots = prefs.showRoots
+                        showJyutpingCandidateReadings = prefs.showJyutpingCandidateReadings
                         corpus.pinyinDecoder.setFuzzyEnabled(prefs.pinyinFuzzy)
                         keyboardHeightPercent = prefs.keyboardHeightPercent
                         oneHandedMode = prefs.oneHandedMode
@@ -316,8 +318,12 @@ class HkImeService : InputMethodService() {
                         }
                         if (::candidateBar.isInitialized) {
                             candidateBar.vibrationEnabled = vibrationEnabled
+                            candidateBar.showJyutpingCandidateReadings = showJyutpingCandidateReadings
                         }
-                        candidateGrid?.vibrationEnabled = vibrationEnabled
+                        candidateGrid?.let {
+                            it.vibrationEnabled = vibrationEnabled
+                            it.showJyutpingCandidateReadings = showJyutpingCandidateReadings
+                        }
                     }
                 }
         }
@@ -463,6 +469,7 @@ class HkImeService : InputMethodService() {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
             themeColors = currentThemeColors
+            showJyutpingCandidateReadings = this@HkImeService.showJyutpingCandidateReadings
             layoutParams = surfaceLayoutParams(candidateBarHeight)
             visibility = View.VISIBLE
             candidateListener = object : CandidateBarView.CandidateListener {
@@ -586,6 +593,7 @@ class HkImeService : InputMethodService() {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
             themeColors = currentThemeColors
+            showJyutpingCandidateReadings = this@HkImeService.showJyutpingCandidateReadings
             layoutParams = surfaceLayoutParams(candidateBarHeight)
             visibility = View.VISIBLE
             clear()
@@ -1192,6 +1200,7 @@ class HkImeService : InputMethodService() {
             it.vibrationEnabled = vibrationEnabled
             it.haptics = typingHaptics
             it.themeColors = currentThemeColors
+            it.showJyutpingCandidateReadings = showJyutpingCandidateReadings
             candidateGrid = it
         }
         if (grid.isShowing()) { grid.dismiss(); return }

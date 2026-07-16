@@ -83,6 +83,15 @@ class SettingsActivity : AppCompatActivity() {
         val soundSwitch = addSwitch(root, getString(com.hkmixedkeyboard.R.string.key_sound), false) { v ->
             lifecycleScope.launch { KeyboardSettings.setSound(this@SettingsActivity, v) }
         }
+        val jyutpingReadingsSwitch = addSwitch(
+            root,
+            getString(com.hkmixedkeyboard.R.string.jyutping_candidate_readings),
+            false
+        ) { v ->
+            lifecycleScope.launch {
+                KeyboardSettings.setShowJyutpingCandidateReadings(this@SettingsActivity, v)
+            }
+        }
         val schemeGroup = RadioGroup(this).apply {
             orientation = RadioGroup.HORIZONTAL
         }
@@ -200,6 +209,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             simpSwitch.isChecked  = prefs.simplifiedOutput
             fuzzySwitch.isChecked = prefs.pinyinFuzzy
+            jyutpingReadingsSwitch.isChecked = prefs.showJyutpingCandidateReadings
             heightSeek.progress = prefs.keyboardHeightPercent - 85
             oneHandedButtons[prefs.oneHandedMode]?.isChecked = true
             applyingThemeHydration = true

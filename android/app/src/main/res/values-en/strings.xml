@@ -17,6 +17,7 @@
     <string name="practice_description">Keyboard practice field</string>
     <string name="input_settings">Input settings</string>
     <string name="show_roots">Show Cangjie roots</string>
+    <string name="jyutping_candidate_readings">Show Jyutping candidate readings</string>
     <string name="key_vibration">Key vibration</string>
     <string name="key_sound">Key sound</string>
     <string name="quick_label">Quick</string>
