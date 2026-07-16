@@ -1,6 +1,6 @@
 # Market Go/No-Go
 
-Decision: **NO-GO** as of 2026-07-15.
+Decision: **NO-GO** as of 2026-07-16.
 
 Repository-automatable remediation for three-mode input, phrase-evidence and
 tone-aware ranking, corpus provenance, bounded local learning/import, lifecycle
@@ -40,3 +40,20 @@ and `beta_result`. Every record must be `APPROVED`, dated, attributable and
 match the release commit and AAB SHA-256. The directory is intentionally absent
 until external reviewers supply those records, so the production verifier fails
 closed and this decision remains **NO-GO**.
+
+## 2026-07-16 completion audit
+
+| Original blocker | Classification | Audit evidence |
+|---|---|---|
+| Unicode-unsafe host deletion | FIXED and JVM-verified | `7ec3caf`; debug/release deletion-policy tests cover BMP, emoji and supplementary-HKSCS fallback. |
+| Settings contrast and control semantics | FIXED; targeted API 35 regression verified, but full emulator qualification FAILED | `c340848`; semantic test passed after reboot, while API 35/36 full suites each lost Espresso window focus in three pre-existing UI interactions. |
+| Editor-aware layouts and IME actions | FIXED and verified | `05d3088`; debug/release editor-layout policy tests and API 35 keyboard action/accessibility tests passed. |
+| Native/competitor quality claims | EXTERNALLY OPEN with fail-closed gate | `f66829d`; header-only templates are `OPEN`; source coverage is non-independent; comparative labels require locked, reviewed, hash-matched evidence. |
+| Release-owner, device, accessibility, legal, signed-AAB and beta gates | EXTERNALLY OPEN with fail-closed gate | `a1c727d`; the release verifier stops first at missing `native_review` and requires all six records to match one commit/AAB. |
+| Emulator qualification | FAILED | Fresh API 26 instrumentation/smoke passed; API 35 full instrumentation and smoke failed; API 36 full instrumentation failed. Details and APK hash are in `three_mode_release_evidence.md`. |
+
+The audited debug APK hash is
+`1176bd9cb4dfc8e829a89fa2355eec3ad051eac9c55080ba54983cfd418f6e71`.
+No signed final AAB exists, so no commit/AAB evidence bundle can match a release
+artifact. This branch has not been merged into `master`, and merge is not
+authorized while any failed or OPEN gate remains.
