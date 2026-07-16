@@ -32,6 +32,7 @@ object Keys {
     val CUSTOM_WORDS_TOKEN = longPreferencesKey("custom_words_token")
     val KEYBOARD_THEME = stringPreferencesKey("keyboard_theme")
     val PINYIN_FUZZY = booleanPreferencesKey("pinyin_fuzzy")
+    val SHOW_JYUTPING_CANDIDATE_READINGS = booleanPreferencesKey("show_jyutping_candidate_readings")
     val KEYBOARD_HEIGHT_PERCENT = intPreferencesKey("keyboard_height_percent")
     val ONE_HANDED_MODE = stringPreferencesKey("one_handed_mode")
 }
@@ -63,6 +64,7 @@ data class KeyboardPrefs(
     val customWordsToken: Long = 0L,
     val theme: KeyboardTheme = KeyboardTheme.DARK,
     val pinyinFuzzy: Boolean = false,
+    val showJyutpingCandidateReadings: Boolean = false,
     val keyboardHeightPercent: Int = 100,
     val oneHandedMode: OneHandedMode = OneHandedMode.OFF
 )
@@ -83,6 +85,7 @@ object KeyboardSettings {
                 customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L,
                 theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME]),
                 pinyinFuzzy = p[Keys.PINYIN_FUZZY] ?: false,
+                showJyutpingCandidateReadings = p[Keys.SHOW_JYUTPING_CANDIDATE_READINGS] ?: false,
                 keyboardHeightPercent = (p[Keys.KEYBOARD_HEIGHT_PERCENT] ?: 100)
                     .coerceIn(85, 120),
                 oneHandedMode = runCatching {
@@ -119,6 +122,9 @@ object KeyboardSettings {
 
     suspend fun setPinyinFuzzy(ctx: Context, enabled: Boolean) =
         ctx.settingsDataStore.edit { it[Keys.PINYIN_FUZZY] = enabled }
+
+    suspend fun setShowJyutpingCandidateReadings(ctx: Context, enabled: Boolean) =
+        ctx.settingsDataStore.edit { it[Keys.SHOW_JYUTPING_CANDIDATE_READINGS] = enabled }
 
     suspend fun setKeyboardHeightPercent(ctx: Context, percent: Int) =
         ctx.settingsDataStore.edit { it[Keys.KEYBOARD_HEIGHT_PERCENT] = percent.coerceIn(85, 120) }
