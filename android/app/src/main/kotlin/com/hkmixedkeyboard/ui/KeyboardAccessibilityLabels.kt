@@ -25,6 +25,8 @@ object KeyboardAccessibilityLabels {
         val spaceCurrentFormat: String,
         val emojiKey: String,
         val symbolKey: String,
+        val settingsKey: String,
+        val nextImeKey: String,
         val modeCurrentFormat: String,
         val commaKey: String,
         val periodKey: String,
@@ -48,6 +50,8 @@ object KeyboardAccessibilityLabels {
         spaceCurrentFormat = context.getString(R.string.key_a11y_space_current),
         emojiKey = context.getString(R.string.key_a11y_emoji),
         symbolKey = context.getString(R.string.key_a11y_symbol),
+        settingsKey = context.getString(R.string.key_a11y_settings),
+        nextImeKey = context.getString(R.string.key_a11y_next_ime),
         modeCurrentFormat = context.getString(R.string.key_a11y_mode_current),
         commaKey = context.getString(R.string.key_a11y_comma),
         periodKey = context.getString(R.string.key_a11y_period),
@@ -82,6 +86,8 @@ object KeyboardAccessibilityLabels {
         KeyboardLayout.KEY_SPACE -> format(text, text.spaceCurrentFormat, spaceLabel)
         KeyboardLayout.KEY_EMOJI -> text.emojiKey
         KeyboardLayout.KEY_SYMBOL -> text.symbolKey
+        KeyboardLayout.KEY_SETTINGS -> text.settingsKey
+        KeyboardLayout.KEY_NEXT_IME -> text.nextImeKey
         KeyboardLayout.KEY_MODE -> format(text, text.modeCurrentFormat, modeName(modeLabel, text))
         KeyboardLayout.KEY_COMMA -> text.commaKey
         KeyboardLayout.KEY_PERIOD -> text.periodKey
@@ -132,6 +138,8 @@ object KeyboardAccessibilityLabels {
         spaceCurrentFormat = "空格鍵，現時%1\$s",
         emojiKey = "表情符號鍵",
         symbolKey = "符號鍵",
+        settingsKey = "鍵盤設定",
+        nextImeKey = "切換鍵盤",
         modeCurrentFormat = "切換輸入模式，現時%1\$s",
         commaKey = "逗號鍵",
         periodKey = "句號鍵",

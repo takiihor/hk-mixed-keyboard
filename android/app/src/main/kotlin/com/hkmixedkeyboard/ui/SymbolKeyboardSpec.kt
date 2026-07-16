@@ -153,6 +153,9 @@ object SymbolKeyboardSpec {
         return if (english) "$base; hold for $alternatives" else "$base，長按可選 $alternatives"
     }
 
+    fun enterActionDescription(action: SymbolEnterAction, english: Boolean = false): String =
+        accessibilityDescription(action.keySpec(), english)
+
     private fun englishAccessibilityLabel(key: SymbolKeySpec): String = when (key.role) {
         SymbolKeyRole.TEXT -> key.commitText?.let(::unicodeName) ?: "Symbol"
         SymbolKeyRole.RETURN_TO_ALPHABET -> "Return to alphabet keyboard"

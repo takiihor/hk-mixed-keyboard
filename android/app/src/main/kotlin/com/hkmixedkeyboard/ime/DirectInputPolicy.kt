@@ -9,7 +9,7 @@ object DirectInputPolicy {
         compositionBuffer: String = ""
     ): Boolean =
         (isAsciiDigit(label) && (directLatinCommit || !isUnicodeFallbackPrefix(compositionBuffer))) ||
-            (directLatinCommit && isAsciiLetter(label))
+            (directLatinCommit && (isAsciiLetter(label) || isDirectEntrySymbol(label)))
 
     fun shouldUseDirectLatinCommit(
         inputType: Int,
@@ -17,6 +17,7 @@ object DirectInputPolicy {
         privateImeOptions: String?
     ): Boolean {
         if (inputType == InputType.TYPE_NULL) return true
+        if (EditorLayoutPolicy.usesDirectEntry(inputType)) return true
         if (isPasswordStyleText(inputType)) return true
 
         val packageHint = packageName.orEmpty().lowercase()
@@ -31,6 +32,8 @@ object DirectInputPolicy {
 
     private fun isAsciiLetter(label: String): Boolean =
         label.length == 1 && (label[0] in 'a'..'z' || label[0] in 'A'..'Z')
+
+    private fun isDirectEntrySymbol(label: String): Boolean = label in DIRECT_ENTRY_SYMBOLS
 
     private fun isUnicodeFallbackPrefix(buffer: String): Boolean =
         UNICODE_FALLBACK_PREFIX.matches(buffer)
@@ -67,4 +70,6 @@ object DirectInputPolicy {
     )
 
     private val UNICODE_FALLBACK_PREFIX = Regex("(?i)u[0-9a-f]{0,4}")
+
+    private val DIRECT_ENTRY_SYMBOLS = setOf("@", "/", "+", "-", "_", ":", "*", "#", ".")
 }

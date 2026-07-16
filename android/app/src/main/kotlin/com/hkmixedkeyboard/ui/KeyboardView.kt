@@ -50,6 +50,28 @@ class KeyboardView @JvmOverloads constructor(
             )
         }
 
+    var keyboardSurface: KeyboardSurface = KeyboardSurface.TEXT
+        set(value) {
+            if (field == value) return
+            field = value
+            rebuildCellsForSurface()
+        }
+
+    var showNextInputMethodAction: Boolean = false
+        set(value) {
+            if (field == value) return
+            field = value
+            rebuildCellsForSurface()
+        }
+
+    var enterAction: SymbolEnterAction = SymbolEnterAction.RETURN
+        set(value) {
+            if (field == value) return
+            field = value
+            invalidate()
+            notifyAccessibilityStateChanged()
+        }
+
     // Shift state, driven by the IME. When active the letter faces render uppercase
     // and the ⇧ key is highlighted; `locked` (caps-lock) is shown a touch stronger.
     var shiftActive: Boolean = false
@@ -66,6 +88,8 @@ class KeyboardView @JvmOverloads constructor(
         const val KEY_EMOJI = KeyboardLayout.KEY_EMOJI
         const val KEY_SYMBOL = KeyboardLayout.KEY_SYMBOL
         const val KEY_MODE = KeyboardLayout.KEY_MODE
+        const val KEY_SETTINGS = KeyboardLayout.KEY_SETTINGS
+        const val KEY_NEXT_IME = KeyboardLayout.KEY_NEXT_IME
         const val KEY_COMMA = KeyboardLayout.KEY_COMMA
         const val KEY_PERIOD = KeyboardLayout.KEY_PERIOD
         const val KEY_QUESTION = KeyboardLayout.KEY_QUESTION
@@ -73,7 +97,8 @@ class KeyboardView @JvmOverloads constructor(
         private const val LATENCY_LOG_TAG = "HkIme.Latency"
         // Hoisted out of isSpecial() so onDraw doesn't allocate a Set per key per frame.
         private val SPECIAL_KEYS = setOf(
-            KEY_BACKSPACE, KEY_SHIFT, KEY_ENTER, KEY_EMOJI, KEY_SYMBOL, KEY_MODE
+            KEY_BACKSPACE, KEY_SHIFT, KEY_ENTER, KEY_EMOJI, KEY_SYMBOL, KEY_MODE,
+            KEY_SETTINGS, KEY_NEXT_IME
         )
     }
 
@@ -189,7 +214,8 @@ class KeyboardView @JvmOverloads constructor(
 
     private fun buildCells(w: Float, h: Float) {
         cells.clear()
-        for (cell in KeyboardLayout.buildCells(w, h)) {
+        val rows = KeyboardLayout.rowsFor(keyboardSurface, showNextInputMethodAction)
+        for (cell in KeyboardLayout.buildCells(w, h, rows)) {
             val drawRect = RectF(
                 cell.bounds.left + keyMargin,
                 cell.bounds.top + keyMargin,
@@ -204,7 +230,7 @@ class KeyboardView @JvmOverloads constructor(
             )
             cells += KeyCell(cell.key, drawRect, hitRect)
         }
-        unitH = h / KeyboardLayout.totalHeightWeight
+        unitH = h / KeyboardLayout.totalHeightWeight(rows)
         // Preserve the previous 56dp-row visual sizes while compacting row geometry.
         paintLabel.textSize = KeyboardTypographyPolicy.MAIN_LABEL_TEXT_SIZE_SP * density
         paintRoot.textSize = KeyboardTypographyPolicy.CANGJIE_ROOT_TEXT_SIZE_SP * density
@@ -262,6 +288,11 @@ class KeyboardView @JvmOverloads constructor(
                     canvas.drawText(modeLabel, cx,
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
                 }
+                label == KEY_ENTER && enterAction != SymbolEnterAction.RETURN -> {
+                    paintLabel.color = themeColors.enterLabel
+                    canvas.drawText(enterAction.accessibilityLabel, cx,
+                        cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
+                }
                 showCangjieRoots && KeyboardAccessibilityLabels.cangjieRootFor(label) != null -> {
                     // Centred Cangjie root; Latin hint anchored inside the top-right.
                     paintRoot.color = themeColors.label
@@ -313,7 +344,8 @@ class KeyboardView @JvmOverloads constructor(
     private fun shouldShowPopup(label: String): Boolean =
         label != KEY_SPACE && label != KEY_ENTER &&
         label != KEY_SHIFT && label != KEY_BACKSPACE &&
-        label != KEY_EMOJI && label != KEY_SYMBOL && label != KEY_MODE
+        label != KEY_EMOJI && label != KEY_SYMBOL && label != KEY_MODE &&
+        label != KEY_SETTINGS && label != KEY_NEXT_IME
 
     private fun drawKeyPopup(canvas: Canvas, cell: KeyCell) {
         val popW = cell.rect.width() * 1.3f
@@ -535,15 +567,29 @@ class KeyboardView @JvmOverloads constructor(
         cells.getOrNull(virtualViewId - 1)
 
     private fun accessibilityDescription(cell: KeyCell): String =
-        KeyboardAccessibilityLabels.descriptionFor(
-            label = cell.def.label,
-            showCangjieRoots = showCangjieRoots,
-            spaceLabel = spaceLabel,
-            modeLabel = accessibilityModeLabel,
-            shiftActive = shiftActive,
-            shiftLocked = shiftLocked,
-            text = localizedAccessibilityText
-        )
+        if (cell.def.label == KEY_ENTER && enterAction != SymbolEnterAction.RETURN) {
+            SymbolKeyboardSpec.enterActionDescription(
+                enterAction,
+                english = localizedAccessibilityText.locale.language == "en"
+            )
+        } else {
+            KeyboardAccessibilityLabels.descriptionFor(
+                label = cell.def.label,
+                showCangjieRoots = showCangjieRoots,
+                spaceLabel = spaceLabel,
+                modeLabel = accessibilityModeLabel,
+                shiftActive = shiftActive,
+                shiftLocked = shiftLocked,
+                text = localizedAccessibilityText
+            )
+        }
+
+    private fun rebuildCellsForSurface() {
+        if (width > 0 && height > 0) buildCells(width.toFloat(), height.toFloat())
+        requestLayout()
+        invalidate()
+        notifyAccessibilityStateChanged()
+    }
 
     private fun sendVirtualAccessibilityEvent(virtualViewId: Int, eventType: Int) {
         val cell = cellForVirtualId(virtualViewId) ?: return

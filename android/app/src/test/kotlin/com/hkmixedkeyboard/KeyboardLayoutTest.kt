@@ -26,7 +26,7 @@ class KeyboardLayoutTest {
             KeyboardLayout.rows[3].keys.map { it.label }
         )
         assertEquals(
-            listOf("符", "😊", "⌨", " ", "。", "，", "↵"),
+            listOf("⚙", "符", "😊", "⌨", " ", "。", "，", "↵"),
             KeyboardLayout.rows[4].keys.map { it.label }
         )
     }
@@ -35,8 +35,9 @@ class KeyboardLayoutTest {
     fun `space bar width`() {
         val space = KeyboardLayout.rows[4].keys.single { it.label == " " }
 
-        // Trimmed 4.0 → 3.0 to make room for the dedicated 😊 emoji key.
-        assertEquals(3.0f, space.widthUnits)
+        // The settings action keeps a labelled route to configuration while the
+        // default text surface retains a generous 3.5-unit space bar.
+        assertEquals(3.5f, space.widthUnits)
     }
 
     @Test
@@ -93,7 +94,7 @@ class KeyboardLayoutTest {
 
         assertEquals(100f, q.bounds.right - q.bounds.left, 0.001f)
         assertEquals(50f, a.bounds.left, 0.001f)
-        assertEquals(300f, space.bounds.right - space.bounds.left, 0.001f)
+        assertEquals(350f, space.bounds.right - space.bounds.left, 0.001f)
     }
 
     @Test

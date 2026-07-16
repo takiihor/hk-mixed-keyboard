@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardAccessibilityLabels
 import com.hkmixedkeyboard.ui.KeyboardView
+import com.hkmixedkeyboard.ui.SymbolEnterAction
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -66,6 +67,40 @@ class KeyboardAccessibilityNodeProviderTest {
                 null
             ))
             assertEquals("1", emitted)
+        }
+    }
+
+    @Test
+    fun keyboardLabelsSettingsNextIMEAndEditorActionsForAccessibility() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        instrumentation.runOnMainSync {
+            val keyboard = KeyboardView(instrumentation.targetContext).apply {
+                showNextInputMethodAction = true
+                enterAction = SymbolEnterAction.NEXT
+                measure(
+                    View.MeasureSpec.makeMeasureSpec(1_000, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY)
+                )
+                layout(0, 0, measuredWidth, measuredHeight)
+            }
+
+            val provider = keyboard.accessibilityNodeProvider!!
+            val settings = provider.findAccessibilityNodeInfosByText(
+                instrumentation.targetContext.getString(R.string.key_a11y_settings),
+                AccessibilityNodeProvider.HOST_VIEW_ID
+            )
+            val nextIme = provider.findAccessibilityNodeInfosByText(
+                instrumentation.targetContext.getString(R.string.key_a11y_next_ime),
+                AccessibilityNodeProvider.HOST_VIEW_ID
+            )
+            val nextField = provider.findAccessibilityNodeInfosByText(
+                "Next",
+                AccessibilityNodeProvider.HOST_VIEW_ID
+            )
+
+            assertEquals(1, settings.orEmpty().size)
+            assertEquals(1, nextIme.orEmpty().size)
+            assertEquals(1, nextField.orEmpty().size)
         }
     }
 }

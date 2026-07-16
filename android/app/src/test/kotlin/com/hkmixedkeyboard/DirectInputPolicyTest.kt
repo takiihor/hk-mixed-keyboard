@@ -72,4 +72,32 @@ class DirectInputPolicyTest {
             )
         )
     }
+
+    @Test
+    fun `email URI and phone editors commit their direct-entry characters`() {
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_PHONE,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+        assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("@", directLatinCommit = true))
+        assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("/", directLatinCommit = true))
+        assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("+", directLatinCommit = true))
+    }
 }

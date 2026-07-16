@@ -1,7 +1,9 @@
 package com.hkmixedkeyboard.ime
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.inputmethodservice.InputMethodService
+import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -40,6 +42,7 @@ import com.hkmixedkeyboard.settings.OneHandedMode
 import com.hkmixedkeyboard.settings.InputSchemePreference
 import com.hkmixedkeyboard.settings.InputSchemeTransitionCoordinator
 import com.hkmixedkeyboard.settings.InputSchemeWriteWorker
+import com.hkmixedkeyboard.settings.SettingsActivity
 import com.hkmixedkeyboard.ui.CandidateBarView
 import com.hkmixedkeyboard.ui.CandidateGridView
 import com.hkmixedkeyboard.ui.EmojiPanelView
@@ -48,6 +51,7 @@ import com.hkmixedkeyboard.ui.AndroidTypingHapticBackend
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.KeyboardView
+import com.hkmixedkeyboard.ui.KeyboardSurface
 import com.hkmixedkeyboard.ui.MainKeyboardLongPressPolicy
 import com.hkmixedkeyboard.ui.ShiftState
 import com.hkmixedkeyboard.ui.ShiftStateController
@@ -162,6 +166,8 @@ class HkImeService : InputMethodService() {
     private var imeState = ImeStateData()
     private var imeCtx = ImeContext()
     private var activeEditorInfo: EditorInfo? = null
+    private var editorSurface: KeyboardSurface = KeyboardSurface.TEXT
+    private var editorImeActions = EditorImeActions(SymbolEnterAction.RETURN, false)
     private var symbolKeyboardState = SymbolKeyboardState()
     private val schemeTransition = InputSchemeTransitionCoordinator(Scheme.QUICK)
     private val schemeWrites = Channel<Scheme>(Channel.UNLIMITED)
@@ -480,6 +486,9 @@ class HkImeService : InputMethodService() {
             spaceLabel = spaceLabelText()
             modeLabel = schemeShort(imeCtx.scheme)
             accessibilityModeLabel = schemeName(imeCtx.scheme)
+            keyboardSurface = editorSurface
+            showNextInputMethodAction = editorImeActions.offerNextInputMethod
+            enterAction = editorImeActions.enterAction
             keyListener = object : KeyboardView.KeyListener {
                 override fun onKey(label: String) = handleKey(label)
                 override fun onKeyLongPress(label: String) = handleKeyLongPress(label)
@@ -592,6 +601,9 @@ class HkImeService : InputMethodService() {
             spaceLabel = spaceLabelText()
             modeLabel = schemeShort(imeCtx.scheme)
             accessibilityModeLabel = schemeName(imeCtx.scheme)
+            keyboardSurface = editorSurface
+            showNextInputMethodAction = editorImeActions.offerNextInputMethod
+            enterAction = editorImeActions.enterAction
             keyListener = object : KeyboardView.KeyListener {
                 override fun onKey(label: String) = handleKey(label)
                 override fun onKeyLongPress(label: String) = handleKeyLongPress(label)
@@ -646,6 +658,11 @@ class HkImeService : InputMethodService() {
         closeAltPanel()
         activeEditorInfo = attribute
         symbolKeyboardState = SymbolKeyboardState()
+        editorSurface = EditorLayoutPolicy.surfaceFor(attribute.inputType)
+        editorImeActions = EditorLayoutPolicy.actionsFor(
+            attribute.imeOptions,
+            shouldOfferNextInputMethodAction()
+        )
         val sensitive = SensitiveFieldDetector.isSensitive(attribute)
         directLatinCommit = DirectInputPolicy.shouldUseDirectLatinCommit(
             inputType = attribute.inputType,
@@ -657,6 +674,7 @@ class HkImeService : InputMethodService() {
         resetCompositionState()
         shiftController.reset()
         refreshShiftVisual()
+        applyEditorSurface()
         if (::candidateBar.isInitialized) {
             if (sensitive) candidateBar.showSafeMode() else candidateBar.clearSystemMessage()
         }
@@ -728,6 +746,8 @@ class HkImeService : InputMethodService() {
             KeyboardView.KEY_EMOJI    -> { showEmojiPanel(); return }
             KeyboardView.KEY_SYMBOL   -> { showSymbolPage(); return }
             KeyboardView.KEY_MODE     -> { toggleScheme(); return }
+            KeyboardView.KEY_SETTINGS -> { openKeyboardSettings(); return }
+            KeyboardView.KEY_NEXT_IME -> { switchToNextEditorInputMethod(); return }
             KeyboardView.KEY_SHIFT    -> {
                 shiftController.press(android.os.SystemClock.uptimeMillis())
                 refreshShiftVisual()
@@ -1096,6 +1116,27 @@ class HkImeService : InputMethodService() {
         keyboardView.shiftActive = shiftController.state != ShiftState.OFF
         keyboardView.shiftLocked = shiftController.state == ShiftState.LOCKED
         keyboardView.invalidate()
+    }
+
+    private fun applyEditorSurface() {
+        if (::keyboardView.isInitialized) {
+            keyboardView.keyboardSurface = editorSurface
+            keyboardView.showNextInputMethodAction = editorImeActions.offerNextInputMethod
+            keyboardView.enterAction = editorImeActions.enterAction
+        }
+        symbolPanel?.enterAction = editorImeActions.enterAction
+    }
+
+    private fun shouldOfferNextInputMethodAction(): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && shouldOfferSwitchingToNextInputMethod()
+
+    private fun switchToNextEditorInputMethod() {
+        if (!editorImeActions.offerNextInputMethod || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return
+        switchToNextInputMethod(false)
+    }
+
+    private fun openKeyboardSettings() {
+        startActivity(Intent(this, SettingsActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     private fun handleCandidateTap(candidate: DecodeCandidate) {
@@ -1511,7 +1552,7 @@ class HkImeService : InputMethodService() {
             haptics = typingHaptics
             themeColors = currentThemeColors
             symbolPage = symbolKeyboardState.symbolPage
-            enterAction = SymbolEnterAction.fromImeOptions(activeEditorInfo?.imeOptions ?: 0)
+            enterAction = editorImeActions.enterAction
             onKeyTap = ::handleSymbolKey
         }
         symbolPanel = panel

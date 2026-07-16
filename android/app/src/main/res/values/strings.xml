@@ -112,6 +112,8 @@
     <string name="key_a11y_space_current">空格鍵，現時%1$s</string>
     <string name="key_a11y_emoji">表情符號鍵</string>
     <string name="key_a11y_symbol">符號鍵</string>
+    <string name="key_a11y_settings">鍵盤設定</string>
+    <string name="key_a11y_next_ime">切換鍵盤</string>
     <string name="key_a11y_mode_current">切換輸入模式，現時%1$s</string>
     <string name="key_a11y_comma">逗號鍵</string>
     <string name="key_a11y_period">句號鍵</string>
