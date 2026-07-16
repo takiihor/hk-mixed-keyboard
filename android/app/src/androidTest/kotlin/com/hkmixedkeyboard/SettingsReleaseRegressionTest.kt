@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.textclassifier.TextClassifier
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
@@ -31,6 +33,7 @@ import com.hkmixedkeyboard.settings.SettingsActivity
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertSame
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -126,6 +129,48 @@ class SettingsReleaseRegressionTest {
         assertLifecycleSafeSelection(OpenSourceLicensesActivity::class.java)
     }
 
+    @Test
+    fun settingsThemeDescriptionsUseSettingsForegroundAndSwitchRowsAreLabelledControls() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        ActivityScenario.launch(SettingsActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val expectedDescriptionColor = 0xFF475569.toInt()
+                val previewDescriptions = findTextViews(activity).filter { text ->
+                    text.text.toString() in setOf(
+                        context.getString(R.string.theme_dark_preview),
+                        context.getString(R.string.theme_light_preview)
+                    )
+                }
+                assertEquals(2, previewDescriptions.size)
+                previewDescriptions.forEach { description ->
+                    assertEquals(expectedDescriptionColor, description.currentTextColor)
+                    assertNotEquals(
+                        0xFFE8EAED.toInt(),
+                        description.currentTextColor
+                    )
+                }
+
+                val rows = findSettingSwitchRows(activity)
+                assertEquals(5, rows.size)
+                rows.forEach { (row, label, control) ->
+                    assertNotEquals(View.NO_ID, control.id)
+                    assertEquals(label.text.toString(), control.contentDescription?.toString())
+                    assertEquals(control.id, label.labelFor)
+
+                    val before = rows.map { it.control.isChecked }
+                    assertTrue(row.performClick())
+                    rows.forEachIndexed { index, candidate ->
+                        assertEquals(
+                            if (candidate.control === control) !before[index] else before[index],
+                            candidate.control.isChecked
+                        )
+                    }
+                    assertTrue(row.performClick())
+                }
+            }
+        }
+    }
+
     private fun assertLifecycleSafeSelection(activityClass: Class<out Activity>) {
         ActivityScenario.launch(activityClass).use { scenario ->
             scenario.onActivity { activity ->
@@ -173,6 +218,47 @@ class SettingsReleaseRegressionTest {
         }
         collect(root)
         return fields
+    }
+
+    private data class SettingSwitchRow(
+        val row: LinearLayout,
+        val label: TextView,
+        val control: SwitchCompat
+    )
+
+    private fun findSettingSwitchRows(activity: Activity): List<SettingSwitchRow> {
+        val rows = mutableListOf<SettingSwitchRow>()
+        fun collect(view: View) {
+            if (view is LinearLayout) {
+                val controls = (0 until view.childCount)
+                    .map(view::getChildAt)
+                    .filterIsInstance<SwitchCompat>()
+                val labels = (0 until view.childCount)
+                    .map(view::getChildAt)
+                    .filterIsInstance<TextView>()
+                    .filterNot { it is SwitchCompat }
+                if (controls.size == 1 && labels.size == 1) {
+                    rows += SettingSwitchRow(view, labels.single(), controls.single())
+                }
+            }
+            if (view is ViewGroup) {
+                for (index in 0 until view.childCount) collect(view.getChildAt(index))
+            }
+        }
+        collect(activity.findViewById(android.R.id.content))
+        return rows
+    }
+
+    private fun findTextViews(activity: Activity): List<TextView> {
+        val texts = mutableListOf<TextView>()
+        fun collect(view: View) {
+            if (view is TextView) texts += view
+            if (view is ViewGroup) {
+                for (index in 0 until view.childCount) collect(view.getChildAt(index))
+            }
+        }
+        collect(activity.findViewById(android.R.id.content))
+        return texts
     }
 
     private fun assertNoSystemSuggestions(field: EditText) {

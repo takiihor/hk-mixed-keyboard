@@ -362,7 +362,7 @@ class SettingsActivity : AppCompatActivity() {
                 KeyboardTheme.IOS_LIGHT -> com.hkmixedkeyboard.R.string.theme_light_preview
             })
             textSize = 12f
-            setTextColor(colors.label)
+            setTextColor(SettingsAccessibilityPolicy.previewDescriptionTextColor)
         }
         val details = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -412,6 +412,8 @@ class SettingsActivity : AppCompatActivity() {
         onChange: (Boolean) -> Unit
     ): SwitchCompat {
         val sw = SwitchCompat(this).apply {
+            id = android.view.View.generateViewId()
+            contentDescription = SettingsAccessibilityPolicy.switchContentDescription(labelText)
             isChecked = default
             setOnCheckedChangeListener { _, checked -> onChange(checked) }
         }
@@ -420,9 +422,13 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(0, 12, 0, 12)
             addView(TextView(this@SettingsActivity).apply {
                 text = labelText; textSize = 15f
+                labelFor = sw.id
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
             addView(sw)
+            isClickable = true
+            isFocusable = true
+            setOnClickListener { sw.performClick() }
         }
         parent.addView(row)
         return sw
@@ -440,4 +446,11 @@ class SettingsActivity : AppCompatActivity() {
             getString(if (selected) com.hkmixedkeyboard.R.string.selected
                 else com.hkmixedkeyboard.R.string.not_selected)
         )
+}
+
+/** Accessibility values for the Settings surface, independent of keyboard palettes. */
+object SettingsAccessibilityPolicy {
+    const val previewDescriptionTextColor = 0xFF475569.toInt()
+
+    fun switchContentDescription(label: String): String = label
 }
