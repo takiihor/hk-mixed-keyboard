@@ -78,6 +78,13 @@ class CommitController(
         state: ImeStateData,
         autoCommitCandidate: DecodeCandidate? = null
     ): CommitOutput {
+        if (ctx.scheme == Scheme.QUICK && state.buffer.isNotEmpty()) {
+            return commitLiteralBuffer(
+                buffer = state.buffer,
+                learn = true,
+                state = state.copy(lastAutoCommit = null)
+            )
+        }
         if (autoCommitCandidate != null && isExactCandidateForActiveScheme(
                 autoCommitCandidate,
                 state.buffer
