@@ -28,7 +28,7 @@ object KeyboardLayout {
     const val KEY_EXCLAIM = "！"
 
     const val GRID_WIDTH_UNITS = 10f
-    const val BASE_ROW_HEIGHT_DP = 48f
+    const val BASE_ROW_HEIGHT_DP = 52f
 
     data class KeyDef(
         val label: String,

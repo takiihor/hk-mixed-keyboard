@@ -68,17 +68,17 @@ class KeyboardLayoutTest {
     }
 
     @Test
-    fun `all five rows use the comfortable compact 48dp height`() {
-        assertEquals(48f, KeyboardLayout.BASE_ROW_HEIGHT_DP)
+    fun `all five rows use the comfortable 52dp height`() {
+        assertEquals(52f, KeyboardLayout.BASE_ROW_HEIGHT_DP)
         assertEquals(
             listOf(1f, 1f, 1f, 1f, 1f),
             KeyboardLayout.rows.map { it.heightWeight }
         )
 
-        val cells = KeyboardLayout.buildCells(width = 410f, height = 240f)
-        assertEquals(48f, cells.single { it.key.label == "1" }.bounds.bottom, 0.001f)
+        val cells = KeyboardLayout.buildCells(width = 410f, height = 260f)
+        assertEquals(52f, cells.single { it.key.label == "1" }.bounds.bottom, 0.001f)
         assertEquals(
-            48f,
+            52f,
             cells.single { it.key.label == "Q" }.bounds.bottom -
                 cells.single { it.key.label == "Q" }.bounds.top,
             0.001f
@@ -98,9 +98,9 @@ class KeyboardLayoutTest {
     }
 
     @Test
-    fun `fixed accessible candidate bar plus comfortable keyboard reserves 288dp`() {
+    fun `fixed accessible candidate bar plus comfortable keyboard reserves 308dp`() {
         val density = 2f
-        assertEquals((240f * density).toInt(), KeyboardLayout.keyboardHeightPx(density))
-        assertEquals((288f * density).toInt(), KeyboardLayout.inputViewMinHeightPx(density))
+        assertEquals((260f * density).toInt(), KeyboardLayout.keyboardHeightPx(density))
+        assertEquals((308f * density).toInt(), KeyboardLayout.inputViewMinHeightPx(density))
     }
 }
