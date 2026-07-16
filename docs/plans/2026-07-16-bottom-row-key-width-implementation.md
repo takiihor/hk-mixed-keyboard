@@ -85,4 +85,3 @@ git add app/src/main/kotlin/com/hkmixedkeyboard/ui/KeyboardLayout.kt \
   app/src/test/kotlin/com/hkmixedkeyboard/KeyboardLayoutTest.kt
 git commit -m "feat: rebalance text keyboard action row"
 ```
-
