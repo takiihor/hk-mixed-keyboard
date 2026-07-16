@@ -3,6 +3,7 @@ package com.hkmixedkeyboard
 import com.hkmixedkeyboard.commit.ImeContext
 import com.hkmixedkeyboard.commit.ImeState
 import com.hkmixedkeyboard.commit.ImeStateData
+import com.hkmixedkeyboard.commit.AutoCommitRecord
 import com.hkmixedkeyboard.commit.PrecedingContext
 import com.hkmixedkeyboard.commit.DeletionRequest
 import com.hkmixedkeyboard.commit.DeletionUnit
@@ -23,7 +24,11 @@ class ThreeModeCommitContractTest {
         val ctrl = makeCtrl(memory = UserMemory(), ctx = ImeContext(scheme = Scheme.QUICK))
 
         val out = ctrl.onSpace(
-            ImeStateData(buffer = "rr", imeState = ImeState.COMPOSING),
+            ImeStateData(
+                buffer = "rr",
+                imeState = ImeState.COMPOSING,
+                lastAutoCommit = AutoCommitRecord("舊", "old")
+            ),
             candidate("唔", "rr", SourceSchema.QUICK, CandidateType.CHAR)
         )
 
