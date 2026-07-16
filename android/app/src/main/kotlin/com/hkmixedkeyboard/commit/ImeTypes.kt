@@ -39,9 +39,16 @@ data class MemoryWriteDecision(
     val candidate: DecodeCandidate? = null
 )
 
+enum class DeletionUnit { CODE_POINTS, UTF16_UNITS }
+
+data class DeletionRequest(
+    val unit: DeletionUnit,
+    val count: Int
+)
+
 data class CommitOutput(
     val committedText: String?,           // text sent to app (null if nothing committed)
-    val deletedBefore: Int = 0,           // chars deleted before cursor (backspace revert)
+    val deletion: DeletionRequest? = null,
     val newState: ImeStateData,
     val memoryWrite: MemoryWriteDecision,
     val swallowEnter: Boolean = false     // true when Enter policy = COMMIT_THEN_SWALLOW

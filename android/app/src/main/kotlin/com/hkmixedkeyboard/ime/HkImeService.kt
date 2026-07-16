@@ -8,6 +8,7 @@ import android.os.Looper
 import android.os.Process
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
 import android.widget.LinearLayout
 import android.widget.Button
 import android.widget.PopupWindow
@@ -1180,10 +1181,10 @@ class HkImeService : InputMethodService() {
         ic.beginBatchEdit()
 
         // 1. Revert an earlier auto-commit (backspace): drop any composing region,
-        //    then delete the already-committed characters before the cursor.
-        if (applied.deletedBefore > 0) {
+        //    then delete the already-committed text before the cursor.
+        applied.deletion?.let { request ->
             ic.finishComposingText()
-            ic.deleteSurroundingText(applied.deletedBefore, 0)
+            applySurroundingTextDeletion(ic, request)
         }
 
         // 2. Commit finalized text. commitText() replaces the active composing
@@ -1483,6 +1484,23 @@ class HkImeService : InputMethodService() {
         return beforeCursor?.toString() == lac.text
     }
 
+    private fun applySurroundingTextDeletion(
+        connection: InputConnection,
+        request: DeletionRequest
+    ) {
+        if (
+            request.unit == DeletionUnit.CODE_POINTS &&
+            connection.deleteSurroundingTextInCodePoints(request.count, 0)
+        ) return
+        connection.deleteSurroundingText(
+            SurroundingTextDeletionPolicy.utf16UnitsForFallback(
+                request,
+                connection.getTextBeforeCursor(2, 0)
+            ),
+            0
+        )
+    }
+
     // ── Symbol / Emoji panels ─────────────────────────────────────────────────
 
     private fun showSymbolPage() {
@@ -1530,7 +1548,12 @@ class HkImeService : InputMethodService() {
                 // committed character — otherwise the delete targets text around
                 // the composing region and leaves the half-typed code stranded.
                 flushComposingBuffer()
-                currentInputConnection?.deleteSurroundingText(1, 0)
+                currentInputConnection?.let { connection ->
+                    applySurroundingTextDeletion(
+                        connection,
+                        DeletionRequest(DeletionUnit.CODE_POINTS, 1)
+                    )
+                }
             }
             onClose = { closeAltPanel() }
         }

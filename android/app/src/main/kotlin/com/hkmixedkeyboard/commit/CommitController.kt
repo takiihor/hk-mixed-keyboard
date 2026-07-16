@@ -55,7 +55,7 @@ class CommitController(
         if (lac != null && cursorJustAfterAutoCommit) {
             return CommitOutput(
                 committedText = null,
-                deletedBefore = lac.text.length,
+                deletion = DeletionRequest(DeletionUnit.UTF16_UNITS, lac.text.length),
                 newState = state.copy(
                     buffer = lac.originalBuffer,
                     lastAutoCommit = null,
@@ -65,10 +65,10 @@ class CommitController(
             )
         }
 
-        // Delete char before cursor (delegated to host in real IME)
+        // Delete one Unicode code point before the cursor (delegated to the host).
         return CommitOutput(
             committedText = null,
-            deletedBefore = 1,
+            deletion = DeletionRequest(DeletionUnit.CODE_POINTS, 1),
             newState = state,
             memoryWrite = MemoryWriteDecision(false)
         )

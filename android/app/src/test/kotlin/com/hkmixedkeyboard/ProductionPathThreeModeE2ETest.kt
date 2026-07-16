@@ -3,6 +3,8 @@ package com.hkmixedkeyboard
 import android.content.Context
 import android.content.ContextWrapper
 import com.hkmixedkeyboard.commit.CommitController
+import com.hkmixedkeyboard.commit.DeletionRequest
+import com.hkmixedkeyboard.commit.DeletionUnit
 import com.hkmixedkeyboard.commit.ImeContext
 import com.hkmixedkeyboard.commit.ImeState
 import com.hkmixedkeyboard.commit.ImeStateData
@@ -164,7 +166,10 @@ class ProductionPathThreeModeE2ETest {
             spaced.newState,
             cursorJustAfterAutoCommit = true
         )
-        assertEquals((expected + spaceSuffix).length, restored.deletedBefore)
+        assertEquals(
+            DeletionRequest(DeletionUnit.UTF16_UNITS, (expected + spaceSuffix).length),
+            restored.deletion
+        )
         assertEquals(buffer, restored.newState.buffer)
         assertEquals(ImeState.COMPOSING, restored.newState.imeState)
     }

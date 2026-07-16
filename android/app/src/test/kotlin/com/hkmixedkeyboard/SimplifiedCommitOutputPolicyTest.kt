@@ -2,6 +2,8 @@ package com.hkmixedkeyboard
 
 import com.hkmixedkeyboard.commit.AutoCommitRecord
 import com.hkmixedkeyboard.commit.CommitOutput
+import com.hkmixedkeyboard.commit.DeletionRequest
+import com.hkmixedkeyboard.commit.DeletionUnit
 import com.hkmixedkeyboard.commit.ImeContext
 import com.hkmixedkeyboard.commit.ImeState
 import com.hkmixedkeyboard.commit.ImeStateData
@@ -33,7 +35,7 @@ class SimplifiedCommitOutputPolicyTest {
         assertEquals("时", converted.committedText)
         assertEquals(AutoCommitRecord("时", "ai"), converted.newState.lastAutoCommit)
         assertEquals("時", converted.newState.prevCommitted)
-        assertEquals(1, restored.deletedBefore)
+        assertEquals(DeletionRequest(DeletionUnit.UTF16_UNITS, 1), restored.deletion)
         assertEquals("ai", restored.newState.buffer)
     }
 }

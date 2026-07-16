@@ -4,6 +4,8 @@ import com.hkmixedkeyboard.commit.ImeContext
 import com.hkmixedkeyboard.commit.ImeState
 import com.hkmixedkeyboard.commit.ImeStateData
 import com.hkmixedkeyboard.commit.PrecedingContext
+import com.hkmixedkeyboard.commit.DeletionRequest
+import com.hkmixedkeyboard.commit.DeletionUnit
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
 import com.hkmixedkeyboard.decoder.Scheme
@@ -48,9 +50,21 @@ class ThreeModeCommitContractTest {
 
         val restored = ctrl.onBackspace(committed.newState)
 
-        assertEquals(2, restored.deletedBefore)
+        assertEquals(DeletionRequest(DeletionUnit.UTF16_UNITS, 2), restored.deletion)
         assertEquals("nihao", restored.newState.buffer)
         assertEquals(ImeState.COMPOSING, restored.newState.imeState)
+    }
+
+    @Test
+    fun `ordinary Backspace requests one code point deletion`() {
+        val ctrl = makeCtrl(
+            memory = UserMemory(),
+            ctx = ImeContext(scheme = Scheme.QUICK)
+        )
+
+        val deleted = ctrl.onBackspace(ImeStateData())
+
+        assertEquals(DeletionRequest(DeletionUnit.CODE_POINTS, 1), deleted.deletion)
     }
 
     @Test
