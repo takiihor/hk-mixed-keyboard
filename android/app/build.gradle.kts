@@ -54,6 +54,7 @@ val missingReleaseSigningMessage =
     "Release signing is required. Set HKKBD_STORE_FILE, HKKBD_STORE_PASSWORD, " +
         "HKKBD_KEY_ALIAS and HKKBD_KEY_PASSWORD."
 val versionMinor = (versionProps.getProperty("versionMinor") ?: "7").toInt()
+val versionPatch = (versionProps.getProperty("versionPatch") ?: "0").toInt()
 val buildNumber = (versionProps.getProperty("buildNumber") ?: "0").toInt()
 val buildTime = versionProps.getProperty("buildTime") ?: "unknown"
 
@@ -67,7 +68,7 @@ val corpusHash = if (corpusManifest.isFile) {
 }
 
 // e.g. 0.8.0, 0.9.0, 0.10.0, …
-val appVersionName = "0.$versionMinor.0"
+val appVersionName = "0.$versionMinor.$versionPatch"
 
   android {
     namespace = "com.hkmixedkeyboard"
