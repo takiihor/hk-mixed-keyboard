@@ -3,9 +3,15 @@ package com.hkmixedkeyboard
 import com.hkmixedkeyboard.ui.TypingHapticBackend
 import com.hkmixedkeyboard.ui.TypingHapticEngine
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class TypingHapticEngineTest {
+
+    @Test
+    fun `test builds use device-tuned haptic effects`() {
+        assertFalse(BuildConfig.HAPTIC_STRONG_DEBUG)
+    }
 
     @Test
     fun `repeated taps cancel previous vibration before each tick`() {

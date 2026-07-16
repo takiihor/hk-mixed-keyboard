@@ -122,10 +122,10 @@ val appVersionName = "0.$versionMinor.$versionPatch"
           // Enable perf tracing in debug builds by default.
           buildConfigField("boolean", "PERF_TRACING", "true")
 
-          // Stronger, crisp haptics for debug without lengthening (avoid overlap)
+          // Match release by using device-tuned primitive/predefined touch effects.
           buildConfigField("float", "HAPTIC_INTENSITY", "1.0f")
           buildConfigField("int", "HAPTIC_LENGTH_MS", "8")
-          buildConfigField("boolean", "HAPTIC_STRONG_DEBUG", "true")
+          buildConfigField("boolean", "HAPTIC_STRONG_DEBUG", "false")
           buildConfigField("boolean", "HAPTIC_HEAVY_MODE", "false")
         }
         release {
