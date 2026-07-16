@@ -93,7 +93,7 @@ object KeyboardLayout {
         )
     )
 
-    val rows: List<RowDef> = textRows(showNextInputMethod = false)
+    val rows: List<RowDef> = textRows()
 
     val totalHeightWeight: Float =
         rows.sumOf { it.heightWeight.toDouble() }.toFloat()
@@ -114,12 +114,12 @@ object KeyboardLayout {
         surface: KeyboardSurface,
         showNextInputMethod: Boolean
     ): List<RowDef> = when (surface) {
-        KeyboardSurface.TEXT -> textRows(showNextInputMethod)
-        KeyboardSurface.EMAIL -> alphabetRows + emailBottomRow(showNextInputMethod)
-        KeyboardSurface.URI -> alphabetRows + uriBottomRow(showNextInputMethod)
-        KeyboardSurface.NUMBER -> numberRows(showNextInputMethod)
-        KeyboardSurface.SIGNED_DECIMAL_NUMBER -> signedDecimalRows(showNextInputMethod)
-        KeyboardSurface.PHONE -> phoneRows(showNextInputMethod)
+        KeyboardSurface.TEXT -> textRows()
+        KeyboardSurface.EMAIL -> alphabetRows + emailBottomRow()
+        KeyboardSurface.URI -> alphabetRows + uriBottomRow()
+        KeyboardSurface.NUMBER -> numberRows()
+        KeyboardSurface.SIGNED_DECIMAL_NUMBER -> signedDecimalRows()
+        KeyboardSurface.PHONE -> phoneRows()
     }
 
     fun buildCells(
@@ -151,91 +151,71 @@ object KeyboardLayout {
         }
     }
 
-    private fun textRows(showNextInputMethod: Boolean): List<RowDef> =
+    private fun textRows(): List<RowDef> =
         alphabetRows + actionRow(
             listOf(
-                KEY_SETTINGS to 0.75f,
                 KEY_SYMBOL to 1.2f,
                 KEY_EMOJI to 0.8f,
                 KEY_MODE to 0.8f,
-                KEY_SPACE to if (showNextInputMethod) 2.75f else 3.5f,
+                KEY_SPACE to 4.25f,
                 KEY_PERIOD to 0.8f,
                 KEY_COMMA to 0.8f
-            ),
-            showNextInputMethod,
-            nextWidth = 0.75f
+            )
         )
 
-    private fun emailBottomRow(showNextInputMethod: Boolean): RowDef = actionRow(
+    private fun emailBottomRow(): RowDef = actionRow(
         listOf(
-            KEY_SETTINGS to 0.75f,
             "@" to 1f,
             "_" to 1f,
             KEY_MODE to 0.75f,
-            KEY_SPACE to if (showNextInputMethod) 3.6f else 4.35f,
+            KEY_SPACE to 5.1f,
             "." to 0.8f
-        ),
-        showNextInputMethod,
-        nextWidth = 0.75f
+        )
     )
 
-    private fun uriBottomRow(showNextInputMethod: Boolean): RowDef = actionRow(
+    private fun uriBottomRow(): RowDef = actionRow(
         listOf(
-            KEY_SETTINGS to 0.75f,
             "/" to 0.8f,
             ":" to 0.8f,
             "-" to 0.8f,
-            KEY_SPACE to if (showNextInputMethod) 3.95f else 4.7f,
+            KEY_SPACE to 5.45f,
             "." to 0.8f
-        ),
-        showNextInputMethod,
-        nextWidth = 0.75f
+        )
     )
 
-    private fun numberRows(showNextInputMethod: Boolean): List<RowDef> = listOf(
+    private fun numberRows(): List<RowDef> = listOf(
         numericRow("1", "2", "3"),
         numericRow("4", "5", "6"),
         numericRow("7", "8", "9"),
         row(listOf("0" to 5f, KEY_BACKSPACE to 5f)),
-        compactActionRow(showNextInputMethod)
+        compactActionRow()
     )
 
-    private fun signedDecimalRows(showNextInputMethod: Boolean): List<RowDef> = listOf(
+    private fun signedDecimalRows(): List<RowDef> = listOf(
         numericRow("1", "2", "3"),
         numericRow("4", "5", "6"),
         numericRow("7", "8", "9"),
         row(listOf("-" to 2.5f, "0" to 2.5f, "." to 2.5f, KEY_BACKSPACE to 2.5f)),
-        compactActionRow(showNextInputMethod)
+        compactActionRow()
     )
 
-    private fun phoneRows(showNextInputMethod: Boolean): List<RowDef> = listOf(
+    private fun phoneRows(): List<RowDef> = listOf(
         numericRow("1", "2", "3"),
         numericRow("4", "5", "6"),
         numericRow("7", "8", "9"),
         row(listOf("*" to 2.5f, "0" to 2.5f, "#" to 2.5f, KEY_BACKSPACE to 2.5f)),
-        compactActionRow(showNextInputMethod, leading = listOf("+" to 2f))
+        compactActionRow(leading = listOf("+" to 2f))
     )
 
     private fun numericRow(first: String, second: String, third: String): RowDef =
         row(listOf(first to 10f / 3f, second to 10f / 3f, third to 10f / 3f))
 
     private fun compactActionRow(
-        showNextInputMethod: Boolean,
         leading: List<Pair<String, Float>> = emptyList()
-    ): RowDef = actionRow(
-        listOf(KEY_SETTINGS to 2f) + leading,
-        showNextInputMethod,
-        nextWidth = 2f
-    )
+    ): RowDef = actionRow(leading)
 
-    private fun actionRow(
-        leading: List<Pair<String, Float>>,
-        showNextInputMethod: Boolean,
-        nextWidth: Float
-    ): RowDef {
-        val beforeEnter = leading +
-            if (showNextInputMethod) listOf(KEY_NEXT_IME to nextWidth) else emptyList()
-        val enterWidth = GRID_WIDTH_UNITS - beforeEnter.fold(0f) { total, (_, width) -> total + width }
-        return row(beforeEnter + (KEY_ENTER to enterWidth))
+    private fun actionRow(leading: List<Pair<String, Float>>): RowDef {
+        val enterWidth = GRID_WIDTH_UNITS - leading.fold(0f) { total, (_, width) -> total + width }
+        return row(leading + (KEY_ENTER to enterWidth))
     }
 }

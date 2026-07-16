@@ -71,7 +71,7 @@ class KeyboardAccessibilityNodeProviderTest {
     }
 
     @Test
-    fun keyboardLabelsSettingsNextIMEAndEditorActionsForAccessibility() {
+    fun keyboardOmitsAccidentalActionsAndKeepsEditorActionAccessible() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         instrumentation.runOnMainSync {
             val keyboard = KeyboardView(instrumentation.targetContext).apply {
@@ -98,8 +98,8 @@ class KeyboardAccessibilityNodeProviderTest {
                 AccessibilityNodeProvider.HOST_VIEW_ID
             )
 
-            assertEquals(1, settings.orEmpty().size)
-            assertEquals(1, nextIme.orEmpty().size)
+            assertTrue(settings.isNullOrEmpty())
+            assertTrue(nextIme.isNullOrEmpty())
             assertEquals(1, nextField.orEmpty().size)
         }
     }

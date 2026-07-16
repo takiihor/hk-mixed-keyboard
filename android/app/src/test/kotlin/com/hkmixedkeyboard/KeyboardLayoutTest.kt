@@ -1,7 +1,9 @@
 package com.hkmixedkeyboard
 
 import com.hkmixedkeyboard.ui.KeyboardLayout
+import com.hkmixedkeyboard.ui.KeyboardSurface
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class KeyboardLayoutTest {
@@ -26,7 +28,7 @@ class KeyboardLayoutTest {
             KeyboardLayout.rows[3].keys.map { it.label }
         )
         assertEquals(
-            listOf("⚙", "符", "😊", "⌨", " ", "。", "，", "↵"),
+            listOf("符", "😊", "⌨", " ", "。", "，", "↵"),
             KeyboardLayout.rows[4].keys.map { it.label }
         )
     }
@@ -35,9 +37,24 @@ class KeyboardLayoutTest {
     fun `space bar width`() {
         val space = KeyboardLayout.rows[4].keys.single { it.label == " " }
 
-        // The settings action keeps a labelled route to configuration while the
-        // default text surface retains a generous 3.5-unit space bar.
-        assertEquals(3.5f, space.widthUnits)
+        assertEquals(4.25f, space.widthUnits)
+    }
+
+    @Test
+    fun `every editor layout omits accidental settings and next IME actions`() {
+        KeyboardSurface.entries.forEach { surface ->
+            val rows = KeyboardLayout.rowsFor(surface, showNextInputMethod = true)
+            val labels = rows.flatMap { row -> row.keys.map { it.label } }
+
+            assertFalse("$surface must not expose Settings", labels.contains(KeyboardLayout.KEY_SETTINGS))
+            assertFalse("$surface must not expose next IME", labels.contains(KeyboardLayout.KEY_NEXT_IME))
+            assertEquals(
+                "$surface action row width",
+                KeyboardLayout.GRID_WIDTH_UNITS,
+                rows.last().keys.sumOf { it.widthUnits.toDouble() }.toFloat(),
+                0.001f
+            )
+        }
     }
 
     @Test
@@ -94,7 +111,7 @@ class KeyboardLayoutTest {
 
         assertEquals(100f, q.bounds.right - q.bounds.left, 0.001f)
         assertEquals(50f, a.bounds.left, 0.001f)
-        assertEquals(350f, space.bounds.right - space.bounds.left, 0.001f)
+        assertEquals(425f, space.bounds.right - space.bounds.left, 0.001f)
     }
 
     @Test
