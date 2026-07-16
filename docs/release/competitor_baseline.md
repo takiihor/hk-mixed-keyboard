@@ -7,7 +7,8 @@ conditions. Do not infer competitor quality from store descriptions.
 
 ## Test protocol
 
-- Benchmark hash:
+- Evidence classification: `COMPETITOR_COMPARATIVE` only after scorer validation
+- Locked prompt hash:
 - Test dates:
 - Test lead:
 - Native reviewers:
@@ -17,6 +18,17 @@ conditions. Do not infer competitor quality from store descriptions.
 - Personalization reset method:
 - Prompt randomization/blinding method:
 - Timing and keystroke-counting method:
+- Candidate commit hash:
+- Result-recorded commit hash (must match candidate):
+- Candidate signed AAB SHA-256:
+- Result-recorded AAB SHA-256 (must match candidate):
+- Raw-result provenance / secure location:
+
+The scorer rejects this comparison as `OPEN` unless the locked prompt hash,
+three non-self reviewer identities, test lead, device/settings, input state,
+matching commit and AAB hashes, and raw-result provenance are supplied in its
+evidence JSON. Source-derived coverage may be recorded only as
+`SOURCE_COVERAGE`, never as a native or competitor comparison.
 
 ## Keyboard inventory
 
@@ -43,6 +55,7 @@ conditions. Do not infer competitor quality from store descriptions.
 ## Required conclusion
 
 - [ ] Every app version and setting is recorded.
+- [ ] The evidence JSON validates as `COMPETITOR_COMPARATIVE` and matches this candidate's commit and AAB hashes.
 - [ ] Cold-state and learned-state results are separated.
 - [ ] All keyboards used identical locked prompts and devices.
 - [ ] Paired differences include 95% confidence intervals.

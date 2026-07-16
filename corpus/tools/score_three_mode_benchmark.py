@@ -9,10 +9,39 @@ import json
 from pathlib import Path
 from typing import Any
 
+from verify_benchmark_templates import (
+    COMPARATIVE_CLASSIFICATIONS,
+    validate_comparative_evidence,
+)
+
 
 def read_tsv(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8", newline="") as stream:
         return list(csv.DictReader(stream, delimiter="\t"))
+
+
+def read_evidence(path: Path) -> dict[str, Any]:
+    try:
+        evidence = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise ValueError(f"cannot read evidence: {path}") from error
+    if not isinstance(evidence, dict):
+        raise ValueError("evidence must be a JSON object")
+    return evidence
+
+
+def evidence_summary(evidence: dict[str, Any] | None, case_count: int) -> dict[str, Any]:
+    if evidence is None:
+        classification = "OPEN"
+    else:
+        classification = validate_comparative_evidence(evidence, case_count)
+    return {
+        "classification": classification,
+        "independent": classification in {
+            "NATIVE",
+            "COMPETITOR_COMPARATIVE",
+        },
+    }
 
 
 def require_unique_case_ids(rows: list[dict[str, str]], label: str) -> None:
@@ -156,11 +185,16 @@ def render_markdown(report: dict[str, Any]) -> str:
     latency = report["latency_ms"]
     kpc = report["keystrokes_per_correct_character"]
     kpc_text = "n/a" if kpc is None else f"{kpc:.3f}"
+    evidence = report["evidence"]
+    evidence_label = evidence["classification"]
+    if not evidence["independent"]:
+        evidence_label += " (non-independent; not market-comparison evidence)"
     return "\n".join(
         (
             "# Three-Mode Benchmark Report",
             "",
             f"Cases scored: {report['total']}",
+            f"Evidence: {evidence_label}",
             "",
             "| Metric | Result |",
             "|---|---:|",
@@ -190,6 +224,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mode", choices=("quick", "jyutping", "pinyin", "mixed"))
     parser.add_argument("--locked-holdout", action="store_true")
     parser.add_argument("--minimum-cases", type=int, default=1000)
+    parser.add_argument("--evidence", type=Path)
     return parser.parse_args()
 
 
@@ -212,9 +247,17 @@ def main() -> int:
             raise SystemExit(f"error: {error}") from error
     try:
         validate_result_coverage(cases, results)
+        evidence = read_evidence(args.evidence) if args.evidence else None
+        report_evidence = evidence_summary(evidence, len(cases))
+        if (
+            report_evidence["classification"].lower() in COMPARATIVE_CLASSIFICATIONS
+            and not args.locked_holdout
+        ):
+            raise ValueError("comparative reports require --locked-holdout")
     except ValueError as error:
         raise SystemExit(f"error: {error}") from error
     report = score(cases, results)
+    report["evidence"] = report_evidence
     args.json_output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

@@ -76,6 +76,37 @@ Use `results_template.tsv` for this app and every comparison keyboard.
 
 ## Scoring
 
+Every generated report carries an evidence classification. With no evidence
+record, the classification is `OPEN`; deterministic corpus coverage must use
+`SOURCE_COVERAGE` and is explicitly non-independent. Only a locked-holdout
+run with a complete evidence record can be classified as `NATIVE` or
+`COMPETITOR_COMPARATIVE`.
+
+The record is a JSON object stored outside the public answer-bearing holdout.
+It must contain the following before the scorer accepts either comparative
+classification:
+
+```json
+{
+  "classification": "competitor_comparative",
+  "locked_prompt_sha256": "<64-character SHA-256>",
+  "test_lead": "review-lead-01",
+  "reviewer_ids": ["reviewer-01", "reviewer-02", "reviewer-03"],
+  "device": "Pixel 8 / Android 35",
+  "settings": "documented identical settings",
+  "input_state": "cold",
+  "candidate_commit": "<40-character commit hash>",
+  "result_commit": "<same 40-character commit hash>",
+  "candidate_aab_sha256": "<64-character SHA-256>",
+  "result_aab_sha256": "<same 64-character SHA-256>",
+  "raw_result_provenance": "secure-results://run-001"
+}
+```
+
+The scorer rejects absent reviewer identities, a self-labelled reviewer,
+missing hashes, mismatched candidate/result hashes, and an empty scored
+holdout for comparative claims. It never creates benchmark rows.
+
 Development example:
 
 ```bash
@@ -83,6 +114,7 @@ python3 corpus/tools/score_three_mode_benchmark.py \
   --cases corpus/benchmarks/jyutping_holdout.tsv \
   --results /secure/results/hk_mixed_jyutping.tsv \
   --mode jyutping \
+  --evidence /secure/evidence/source_coverage.json \
   --json-output docs/release/jyutping_benchmark.json \
   --markdown-output docs/release/jyutping_benchmark.md
 ```
@@ -95,6 +127,7 @@ python3 corpus/tools/score_three_mode_benchmark.py \
   --results /secure/results/hk_mixed_jyutping.tsv \
   --mode jyutping \
   --locked-holdout \
+  --evidence /secure/evidence/jyutping_comparison.json \
   --json-output docs/release/jyutping_benchmark.json \
   --markdown-output docs/release/jyutping_benchmark.md
 ```
@@ -107,7 +140,8 @@ absolute and competitor-relative gates in the readiness plan.
 ## What this infrastructure does not prove
 
 - Header-only files do not prove language quality.
-- Source-derived corpus consistency tests are not independent benchmarks.
+- Source-derived corpus consistency tests are `SOURCE_COVERAGE`, not
+  independent benchmarks.
 - A perfect development-set result is not a release result.
 - Automated scores do not replace native review, blinded preference testing,
   physical-device testing or legal approval.

@@ -12,7 +12,7 @@ SCRIPT = REPO_ROOT / "corpus/tools/score_three_mode_benchmark.py"
 
 
 class ThreeModeBenchmarkScorerTest(unittest.TestCase):
-    def run_scorer(self, cases, results, *extra_args, with_markdown=False):
+    def run_scorer(self, cases, results, *extra_args, with_markdown=False, evidence=None):
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
             cases_path = tmp_path / "cases.tsv"
@@ -23,6 +23,12 @@ class ThreeModeBenchmarkScorerTest(unittest.TestCase):
             self.write_tsv(cases_path, cases)
             self.write_tsv(results_path, results)
 
+            evidence_args = []
+            if evidence is not None:
+                evidence_path = tmp_path / "evidence.json"
+                evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+                evidence_args = ["--evidence", str(evidence_path)]
+
             command = [
                     sys.executable,
                     str(SCRIPT),
@@ -32,6 +38,7 @@ class ThreeModeBenchmarkScorerTest(unittest.TestCase):
                     str(results_path),
                     "--json-output",
                     str(json_path),
+                    *evidence_args,
                     *extra_args,
                 ]
             if with_markdown:
@@ -346,6 +353,37 @@ class ThreeModeBenchmarkScorerTest(unittest.TestCase):
         self.assertIn("# Three-Mode Benchmark Report", markdown)
         self.assertIn("| Top-1 | 100.00% |", markdown)
         self.assertIn("| Wrong automatic commit rate | 0.00% |", markdown)
+
+    def test_source_coverage_report_is_labelled_non_independent(self):
+        case = {
+            "case_id": "source-coverage-001",
+            "mode": "pinyin",
+            "category": "common_phrase",
+            "input": "nihao",
+            "context": "",
+            "acceptable_outputs": '["你好"]',
+            "split": "development",
+            "provenance": "source_coverage",
+        }
+        result = {
+            "case_id": "source-coverage-001",
+            "candidates": '["你好"]',
+            "committed_text": "你好",
+            "keystrokes": "6",
+            "corrections": "0",
+            "wrong_auto_commits": "0",
+            "elapsed_ms": "10",
+        }
+
+        completed, report = self.run_scorer(
+            [case],
+            [result],
+            evidence={"classification": "source_coverage"},
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertEqual(report["evidence"]["classification"], "SOURCE_COVERAGE")
+        self.assertFalse(report["evidence"]["independent"])
 
     def test_rejects_an_empty_acceptable_output_list(self):
         case = {
