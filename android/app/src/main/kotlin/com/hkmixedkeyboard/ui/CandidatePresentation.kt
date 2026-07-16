@@ -14,7 +14,8 @@ object CandidatePresentation {
     fun label(
         candidate: DecodeCandidate,
         hasGlyph: (String) -> Boolean,
-        chineseAssistPrefix: String = "中→英"
+        chineseAssistPrefix: String = "中→英",
+        showJyutpingReadings: Boolean = false
     ): String {
         val textLabel = label(candidate.text, hasGlyph)
         val directionLabel = if (candidate.sourceSchema == SourceSchema.CHINESE_ASSIST) {
@@ -22,7 +23,10 @@ object CandidatePresentation {
         } else {
             textLabel
         }
-        return candidate.annotation?.takeIf { it.isNotBlank() }?.let {
+        val visibleAnnotation = candidate.annotation?.takeIf {
+            it.isNotBlank() && (showJyutpingReadings || candidate.sourceSchema != SourceSchema.JYUTPING)
+        }
+        return visibleAnnotation?.let {
             "$directionLabel · $it"
         } ?: directionLabel
     }
