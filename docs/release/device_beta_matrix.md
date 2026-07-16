@@ -39,3 +39,22 @@ Closed beta cannot pass until at least 100 opted-in testers complete two weeks a
 10,000 content-free session counters, with ≥99.95% crash-free sessions, no unresolved
 reproducible ANR or severity-1/2 defect, and ≥60% comparative preference. Typed text
 must never be collected.
+
+## Release-evidence record
+
+After the physical-device matrix is complete, store
+`docs/release/evidence/device_beta_matrix.json` with this exact JSON shape (the
+placeholder file must not be created as `APPROVED` before the work occurs):
+
+```json
+{
+  "status": "APPROVED",
+  "owner": "qa-owner-01",
+  "date": "YYYY-MM-DD",
+  "commit": "<40-character candidate commit hash>",
+  "aab_sha256": "<64-character candidate AAB SHA-256>"
+}
+```
+
+The release verifier rejects an `OPEN` record, an absent owner/date, or any
+commit/AAB mismatch.

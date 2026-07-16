@@ -21,3 +21,21 @@ Verify on the final candidate in light/dark, portrait/landscape and large font/d
 
 Record device/build, screen recording, accessibility hierarchy dump, defects and
 the names/signatures of two assistive-technology users or one qualified specialist.
+
+## Release-evidence record
+
+The completed review must add
+`docs/release/evidence/accessibility_review.json`:
+
+```json
+{
+  "status": "APPROVED",
+  "reviewer": "accessibility-specialist-01",
+  "date": "YYYY-MM-DD",
+  "commit": "<40-character candidate commit hash>",
+  "aab_sha256": "<64-character candidate AAB SHA-256>"
+}
+```
+
+This record is an external gate. `OPEN`, missing reviewer/date, or an artifact
+hash mismatch blocks release verification.

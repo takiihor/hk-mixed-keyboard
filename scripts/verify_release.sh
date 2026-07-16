@@ -10,12 +10,18 @@ STORE_FILE="${HKKBD_STORE_FILE:-}"
 STORE_PASSWORD="${HKKBD_STORE_PASSWORD:-}"
 KEY_ALIAS="${HKKBD_KEY_ALIAS:-}"
 KEY_PASSWORD="${HKKBD_KEY_PASSWORD:-}"
+EVIDENCE_DIR="${HKKBD_RELEASE_EVIDENCE_DIR:-docs/release/evidence}"
 SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
 APKSIGNER="${APKSIGNER:-$(find "$SDK_ROOT/build-tools" -mindepth 2 -maxdepth 2 -type f -name apksigner 2>/dev/null | sort -V | tail -1)}"
 
 fail() { echo "release verification failed: $*" >&2; exit 1; }
 [[ -n "$AAB" ]] || fail "usage: scripts/verify_release.sh path/to/app-release.aab [universal-apk-output]"
 [[ -f "$AAB" ]] || fail "AAB does not exist: $AAB"
+cd "$ROOT"
+python3 scripts/verify_release_evidence.py \
+  --evidence-dir "$EVIDENCE_DIR" \
+  --commit "$(git rev-parse HEAD)" \
+  --aab "$AAB" || fail "external release evidence is incomplete or mismatched"
 [[ -n "$BUNDLETOOL_JAR" && -f "$BUNDLETOOL_JAR" ]] || \
   fail "set BUNDLETOOL_JAR to a pinned bundletool jar"
 command -v java >/dev/null || fail "java is required"
@@ -30,7 +36,6 @@ command -v sha256sum >/dev/null || fail "sha256sum is required"
 [[ -f "$STORE_FILE" && -n "$STORE_PASSWORD" && -n "$KEY_ALIAS" && -n "$KEY_PASSWORD" ]] || \
   fail "set the HKKBD release signing variables used to generate final-from-AAB APKs"
 
-cd "$ROOT"
 [[ -z "$(git status --porcelain --untracked-files=all)" ]] || \
   fail "release must be verified from a clean checkout"
 

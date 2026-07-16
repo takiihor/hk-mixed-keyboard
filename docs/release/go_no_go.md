@@ -30,3 +30,13 @@ The release remains blocked by evidence that software changes cannot manufacture
 
 Change this document to GO only when every linked P0/P1 gate and every P2 gate used
 for a market-superiority claim is signed against the same clean commit and AAB hash.
+
+## Machine-checked external evidence gate
+
+`scripts/verify_release_evidence.py` requires six JSON records in
+`docs/release/evidence/` (or `HKKBD_RELEASE_EVIDENCE_DIR`): `native_review`,
+`device_beta_matrix`, `accessibility_review`, `legal_signoff`, `signed_aab`
+and `beta_result`. Every record must be `APPROVED`, dated, attributable and
+match the release commit and AAB SHA-256. The directory is intentionally absent
+until external reviewers supply those records, so the production verifier fails
+closed and this decision remains **NO-GO**.

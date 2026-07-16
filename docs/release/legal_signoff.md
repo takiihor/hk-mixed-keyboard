@@ -27,3 +27,21 @@ content verification remain required.
 | OpenCC/Apache data | OPEN | | |
 | Play Data Safety from final AAB | OPEN | | |
 | Public privacy URL matches app copy | OPEN | | |
+
+## Release-evidence record
+
+Only the responsible legal/data owner may add
+`docs/release/evidence/legal_signoff.json` after all table rows are approved:
+
+```json
+{
+  "status": "APPROVED",
+  "owner": "legal-owner-01",
+  "date": "YYYY-MM-DD",
+  "commit": "<40-character candidate commit hash>",
+  "aab_sha256": "<64-character candidate AAB SHA-256>"
+}
+```
+
+The release verifier treats a missing or non-approved record as an external
+NO-GO; an engineering assertion cannot substitute for this signature.

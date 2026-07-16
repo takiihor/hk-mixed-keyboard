@@ -15,6 +15,12 @@ Status: engineering workflow implemented; production credentials and approvals r
   digest. Verification fails closed if it or the keystore inputs are absent.
 - Pin an official bundletool release and set `BUNDLETOOL_JAR` to its verified jar.
 - Intentionally update `android/app/version.properties`; builds never mutate it.
+- Supply a controlled `docs/release/evidence/` directory (or set
+  `HKKBD_RELEASE_EVIDENCE_DIR`) only after external owners create all six
+  `APPROVED` JSON records. Each record has `status`, `date`, `commit` and
+  `aab_sha256`, plus `reviewer` for `native_review`/`accessibility_review` or
+  `owner` for `device_beta_matrix`, `legal_signoff`, `signed_aab` and
+  `beta_result`. Every hash must match the candidate passed to the verifier.
 
 ## Clean verification and build
 
@@ -31,7 +37,8 @@ scripts/verify_release.sh android/app/build/outputs/bundle/release/app-release.a
 ```
 
 `verify_release.sh` creates and signature/policy-checks a universal APK from that
-exact AAB. Install it plus device-specific splits on the supported-device matrix,
+exact AAB. It first rejects an incomplete or mismatched external-evidence bundle,
+before signature or APK work. Install it plus device-specific splits on the supported-device matrix,
 then repeat the three-mode smoke, migration, privacy, accessibility and
 supplementary-HKSCS checks.
 Do not substitute a separately built APK.
