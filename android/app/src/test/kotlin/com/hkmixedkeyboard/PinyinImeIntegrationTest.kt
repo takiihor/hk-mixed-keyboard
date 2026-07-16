@@ -223,7 +223,7 @@ class PinyinImeIntegrationTest {
     }
 
     @Test
-    fun `candidate-assisted Space commits the raw Quick buffer without whitespace`() {
+    fun `Quick Space ignores a supplied Pinyin candidate and commits the raw buffer`() {
         val ctrl = makeCtrl(memory = UserMemory(), ctx = ImeContext(scheme = Scheme.QUICK))
 
         val out = ctrl.onSpace(

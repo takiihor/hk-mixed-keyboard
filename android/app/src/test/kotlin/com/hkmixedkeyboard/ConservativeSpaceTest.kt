@@ -29,7 +29,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "communication", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("communication", out.committedText?.trimEnd())
+        assertEquals("communication", out.committedText)
         assertEquals(CandidateType.EN_LITERAL, out.memoryWrite.candidate?.type ?: CandidateType.EN_LITERAL)
     }
 
@@ -43,7 +43,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "chong", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("chong", out.committedText?.trimEnd())
+        assertEquals("chong", out.committedText)
         assertNotEquals("衝", out.committedText?.trimEnd())
     }
 
@@ -57,7 +57,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "hap", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("hap", out.committedText?.trimEnd())
+        assertEquals("hap", out.committedText)
         assertNotEquals("happy", out.committedText?.trimEnd())
     }
 
@@ -69,7 +69,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "mee", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("mee", out.committedText?.trimEnd())
+        assertEquals("mee", out.committedText)
         assertNotEquals("meeting", out.committedText?.trimEnd())
     }
 
@@ -92,7 +92,7 @@ class ConservativeSpaceTest {
         val out = ctrl.onSpace(state)
 
         // Prefix-only → cnCommittable=false → enLiteral
-        assertEquals("r", out.committedText?.trimEnd())
+        assertEquals("r", out.committedText)
     }
 
     // ── 4. Space on empty buffer passes through space ───────────────────────
@@ -243,7 +243,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "ok", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("ok", out.committedText?.trimEnd())
+        assertEquals("ok", out.committedText)
     }
 
     @Test
@@ -255,7 +255,7 @@ class ConservativeSpaceTest {
         val out = ctrl.onSpace(state)
 
         // Two Latin letters + Space stay English; 唔 remains available by tapping.
-        assertEquals("rr", out.committedText?.trimEnd())
+        assertEquals("rr", out.committedText)
     }
 
     @Test
