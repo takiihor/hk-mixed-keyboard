@@ -17,6 +17,7 @@ import android.widget.PopupWindow
 import android.view.Gravity
 import android.widget.Toast
 import com.hkmixedkeyboard.BuildConfig
+import com.hkmixedkeyboard.HkApplication
 import com.hkmixedkeyboard.commit.*
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.CorpusBackedDecoder
@@ -226,7 +227,8 @@ class HkImeService : InputMethodService() {
                 PerfTracer.mark("haptic_submitted")
             }
         // Core typing pipeline — must always initialize.
-        corpus = CorpusLoader(applicationContext)
+        corpus = (application as? HkApplication)?.corpus
+            ?: CorpusLoader(applicationContext)
         decoder = CorpusBackedDecoder(corpus)
         classifier = Classifier(decoder)
 

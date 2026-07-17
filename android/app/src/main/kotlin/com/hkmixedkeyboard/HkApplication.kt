@@ -7,9 +7,14 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.view.View
 import androidx.annotation.RequiresApi
+import com.hkmixedkeyboard.decoder.CorpusLoader
 
 /** Applies lifecycle stability policy and enables broad diagnostics in testable builds. */
 class HkApplication : Application() {
+    val corpus: CorpusLoader by lazy {
+        CorpusLoader(applicationContext)
+    }
+
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
