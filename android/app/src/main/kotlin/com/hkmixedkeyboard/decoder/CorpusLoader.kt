@@ -92,6 +92,7 @@ class CorpusLoader(private val ctx: Context) {
             write = { o, e -> o.writeUTF(e.jyutping); o.writeUTF(e.chinese); o.writeDouble(e.freq) },
             parse = ::loadJyutping)
     }
+    @Volatile private var pinyinFuzzyEnabled = false
     val pinyinLexicon: PinyinLexicon by lazy {
         val rows = cached("pinyin",
             read = { PinyinEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
@@ -99,7 +100,13 @@ class CorpusLoader(private val ctx: Context) {
             parse = ::loadPinyin)
         PinyinLexicon(rows)
     }
-    val pinyinDecoder: PinyinDecoder by lazy { PinyinDecoder(pinyinLexicon) }
+    val pinyinDecoder: PinyinDecoder by lazy {
+        PinyinDecoder(pinyinLexicon) { pinyinFuzzyEnabled }
+    }
+
+    fun setPinyinFuzzyEnabled(enabled: Boolean) {
+        pinyinFuzzyEnabled = enabled
+    }
 
     // Direct-CJK lookup (pasting/typing Chinese directly). Avoids a linear scan
     // over 21k chars / 40k phrases on every direct character. putIfAbsent keeps the

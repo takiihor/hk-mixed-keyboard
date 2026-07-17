@@ -285,7 +285,7 @@ class HkImeService : InputMethodService() {
                         soundEnabled = prefs.sound
                         showCangjieRoots = prefs.showRoots
                         showJyutpingCandidateReadings = prefs.showJyutpingCandidateReadings
-                        corpus.pinyinDecoder.setFuzzyEnabled(prefs.pinyinFuzzy)
+                        corpus.setPinyinFuzzyEnabled(prefs.pinyinFuzzy)
                         keyboardHeightPercent = prefs.keyboardHeightPercent
                         oneHandedMode = prefs.oneHandedMode
                         applyKeyboardGeometry()
