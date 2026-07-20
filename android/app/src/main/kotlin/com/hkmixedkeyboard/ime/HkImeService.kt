@@ -724,10 +724,7 @@ class HkImeService : InputMethodService() {
         resetCompositionState()
         lastCandidates = emptyList()
         candidateGrid?.dismiss()
-        if (::candidateBar.isInitialized) {
-            if (imeCtx.isSensitiveField) candidateBar.showSafeMode()
-            else candidateBar.clearSystemMessage()
-        }
+        refreshSensitiveStatus()
     }
 
     override fun onWindowHidden() {
@@ -1219,7 +1216,7 @@ class HkImeService : InputMethodService() {
     // Show the characters that commonly follow the committed prefix (我 → 們/哋…).
     private fun showNextCharPredictions() {
         if (!::candidateBar.isInitialized) return
-        if (imeCtx.isSensitiveField) { candidateBar.showSafeMode(); return }
+        if (imeCtx.isSensitiveField) { refreshSensitiveStatus(); return }
         val prefix = committedPrefix
         if (prefix.isEmpty()) { lastCandidates = emptyList(); candidateBar.clearSystemMessage(); return }
         schedulePredictions(prefix)
@@ -1699,9 +1696,7 @@ class HkImeService : InputMethodService() {
         imeState = ImeStateData()
         committedPrefix = ""
         lastCandidates = emptyList()
-        if (::candidateBar.isInitialized) {
-            if (imeCtx.isSensitiveField) candidateBar.showSafeMode() else candidateBar.clearSystemMessage()
-        }
+        refreshSensitiveStatus()
     }
 
     // The panel and keyboard occupy the same slot — index 1, right after the
