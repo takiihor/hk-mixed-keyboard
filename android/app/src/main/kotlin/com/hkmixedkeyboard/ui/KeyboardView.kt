@@ -104,6 +104,8 @@ class KeyboardView @JvmOverloads constructor(
 
     private data class KeyCell(
         val def: KeyboardLayout.KeyDef,
+        // Full layout cell, including the visual margin around the drawn key.
+        val logicalRect: RectF,
         // Visual rect used for drawing
         val rect: RectF,
         // Expanded hit rect to improve touch sensitivity and near-miss recovery
@@ -216,6 +218,12 @@ class KeyboardView @JvmOverloads constructor(
         cells.clear()
         val rows = KeyboardLayout.rowsFor(keyboardSurface, showNextInputMethodAction)
         for (cell in KeyboardLayout.buildCells(w, h, rows)) {
+            val logicalRect = RectF(
+                cell.bounds.left,
+                cell.bounds.top,
+                cell.bounds.right,
+                cell.bounds.bottom
+            )
             val drawRect = RectF(
                 cell.bounds.left + keyMargin,
                 cell.bounds.top + keyMargin,
@@ -228,7 +236,13 @@ class KeyboardView @JvmOverloads constructor(
                 drawRect.right + hitInflation,
                 drawRect.bottom + hitInflation
             )
-            cells += KeyCell(cell.key, drawRect, hitRect)
+            if (keyboardSurface == KeyboardSurface.NUMERIC_PASSWORD) {
+                hitRect.left = hitRect.left.coerceAtLeast(logicalRect.left)
+                hitRect.top = hitRect.top.coerceAtLeast(logicalRect.top)
+                hitRect.right = hitRect.right.coerceAtMost(logicalRect.right)
+                hitRect.bottom = hitRect.bottom.coerceAtMost(logicalRect.bottom)
+            }
+            cells += KeyCell(cell.key, logicalRect, drawRect, hitRect)
         }
         unitH = h / KeyboardLayout.totalHeightWeight(rows)
         // Preserve the previous 56dp-row visual sizes while compacting row geometry.
@@ -516,7 +530,8 @@ class KeyboardView @JvmOverloads constructor(
     // pick the one whose centre is closest — this disambiguates the overlap zones the
     // inflated rects create, so a tap near a boundary still selects the nearest key.
     // If the touch lands in a gap covered by no hit rect, fall back to the nearest key
-    // centre within nearestSelectRadius.
+    // centre within nearestSelectRadius. The PIN layout keeps its deliberate gutters
+    // non-interactive by allowing this fallback only inside a logical key cell.
     private fun cellForDown(x: Float, y: Float): KeyCell? {
         var best: KeyCell? = null
         var bestDist2 = Float.MAX_VALUE
@@ -531,6 +546,12 @@ class KeyboardView @JvmOverloads constructor(
             }
         }
         if (best != null) return best
+
+        if (keyboardSurface == KeyboardSurface.NUMERIC_PASSWORD &&
+            cells.none { it.logicalRect.contains(x, y) }
+        ) {
+            return null
+        }
 
         bestDist2 = nearestSelectRadius * nearestSelectRadius
         for (c in cells) {

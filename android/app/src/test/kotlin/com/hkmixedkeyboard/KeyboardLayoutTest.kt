@@ -84,7 +84,14 @@ class KeyboardLayoutTest {
         assertEquals(900f, cells.single { it.key.label == "3" }.bounds.right, 0.001f)
         assertEquals(100f, cells.single { it.key.label == "1" }.bounds.bottom, 0.001f)
         val zero = cells.single { it.key.label == "0" }.bounds
+        assertEquals(100f + 800f / 3f, zero.left, 0.001f)
+        assertEquals(100f + 1_600f / 3f, zero.right, 0.001f)
         assertEquals(100f, zero.bottom - zero.top, 0.001f)
+        assertEquals(
+            900f,
+            cells.single { it.key.label == KeyboardLayout.KEY_BACKSPACE }.bounds.right,
+            0.001f
+        )
     }
 
     @Test

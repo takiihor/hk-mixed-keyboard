@@ -1,13 +1,16 @@
 package com.hkmixedkeyboard
 
 import android.graphics.Rect
+import android.os.SystemClock
+import android.view.MotionEvent
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityNodeProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardAccessibilityLabels
+import com.hkmixedkeyboard.ui.KeyboardLayout
+import com.hkmixedkeyboard.ui.KeyboardSurface
 import com.hkmixedkeyboard.ui.KeyboardView
 import com.hkmixedkeyboard.ui.SymbolEnterAction
 import org.junit.Assert.assertEquals
@@ -18,6 +21,79 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class KeyboardAccessibilityNodeProviderTest {
+    @Test
+    fun numericPasswordGapRejectsTouchAndStaysOutsideVirtualKeyBounds() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        instrumentation.runOnMainSync {
+            val density = instrumentation.targetContext.resources.displayMetrics.density
+            val width = (100f * density).toInt()
+            val height = (60f * density).toInt()
+            val emitted = mutableListOf<String>()
+            val keyboard = KeyboardView(instrumentation.targetContext).apply {
+                keyboardSurface = KeyboardSurface.NUMERIC_PASSWORD
+                keyListener = object : KeyboardView.KeyListener {
+                    override fun onKey(label: String) { emitted += label }
+                    override fun onKeyLongPress(label: String) = Unit
+                    override fun onSpaceSwipe(delta: Int) = Unit
+                }
+                measure(
+                    View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
+                )
+                layout(0, 0, measuredWidth, measuredHeight)
+            }
+
+            val rows = KeyboardLayout.rowsFor(
+                KeyboardSurface.NUMERIC_PASSWORD,
+                showNextInputMethod = false
+            )
+            val logicalCells = KeyboardLayout.buildCells(
+                width.toFloat(),
+                height.toFloat(),
+                rows
+            )
+            val zero = logicalCells.single { it.key.label == "0" }.bounds
+            val seven = logicalCells.single { it.key.label == "7" }.bounds
+
+            fun tap(x: Float, y: Float) {
+                val downTime = SystemClock.uptimeMillis()
+                val down = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, x, y, 0)
+                val up = MotionEvent.obtain(downTime, downTime + 1, MotionEvent.ACTION_UP, x, y, 0)
+                try {
+                    keyboard.onTouchEvent(down)
+                    keyboard.onTouchEvent(up)
+                } finally {
+                    down.recycle()
+                    up.recycle()
+                }
+            }
+
+            tap(zero.left - 1f, seven.bottom + 1f)
+            tap(zero.left - 6f * density, seven.bottom + 6f * density)
+            assertTrue("PIN bottom-left gap must not emit a key", emitted.isEmpty())
+
+            val provider = keyboard.accessibilityNodeProvider!!
+            fun boundsFor(label: String): Rect {
+                val virtualId = logicalCells.indexOfFirst { it.key.label == label } + 1
+                return Rect().also { bounds ->
+                    provider.createAccessibilityNodeInfo(virtualId)!!.getBoundsInScreen(bounds)
+                }
+            }
+
+            val zeroBounds = boundsFor("0")
+            val sevenBounds = boundsFor("7")
+            val backspaceBounds = boundsFor(KeyboardLayout.KEY_BACKSPACE)
+            assertEquals(zero.left.toInt(), zeroBounds.left)
+            assertEquals(zero.right.toInt(), zeroBounds.right)
+            assertEquals(seven.bottom.toInt(), sevenBounds.bottom)
+            assertEquals(
+                logicalCells.single { it.key.label == KeyboardLayout.KEY_BACKSPACE }
+                    .bounds.right.toInt(),
+                backspaceBounds.right
+            )
+        }
+    }
+
     @Test
     fun keyboardExposesVirtualKeysAndRoutesVirtualClickToKeyListener() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
