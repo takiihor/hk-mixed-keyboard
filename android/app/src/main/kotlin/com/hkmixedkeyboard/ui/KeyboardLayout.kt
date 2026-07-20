@@ -30,6 +30,9 @@ object KeyboardLayout {
     const val GRID_WIDTH_UNITS = 10f
     const val BASE_ROW_HEIGHT_DP = 52f
 
+    private const val PIN_GRID_START_UNITS = 1f
+    private const val PIN_KEY_WIDTH_UNITS = 8f / 3f
+
     data class KeyDef(
         val label: String,
         val startUnits: Float,
@@ -117,7 +120,7 @@ object KeyboardLayout {
         KeyboardSurface.TEXT -> textRows()
         KeyboardSurface.EMAIL -> alphabetRows + emailBottomRow()
         KeyboardSurface.NUMBER -> numberRows()
-        KeyboardSurface.NUMERIC_PASSWORD -> numberRows()
+        KeyboardSurface.NUMERIC_PASSWORD -> numericPasswordRows()
         KeyboardSurface.SIGNED_DECIMAL_NUMBER -> signedDecimalRows()
         KeyboardSurface.PHONE -> phoneRows()
     }
@@ -181,6 +184,19 @@ object KeyboardLayout {
         compactActionRow()
     )
 
+    private fun numericPasswordRows(): List<RowDef> = listOf(
+        pinRow("1", "2", "3"),
+        pinRow("4", "5", "6"),
+        pinRow("7", "8", "9"),
+        row(
+            listOf(
+                "0" to PIN_KEY_WIDTH_UNITS,
+                KEY_BACKSPACE to PIN_KEY_WIDTH_UNITS
+            ),
+            startUnits = PIN_GRID_START_UNITS + PIN_KEY_WIDTH_UNITS
+        )
+    )
+
     private fun signedDecimalRows(): List<RowDef> = listOf(
         numericRow("1", "2", "3"),
         numericRow("4", "5", "6"),
@@ -199,6 +215,16 @@ object KeyboardLayout {
 
     private fun numericRow(first: String, second: String, third: String): RowDef =
         row(listOf(first to 10f / 3f, second to 10f / 3f, third to 10f / 3f))
+
+    private fun pinRow(first: String, second: String, third: String): RowDef =
+        row(
+            listOf(
+                first to PIN_KEY_WIDTH_UNITS,
+                second to PIN_KEY_WIDTH_UNITS,
+                third to PIN_KEY_WIDTH_UNITS
+            ),
+            startUnits = PIN_GRID_START_UNITS
+        )
 
     private fun compactActionRow(
         leading: List<Pair<String, Float>> = emptyList()

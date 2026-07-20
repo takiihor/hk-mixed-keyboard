@@ -51,13 +51,40 @@ class KeyboardLayoutTest {
 
             assertFalse("$surface must not expose Settings", labels.contains(KeyboardLayout.KEY_SETTINGS))
             assertFalse("$surface must not expose next IME", labels.contains(KeyboardLayout.KEY_NEXT_IME))
-            assertEquals(
-                "$surface action row width",
-                KeyboardLayout.GRID_WIDTH_UNITS,
-                rows.last().keys.sumOf { it.widthUnits.toDouble() }.toFloat(),
-                0.001f
-            )
+            if (surface != KeyboardSurface.NUMERIC_PASSWORD) {
+                assertEquals(
+                    "$surface action row width",
+                    KeyboardLayout.GRID_WIDTH_UNITS,
+                    rows.last().keys.sumOf { it.widthUnits.toDouble() }.toFloat(),
+                    0.001f
+                )
+            }
         }
+    }
+
+    @Test
+    fun `numeric password uses a centered four-row PIN grid`() {
+        val rows = KeyboardLayout.rowsFor(
+            KeyboardSurface.NUMERIC_PASSWORD,
+            showNextInputMethod = false
+        )
+
+        assertEquals(
+            listOf(
+                listOf("1", "2", "3"),
+                listOf("4", "5", "6"),
+                listOf("7", "8", "9"),
+                listOf("0", KeyboardLayout.KEY_BACKSPACE)
+            ),
+            rows.map { row -> row.keys.map { it.label } }
+        )
+
+        val cells = KeyboardLayout.buildCells(width = 1000f, height = 400f, rows = rows)
+        assertEquals(100f, cells.single { it.key.label == "1" }.bounds.left, 0.001f)
+        assertEquals(900f, cells.single { it.key.label == "3" }.bounds.right, 0.001f)
+        assertEquals(100f, cells.single { it.key.label == "1" }.bounds.bottom, 0.001f)
+        val zero = cells.single { it.key.label == "0" }.bounds
+        assertEquals(100f, zero.bottom - zero.top, 0.001f)
     }
 
     @Test
