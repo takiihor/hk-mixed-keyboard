@@ -145,6 +145,23 @@ class CandidateBarView @JvmOverloads constructor(
         }
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        if (displayState != CandidateBarDisplayState.SYSTEM_MESSAGE ||
+            View.MeasureSpec.getMode(widthMeasureSpec) == View.MeasureSpec.UNSPECIFIED
+        ) return
+
+        val viewportWidth = (measuredWidth - paddingLeft - paddingRight).coerceAtLeast(0)
+        row.measure(
+            View.MeasureSpec.makeMeasureSpec(viewportWidth, View.MeasureSpec.EXACTLY),
+            getChildMeasureSpec(
+                heightMeasureSpec,
+                paddingTop + paddingBottom,
+                row.layoutParams.height
+            )
+        )
+    }
+
     fun clear() {
         if (CandidateBarDisplayStatePolicy.afterClear(displayState) == CandidateBarDisplayState.SYSTEM_MESSAGE) {
             return

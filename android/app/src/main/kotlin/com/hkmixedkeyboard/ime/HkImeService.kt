@@ -1155,7 +1155,7 @@ class HkImeService : InputMethodService() {
             ) {
                 passwordSurfaceState.leaveManualPin()
                 applyEditorSurface()
-                refreshSensitiveStatus()
+                mainThread.post { refreshSensitiveStatus() }
             }
         } else {
             null
