@@ -16,6 +16,7 @@ import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardSurface
 import com.hkmixedkeyboard.ui.KeyboardView
 import com.hkmixedkeyboard.ui.SymbolEnterAction
+import com.hkmixedkeyboard.ui.SymbolKeyboardSpec
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -79,6 +80,68 @@ class KeyboardAccessibilityNodeProviderTest {
             )
             assertEquals(
                 12,
+                provider.createAccessibilityNodeInfo(AccessibilityNodeProvider.HOST_VIEW_ID)!!
+                    .childCount
+            )
+        }
+    }
+
+    @Test
+    fun numericPasswordActionChangeClearsFocusWithOldEditorActionDescription() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        instrumentation.runOnMainSync {
+            val accessibilityEvents = mutableListOf<Pair<Int, String>>()
+            val localizedText = KeyboardAccessibilityLabels.from(instrumentation.targetContext)
+            val expectedDoneDescription = SymbolKeyboardSpec.enterActionDescription(
+                SymbolEnterAction.DONE,
+                english = localizedText.locale.language == "en"
+            )
+            val keyboard = KeyboardView(instrumentation.targetContext).apply {
+                keyboardSurface = KeyboardSurface.NUMERIC_PASSWORD
+                enterAction = SymbolEnterAction.DONE
+                measure(
+                    View.MeasureSpec.makeMeasureSpec(1_000, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(400, View.MeasureSpec.EXACTLY)
+                )
+                layout(0, 0, measuredWidth, measuredHeight)
+            }
+            val parent = object : FrameLayout(instrumentation.targetContext) {
+                override fun requestSendAccessibilityEvent(
+                    child: View,
+                    event: AccessibilityEvent
+                ): Boolean {
+                    accessibilityEvents += event.eventType to event.contentDescription.toString()
+                    return true
+                }
+            }
+            parent.addView(keyboard)
+            val provider = keyboard.accessibilityNodeProvider!!
+            val doneVirtualId = 10
+
+            assertTrue(
+                provider.performAction(
+                    doneVirtualId,
+                    AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                    null
+                )
+            )
+            assertEquals(
+                expectedDoneDescription,
+                provider.findFocus(AccessibilityNodeInfo.FOCUS_ACCESSIBILITY)!!
+                    .contentDescription
+            )
+
+            keyboard.enterAction = SymbolEnterAction.RETURN
+
+            assertNull(provider.findFocus(AccessibilityNodeInfo.FOCUS_ACCESSIBILITY))
+            assertEquals(
+                expectedDoneDescription,
+                accessibilityEvents.single {
+                    it.first == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED
+                }.second
+            )
+            assertEquals(
+                11,
                 provider.createAccessibilityNodeInfo(AccessibilityNodeProvider.HOST_VIEW_ID)!!
                     .childCount
             )

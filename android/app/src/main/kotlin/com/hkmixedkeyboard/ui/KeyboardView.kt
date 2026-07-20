@@ -67,6 +67,7 @@ class KeyboardView @JvmOverloads constructor(
     var enterAction: SymbolEnterAction = SymbolEnterAction.RETURN
         set(value) {
             if (field == value) return
+            clearVirtualAccessibilityFocus()
             field = value
             rebuildCellsForSurface()
         }
