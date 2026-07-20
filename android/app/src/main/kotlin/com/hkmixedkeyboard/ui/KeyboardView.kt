@@ -113,9 +113,9 @@ class KeyboardView @JvmOverloads constructor(
 
     private val cells = mutableListOf<KeyCell>()
     private var acknowledgementPending = false
-    // Stable virtual IDs follow the immutable keyboard layout order: 1 maps to the
-    // first key, 2 to the second, and so on. The cells are rebuilt only from that
-    // same layout when size changes.
+    // Virtual IDs follow the current keyboard layout order: 1 maps to the first key,
+    // 2 to the second, and so on. Structural rebuilds clear virtual focus before
+    // replacing cells so an ID cannot silently move focus to a different key.
     private val keyboardAccessibilityProvider = KeyboardAccessibilityProvider()
     private var accessibilityFocusedVirtualId = View.NO_ID
     // Per-pointer press tracking. A single shared "pressed key" dropped characters
@@ -609,10 +609,22 @@ class KeyboardView @JvmOverloads constructor(
         }
 
     private fun rebuildCellsForSurface() {
+        clearVirtualAccessibilityFocus()
+        cancelActiveTouches()
         if (width > 0 && height > 0) buildCells(width.toFloat(), height.toFloat())
         requestLayout()
         invalidate()
         notifyAccessibilityStateChanged()
+    }
+
+    private fun clearVirtualAccessibilityFocus() {
+        val focusedVirtualId = accessibilityFocusedVirtualId
+        if (focusedVirtualId == View.NO_ID) return
+        accessibilityFocusedVirtualId = View.NO_ID
+        sendVirtualAccessibilityEvent(
+            focusedVirtualId,
+            AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED
+        )
     }
 
     private fun sendVirtualAccessibilityEvent(virtualViewId: Int, eventType: Int) {
@@ -692,11 +704,7 @@ class KeyboardView @JvmOverloads constructor(
                 }
                 AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS -> {
                     if (accessibilityFocusedVirtualId != virtualViewId) return false
-                    accessibilityFocusedVirtualId = View.NO_ID
-                    sendVirtualAccessibilityEvent(
-                        virtualViewId,
-                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED
-                    )
+                    clearVirtualAccessibilityFocus()
                     true
                 }
                 else -> false
