@@ -72,13 +72,27 @@ class EditorLayoutPolicyTest {
     }
 
     @Test
-    fun `uses text surface for ordinary password and unknown editors`() {
+    fun `maps genuine text password editors to their own surface`() {
+        val passwordVariations = listOf(
+            InputType.TYPE_TEXT_VARIATION_PASSWORD,
+            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+            InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
+        )
+
+        passwordVariations.forEach { variation ->
+            assertEquals(
+                KeyboardSurface.TEXT_PASSWORD,
+                EditorLayoutPolicy.surfaceFor(InputType.TYPE_CLASS_TEXT or variation)
+            )
+        }
+    }
+
+    @Test
+    fun `uses text surface for ordinary and unknown text editors`() {
         assertEquals(KeyboardSurface.TEXT, EditorLayoutPolicy.surfaceFor(InputType.TYPE_CLASS_TEXT))
         assertEquals(
             KeyboardSurface.TEXT,
-            EditorLayoutPolicy.surfaceFor(
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            )
+            EditorLayoutPolicy.surfaceFor(InputType.TYPE_CLASS_TEXT or 0x00000ff0)
         )
         assertEquals(KeyboardSurface.TEXT, EditorLayoutPolicy.surfaceFor(0x7f000000))
     }

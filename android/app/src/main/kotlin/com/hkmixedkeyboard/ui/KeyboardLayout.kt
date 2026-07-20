@@ -2,6 +2,7 @@ package com.hkmixedkeyboard.ui
 
 enum class KeyboardSurface {
     TEXT,
+    TEXT_PASSWORD,
     NUMBER,
     NUMERIC_PASSWORD,
     SIGNED_DECIMAL_NUMBER,
@@ -119,6 +120,7 @@ object KeyboardLayout {
         enterAction: SymbolEnterAction = SymbolEnterAction.RETURN
     ): List<RowDef> = when (surface) {
         KeyboardSurface.TEXT -> textRows()
+        KeyboardSurface.TEXT_PASSWORD -> textRows()
         KeyboardSurface.EMAIL -> alphabetRows + emailBottomRow()
         KeyboardSurface.NUMBER -> numberRows()
         KeyboardSurface.NUMERIC_PASSWORD -> numericPasswordRows(enterAction)

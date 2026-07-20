@@ -26,6 +26,12 @@ object EditorLayoutPolicy {
             inputClass == InputType.TYPE_CLASS_PHONE -> KeyboardSurface.PHONE
             inputClass == InputType.TYPE_CLASS_TEXT &&
                 variation in setOf(
+                    InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                    InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+                    InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
+                ) -> KeyboardSurface.TEXT_PASSWORD
+            inputClass == InputType.TYPE_CLASS_TEXT &&
+                variation in setOf(
                     InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
                     InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS
                 ) -> KeyboardSurface.EMAIL
