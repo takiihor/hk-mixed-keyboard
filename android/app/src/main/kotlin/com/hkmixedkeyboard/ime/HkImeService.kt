@@ -167,7 +167,9 @@ class HkImeService : InputMethodService() {
     private var imeState = ImeStateData()
     private var imeCtx = ImeContext()
     private var activeEditorInfo: EditorInfo? = null
-    private var editorSurface: KeyboardSurface = KeyboardSurface.TEXT
+    private val passwordSurfaceState = PasswordSurfaceState()
+    private val editorSurface: KeyboardSurface
+        get() = passwordSurfaceState.visibleSurface
     private var editorImeActions = EditorImeActions(SymbolEnterAction.RETURN, false)
     private var symbolKeyboardState = SymbolKeyboardState()
     private val schemeTransition = InputSchemeTransitionCoordinator(Scheme.QUICK)
@@ -668,7 +670,7 @@ class HkImeService : InputMethodService() {
         closeAltPanel()
         activeEditorInfo = attribute
         symbolKeyboardState = SymbolKeyboardState()
-        editorSurface = EditorLayoutPolicy.surfaceFor(attribute.inputType)
+        passwordSurfaceState.startEditor(EditorLayoutPolicy.surfaceFor(attribute.inputType))
         editorImeActions = EditorLayoutPolicy.actionsFor(
             attribute.imeOptions,
             shouldOfferNextInputMethodAction()
@@ -685,13 +687,12 @@ class HkImeService : InputMethodService() {
         shiftController.reset()
         refreshShiftVisual()
         applyEditorSurface()
-        if (::candidateBar.isInitialized) {
-            if (sensitive) candidateBar.showSafeMode() else candidateBar.clearSystemMessage()
-        }
+        refreshSensitiveStatus()
     }
 
     override fun onFinishInput() {
         super.onFinishInput()
+        passwordSurfaceState.finishEditor()
         activeEditorInfo = null
         resetCompositionState()
     }
@@ -756,6 +757,12 @@ class HkImeService : InputMethodService() {
             KeyboardView.KEY_EMOJI    -> { showEmojiPanel(); return }
             KeyboardView.KEY_SYMBOL   -> { showSymbolPage(); return }
             KeyboardView.KEY_MODE     -> { toggleScheme(); return }
+            KeyboardView.KEY_PIN_MODE -> {
+                passwordSurfaceState.enterManualPin()
+                applyEditorSurface()
+                refreshSensitiveStatus()
+                return
+            }
             KeyboardView.KEY_SETTINGS -> { openKeyboardSettings(); return }
             KeyboardView.KEY_NEXT_IME -> { switchToNextEditorInputMethod(); return }
             KeyboardView.KEY_SHIFT    -> {
@@ -1136,6 +1143,12 @@ class HkImeService : InputMethodService() {
             keyboardView.enterAction = editorImeActions.enterAction
         }
         symbolPanel?.enterAction = editorImeActions.enterAction
+    }
+
+    private fun refreshSensitiveStatus() {
+        if (!::candidateBar.isInitialized) return
+        if (imeCtx.isSensitiveField) candidateBar.showSafeMode()
+        else candidateBar.clearSystemMessage()
     }
 
     private fun shouldOfferNextInputMethodAction(): Boolean =
