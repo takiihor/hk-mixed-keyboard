@@ -1147,8 +1147,23 @@ class HkImeService : InputMethodService() {
 
     private fun refreshSensitiveStatus() {
         if (!::candidateBar.isInitialized) return
-        if (imeCtx.isSensitiveField) candidateBar.showSafeMode()
-        else candidateBar.clearSystemMessage()
+        if (!imeCtx.isSensitiveField) {
+            candidateBar.clearSystemMessage()
+            return
+        }
+        val action = if (passwordSurfaceState.showAlphabetAction) {
+            CandidateBarView.AuxiliaryAction(
+                label = getString(com.hkmixedkeyboard.R.string.password_pin_return_label),
+                contentDescription = getString(com.hkmixedkeyboard.R.string.password_pin_return_a11y)
+            ) {
+                passwordSurfaceState.leaveManualPin()
+                applyEditorSurface()
+                refreshSensitiveStatus()
+            }
+        } else {
+            null
+        }
+        candidateBar.showSafeMode(action)
     }
 
     private fun shouldOfferNextInputMethodAction(): Boolean =
@@ -1296,7 +1311,7 @@ class HkImeService : InputMethodService() {
         if (!::candidateBar.isInitialized) return
         if (imeCtx.isSensitiveField) {
             cancelCandidateDecode()
-            candidateBar.showSafeMode()
+            refreshSensitiveStatus()
             return
         }
         val bufSnapshot = imeState.buffer

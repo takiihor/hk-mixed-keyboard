@@ -19,6 +19,12 @@ class CandidateBarView @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : HorizontalScrollView(context, attrs) {
 
+    data class AuxiliaryAction(
+        val label: String,
+        val contentDescription: String,
+        val onClick: () -> Unit
+    )
+
     interface CandidateListener {
         fun onCandidateTap(candidate: DecodeCandidate)
         fun onExpandTap()
@@ -83,10 +89,11 @@ class CandidateBarView @JvmOverloads constructor(
     private val padH = dp(18)
     private val padV = dp(CandidateBarLayoutPolicy.VERTICAL_PADDING_DP)
 
-    fun showSafeMode() {
+    fun showSafeMode(auxiliaryAction: AuxiliaryAction? = null) {
         showSystemMessage(
             text = context.getString(R.string.safe_mode_active),
-            style = SystemMessageStyle.SAFE_MODE
+            style = SystemMessageStyle.SAFE_MODE,
+            auxiliaryAction = auxiliaryAction
         )
     }
 
@@ -168,7 +175,7 @@ class CandidateBarView @JvmOverloads constructor(
 
     private fun applyTheme() {
         if (displayState == CandidateBarDisplayState.SYSTEM_MESSAGE) {
-            bindSystemMessageTheme(row.getChildAt(0) as? TextView)
+            bindSystemMessageTheme()
             return
         }
         setBackgroundColor(themeColors.candidateBackground)
@@ -264,15 +271,28 @@ class CandidateBarView @JvmOverloads constructor(
             setMargins(margin, 0, margin, 0)
         }
 
-    private fun showSystemMessage(text: String, style: SystemMessageStyle) {
+    private fun showSystemMessage(
+        text: String,
+        style: SystemMessageStyle,
+        auxiliaryAction: AuxiliaryAction? = null
+    ) {
         renderSnapshot = null
         displayedCandidates = emptyList()
         systemMessageStyle = style
         row.removeAllViews()
         setRowWidth(LayoutParams.MATCH_PARENT)
-        row.addView(makeSystemMessageLabel(text))
+        val message = makeSystemMessageLabel(text)
+        if (auxiliaryAction != null) {
+            message.layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            ).apply { gravity = Gravity.CENTER_VERTICAL }
+        }
+        row.addView(message)
+        auxiliaryAction?.let { row.addView(makeAuxiliaryActionLabel(it)) }
         updateDisplayState(CandidateBarDisplayState.SYSTEM_MESSAGE)
-        bindSystemMessageTheme(row.getChildAt(0) as? TextView)
+        bindSystemMessageTheme()
     }
 
     private fun makeSystemMessageLabel(text: String) = TextView(context).apply {
@@ -293,10 +313,26 @@ class CandidateBarView @JvmOverloads constructor(
         ).apply { gravity = Gravity.CENTER_VERTICAL }
     }
 
-    private fun bindSystemMessageTheme(label: TextView?) {
+    private fun makeAuxiliaryActionLabel(action: AuxiliaryAction) = TextView(context).apply {
+        bindLabel(this, action.label)
+        contentDescription = action.contentDescription
+        setPadding(padH, padV, padH, padV)
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { gravity = Gravity.CENTER_VERTICAL }
+        setOnClickListener {
+            selectionHaptic(this)
+            action.onClick()
+        }
+    }
+
+    private fun bindSystemMessageTheme() {
         val isSafeMode = systemMessageStyle == SystemMessageStyle.SAFE_MODE
         setBackgroundColor(if (isSafeMode) themeColors.safeModeBackground else themeColors.candidateBackground)
-        label?.setTextColor(if (isSafeMode) themeColors.safeModeText else colorText)
+        val textColor = if (isSafeMode) themeColors.safeModeText else colorText
+        (row.getChildAt(0) as? TextView)?.setTextColor(textColor)
+        (row.getChildAt(1) as? TextView)?.setTextColor(textColor)
     }
 
     private fun setRowWidth(width: Int) {

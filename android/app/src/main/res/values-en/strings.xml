@@ -7,6 +7,8 @@
     <string name="licenses_label">Open-source licences and data sources</string>
     <string name="privacy_policy_label">Privacy policy</string>
     <string name="safe_mode_active">Safe mode (sensitive field)</string>
+    <string name="password_pin_return_label">ABC</string>
+    <string name="password_pin_return_a11y">Switch to alphabet password keyboard</string>
     <string name="corpus_loading">Loading…</string>
     <string name="custom_words_label">Custom dictionary</string>
     <string name="dictionary_transfer_label">Export / import dictionary</string>

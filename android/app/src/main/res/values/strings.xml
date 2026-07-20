@@ -127,5 +127,7 @@
     <string name="licenses_label">開源授權與資料來源</string>
     <string name="privacy_policy_label">私隱政策</string>
     <string name="safe_mode_active">安全模式 (密碼欄)</string>
+    <string name="password_pin_return_label">ABC</string>
+    <string name="password_pin_return_a11y">切換至英文字母密碼鍵盤</string>
     <string name="corpus_loading">載入中…</string>
 </resources>
