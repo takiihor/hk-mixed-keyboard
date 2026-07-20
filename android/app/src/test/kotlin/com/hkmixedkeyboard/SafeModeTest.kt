@@ -8,7 +8,7 @@ import org.junit.Test
 /**
  * Safe Keyboard Mode tests.
  *
- * In password / NO_SUGGESTIONS fields:
+ * In password fields:
  *   - Candidate bar must be empty (no candidates shown, including assist candidates)
  *   - No memory writes
  *   - prevCommitted cleared

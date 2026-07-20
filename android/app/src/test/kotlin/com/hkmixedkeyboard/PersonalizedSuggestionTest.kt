@@ -35,7 +35,9 @@ class PersonalizedSuggestionTest {
         val suggestions = memory.suggestions("ne", isSensitive = false)
 
         assertEquals(listOf("呢", "你"), suggestions.map { it.candidate.text })
-        assertEquals(listOf(5, 2), suggestions.map { it.count })
+        // Choosing a competing candidate ages the older choice toward one so a
+        // correction can recover instead of leaving a permanent stale weight.
+        assertEquals(listOf(5, 1), suggestions.map { it.count })
         assertTrue(suggestions.all { !it.isExactBuffer })
     }
 

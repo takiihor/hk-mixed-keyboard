@@ -3,14 +3,18 @@ package com.hkmixedkeyboard.settings
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.memory.CustomWordEntity
 import com.hkmixedkeyboard.memory.UserMemoryDatabase
 import kotlinx.coroutines.launch
@@ -22,26 +26,58 @@ class CustomWordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
 
+        val contentPadding = dp(16)
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(16), dp(16), dp(16), dp(16))
+            setPadding(contentPadding, contentPadding, contentPadding, contentPadding)
         }
 
         root.addView(TextView(this).apply {
-            text = "自訂詞庫"
+            text = getString(com.hkmixedkeyboard.R.string.custom_words_label)
             textSize = 20f
             setPadding(0, 0, 0, dp(12))
         })
 
         // Add new word form
-        val displayInput = EditText(this).apply { hint = "詞語（如: 我哋）" }
-        val codeInput    = EditText(this).apply { hint = "Quick 碼（如: qirp）" }
+        val displayInput = EditText(this).apply {
+            hint = getString(com.hkmixedkeyboard.R.string.custom_display_hint)
+            setSingleLine(true)
+            imeOptions = EditorInfo.IME_ACTION_NEXT
+            disableSystemTextSuggestions()
+        }
+        val schemes = listOf(Scheme.QUICK, Scheme.JYUTPING, Scheme.PINYIN)
+        val schemePicker = Spinner(this).apply {
+            adapter = ArrayAdapter(
+                this@CustomWordActivity,
+                android.R.layout.simple_spinner_dropdown_item,
+                listOf(
+                    getString(com.hkmixedkeyboard.R.string.quick_label),
+                    getString(com.hkmixedkeyboard.R.string.jyutping_label),
+                    getString(com.hkmixedkeyboard.R.string.pinyin_label)
+                )
+            )
+            contentDescription = getString(com.hkmixedkeyboard.R.string.custom_scheme_description)
+        }
+        val codeInput = EditText(this).apply {
+            hint = getString(com.hkmixedkeyboard.R.string.custom_code_hint)
+            setSingleLine(true)
+            imeOptions = EditorInfo.IME_ACTION_DONE
+            disableSystemTextSuggestions()
+        }
         val addBtn = Button(this).apply {
-            text = "新增"
-            setOnClickListener { addWord(displayInput.text.toString(), codeInput.text.toString()) }
+            text = getString(com.hkmixedkeyboard.R.string.add)
+            setOnClickListener {
+                addWord(
+                    schemes[schemePicker.selectedItemPosition],
+                    displayInput.text.toString(),
+                    codeInput.text.toString()
+                )
+            }
         }
         root.addView(displayInput, lp())
+        root.addView(schemePicker, lp())
         root.addView(codeInput, lp())
         root.addView(addBtn, lp())
 
@@ -56,16 +92,26 @@ class CustomWordActivity : AppCompatActivity() {
         })
 
         setContentView(root)
+        SettingsScreenInsets.apply(this, root, contentPadding)
         refreshList()
     }
 
-    private fun addWord(display: String, code: String) {
-        if (display.isBlank() || code.isBlank()) {
-            Toast.makeText(this, "請填寫詞語及 Quick 碼", Toast.LENGTH_SHORT).show()
-            return
+    private fun addWord(scheme: Scheme, display: String, code: String) {
+        val valid = when (val result = CustomWordValidator.validate(scheme, display, code)) {
+            is CustomWordValidator.Result.Invalid -> {
+                Toast.makeText(this, validationMessage(result.error), Toast.LENGTH_SHORT).show()
+                return
+            }
+            is CustomWordValidator.Result.Valid -> result
         }
         lifecycleScope.launch {
-            dao.insert(CustomWordEntity(display = display.trim(), quickCode = code.trim().lowercase()))
+            dao.insert(
+                CustomWordEntity(
+                    display = valid.display,
+                    quickCode = valid.quickCode,
+                    scheme = valid.scheme.name
+                )
+            )
             KeyboardSettings.bumpCustomWordsToken(this@CustomWordActivity)
             runOnUiThread { refreshList() }
         }
@@ -78,7 +124,7 @@ class CustomWordActivity : AppCompatActivity() {
                 wordList.removeAllViews()
                 if (words.isEmpty()) {
                     wordList.addView(TextView(this@CustomWordActivity).apply {
-                        text = "（未有自訂詞語）"
+                        text = getString(com.hkmixedkeyboard.R.string.no_custom_words)
                         textSize = 14f
                         setTextColor(0xFF94A3B8.toInt())
                     })
@@ -97,12 +143,18 @@ class CustomWordActivity : AppCompatActivity() {
         setPadding(0, dp(8), 0, dp(8))
 
         addView(TextView(this@CustomWordActivity).apply {
-            text = "${word.display}  (${word.quickCode})"
+            val schemeLabel = when (runCatching { Scheme.valueOf(word.scheme) }
+                .getOrDefault(Scheme.QUICK)) {
+                Scheme.JYUTPING -> getString(com.hkmixedkeyboard.R.string.jyutping_label)
+                Scheme.PINYIN -> getString(com.hkmixedkeyboard.R.string.pinyin_label)
+                else -> getString(com.hkmixedkeyboard.R.string.quick_label)
+            }
+            text = "${word.display}  [$schemeLabel: ${word.quickCode}]"
             textSize = 15f
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         })
         addView(Button(this@CustomWordActivity).apply {
-            text = "刪除"
+            text = getString(com.hkmixedkeyboard.R.string.delete)
             textSize = 12f
             setOnClickListener {
                 lifecycleScope.launch {
@@ -126,4 +178,8 @@ class CustomWordActivity : AppCompatActivity() {
     }
 
     private fun dp(n: Int) = (n * resources.displayMetrics.density + 0.5f).toInt()
+
+    private fun validationMessage(error: CustomWordValidator.Error): String = getString(
+        validationMessageResource(error)
+    )
 }

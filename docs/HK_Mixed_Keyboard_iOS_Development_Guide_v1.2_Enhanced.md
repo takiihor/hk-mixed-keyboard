@@ -1,4 +1,8 @@
-# HK Mixed Keyboard — iOS Development Guide v1.2 Enhanced
+# HK Mixed Keyboard — iOS Development Guide v1.2 Enhanced (Historical Two-Mode Design)
+
+> This document describes an older iOS two-mode design and is retained for
+> historical reference. It is not evidence for the current Android three-mode
+> Quick / Jyutping / Mandarin Pinyin release candidate.
 
 香港人專用 iOS 中英混合速成 / 粵拼鍵盤（倉頡字根提示）  
 Native iOS Custom Keyboard Extension port of the shipped Android app.
@@ -1727,4 +1731,3 @@ Proceed in this order:
 ```
 
 The safest development strategy is to avoid UI-first development. A keyboard can look correct but still destroy user trust if commit behaviour differs from Android. Start with the core logic and tests, then build the iOS UI on top of a proven engine.
-

@@ -26,10 +26,16 @@ class KeyTouchPolicyTest {
     }
 
     @Test
-    fun `mode key is not a hold gesture and switches only on release`() {
-        assertFalse(KeyTouchPolicy.usesHoldGesture("⌨"))
+    fun `period key waits for short or long press decision`() {
+        assertFalse(KeyTouchPolicy.emitsOnPress("。"))
+        assertTrue(KeyTouchPolicy.usesHoldGesture("。"))
+    }
+
+    @Test
+    fun `mode key waits for tap or long-press direct picker`() {
+        assertTrue(KeyTouchPolicy.usesHoldGesture("⌨"))
         assertFalse(KeyTouchPolicy.emitsOnPress("⌨"))
-        assertTrue(KeyTouchPolicy.emitsOnRelease("⌨", releasedInside = true))
+        assertFalse(KeyTouchPolicy.emitsOnRelease("⌨", releasedInside = true))
         assertFalse(KeyTouchPolicy.emitsOnRelease("⌨", releasedInside = false))
     }
 

@@ -3,40 +3,46 @@ package com.hkmixedkeyboard
 import com.hkmixedkeyboard.ui.TypingHapticBackend
 import com.hkmixedkeyboard.ui.TypingHapticEngine
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class TypingHapticEngineTest {
 
     @Test
-    fun `repeated taps cancel previous vibration before each tick`() {
+    fun `test builds use device-tuned haptic effects`() {
+        assertFalse(BuildConfig.HAPTIC_STRONG_DEBUG)
+    }
+
+    @Test
+    fun `repeated taps do not cancel device-tuned haptics`() {
         val backend = FakeBackend()
         val engine = TypingHapticEngine(backend)
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        assertEquals(listOf("cancel", "primitive", "cancel", "primitive"), backend.events)
+        assertEquals(listOf("primitiveClick", "primitiveClick"), backend.events)
     }
 
     @Test
-    fun `cancel-before-tick can be disabled`() {
+    fun `cancel-before-tick remains available when explicitly enabled`() {
         val backend = FakeBackend()
-        val engine = TypingHapticEngine(backend, cancelBeforeTick = false)
+        val engine = TypingHapticEngine(backend, cancelBeforeTick = true)
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        assertEquals(listOf("primitive", "primitive"), backend.events)
+        assertEquals(listOf("cancel", "primitiveClick", "cancel", "primitiveClick"), backend.events)
     }
 
     @Test
-    fun `predefined tick is used when primitive is unsupported`() {
-        val backend = FakeBackend(primitiveTickSupported = false)
+    fun `predefined click is used when primitive is unsupported`() {
+        val backend = FakeBackend(primitiveClickSupported = false)
         val engine = TypingHapticEngine(backend)
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        assertEquals(listOf("cancel", "predefined"), backend.events)
+        assertEquals(listOf("predefinedClick"), backend.events)
     }
 
     @Test
@@ -61,12 +67,12 @@ class TypingHapticEngineTest {
 
     @Test
     fun `direct vibration failure falls back without escaping`() {
-        val backend = FakeBackend(failPrimitiveTick = true)
+        val backend = FakeBackend(failPrimitiveClick = true)
         val engine = TypingHapticEngine(backend)
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        assertEquals(listOf("cancel", "primitive", "view"), backend.events)
+        assertEquals(listOf("primitiveClick", "view"), backend.events)
     }
 
     @Test
@@ -90,22 +96,22 @@ class TypingHapticEngineTest {
     }
 
     @Test
-    fun `cancel failure during tick does not block the tick`() {
+    fun `cancel failure during click does not block the click`() {
         val backend = FakeBackend(failCancel = true)
-        val engine = TypingHapticEngine(backend)
+        val engine = TypingHapticEngine(backend, cancelBeforeTick = true)
 
         engine.perform(enabled = true, viewFallback = { backend.events += "view" })
 
-        // cancel attempt + primitive tick both succeed, cancel failure swallowed
-        assertEquals(listOf("cancel", "primitive"), backend.events)
+        // cancel attempt + primitive click both succeed, cancel failure swallowed
+        assertEquals(listOf("cancel", "primitiveClick"), backend.events)
     }
 
     private class FakeBackend(
         private val vibratorAvailable: Boolean = true,
         private val failCancel: Boolean = false,
-        private val primitiveTickSupported: Boolean = true,
-        private val predefinedTickSupported: Boolean = true,
-        private val failPrimitiveTick: Boolean = false,
+        private val primitiveClickSupported: Boolean = true,
+        private val predefinedClickSupported: Boolean = true,
+        private val failPrimitiveClick: Boolean = false,
         private val failCapabilityQuery: Boolean = false
     ) : TypingHapticBackend {
         val events = mutableListOf<String>()
@@ -116,24 +122,24 @@ class TypingHapticEngineTest {
                 return vibratorAvailable
             }
 
-        override val supportsPrimitiveTick: Boolean
-            get() = primitiveTickSupported
+        override val supportsPrimitiveClick: Boolean
+            get() = primitiveClickSupported
 
-        override val supportsPredefinedTick: Boolean
-            get() = predefinedTickSupported
+        override val supportsPredefinedClick: Boolean
+            get() = predefinedClickSupported
 
         override fun cancel() {
             events += "cancel"
             if (failCancel) throw SecurityException("cancel denied")
         }
 
-        override fun vibratePrimitiveTick() {
-            events += "primitive"
-            if (failPrimitiveTick) throw IllegalStateException("vibrator unavailable")
+        override fun vibratePrimitiveClick() {
+            events += "primitiveClick"
+            if (failPrimitiveClick) throw IllegalStateException("vibrator unavailable")
         }
 
-        override fun vibratePredefinedTick() {
-            events += "predefined"
+        override fun vibratePredefinedClick() {
+            events += "predefinedClick"
         }
     }
 }

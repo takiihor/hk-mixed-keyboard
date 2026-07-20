@@ -1,6 +1,8 @@
 package com.hkmixedkeyboard.ui
 
 import android.content.Context
+import android.text.TextUtils
+import android.graphics.Canvas
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -8,7 +10,6 @@ import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.hkmixedkeyboard.R
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
@@ -17,6 +18,12 @@ class CandidateBarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : HorizontalScrollView(context, attrs) {
+
+    data class AuxiliaryAction(
+        val label: String,
+        val contentDescription: String,
+        val onClick: () -> Unit
+    )
 
     interface CandidateListener {
         fun onCandidateTap(candidate: DecodeCandidate)
@@ -28,6 +35,34 @@ class CandidateBarView @JvmOverloads constructor(
     // Shared low-latency haptic engine, injected by the IME service.
     var haptics: TypingHapticEngine? = null
     private var renderSnapshot: CandidateRenderSnapshot? = null
+    private var displayedCandidates: List<DecodeCandidate> = emptyList()
+    private var systemMessageStyle: SystemMessageStyle? = null
+    private val glyphPaint = android.graphics.Paint()
+    private var candidateRenderMetricPending = false
+
+    var displayState: CandidateBarDisplayState = CandidateBarDisplayState.EMPTY
+        private set
+
+    var themeColors: KeyboardThemeColors = KeyboardThemeColors.from(context)
+        set(value) {
+            field = value
+            applyTheme()
+        }
+
+    var showJyutpingCandidateReadings: Boolean = false
+        set(value) {
+            if (field == value) return
+            field = value
+            if (displayState == CandidateBarDisplayState.CANDIDATES_OR_COMPOSING) {
+                displayedCandidates.forEachIndexed { index, candidate ->
+                    (row.getChildAt(index) as? TextView)?.let {
+                        bindCandidateView(it, candidate, index)
+                    }
+                }
+            }
+        }
+
+    private enum class SystemMessageStyle { DEFAULT, SAFE_MODE }
 
     private fun selectionHaptic(view: View) {
         val engine = haptics
@@ -46,30 +81,30 @@ class CandidateBarView @JvmOverloads constructor(
         addView(it, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
     }
 
-    private val colorText    = ContextCompat.getColor(context, R.color.cand_text)
-    private val colorHkText  = ContextCompat.getColor(context, R.color.cand_text_hk)
-    private val colorEnPill  = ContextCompat.getColor(context, R.color.key_bg)
+    private val colorText get() = themeColors.candidateText
+    private val colorHkText get() = themeColors.candidatePriorityText
+    private val colorEnPill get() = themeColors.candidatePillBackground
 
-    private val textSizeSp = 24f
+    private val textSizeSp = CandidateBarLayoutPolicy.TEXT_SIZE_SP
     private val padH = dp(18)
-    private val padV = dp(6)
+    private val padV = dp(CandidateBarLayoutPolicy.VERTICAL_PADDING_DP)
 
-    fun showSafeMode() {
-        renderSnapshot = null
-        row.removeAllViews()
-        row.addView(makeLabel(context.getString(R.string.safe_mode_active),
-            ContextCompat.getColor(context, R.color.safe_mode_text)))
-        setBackgroundColor(ContextCompat.getColor(context, R.color.safe_mode_bg))
+    fun showSafeMode(auxiliaryAction: AuxiliaryAction? = null) {
+        showSystemMessage(
+            text = context.getString(R.string.safe_mode_active),
+            style = SystemMessageStyle.SAFE_MODE,
+            auxiliaryAction = auxiliaryAction
+        )
     }
 
     // Shown briefly on a cold start while the dictionary is still warming, so the
     // bar isn't blank when a code is typed before candidates are ready. The pending
     // decode replaces it as soon as the corpus is loaded.
     fun showLoading() {
-        renderSnapshot = null
-        row.removeAllViews()
-        row.addView(makeLabel(context.getString(R.string.corpus_loading), colorText))
-        setBackgroundColor(ContextCompat.getColor(context, R.color.cand_bg))
+        showSystemMessage(
+            text = context.getString(R.string.corpus_loading),
+            style = SystemMessageStyle.DEFAULT
+        )
     }
 
     fun setCandidates(candidates: List<DecodeCandidate>) {
@@ -80,7 +115,11 @@ class CandidateBarView @JvmOverloads constructor(
         val nextSnapshot = CandidateRenderSnapshot.from(candidates)
         if (nextSnapshot == renderSnapshot) return
         renderSnapshot = nextSnapshot
-        setBackgroundColor(ContextCompat.getColor(context, R.color.cand_bg))
+        displayedCandidates = candidates
+        systemMessageStyle = null
+        setRowWidth(LayoutParams.WRAP_CONTENT)
+        updateDisplayState(CandidateBarDisplayState.CANDIDATES_OR_COMPOSING)
+        setBackgroundColor(themeColors.candidateBackground)
 
         val desiredCount = candidates.size + 1
         while (row.childCount < desiredCount) {
@@ -90,20 +129,105 @@ class CandidateBarView @JvmOverloads constructor(
             row.removeViewAt(row.childCount - 1)
         }
         candidates.forEachIndexed { index, cand ->
-            bindCandidateView(row.getChildAt(index) as TextView, cand)
+            bindCandidateView(row.getChildAt(index) as TextView, cand, index)
         }
         bindExpandView(row.getChildAt(candidates.size) as TextView)
         scrollTo(0, 0)
+        candidateRenderMetricPending = true
+        invalidate()
+    }
+
+    override fun dispatchDraw(canvas: Canvas) {
+        super.dispatchDraw(canvas)
+        if (candidateRenderMetricPending) {
+            candidateRenderMetricPending = false
+            com.hkmixedkeyboard.performance.LatencyLogger.firstCandidateRender()
+        }
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        if (displayState != CandidateBarDisplayState.SYSTEM_MESSAGE ||
+            View.MeasureSpec.getMode(widthMeasureSpec) == View.MeasureSpec.UNSPECIFIED
+        ) return
+
+        val viewportWidth = (measuredWidth - paddingLeft - paddingRight).coerceAtLeast(0)
+        row.measure(
+            View.MeasureSpec.makeMeasureSpec(viewportWidth, View.MeasureSpec.EXACTLY),
+            getChildMeasureSpec(
+                heightMeasureSpec,
+                paddingTop + paddingBottom,
+                row.layoutParams.height
+            )
+        )
     }
 
     fun clear() {
+        if (CandidateBarDisplayStatePolicy.afterClear(displayState) == CandidateBarDisplayState.SYSTEM_MESSAGE) {
+            return
+        }
         renderSnapshot = null
+        displayedCandidates = emptyList()
+        systemMessageStyle = null
         row.removeAllViews()
-        setBackgroundColor(ContextCompat.getColor(context, R.color.cand_bg))
+        setRowWidth(LayoutParams.WRAP_CONTENT)
+        updateDisplayState(CandidateBarDisplayState.EMPTY)
+        setBackgroundColor(themeColors.candidateBackground)
     }
 
-    private fun bindCandidateView(tv: TextView, cand: DecodeCandidate) {
-        bindLabel(tv, cand.text)
+    /** Clears a stale safety/loading/error message when its owner resolves it. */
+    fun clearSystemMessage() {
+        if (displayState != CandidateBarDisplayState.SYSTEM_MESSAGE) {
+            clear()
+            return
+        }
+        renderSnapshot = null
+        displayedCandidates = emptyList()
+        systemMessageStyle = null
+        row.removeAllViews()
+        setRowWidth(LayoutParams.WRAP_CONTENT)
+        updateDisplayState(CandidateBarDisplayState.EMPTY)
+        setBackgroundColor(themeColors.candidateBackground)
+    }
+
+    private fun applyTheme() {
+        if (displayState == CandidateBarDisplayState.SYSTEM_MESSAGE) {
+            bindSystemMessageTheme()
+            return
+        }
+        setBackgroundColor(themeColors.candidateBackground)
+        when (displayState) {
+            CandidateBarDisplayState.CANDIDATES_OR_COMPOSING -> displayedCandidates.forEachIndexed { index, candidate ->
+                (row.getChildAt(index) as? TextView)?.let { bindCandidateView(it, candidate, index) }
+            }
+            else -> Unit
+        }
+        if (displayState == CandidateBarDisplayState.CANDIDATES_OR_COMPOSING) {
+            (row.getChildAt(displayedCandidates.size) as? TextView)?.let(::bindExpandView)
+        }
+    }
+
+    private fun bindCandidateView(tv: TextView, cand: DecodeCandidate, index: Int) {
+        val visibleLabel = CandidatePresentation.label(
+            cand,
+            glyphPaint::hasGlyph,
+            context.getString(R.string.chinese_to_english),
+            showJyutpingCandidateReadings
+        )
+        bindLabel(tv, visibleLabel)
+        tv.contentDescription = buildString {
+            append(context.getString(
+                R.string.candidate_position,
+                index + 1,
+                displayedCandidates.size,
+                cand.text
+            ))
+            cand.annotation?.takeIf { it.isNotBlank() }?.let {
+                append(context.getString(R.string.candidate_reading, it))
+            }
+            if (index == 0) append(context.getString(R.string.candidate_first))
+        }
+        tv.isSelected = index == 0
         if (cand.type == CandidateType.EN_LITERAL) {
             tv.setTextColor(colorText)
             tv.background = android.graphics.drawable.GradientDrawable().apply {
@@ -129,6 +253,7 @@ class CandidateBarView @JvmOverloads constructor(
 
     private fun bindExpandView(tv: TextView) {
         bindLabel(tv, "▾")
+        tv.contentDescription = context.getString(R.string.candidate_expand)
         tv.setTextColor(colorText)
         tv.background = null
         tv.setPadding(padH, padV, padH, padV)
@@ -142,8 +267,16 @@ class CandidateBarView @JvmOverloads constructor(
     private fun bindLabel(tv: TextView, value: String) {
         tv.text = value
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp)
+        tv.typeface = android.graphics.Typeface.create(
+            "sans-serif-medium",
+            android.graphics.Typeface.NORMAL
+        )
         tv.gravity = Gravity.CENTER_VERTICAL
-        tv.isFocusable = false
+        tv.setSingleLine(true)
+        tv.ellipsize = TextUtils.TruncateAt.END
+        tv.isFocusable = true
+        tv.isClickable = true
+        tv.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
     }
 
     private fun candidateLayoutParams(margin: Int) =
@@ -155,13 +288,77 @@ class CandidateBarView @JvmOverloads constructor(
             setMargins(margin, 0, margin, 0)
         }
 
-    private fun makeLabel(text: String, color: Int) = TextView(context).apply {
+    private fun showSystemMessage(
+        text: String,
+        style: SystemMessageStyle,
+        auxiliaryAction: AuxiliaryAction? = null
+    ) {
+        renderSnapshot = null
+        displayedCandidates = emptyList()
+        systemMessageStyle = style
+        row.removeAllViews()
+        setRowWidth(LayoutParams.MATCH_PARENT)
+        val message = makeSystemMessageLabel(text)
+        if (auxiliaryAction != null) {
+            message.layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            ).apply { gravity = Gravity.CENTER_VERTICAL }
+        }
+        row.addView(message)
+        auxiliaryAction?.let { row.addView(makeAuxiliaryActionLabel(it)) }
+        updateDisplayState(CandidateBarDisplayState.SYSTEM_MESSAGE)
+        bindSystemMessageTheme()
+    }
+
+    private fun makeSystemMessageLabel(text: String) = TextView(context).apply {
         this.text = text
-        setTextColor(color)
         setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp)
+        typeface = android.graphics.Typeface.create(
+            "sans-serif-medium",
+            android.graphics.Typeface.NORMAL
+        )
         setPadding(padH, padV, padH, padV)
         gravity = Gravity.CENTER_VERTICAL
-        isFocusable = false
+        maxLines = CandidateBarLayoutPolicy.SYSTEM_MESSAGE_MAX_LINES
+        ellipsize = TextUtils.TruncateAt.END
+        isFocusable = true
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { gravity = Gravity.CENTER_VERTICAL }
+    }
+
+    private fun makeAuxiliaryActionLabel(action: AuxiliaryAction) = TextView(context).apply {
+        bindLabel(this, action.label)
+        contentDescription = action.contentDescription
+        setPadding(padH, padV, padH, padV)
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { gravity = Gravity.CENTER_VERTICAL }
+        setOnClickListener {
+            selectionHaptic(this)
+            action.onClick()
+        }
+    }
+
+    private fun bindSystemMessageTheme() {
+        val isSafeMode = systemMessageStyle == SystemMessageStyle.SAFE_MODE
+        setBackgroundColor(if (isSafeMode) themeColors.safeModeBackground else themeColors.candidateBackground)
+        val textColor = if (isSafeMode) themeColors.safeModeText else colorText
+        (row.getChildAt(0) as? TextView)?.setTextColor(textColor)
+        (row.getChildAt(1) as? TextView)?.setTextColor(textColor)
+    }
+
+    private fun setRowWidth(width: Int) {
+        row.layoutParams = LayoutParams(width, LayoutParams.MATCH_PARENT)
+    }
+
+    private fun updateDisplayState(next: CandidateBarDisplayState) {
+        if (displayState == next) return
+        displayState = next
     }
 
     private fun dp(n: Int) = (n * resources.displayMetrics.density + 0.5f).toInt()

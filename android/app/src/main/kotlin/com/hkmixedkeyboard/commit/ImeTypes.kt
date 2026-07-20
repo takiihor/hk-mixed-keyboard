@@ -39,9 +39,16 @@ data class MemoryWriteDecision(
     val candidate: DecodeCandidate? = null
 )
 
+enum class DeletionUnit { CODE_POINTS, UTF16_UNITS }
+
+data class DeletionRequest(
+    val unit: DeletionUnit,
+    val count: Int
+)
+
 data class CommitOutput(
     val committedText: String?,           // text sent to app (null if nothing committed)
-    val deletedBefore: Int = 0,           // chars deleted before cursor (backspace revert)
+    val deletion: DeletionRequest? = null,
     val newState: ImeStateData,
     val memoryWrite: MemoryWriteDecision,
     val swallowEnter: Boolean = false     // true when Enter policy = COMMIT_THEN_SWALLOW
@@ -50,6 +57,20 @@ data class CommitOutput(
 // Constants from spec §14.5
 object Thresholds {
     const val MAX_BUFFER_LEN = 20
+    // Both romanization corpora carry long, valid phrase keys. Keep their
+    // bounded composition ceiling aligned with their corpus generators.
+    const val ROMANIZATION_MAX_BUFFER_LEN = 72
+    const val PINYIN_MAX_BUFFER_LEN = ROMANIZATION_MAX_BUFFER_LEN
+    const val JYUTPING_MAX_BUFFER_LEN = ROMANIZATION_MAX_BUFFER_LEN
+
+    /** Pinyin keys reach 67 and Jyutping keys reach 39 letters in pinned corpora. */
+    fun maxBufferLength(scheme: com.hkmixedkeyboard.decoder.Scheme): Int =
+        when (scheme) {
+            com.hkmixedkeyboard.decoder.Scheme.PINYIN -> PINYIN_MAX_BUFFER_LEN
+            com.hkmixedkeyboard.decoder.Scheme.JYUTPING -> JYUTPING_MAX_BUFFER_LEN
+            else -> MAX_BUFFER_LEN
+        }
+
     const val USER_MEM_OVERRIDE_MIN_COUNT = 3
     const val USER_MEM_OVERRIDE_MIN_CONF = 0.80
     const val CN_RATIO_THRESHOLD = 0.65

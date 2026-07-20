@@ -28,6 +28,8 @@ data class WhitelistEntry(val word: String, val canonical: String)
 
 data class EnglishAssistEntry(val english: String, val chinese: String, val freq: Double)
 
+data class ChineseAssistEntry(val chinese: String, val english: String, val freq: Double)
+
 data class JyutpingEntry(val jyutping: String, val chinese: String, val freq: Double)
 
 class CorpusLoader(private val ctx: Context) {
@@ -49,6 +51,31 @@ class CorpusLoader(private val ctx: Context) {
     }
     val mixedPhrases: List<MixedPhraseEntry> by lazy { loadMixedPhrases() }
     val whitelist: List<WhitelistEntry> by lazy { loadWhitelist() }
+    private val hkscsSupplement: List<HkscsSupplement.Entry> by lazy {
+        HkscsSupplement.parse(parseCsv("corpus/hkscs_supplement.csv") { it })
+    }
+    /**
+     * Official HKSCS records without an input mapping remain selectable through a
+     * technical Unicode escape. These candidates are intentionally tap-only; the
+     * commit policy accepts only linguistic source schemas for Space/punctuation.
+     */
+    val hkscsUnicodeFallbackIndex: Map<String, DecodeCandidate> by lazy {
+        val routedByCorpus = HashSet<String>(chars.size + jyutping.size)
+        chars.forEach { routedByCorpus.add(it.char) }
+        jyutping.forEach { routedByCorpus.add(it.chinese) }
+        hkscsSupplement.mapNotNull { entry ->
+            entry.unicodeFallbackCode?.takeIf { entry.text !in routedByCorpus }?.let { code ->
+                code to DecodeCandidate(
+                    entry.text,
+                    code,
+                    SourceSchema.HKSCS_UNICODE,
+                    CandidateType.CHAR,
+                    0.0,
+                    false
+                )
+            }
+        }.toMap()
+    }
     val englishAssist: List<EnglishAssistEntry> by lazy {
         cached("english_assist",
             read = { EnglishAssistEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
@@ -58,12 +85,14 @@ class CorpusLoader(private val ctx: Context) {
     val englishCompletionIndex: EnglishCompletionIndex by lazy {
         EnglishCompletionIndex(englishAssist)
     }
+    val chineseAssist: List<ChineseAssistEntry> by lazy { loadChineseAssist() }
     val jyutping: List<JyutpingEntry> by lazy {
         cached("jyutping",
             read = { JyutpingEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
             write = { o, e -> o.writeUTF(e.jyutping); o.writeUTF(e.chinese); o.writeDouble(e.freq) },
             parse = ::loadJyutping)
     }
+    @Volatile private var pinyinFuzzyEnabled = false
     val pinyinLexicon: PinyinLexicon by lazy {
         val rows = cached("pinyin",
             read = { PinyinEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
@@ -71,7 +100,13 @@ class CorpusLoader(private val ctx: Context) {
             parse = ::loadPinyin)
         PinyinLexicon(rows)
     }
-    val pinyinDecoder: PinyinDecoder by lazy { PinyinDecoder(pinyinLexicon) }
+    val pinyinDecoder: PinyinDecoder by lazy {
+        PinyinDecoder(pinyinLexicon) { pinyinFuzzyEnabled }
+    }
+
+    fun setPinyinFuzzyEnabled(enabled: Boolean) {
+        pinyinFuzzyEnabled = enabled
+    }
 
     // Direct-CJK lookup (pasting/typing Chinese directly). Avoids a linear scan
     // over 21k chars / 40k phrases on every direct character. putIfAbsent keeps the
@@ -97,9 +132,27 @@ class CorpusLoader(private val ctx: Context) {
         SortedPrefixIndex(englishAssistIndex.keys)
     }
 
+    // ── Reviewed Chinese → English post-commit assist ─────────────────────
+
+    val chineseAssistIndex: Map<String, List<DecodeCandidate>> by lazy {
+        buildChineseAssistIndex()
+    }
+
     // ── Jyutping romanization indices ──────────────────────────────────────
 
     val jyutpingIndex: Map<String, List<DecodeCandidate>> by lazy { buildJyutpingIndex() }
+    val jyutpingReadingsByText: Map<String, List<String>> by lazy {
+        jyutping.groupBy { it.chinese }
+            .mapValues { (_, entries) ->
+                entries.sortedByDescending { it.freq }.map { it.jyutping }.distinct()
+            }
+    }
+    val jyutpingTonalReadingsByText: Map<String, List<String>> by lazy {
+        loadJyutpingTonalReadings()
+    }
+    val jyutpingToneIndex: JyutpingToneIndex by lazy {
+        JyutpingToneIndex(jyutpingTonalReadingsByText)
+    }
     val jyutpingPrefixIndex: SortedPrefixIndex by lazy {
         SortedPrefixIndex(jyutpingIndex.keys)
     }
@@ -109,7 +162,10 @@ class CorpusLoader(private val ctx: Context) {
     // (e.g. "hoenggong"→香港) only map to multi-char text, so they are excluded.
     val jyutpingSyllableSet: Set<String> by lazy {
         jyutpingIndex.entries
-            .filter { (_, cands) -> cands.any { it.text.length == 1 } }
+            .filter { (key, cands) ->
+                key in JyutpingSyllables.all &&
+                cands.any { it.text.codePointCount(0, it.text.length) == 1 }
+            }
             .mapTo(HashSet()) { it.key }
     }
 
@@ -129,14 +185,13 @@ class CorpusLoader(private val ctx: Context) {
         // prefix -> (nextChar -> best phrase frequency)
         val acc = HashMap<String, HashMap<String, Double>>()
         for (p in phrases) {
-            val s = p.phrase
-            val n = s.length
-            if (n < 2) continue
+            val codePoints = p.phrase.codePoints().toArray()
+            if (codePoints.size < 2) continue
             // Predict the next char after prefixes of length 1..3 (words ≤ 4 chars).
-            val maxPrefix = minOf(3, n - 1)
+            val maxPrefix = minOf(3, codePoints.size - 1)
             for (i in 1..maxPrefix) {
-                val prefix = s.substring(0, i)
-                val next = s.substring(i, i + 1)
+                val prefix = String(codePoints, 0, i)
+                val next = String(codePoints, i, 1)
                 val m = acc.getOrPut(prefix) { HashMap() }
                 if (p.freq > (m[next] ?: 0.0)) m[next] = p.freq
             }
@@ -161,11 +216,27 @@ class CorpusLoader(private val ctx: Context) {
 
     // ── Loaders ────────────────────────────────────────────────────────────
 
-    private fun loadChars(): List<CharEntry> = parseCsv("corpus/hk_core_chars.csv") { cols ->
-        if (cols.size < 5) null
-        else CharEntry(cols[0], cols[1], cols[2], cols[3].toDoubleOrNull() ?: 0.0,
-            cols[4].trim() == "1")
-    }
+    private fun loadChars(): List<CharEntry> =
+        parseCsv("corpus/hk_core_chars.csv") { cols ->
+            if (cols.size < 5) null
+            else CharEntry(cols[0], cols[1], cols[2], cols[3].toDoubleOrNull() ?: 0.0,
+                cols[4].trim() == "1")
+        } + loadHkscsSupplementChars()
+
+    // Official HKSCS-2016 characters missing from the Quick corpus, added at
+    // frequency 0 so they are reachable/selectable without ever outranking a
+    // common candidate that shares the same Quick code. Fields:
+    // chinese, code_point, quick_code, jyutping.
+    private fun loadHkscsSupplementChars(): List<CharEntry> =
+        hkscsSupplement.asSequence()
+            .filter { it.quickCode.isNotBlank() }
+            .map { CharEntry(it.text, it.quickCode, "", 0.0, false) }
+            .toList()
+
+    private fun loadHkscsSupplementJyutping(): List<JyutpingEntry> =
+        hkscsSupplement.flatMap { entry ->
+            entry.jyutping.map { JyutpingEntry(it, entry.text, 0.0) }
+        }
 
     private fun loadPhrases(): List<PhraseEntry> = parseCsv("corpus/hk_core_phrases.csv") { cols ->
         if (cols.size < 4) null
@@ -184,19 +255,45 @@ class CorpusLoader(private val ctx: Context) {
         else WhitelistEntry(cols[0], if (cols.size > 1) cols[1] else "")
     }
 
-    private fun loadEnglishAssist(): List<EnglishAssistEntry> =
-        parseCsv("corpus/english_assist.csv") { cols ->
+    private fun loadEnglishAssist(): List<EnglishAssistEntry> {
+        fun load(path: String) = parseCsv(path) { cols ->
             if (cols.size < 3) null
             else EnglishAssistEntry(cols[0].lowercase(), cols[1],
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
+        // Reviewed Hong Kong renderings (巴士/的士/雪櫃…) are layered after the raw
+        // CC-CEDICT gloss so their higher frequency ranks them first per key.
+        return load("corpus/english_assist.csv") + load("corpus/english_assist_overrides.csv")
+    }
 
-    private fun loadJyutping(): List<JyutpingEntry> =
-        parseCsv("corpus/jyutping.csv") { cols ->
+    private fun loadChineseAssist(): List<ChineseAssistEntry> =
+        parseCsv("corpus/chinese_assist.csv") { cols ->
+            if (cols.size < 3 || cols[0].isBlank() || cols[1].isBlank()) null
+            else ChineseAssistEntry(cols[0], cols[1], cols[2].toDoubleOrNull() ?: 0.0)
+        }
+
+    private fun loadJyutping(): List<JyutpingEntry> {
+        fun load(path: String) = parseCsv(path) { cols ->
             if (cols.size < 3) null
             else JyutpingEntry(cols[0].lowercase(), cols[1],
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
+        return load("corpus/jyutping.csv") +
+            load("corpus/jyutping_overrides.csv") +
+            loadHkscsSupplementJyutping()
+    }
+
+    private fun loadJyutpingTonalReadings(): Map<String, List<String>> =
+        parseCsv("jyutping_tonal_readings.csv") { cols ->
+            val text = cols.getOrNull(0)?.trim().orEmpty()
+            val readings = cols.getOrNull(2).orEmpty()
+                .split(' ')
+                .map(String::trim)
+                .filter { it.matches(TONAL_JYUTPING) }
+                .distinct()
+            if (text.codePointCount(0, text.length) != 1 || readings.isEmpty()) null
+            else text to readings
+        }.toMap()
 
     private fun loadPinyin(): List<PinyinEntry> =
         parseCsv("corpus/pinyin.csv") { cols ->
@@ -241,13 +338,22 @@ class CorpusLoader(private val ctx: Context) {
                         CandidateType.ENGLISH_ASSIST, it.freq, false) }
             }
 
+    private fun buildChineseAssistIndex(): Map<String, List<DecodeCandidate>> =
+        chineseAssist.groupBy { it.chinese }
+            .mapValues { (chinese, entries) ->
+                entries.sortedByDescending { it.freq }
+                    .distinctBy { it.english }
+                    .map { DecodeCandidate(it.english, chinese, SourceSchema.CHINESE_ASSIST,
+                        CandidateType.CHINESE_ASSIST, it.freq, false) }
+            }
+
     private fun buildJyutpingIndex(): Map<String, List<DecodeCandidate>> =
         jyutping.groupBy { it.jyutping }
             .mapValues { (jp, entries) ->
                 entries.sortedByDescending { it.freq }
                     .distinctBy { it.chinese }
                     .map { DecodeCandidate(it.chinese, jp, SourceSchema.JYUTPING,
-                        CandidateType.JYUTPING, it.freq, false) }
+                        CandidateType.JYUTPING, it.freq, false, annotation = jp) }
             }
 
     private fun buildMixedIndex(): Map<String, List<DecodeCandidate>> =
@@ -272,7 +378,11 @@ class CorpusLoader(private val ctx: Context) {
                 parse(cols)?.let { result.add(it) }
             }
         } catch (e: Exception) {
-            android.util.Log.e("CorpusLoader", "Failed to load $assetPath: ${e.message}")
+            // Android's local-JVM stubs throw from Log.*. A diagnostic must never
+            // turn a recoverable asset miss into a decoder failure.
+            runCatching {
+                android.util.Log.e("CorpusLoader", "Failed to load $assetPath: ${e.message}")
+            }
         }
         return result
     }
@@ -295,14 +405,14 @@ class CorpusLoader(private val ctx: Context) {
         return rows
     }
 
-    // Cache key. The low bits track the app build (release builds bump BUILD_NUMBER,
-    // so a shipped corpus change invalidates old caches); the high byte is a manual
-    // format/content version — bump CORPUS_CONTENT_VERSION when editing the CSVs
-    // without a release build so local dev doesn't read a stale cache.
+    // Manifest hash changes whenever a declared corpus input/output checksum changes.
+    // Combining it with the binary format version makes stale caches impossible even
+    // when a developer builds without changing the app version.
     private val cacheVersion: Int =
-        (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
+        31 * BuildConfig.CORPUS_HASH.hashCode() + CORPUS_CONTENT_VERSION
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 4
+        const val CORPUS_CONTENT_VERSION = 14
+        val TONAL_JYUTPING = Regex("[a-z]+[1-6]")
     }
 }

@@ -223,7 +223,7 @@ class PinyinImeIntegrationTest {
     }
 
     @Test
-    fun `candidate-assisted Space cannot change Quick conservative commit behavior`() {
+    fun `Quick Space ignores a supplied Pinyin candidate and commits the raw buffer`() {
         val ctrl = makeCtrl(memory = UserMemory(), ctx = ImeContext(scheme = Scheme.QUICK))
 
         val out = ctrl.onSpace(
@@ -231,7 +231,7 @@ class PinyinImeIntegrationTest {
             pinyin("唔", "rr", CandidateType.CHAR)
         )
 
-        assertEquals("rr ", out.committedText)
+        assertEquals("rr", out.committedText)
     }
 
     @Test

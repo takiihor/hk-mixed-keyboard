@@ -1,142 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-HK">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacy Policy — HK Mixed Keyboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>私隱政策 / Privacy Policy — HK Mixed Keyboard</title>
 <style>
-body{font-family:-apple-system,'Noto Sans TC',sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.7;color:#202124}
-h1{font-size:1.5rem} h2{margin-top:2rem;border-bottom:1px solid #ddd;padding-bottom:.3rem}
-@media(prefers-color-scheme:dark){body{background:#202124;color:#e8eaed} h2{border-color:#444}}
+body{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;line-height:1.7;color:#202124}h1{font-size:1.6rem}h2{margin-top:2rem;border-bottom:1px solid #ddd;padding-bottom:.3rem}code{font-family:ui-monospace,monospace}@media(prefers-color-scheme:dark){body{background:#202124;color:#e8eaed}h2{border-color:#555}}
 </style>
 </head>
 <body>
-<h1>Privacy Policy — HK Mixed Keyboard</h1>
-<h1>私隱政策 — HK Mixed Keyboard</h1>
+<h1>私隱政策 / Privacy Policy — HK Mixed Keyboard</h1>
+<p><em>更新日期 / Last updated: 2026-07-15</em></p>
 
-<p><em>Last updated: 2026-06-16</em></p>
+<h2>摘要 / Summary</h2>
+<p>HK Mixed Keyboard 是完全離線的 Android 輸入法，沒有網絡權限、廣告、分析、追蹤、雲端輸入或當機回報 SDK。輸入內容、詞庫、設定及統計不會傳送給開發者或第三方。</p>
+<p>HK Mixed Keyboard is a fully offline Android input method. It has no internet permission and no advertising, analytics, tracking, cloud-input or crash-reporting SDK. Typed content, dictionaries, settings and statistics are never sent to the developer or a third party.</p>
 
-<h2>English</h2>
-
-<p>HK Mixed Keyboard (&quot;the app&quot;) is an Android input method (keyboard). We take</p>
-<p>your privacy seriously. This policy explains what the app does and does not do</p>
-<p>with your data.</p>
-
-<h3>Summary</h3>
-
-<p><strong>The app does not collect, transmit, or share any personal data.</strong> It has no</p>
-<p>internet access and contains no analytics, advertising, or tracking code.</p>
-
-<h3>What the app processes</h3>
-
+<h2>本機資料 / On-device data</h2>
 <ul>
-<li><strong>Text you type.</strong> As an input method, the app necessarily processes the keystrokes you enter in order to produce candidate characters and words. This processing happens entirely on your device, in memory. Typed text is never sent off the device.</li>
-<li><strong>Personal dictionary / learned words.</strong> To improve suggestions, the app may store words you add or frequently use in a local database on your device only. This data never leaves your device. You can view, edit, export, and delete it at any time from the app&#x27;s settings (&quot;管理自訂詞語&quot;, &quot;匯出 / 匯入詞庫&quot;, &quot;清除所有個人詞庫&quot;).</li>
-<li><strong>Settings.</strong> Your preferences (input mode, vibration, sound, etc.) are stored locally on your device.</li>
+<li>按鍵、目前組字及少量前文只在記憶體中處理，不會保存為逐字輸入紀錄。 Keystrokes, active composition and limited preceding context are processed in memory and are not kept as a typed-text log.</li>
+<li>選用候選、輸入碼和手動新增的速成、粵拼或拼音詞條可保存於 App 私有 <code>hk_user_memory.db</code>，只用於本機排序。 Selected candidates/codes and custom entries may be stored in that app-private database for local ranking.</li>
+<li>模式、主題、震動、聲音、鍵盤高度、單手模式及簡體輸出等偏好保存在 App 私有 DataStore。 Preferences are stored in app-private DataStore.</li>
+<li>資料保留至您刪除個別項目、清除所有個人詞庫、清除 App 資料或解除安裝。 Backup is disabled and there is no server copy.</li>
 </ul>
 
-<h3>Sensitive fields</h3>
+<h2>敏感欄位 / Sensitive fields</h2>
+<p>密碼、數字密碼，以及付款、銀行、信用卡、安全碼和一次性密碼提示欄位會停用前文、預測、候選歷史及學習。 Password, numeric-password, payment, banking, card-security and one-time-code fields disable context inspection, predictions, candidate history and learning.</p>
 
-<p>When you type into a password or other sensitive field, the app enters a &quot;safe</p>
-<p>mode&quot;: it shows no candidates and does not learn from or store that input.</p>
+<h2>匯入、匯出及刪除 / Import, export and deletion</h2>
+<p>匯出只在您選擇的位置建立自訂詞語 CSV。匯入經 Android 文件選擇器授權，限制檔案大小、行數、行長、詞語及輸入碼，要求有效 UTF-8，並在任何錯誤時取消整批匯入。 Export writes custom entries only where you choose. Import is document-picker scoped, bounded, strict UTF-8 and atomic. Settings can delete individual entries or all learned/custom data after confirmation.</p>
 
-<h3>Data sharing and network access</h3>
-
+<h2>權限及分享 / Permissions and sharing</h2>
 <ul>
-<li>The app requests <strong>no internet permission</strong> and makes **no network connections**. No data is uploaded to us or to any third party.</li>
-<li>The app does <strong>not</strong> include advertising or third-party analytics SDKs.</li>
-<li><strong>Cloud backup is disabled</strong> (`allowBackup=&quot;false&quot;`), so your personal dictionary is not copied to cloud backup services.</li>
+<li><code>VIBRATE</code>：只用於可選觸覺回饋。 Optional haptic feedback only.</li>
+<li>沒有 <code>INTERNET</code> 權限、資料分享、資料銷售、廣告或第三方分析。 No internet permission, data sharing, data sale, ads or third-party analytics.</li>
+<li><code>allowBackup=false</code>；個人詞庫不會進入 Android 雲端備份。 Cloud backup is disabled.</li>
 </ul>
 
-<h3>Permissions</h3>
+<h2>兒童私隱 / Children's privacy</h2>
+<p>本 App 不會在知情下收集任何人的個人資料，包括兒童。 The app does not knowingly collect personal data from anyone, including children.</p>
 
-<ul>
-<li><strong>VIBRATE</strong> — used only for optional key-press haptic feedback.</li>
-</ul>
-
-<h3>Data you control</h3>
-
-<p>If you use the export feature, a CSV file containing your custom words is written</p>
-<p>to a location you choose. Anything you do with that exported file afterwards is</p>
-<p>under your control.</p>
-
-<h3>Children&#x27;s privacy</h3>
-
-<p>The app does not knowingly collect any data from anyone, including children.</p>
-
-<h3>Open-source data</h3>
-
-<p>The app bundles dictionary and frequency data derived from open-source projects;</p>
-<p>see the in-app &quot;開源授權與資料來源&quot; screen (and the `NOTICE` file) for attributions.</p>
-
-<h3>Changes</h3>
-
-<p>We may update this policy. Material changes will be reflected by the &quot;Last</p>
-<p>updated&quot; date above.</p>
-
-<h3>Contact</h3>
-
-<p>For privacy questions, contact: mehlw2011@gmail.com</p>
-
-<p>---</p>
-
-<h2>繁體中文</h2>
-
-<p>HK Mixed Keyboard（「本應用程式」）是一款 Android 輸入法（鍵盤）。我們非常重視</p>
-<p>您的私隱。本政策說明本應用程式如何處理您的資料。</p>
-
-<h3>摘要</h3>
-
-<p><strong>本應用程式不會收集、傳送或分享任何個人資料。</strong> 它沒有網絡存取權限，亦不含任何</p>
-<p>分析、廣告或追蹤程式碼。</p>
-
-<h3>本應用程式處理的內容</h3>
-
-<ul>
-<li><strong>您輸入的文字。</strong> 作為輸入法，本應用程式必須處理您輸入的按鍵，以產生候選字詞。 所有處理只在您的裝置上、於記憶體中進行，輸入文字絕不會離開您的裝置。</li>
-<li><strong>個人詞庫 / 學習詞語。</strong> 為改善建議，本應用程式可能將您新增或常用的詞語儲存於 裝置本機的資料庫中，此資料絕不會離開您的裝置。您可隨時於設定中檢視、編輯、匯出 及刪除（「管理自訂詞語」、「匯出 / 匯入詞庫」、「清除所有個人詞庫」）。</li>
-<li><strong>設定。</strong> 您的偏好設定（輸入模式、震動、聲音等）只儲存於裝置本機。</li>
-</ul>
-
-<h3>敏感欄位</h3>
-
-<p>當您在密碼或其他敏感欄位輸入時，本應用程式會進入「安全模式」：不顯示候選字，亦</p>
-<p>不會學習或儲存該輸入。</p>
-
-<h3>資料分享與網絡存取</h3>
-
-<ul>
-<li>本應用程式<strong>不要求網絡權限</strong>，亦<strong>不會建立任何網絡連線</strong>。沒有任何資料會上傳給 我們或任何第三方。</li>
-<li>本應用程式<strong>不含</strong>廣告或第三方分析 SDK。</li>
-<li><strong>已停用雲端備份</strong>（`allowBackup=&quot;false&quot;`），您的個人詞庫不會複製到雲端備份服務。</li>
-</ul>
-
-<h3>權限</h3>
-
-<ul>
-<li><strong>震動 (VIBRATE)</strong> — 僅用於可選的按鍵震動回饋。</li>
-</ul>
-
-<h3>您可控制的資料</h3>
-
-<p>若您使用匯出功能，包含自訂詞語的 CSV 檔案會寫入您所選擇的位置。之後您對該檔案的</p>
-<p>任何處置皆由您自行控制。</p>
-
-<h3>兒童私隱</h3>
-
-<p>本應用程式不會在知情下收集任何人（包括兒童）的資料。</p>
-
-<h3>開源資料</h3>
-
-<p>本應用程式內置衍生自開源項目的詞庫與字頻資料；署名詳見應用程式內「開源授權與</p>
-<p>資料來源」畫面（及 `NOTICE` 檔案）。</p>
-
-<h3>變更</h3>
-
-<p>我們可能更新本政策。重大變更會以上方「最後更新」日期反映。</p>
-
-<h3>聯絡</h3>
-
-<p>私隱相關查詢，請聯絡：mehlw2011@gmail.com</p>
+<h2>聯絡 / Contact</h2>
+<p>私隱查詢 / Privacy questions: <a href="mailto:mehlw2011@gmail.com">mehlw2011@gmail.com</a></p>
 </body>
 </html>

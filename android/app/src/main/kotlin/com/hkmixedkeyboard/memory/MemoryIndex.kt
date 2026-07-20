@@ -38,25 +38,45 @@ class MemoryIndex {
 
     /** Record one more selection of [candidate] for [buffer]; returns the updated entry. */
     fun record(buffer: String, candidate: DecodeCandidate): MemoryEntry {
+        if (!byBuffer.containsKey(buffer) && byBuffer.size >= MAX_BUFFER_ENTRIES) {
+            byBuffer.pollFirstEntry()
+        }
         val isCn = candidate.type != CandidateType.EN_LITERAL
         val bufMap = byBuffer.computeIfAbsent(buffer) { ConcurrentHashMap() }
         // compute() keeps the read-modify-write atomic per (buffer, candidate): a
         // concurrent record or cache hydration (putIfNewer runs on the IO thread during
         // Room init) can no longer lose an increment or clobber a freshly stored entry.
-        return bufMap.compute(candidate.text) { _, existing ->
-            if (existing == null) {
-                MemoryEntry(buffer, candidate, 1,
-                    cnCount = if (isCn) 1 else 0, enCount = if (isCn) 0 else 1)
-            } else {
-                existing.copy(
-                    candidate = candidate,
-                    count = existing.count + 1,
-                    cnCount = existing.cnCount + if (isCn) 1 else 0,
-                    enCount = existing.enCount + if (isCn) 0 else 1
-                )
+        synchronized(bufMap) {
+            bufMap.entries.forEach { (text, existing) ->
+                if (text != candidate.text && existing.count > 1) {
+                    val nextCount = existing.count - 1
+                    bufMap[text] = existing.copy(
+                        count = nextCount,
+                        cnCount = existing.cnCount.coerceAtMost(nextCount),
+                        enCount = existing.enCount.coerceAtMost(nextCount)
+                    )
+                }
             }
-        }!!
+            return bufMap.compute(candidate.text) { _, existing ->
+                if (existing == null) {
+                    MemoryEntry(buffer, candidate, 1,
+                        cnCount = if (isCn) 1 else 0, enCount = if (isCn) 0 else 1)
+                } else {
+                    existing.copy(
+                        candidate = candidate,
+                        count = (existing.count + 1).coerceAtMost(MAX_PERSONAL_COUNT),
+                        cnCount = (existing.cnCount + if (isCn) 1 else 0)
+                            .coerceAtMost(MAX_PERSONAL_COUNT),
+                        enCount = (existing.enCount + if (isCn) 0 else 1)
+                            .coerceAtMost(MAX_PERSONAL_COUNT)
+                    )
+                }
+            }!!
+        }
     }
+
+    fun entriesSnapshot(buffer: String): List<MemoryEntry> =
+        entriesFor(buffer).map { it.copy() }
 
     private fun entriesFor(buffer: String): Collection<MemoryEntry> =
         byBuffer[buffer]?.values ?: emptyList()
@@ -120,7 +140,9 @@ class MemoryIndex {
 
     fun size() = byBuffer.values.sumOf { it.size }
 
-    private companion object {
+    companion object {
+        const val MAX_PERSONAL_COUNT = 20
+        const val MAX_BUFFER_ENTRIES = 50_000
         val MEMORY_ENTRY_ORDER = compareBy<MemoryEntry> { it.count }
             .thenBy { it.candidate.frequency }
             .thenByDescending { it.candidate.sourceSchema.name }

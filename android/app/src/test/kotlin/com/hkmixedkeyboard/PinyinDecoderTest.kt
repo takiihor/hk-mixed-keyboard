@@ -39,10 +39,38 @@ class PinyinDecoderTest {
     }
 
     @Test
-    fun `normalizer rejects tone digits and non pinyin input`() {
-        assertNull(PinyinNormalizer.normalize("mao3"))
-        assertNull(PinyinNormalizer.normalize("ni hao"))
+    fun `normalizer accepts tones marks digits and syllable separators`() {
+        assertEquals("mao", PinyinNormalizer.normalize("mǎo"))
+        assertEquals("mao", PinyinNormalizer.normalize("mao3"))
+        assertEquals("nihao", PinyinNormalizer.normalize("ni3 hao3"))
+        assertEquals("xian", PinyinNormalizer.normalize("xi'an"))
+        assertEquals("nv", PinyinNormalizer.normalize("nǚ"))
+    }
+
+    @Test
+    fun `normalizer rejects invalid tone digits and non pinyin input`() {
+        assertNull(PinyinNormalizer.normalize("mao0"))
+        assertNull(PinyinNormalizer.normalize("mao6"))
+        assertNull(PinyinNormalizer.normalize("n3ihao"))
+        assertNull(PinyinNormalizer.normalize("ni3h3ao"))
+        assertNull(PinyinNormalizer.normalize("n'ihao"))
+        assertNull(PinyinNormalizer.normalize("ni_hao"))
         assertNull(PinyinNormalizer.normalize(""))
+    }
+
+    @Test
+    fun `malformed tone placement cannot exact match or compose`() {
+        val result = decoder(PinyinEntry("nihao", "你好", 1.0)).decode("n3ihao")
+
+        assertFalse(result.isExactCode)
+        assertTrue(result.candidates.isEmpty())
+    }
+
+    @Test
+    fun `fuzzy variants are optional and strict result stays first`() {
+        assertEquals(listOf("zong"), PinyinNormalizer.variants("zong", fuzzyEnabled = false))
+        assertEquals("zong", PinyinNormalizer.variants("zong", fuzzyEnabled = true).first())
+        assertTrue(PinyinNormalizer.variants("zong", fuzzyEnabled = true).contains("zhong"))
     }
 
     @Test
@@ -165,7 +193,7 @@ class PinyinDecoderTest {
     }
 
     @Test
-    fun `valid continuous syllables compose a bounded fallback phrase`() {
+    fun `character-only syllables cannot invent a fallback phrase`() {
         val result = decoder(
             PinyinEntry("ni", "你", 0.9),
             PinyinEntry("ni", "尼", 0.5),
@@ -173,23 +201,36 @@ class PinyinDecoderTest {
             PinyinEntry("men", "門", 0.5)
         ).decode("nimen")
 
-        assertTrue(result.isExactCode)
-        assertTrue(result.cnHasPhraseMatch)
-        assertEquals("你們", result.candidates.first().text)
-        assertTrue(result.candidates.size <= 12)
-        assertTrue(result.candidates.all { it.type == CandidateType.PHRASE })
+        assertFalse(result.isExactCode)
+        assertTrue(result.candidates.isEmpty())
     }
 
     @Test
-    fun `invalid or excessive segmentation returns no candidates`() {
+    fun `reviewed phrase evidence composes continuous input within ceiling`() {
         val decoder = decoder(
-            PinyinEntry("ni", "你", 0.9),
-            PinyinEntry("men", "們", 0.9)
+            PinyinEntry("nihao", "你好", 0.9),
+            PinyinEntry("ma", "嗎", 0.9)
         )
 
-        assertTrue(decoder.decode("nix").candidates.isEmpty())
-        assertTrue(decoder.decode("nimen".repeat(9)).candidates.isEmpty())
-        assertTrue(decoder.decode("ni3men").candidates.isEmpty())
+        val result = decoder.decode("nihaoma")
+        assertTrue(result.isExactCode)
+        assertTrue(result.cnHasPhraseMatch)
+        assertEquals("你好嗎", result.candidates.first().text)
+        assertTrue(result.candidates.size <= 12)
+        assertTrue(decoder.decode("nihaoma".repeat(10)).candidates.isNotEmpty())
+        assertTrue(decoder.decode("nihaoma".repeat(11)).candidates.isEmpty())
+        assertTrue(decoder.decode("nihao0ma").candidates.isEmpty())
+    }
+
+    @Test
+    fun `one adjacent-key typo offers tap-only recovery`() {
+        val result = decoder(
+            PinyinEntry("hao", "好", 0.9),
+            PinyinEntry("ni", "你", 0.9)
+        ).decode("hso")
+
+        assertEquals("好", result.candidates.first().text)
+        assertFalse(result.isExactCode)
     }
 
     private fun decoder(vararg entries: PinyinEntry) =

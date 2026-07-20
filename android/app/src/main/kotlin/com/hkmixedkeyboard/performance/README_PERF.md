@@ -22,7 +22,7 @@ Known bottlenecks (from code inspection)
 
 Experiments
 1. With PERF_TRACING on, type rapidly and observe many decode_start/end for intermediate buffers. If classify for the latest buffer completes only after earlier ones, backlog confirmed.
-2. Toggle DECODE_COALESCE to true and verify reduced backlog and faster first_candidate_render under rapid typing.
+2. Decode coalescing is always active; verify one in-flight plus one latest pending request under rapid typing.
 3. Temporarily disable next-char prediction posting to decodeHandler to check contention with classification.
 
 Next steps (potential fixes once validated)

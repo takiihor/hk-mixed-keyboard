@@ -1,0 +1,15 @@
+# Reviewed Hong Kong Chinese -> English post-commit assist.
+# Deliberately small exact-match overlay; it does not invert raw CC-CEDICT glosses.
+# Fields: chinese,english,freq
+chinese,english,freq
+巴士,bus,0.99
+小巴,minibus,0.99
+的士,taxi,0.99
+電車,tram,0.98
+𨋢,lift,0.99
+雪櫃,fridge,0.99
+屋企,home,0.99
+唔該,thanks,0.99
+多謝,thanks,0.98
+對唔住,sorry,0.99
+唔好意思,sorry,0.98

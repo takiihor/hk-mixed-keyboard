@@ -29,7 +29,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "communication", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("communication", out.committedText?.trimEnd())
+        assertEquals("communication", out.committedText)
         assertEquals(CandidateType.EN_LITERAL, out.memoryWrite.candidate?.type ?: CandidateType.EN_LITERAL)
     }
 
@@ -43,7 +43,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "chong", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("chong", out.committedText?.trimEnd())
+        assertEquals("chong", out.committedText)
         assertNotEquals("衝", out.committedText?.trimEnd())
     }
 
@@ -57,7 +57,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "hap", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("hap", out.committedText?.trimEnd())
+        assertEquals("hap", out.committedText)
         assertNotEquals("happy", out.committedText?.trimEnd())
     }
 
@@ -69,7 +69,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "mee", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("mee", out.committedText?.trimEnd())
+        assertEquals("mee", out.committedText)
         assertNotEquals("meeting", out.committedText?.trimEnd())
     }
 
@@ -92,7 +92,7 @@ class ConservativeSpaceTest {
         val out = ctrl.onSpace(state)
 
         // Prefix-only → cnCommittable=false → enLiteral
-        assertEquals("r", out.committedText?.trimEnd())
+        assertEquals("r", out.committedText)
     }
 
     // ── 4. Space on empty buffer passes through space ───────────────────────
@@ -105,10 +105,10 @@ class ConservativeSpaceTest {
         assertTrue(out.newState.buffer.isEmpty())
     }
 
-    // ── 5. ALWAYS_SPACE mode flushes buffer regardless of CN match ─────────
+    // ── 5. Quick Space flushes the raw buffer without trailing whitespace ──
 
     @Test
-    fun `ALWAYS_SPACE mode flushes buffer as literal then adds space`() {
+    fun `Quick Space flushes a buffer as a literal without trailing whitespace`() {
         val ctx = ImeContext()
         val ctrl = makeCtrl(ctx = ctx, classify = { buf ->
             clearChinese(buf, "唔", isHkCore = true)
@@ -116,12 +116,12 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "rr", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("rr ", out.committedText)
+        assertEquals("rr", out.committedText)
         assertEquals("", out.newState.buffer)
     }
 
     @Test
-    fun `Space flushes long exact Quick phrase as literal plus space`() {
+    fun `Space flushes long exact Quick phrase as a literal without trailing whitespace`() {
         val ctrl = makeCtrl(
             ctx = ImeContext(),
             classify = { buf ->
@@ -136,7 +136,7 @@ class ConservativeSpaceTest {
 
         val out = ctrl.onSpace(ImeStateData(buffer = "rryo", imeState = ImeState.COMPOSING))
 
-        assertEquals("rryo ", out.committedText)
+        assertEquals("rryo", out.committedText)
         assertEquals("", out.newState.buffer)
     }
 
@@ -243,7 +243,7 @@ class ConservativeSpaceTest {
         val state = ImeStateData(buffer = "ok", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("ok", out.committedText?.trimEnd())
+        assertEquals("ok", out.committedText)
     }
 
     @Test
@@ -255,22 +255,21 @@ class ConservativeSpaceTest {
         val out = ctrl.onSpace(state)
 
         // Two Latin letters + Space stay English; 唔 remains available by tapping.
-        assertEquals("rr", out.committedText?.trimEnd())
+        assertEquals("rr", out.committedText)
     }
 
     @Test
-    fun `Space on 2-letter hi commits literal plus single space and exits composing`() {
+    fun `Space on 2-letter hi commits the literal without trailing whitespace`() {
         // Even when both a HK-core Chinese char and an EN word collide on "hi",
-        // a single Space emits the literal + exactly one space and leaves composing
-        // (no second Space needed to separate the next word).
+        // Space emits the raw literal without selecting the preview candidate.
         val ctrl = makeCtrl(classify = { buf ->
             collision(buf, "我", isHkCore = true, enIsWord = true)
         })
         val state = ImeStateData(buffer = "hi", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
 
-        assertEquals("hi ", out.committedText)
+        assertEquals("hi", out.committedText)
         assertEquals("", out.newState.buffer)
-        assertEquals(ImeState.IDLE, out.newState.imeState)
+        assertEquals(ImeState.PREDICTING, out.newState.imeState)
     }
 }

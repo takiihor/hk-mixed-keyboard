@@ -6,14 +6,16 @@ object KeyTouchPolicy {
     fun emitsOnPress(label: String): Boolean =
         label != KeyboardLayout.KEY_BACKSPACE &&
             label != KeyboardLayout.KEY_QUESTION &&
+            label != KeyboardLayout.KEY_PERIOD &&
             label != KeyboardLayout.KEY_MODE
 
-    fun emitsOnRelease(label: String, releasedInside: Boolean): Boolean =
-        releasedInside && label == KeyboardLayout.KEY_MODE
+    fun emitsOnRelease(label: String, releasedInside: Boolean): Boolean = false
 
     fun usesHoldGesture(label: String): Boolean =
-        label == KeyboardLayout.KEY_BACKSPACE ||
+            label == KeyboardLayout.KEY_BACKSPACE ||
             label == KeyboardLayout.KEY_SYMBOL ||
             label == KeyboardLayout.KEY_QUESTION ||
-            label == KeyboardLayout.KEY_SPACE
+            label == KeyboardLayout.KEY_PERIOD ||
+            label == KeyboardLayout.KEY_SPACE ||
+            label == KeyboardLayout.KEY_MODE
 }

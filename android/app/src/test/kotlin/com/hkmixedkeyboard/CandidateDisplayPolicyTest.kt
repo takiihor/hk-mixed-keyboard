@@ -14,20 +14,16 @@ class CandidateDisplayPolicyTest {
     private val policy = CandidateDisplayPolicy()
 
     @Test
-    fun `two letters show personalized and decoded Chinese before English`() {
+    fun `two Quick letters keep Chinese candidates ahead of the literal`() {
         val result = policy.order(
-            buffer = "rr",
-            learned = listOf(
-                MemorySuggestion(cnChar("唔", "rr"), 5),
-                MemorySuggestion(enLiteralCand("array"), 8)
-            ),
-            english = listOf(enLiteralCand("array")),
-            decoded = listOf(cnChar("呂", "rr")),
-            literal = enLiteralCand("rr")
+            buffer = "eg",
+            learned = listOf(MemorySuggestion(cnChar("唔", "eg"), 5)),
+            english = emptyList(),
+            decoded = listOf(cnChar("額", "eg")),
+            literal = enLiteralCand("eg")
         )
 
-        assertEquals(listOf("唔", "呂"), result.take(2).map { it.text })
-        assertTrue(result.indexOfFirst { it.text == "array" } > 1)
+        assertEquals(listOf("唔", "額", "eg"), result.take(3).map { it.text })
     }
 
     @Test
@@ -178,6 +174,25 @@ class CandidateDisplayPolicyTest {
     }
 
     @Test
+    fun `expanded grid retains supplementary HKSCS candidate beyond the bar cap`() {
+        val baseCandidates = (1..90).map { i ->
+            cnChar("候$i", "mi", freq = (100 - i).toDouble())
+        }
+        val hkscsSupplement = cnChar("𠀾", "mi", freq = 0.0)
+
+        val expanded = policy.order(
+            buffer = "mi",
+            learned = emptyList(),
+            english = emptyList(),
+            decoded = baseCandidates + hkscsSupplement,
+            literal = enLiteralCand("mi"),
+            limit = CandidateDisplayPolicy.EXPANDED_LIMIT
+        )
+
+        assertEquals(90, expanded.indexOfFirst { it.text == "𠀾" })
+    }
+
+    @Test
     fun `next character predictions promote learned choices`() {
         val result = policy.orderPredictions(
             learned = listOf(MemorySuggestion(cnChar("估", "我"), 3)),
@@ -197,7 +212,8 @@ class CandidateDisplayPolicyTest {
             learned = listOf(MemorySuggestion(cnChar("估", "or", isHkCore = false), 3)),
             english = emptyList(),
             decoded = listOf(cnChar("嗰", "or", isHkCore = false, freq = 0.95)),
-            literal = enLiteralCand("or")
+            literal = enLiteralCand("or"),
+            chineseFirst = true
         )
 
         assertEquals("估", result.first().text)

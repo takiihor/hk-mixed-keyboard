@@ -11,12 +11,12 @@ import com.hkmixedkeyboard.BuildConfig
 
 interface TypingHapticBackend {
     val hasVibrator: Boolean
-    val supportsPrimitiveTick: Boolean
-    val supportsPredefinedTick: Boolean
+    val supportsPrimitiveClick: Boolean
+    val supportsPredefinedClick: Boolean
 
     fun cancel()
-    fun vibratePrimitiveTick()
-    fun vibratePredefinedTick()
+    fun vibratePrimitiveClick()
+    fun vibratePredefinedClick()
 
     /** Release any long-lived resources. Safe to call repeatedly. */
     fun release() {}
@@ -24,7 +24,7 @@ interface TypingHapticBackend {
 
 /**
  * Shared across every keyboard surface (main keys, candidate bar/grid, symbol and
- * emoji panels) so they all deliver the same short, device-tuned tick from a single
+ * emoji panels) so they all deliver the same short, device-tuned click from a single
  * backend. [onSubmitted] is invoked exactly once whenever a haptic is delivered —
  * direct or via [viewFallback] — so latency traces have a single source.
  *
@@ -33,14 +33,15 @@ interface TypingHapticBackend {
  * not block for the vibration's duration — so dispatching it inline keeps the tap
  * feedback as immediate as possible.
  *
- * When [cancelBeforeTick] is true, a previous vibration is cancelled before every
- * new tick — essential for rapid typing where hardware motor queues cause lagging
- * that trails behind visible key presses. The binder call adds < 1 ms and prevents
- * overlapping buzz.
+ * Direct haptics are submitted without cancelling the previous effect by default,
+ * keeping rapid typing to one vibrator binder operation per key press. Callers that
+ * target an actuator which requires explicit interruption can opt into
+ * [cancelBeforeTick]. Lifecycle cancellation remains explicit in [cancel] and
+ * [release].
  */
 class TypingHapticEngine(
     private val backend: TypingHapticBackend,
-    private val cancelBeforeTick: Boolean = true,
+    private val cancelBeforeTick: Boolean = false,
     private val onSubmitted: () -> Unit = {}
 ) {
     fun perform(enabled: Boolean, viewFallback: () -> Unit) {
@@ -50,8 +51,8 @@ class TypingHapticEngine(
             HapticCapabilityPolicy.select(
                 enabled = true,
                 hasVibrator = backend.hasVibrator,
-                supportsPrimitiveTick = backend.supportsPrimitiveTick,
-                supportsPredefinedTick = backend.supportsPredefinedTick
+                supportsPrimitiveClick = backend.supportsPrimitiveClick,
+                supportsPredefinedClick = backend.supportsPredefinedClick
             )
         } catch (_: RuntimeException) {
             deliverFallback(viewFallback)
@@ -61,14 +62,14 @@ class TypingHapticEngine(
         when (strategy) {
             TypingHapticStrategy.NONE -> Unit
             TypingHapticStrategy.VIEW_FALLBACK -> deliverFallback(viewFallback)
-            TypingHapticStrategy.PRIMITIVE_TICK -> performDirect(
+            TypingHapticStrategy.PRIMITIVE_CLICK -> performDirect(
                 cancel = if (cancelBeforeTick) backend::cancel else {{}},
-                vibrate = backend::vibratePrimitiveTick,
+                vibrate = backend::vibratePrimitiveClick,
                 viewFallback = viewFallback
             )
-            TypingHapticStrategy.PREDEFINED_TICK -> performDirect(
+            TypingHapticStrategy.PREDEFINED_CLICK -> performDirect(
                 cancel = if (cancelBeforeTick) backend::cancel else {{}},
-                vibrate = backend::vibratePredefinedTick,
+                vibrate = backend::vibratePredefinedClick,
                 viewFallback = viewFallback
             )
         }
@@ -81,8 +82,8 @@ class TypingHapticEngine(
     fun warmUp() {
         try {
             backend.hasVibrator
-            backend.supportsPrimitiveTick
-            backend.supportsPredefinedTick
+            backend.supportsPrimitiveClick
+            backend.supportsPredefinedClick
         } catch (_: RuntimeException) {
             // Probing must never crash startup.
         }
@@ -107,13 +108,12 @@ class TypingHapticEngine(
     }
 
     private fun performDirect(cancel: () -> Unit, vibrate: () -> Unit, viewFallback: () -> Unit) {
-        // Cancel any still-running motor pulse so the next tick starts clean.
-        // This binder call costs < 1 ms and prevents overlapping buzz during fast
-        // typing — critical when the actuator queues rather than interrupts.
+        // The default no-op keeps rapid typing to a single binder submission. An
+        // explicit cancel remains available for actuator-specific compatibility.
         try {
             cancel()
         } catch (_: RuntimeException) {
-            // Cancel failure must not block the tick.
+            // Cancel failure must not block the click.
         }
 
         try {
@@ -159,11 +159,11 @@ class AndroidTypingHapticBackend(
         }
     }
 
-    override val supportsPrimitiveTick: Boolean by lazy {
+    override val supportsPrimitiveClick: Boolean by lazy {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasVibrator) {
                 vibrator
-                    ?.arePrimitivesSupported(VibrationEffect.Composition.PRIMITIVE_TICK)
+                    ?.arePrimitivesSupported(VibrationEffect.Composition.PRIMITIVE_CLICK)
                     ?.firstOrNull() == true
             } else {
                 false
@@ -173,7 +173,7 @@ class AndroidTypingHapticBackend(
         }
     }
 
-    override val supportsPredefinedTick: Boolean by lazy {
+    override val supportsPredefinedClick: Boolean by lazy {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && hasVibrator
     }
 
@@ -182,7 +182,7 @@ class AndroidTypingHapticBackend(
     }
 
     @android.annotation.SuppressLint("NewApi", "InlinedApi")
-    override fun vibratePrimitiveTick() {
+    override fun vibratePrimitiveClick() {
         // Heavy mode: two very short micro-pulses within 10ms total window to boost salience
         if (BuildConfig.HAPTIC_HEAVY_MODE) {
             val amp1 = (26 + (229 * BuildConfig.HAPTIC_INTENSITY.coerceIn(0.6f, 1.0f))).toInt()
@@ -201,13 +201,13 @@ class AndroidTypingHapticBackend(
         val scale = BuildConfig.HAPTIC_INTENSITY.coerceIn(0.1f, 1.0f)
         vibrate(
             VibrationEffect.startComposition()
-                .addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, scale)
+                .addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, scale)
                 .compose()
         )
     }
 
     @android.annotation.SuppressLint("NewApi", "InlinedApi")
-    override fun vibratePredefinedTick() {
+    override fun vibratePredefinedClick() {
         if (BuildConfig.HAPTIC_HEAVY_MODE) {
             val amp1 = (26 + (229 * BuildConfig.HAPTIC_INTENSITY.coerceIn(0.6f, 1.0f))).toInt()
             val amp2 = (amp1 * 0.85f).toInt()
@@ -221,7 +221,7 @@ class AndroidTypingHapticBackend(
             val amp = (26 + (229 * BuildConfig.HAPTIC_INTENSITY.coerceIn(0.6f, 1.0f))).toInt()
             vibrate(VibrationEffect.createOneShot(ms.toLong(), amp))
         } else {
-            vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+            vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
         }
     }
 

@@ -15,6 +15,30 @@ class DirectInputPolicyTest {
     }
 
     @Test
+    fun `digits remain composing only while completing a Unicode fallback escape`() {
+        assertFalse(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "2", directLatinCommit = false, compositionBuffer = "u"
+            )
+        )
+        assertFalse(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "1", directLatinCommit = false, compositionBuffer = "u200c"
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "2", directLatinCommit = false, compositionBuffer = "u200cd"
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "2", directLatinCommit = true, compositionBuffer = "u"
+            )
+        )
+    }
+
+    @Test
     fun `letters use composition in normal text fields`() {
         assertFalse(DirectInputPolicy.shouldCommitKeyDirectly("a", directLatinCommit = false))
     }
@@ -47,5 +71,59 @@ class DirectInputPolicyTest {
                 privateImeOptions = null
             )
         )
+    }
+
+    @Test
+    fun `email and phone editors commit their direct-entry characters`() {
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_PHONE,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+        assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("@", directLatinCommit = true))
+        assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("/", directLatinCommit = true))
+        assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("+", directLatinCommit = true))
+    }
+
+    @Test
+    fun `numeric editors commit directly`() {
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_NUMBER,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+    }
+
+    @Test
+    fun `URI editors compose letters and use standard symbol handling`() {
+        val uriInputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
+
+        assertFalse(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = uriInputType,
+                packageName = "com.example.browser",
+                privateImeOptions = null
+            )
+        )
+        assertFalse(DirectInputPolicy.shouldCommitKeyDirectly("q", directLatinCommit = false))
+        assertFalse(DirectInputPolicy.shouldCommitKeyDirectly("/", directLatinCommit = false))
     }
 }

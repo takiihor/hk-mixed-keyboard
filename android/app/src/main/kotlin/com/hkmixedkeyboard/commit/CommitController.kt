@@ -2,6 +2,9 @@ package com.hkmixedkeyboard.commit
 
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
+import com.hkmixedkeyboard.decoder.JyutpingNormalizer
+import com.hkmixedkeyboard.decoder.PinyinNormalizer
+import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.memory.IUserMemory
 
@@ -17,7 +20,7 @@ class CommitController(
         var committedText: String? = null
         var memoryWrite = MemoryWriteDecision(false)
 
-        if (s.buffer.length >= Thresholds.MAX_BUFFER_LEN) {
+        if (s.buffer.length >= Thresholds.maxBufferLength(ctx.scheme)) {
             val flush = commitLiteralBuffer(s.buffer, learn = false, state = s)
             s = flush.newState
             committedText = flush.committedText
@@ -52,7 +55,7 @@ class CommitController(
         if (lac != null && cursorJustAfterAutoCommit) {
             return CommitOutput(
                 committedText = null,
-                deletedBefore = lac.text.length,
+                deletion = DeletionRequest(DeletionUnit.UTF16_UNITS, lac.text.length),
                 newState = state.copy(
                     buffer = lac.originalBuffer,
                     lastAutoCommit = null,
@@ -62,10 +65,10 @@ class CommitController(
             )
         }
 
-        // Delete char before cursor (delegated to host in real IME)
+        // Delete one Unicode code point before the cursor (delegated to the host).
         return CommitOutput(
             committedText = null,
-            deletedBefore = 1,
+            deletion = DeletionRequest(DeletionUnit.CODE_POINTS, 1),
             newState = state,
             memoryWrite = MemoryWriteDecision(false)
         )
@@ -75,9 +78,24 @@ class CommitController(
         state: ImeStateData,
         autoCommitCandidate: DecodeCandidate? = null
     ): CommitOutput {
-        if (ctx.scheme == com.hkmixedkeyboard.decoder.Scheme.PINYIN &&
-            autoCommitCandidate?.sourceSchema == SourceSchema.PINYIN) {
-            return doCommitCandidate(autoCommitCandidate, state.copy(lastAutoCommit = null))
+        if (ctx.scheme == Scheme.QUICK && state.buffer.isNotEmpty()) {
+            return commitLiteralBuffer(
+                buffer = state.buffer,
+                learn = true,
+                state = state.copy(lastAutoCommit = null)
+            )
+        }
+        if (autoCommitCandidate != null && isExactCandidateForActiveScheme(
+                autoCommitCandidate,
+                state.buffer
+            )
+        ) {
+            val committedText = canonicalText(autoCommitCandidate)
+            return doCommitCandidate(
+                autoCommitCandidate,
+                state.copy(lastAutoCommit = null),
+                AutoCommitRecord(committedText, state.buffer)
+            )
         }
         if (state.buffer.isEmpty()) {
             return doCommitRaw(" ", resetContext = false, state = state)
@@ -94,7 +112,8 @@ class CommitController(
     fun onPunctuation(
         p: String,
         state: ImeStateData,
-        precedingContext: PrecedingContext = PrecedingContext.NEUTRAL
+        precedingContext: PrecedingContext = PrecedingContext.NEUTRAL,
+        autoCommitCandidate: DecodeCandidate? = null
     ): CommitOutput {
         var s = state
         var committedPrefix = ""
@@ -105,11 +124,22 @@ class CommitController(
         var punctuationContext = precedingContext
 
         if (state.buffer.isNotEmpty()) {
-            val committed = commitLiteralBuffer(state.buffer, learn = true, state = s)
+            val candidateToCommit = autoCommitCandidate?.takeIf {
+                isExactCandidateForActiveScheme(it, state.buffer)
+            }
+            val committed = if (candidateToCommit != null) {
+                doCommitCandidate(candidateToCommit, s.copy(lastAutoCommit = null))
+            } else {
+                commitLiteralBuffer(state.buffer, learn = true, state = s)
+            }
             committedPrefix = committed.committedText.orEmpty()
             memoryWrite = committed.memoryWrite
             s = committed.newState
-            punctuationContext = PrecedingContext.LATIN
+            punctuationContext = if (candidateToCommit != null) {
+                PrecedingContext.CJK
+            } else {
+                PrecedingContext.LATIN
+            }
         }
 
         val glyph = punctuationFor(p, punctuationContext)
@@ -205,6 +235,25 @@ class CommitController(
     private fun canonicalText(cand: DecodeCandidate): String {
         val lower = cand.text.lowercase()
         return CANONICAL_CASE[lower] ?: cand.text
+    }
+
+    private fun isExactCandidateForActiveScheme(
+        candidate: DecodeCandidate,
+        buffer: String
+    ): Boolean {
+        val expectedSources = when (ctx.scheme) {
+            Scheme.QUICK -> setOf(SourceSchema.QUICK, SourceSchema.CUSTOM_QUICK)
+            Scheme.CANGJIE -> setOf(SourceSchema.CANGJIE)
+            Scheme.JYUTPING -> setOf(SourceSchema.JYUTPING, SourceSchema.CUSTOM_JYUTPING)
+            Scheme.PINYIN -> setOf(SourceSchema.PINYIN, SourceSchema.CUSTOM_PINYIN)
+            Scheme.MIXED_EXPERIMENTAL -> setOf(SourceSchema.MIXED_PHRASE)
+        }
+        val normalizedBuffer = when (ctx.scheme) {
+            Scheme.JYUTPING -> JyutpingNormalizer.normalize(buffer)?.key
+            Scheme.PINYIN -> PinyinNormalizer.normalize(buffer)
+            else -> buffer.lowercase()
+        } ?: return false
+        return candidate.sourceSchema in expectedSources && candidate.code == normalizedBuffer
     }
 
     companion object {

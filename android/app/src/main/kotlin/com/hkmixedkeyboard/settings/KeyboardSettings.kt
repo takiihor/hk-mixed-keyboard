@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
@@ -29,7 +30,19 @@ object Keys {
     // Bumped whenever custom words change. The IME reloads that table only on this
     // signal instead of querying Room every time the keyboard opens.
     val CUSTOM_WORDS_TOKEN = longPreferencesKey("custom_words_token")
+    val KEYBOARD_THEME = stringPreferencesKey("keyboard_theme")
+    val PINYIN_FUZZY = booleanPreferencesKey("pinyin_fuzzy")
+    val SHOW_JYUTPING_CANDIDATE_READINGS = booleanPreferencesKey("show_jyutping_candidate_readings")
+    val KEYBOARD_HEIGHT_PERCENT = intPreferencesKey("keyboard_height_percent")
+    val ONE_HANDED_MODE = stringPreferencesKey("one_handed_mode")
 }
+
+enum class KeyboardTheme {
+    DARK,
+    IOS_LIGHT
+}
+
+enum class OneHandedMode { OFF, LEFT, RIGHT }
 
 class ChangeTokenTracker {
     private var lastToken: Long? = null
@@ -48,7 +61,12 @@ data class KeyboardPrefs(
     val inputScheme: Scheme = Scheme.QUICK,
     val simplifiedOutput: Boolean = false,
     val memoryClearToken: Long = 0L,
-    val customWordsToken: Long = 0L
+    val customWordsToken: Long = 0L,
+    val theme: KeyboardTheme = KeyboardTheme.DARK,
+    val pinyinFuzzy: Boolean = false,
+    val showJyutpingCandidateReadings: Boolean = false,
+    val keyboardHeightPercent: Int = 100,
+    val oneHandedMode: OneHandedMode = OneHandedMode.OFF
 )
 
 object KeyboardSettings {
@@ -64,7 +82,15 @@ object KeyboardSettings {
                 ),
                 simplifiedOutput = p[Keys.SIMPLIFIED_OUTPUT] ?: false,
                 memoryClearToken = p[Keys.MEMORY_CLEAR_TOKEN] ?: 0L,
-                customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L
+                customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L,
+                theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME]),
+                pinyinFuzzy = p[Keys.PINYIN_FUZZY] ?: false,
+                showJyutpingCandidateReadings = p[Keys.SHOW_JYUTPING_CANDIDATE_READINGS] ?: false,
+                keyboardHeightPercent = (p[Keys.KEYBOARD_HEIGHT_PERCENT] ?: 100)
+                    .coerceIn(85, 120),
+                oneHandedMode = runCatching {
+                    OneHandedMode.valueOf(p[Keys.ONE_HANDED_MODE] ?: OneHandedMode.OFF.name)
+                }.getOrDefault(OneHandedMode.OFF)
             )
         }
 
@@ -91,6 +117,21 @@ object KeyboardSettings {
     suspend fun setSimplifiedOutput(ctx: Context, v: Boolean) =
         ctx.settingsDataStore.edit { it[Keys.SIMPLIFIED_OUTPUT] = v }
 
+    suspend fun setTheme(ctx: Context, theme: KeyboardTheme) =
+        ctx.settingsDataStore.edit { it[Keys.KEYBOARD_THEME] = KeyboardThemePreference.serialize(theme) }
+
+    suspend fun setPinyinFuzzy(ctx: Context, enabled: Boolean) =
+        ctx.settingsDataStore.edit { it[Keys.PINYIN_FUZZY] = enabled }
+
+    suspend fun setShowJyutpingCandidateReadings(ctx: Context, enabled: Boolean) =
+        ctx.settingsDataStore.edit { it[Keys.SHOW_JYUTPING_CANDIDATE_READINGS] = enabled }
+
+    suspend fun setKeyboardHeightPercent(ctx: Context, percent: Int) =
+        ctx.settingsDataStore.edit { it[Keys.KEYBOARD_HEIGHT_PERCENT] = percent.coerceIn(85, 120) }
+
+    suspend fun setOneHandedMode(ctx: Context, mode: OneHandedMode) =
+        ctx.settingsDataStore.edit { it[Keys.ONE_HANDED_MODE] = mode.name }
+
     // Monotonic counters rather than timestamps: two bumps within the same
     // millisecond would produce equal tokens and ChangeTokenTracker would miss the
     // second change.
@@ -99,6 +140,32 @@ object KeyboardSettings {
 
     suspend fun bumpCustomWordsToken(ctx: Context) =
         ctx.settingsDataStore.edit { it[Keys.CUSTOM_WORDS_TOKEN] = (it[Keys.CUSTOM_WORDS_TOKEN] ?: 0L) + 1 }
+}
+
+/** Pure policy for parsing the persisted keyboard theme. */
+object KeyboardThemePreference {
+    fun resolve(stored: String?): KeyboardTheme = when (stored) {
+        "ios_light" -> KeyboardTheme.IOS_LIGHT
+        "dark" -> KeyboardTheme.DARK
+        else -> KeyboardTheme.DARK
+    }
+
+    fun serialize(theme: KeyboardTheme): String = when (theme) {
+        KeyboardTheme.DARK -> "dark"
+        KeyboardTheme.IOS_LIGHT -> "ios_light"
+    }
+
+    fun label(theme: KeyboardTheme): String = when (theme) {
+        KeyboardTheme.DARK -> "深色"
+        KeyboardTheme.IOS_LIGHT -> "淺色（iPhone 風格）"
+    }
+
+    fun accessibilityDescription(theme: KeyboardTheme, selected: Boolean): String = when {
+        theme == KeyboardTheme.DARK && selected -> "深色鍵盤主題，已選取"
+        theme == KeyboardTheme.DARK -> "深色鍵盤主題，未選取"
+        selected -> "淺色 iPhone 風格鍵盤主題，已選取"
+        else -> "淺色 iPhone 風格鍵盤主題，未選取"
+    }
 }
 
 /** Pure policy for parsing the persisted scheme and migrating the legacy boolean. */

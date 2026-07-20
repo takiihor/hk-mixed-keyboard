@@ -1,7 +1,7 @@
 Privacy Policy — HK Mixed Keyboard
 私隱政策 — HK Mixed Keyboard
 
-Last updated: 2026-06-16
+Last updated: 2026-07-15
 
 
 繁體中文
@@ -20,21 +20,31 @@ HK Mixed Keyboard（「本應用程式」）是一款 Android 輸入法（鍵盤
 • 您輸入的文字 — 作為輸入法，本應用程式必須處理您輸入的按鍵以產生候選
   字詞。所有處理只在您的裝置上、於記憶體中進行，輸入文字絕不會離開您的
   裝置。
-• 個人詞庫 / 學習詞語 — 為改善建議，可能將您新增或常用的詞語儲存於裝置
-  本機資料庫中，此資料絕不會離開您的裝置。您可隨時於設定中檢視、編輯、
-  匯出及刪除。
-• 設定 — 您的偏好設定只儲存於裝置本機。
+• 個人詞庫 / 學習詞語 — 您選用的候選及其輸入碼，以及手動新增的速成、
+  粵拼或拼音詞條，可儲存於 App 私有 Room 資料庫 hk_user_memory.db，只用於
+  本機排序。您可在設定檢視、新增、匯出及刪除自訂詞條，或清除所有學習及
+  自訂詞庫。
+• 設定 — 模式、主題、震動、聲音、鍵盤高度、單手模式及簡體輸出等偏好只
+  儲存於 App 私有 DataStore。
+• 保留期 — 資料保留至您刪除個別詞條、選擇「清除所有個人詞庫」、清除 App
+  資料或解除安裝。學習資料沒有伺服器副本，雲端備份已停用。
 
 敏感欄位
 --------
-在密碼或其他敏感欄位輸入時，本應用程式進入「安全模式」：不顯示候選字，
-亦不會學習或儲存該輸入。
+在密碼、付款、銀行、信用卡、安全碼或一次性密碼欄位輸入時，本應用程式進入
+「安全模式」：不讀取前文、不顯示預測或候選歷史，亦不會學習或儲存該輸入。
 
 資料分享與網絡存取
 ------------------
 • 不要求網絡權限，亦不會建立任何網絡連線。沒有任何資料上傳。
 • 不含廣告或第三方分析 SDK。
 • 已停用雲端備份，個人詞庫不會複製到雲端備份服務。
+
+匯入、匯出及刪除
+----------------
+匯出功能只在您選擇的位置建立包含自訂詞語、模式及輸入碼的 CSV；該檔案之後
+由您控制。匯入由 Android 文件選擇器授權，限制檔案大小、行數、行長、詞語及
+輸入碼，並要求有效 UTF-8；任何錯誤會取消整批匯入。
 
 權限
 ----
@@ -61,21 +71,32 @@ What the app processes
 • Text you type — As an input method, the app processes keystrokes to produce
   candidates. This happens entirely on your device, in memory. Typed text is
   never sent off the device.
-• Personal dictionary / learned words — Stored only in a local database on your
-  device to improve suggestions; never leaves your device. You can view, edit,
-  export, and delete it from settings at any time.
-• Settings — Your preferences are stored locally on your device.
+• Personal dictionary / learned words — Selected candidates and their input
+  codes, plus manually added Quick, Jyutping or Pinyin entries, may be stored in
+  the app-private Room database hk_user_memory.db for local ranking. Settings can
+  view, add, export or delete custom entries and clear all learned and custom data.
+• Settings — Mode, theme, vibration, sound, keyboard height, one-handed mode and
+  Simplified-output preferences are stored in the app-private DataStore.
+• Retention — Data remains until you delete an entry, clear all personal
+  dictionary data, clear app data or uninstall. There is no server copy and
+  cloud backup is disabled.
 
 Sensitive fields
 ----------------
-In password or other sensitive fields the app enters "safe mode": no candidates
-are shown and nothing is learned or stored.
+In password, payment, banking, card-security or one-time-code fields the app enters
+"safe mode": context inspection, predictions, candidate history and learning are disabled.
 
 Data sharing and network access
 -------------------------------
 • No internet permission and no network connections. Nothing is uploaded.
 • No advertising or third-party analytics SDKs.
 • Cloud backup is disabled, so the personal dictionary is not backed up.
+
+Import, export and deletion
+---------------------------
+Export creates a CSV containing custom entries, schemes and codes only at a
+location you choose; you then control that file. Import uses Android's document
+picker, is size/row/line/text/code bounded, requires valid UTF-8 and is atomic.
 
 Permissions
 -----------

@@ -6,7 +6,8 @@ data class DecodeCandidate(
     val sourceSchema: SourceSchema,
     val type: CandidateType,
     val frequency: Double,
-    val isHkCore: Boolean
+    val isHkCore: Boolean,
+    val annotation: String? = null
 )
 
 data class DecodeResult(

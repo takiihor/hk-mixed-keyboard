@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard.ime
 
 import com.hkmixedkeyboard.decoder.DecodeCandidate
+import com.hkmixedkeyboard.decoder.JyutpingNormalizer
 import com.hkmixedkeyboard.decoder.PinyinNormalizer
 import com.hkmixedkeyboard.decoder.PinyinLexicon
 import com.hkmixedkeyboard.decoder.Scheme
@@ -8,7 +9,7 @@ import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.settings.InputSchemePreference
 import com.hkmixedkeyboard.memory.MemorySuggestion
 
-/** Decisions that keep Pinyin's exact-commit behavior separate from Quick mode. */
+/** Candidate/display decisions shared by the three production input modes. */
 object PinyinImePolicy {
     fun isCorpusReady(lexicon: PinyinLexicon): Boolean = lexicon.isUsable
 
@@ -33,13 +34,25 @@ object PinyinImePolicy {
         candidates: List<DecodeCandidate>,
         learned: List<MemorySuggestion> = emptyList()
     ): DecodeCandidate? {
-        if (scheme != Scheme.PINYIN) return null
-        val normalized = PinyinNormalizer.normalize(buffer) ?: return null
-        filterLearnedSuggestions(scheme, learned).firstOrNull()?.let {
-            return it.candidate
+        if (scheme == Scheme.QUICK) return null
+
+        val expectedSources = when (scheme) {
+            Scheme.JYUTPING -> setOf(SourceSchema.JYUTPING, SourceSchema.CUSTOM_JYUTPING)
+            Scheme.PINYIN -> setOf(SourceSchema.PINYIN, SourceSchema.CUSTOM_PINYIN)
+            else -> return null
+        }
+        val normalized = when (scheme) {
+            Scheme.PINYIN -> PinyinNormalizer.normalize(buffer)
+            Scheme.JYUTPING -> JyutpingNormalizer.normalize(buffer)?.key
+            else -> return null
+        } ?: return null
+        if (scheme == Scheme.PINYIN) {
+            filterLearnedSuggestions(scheme, learned).firstOrNull()?.let {
+                return it.candidate
+            }
         }
         return candidates.firstOrNull {
-            it.sourceSchema == SourceSchema.PINYIN && it.code == normalized
+            it.sourceSchema in expectedSources && it.code == normalized
         }
     }
 }

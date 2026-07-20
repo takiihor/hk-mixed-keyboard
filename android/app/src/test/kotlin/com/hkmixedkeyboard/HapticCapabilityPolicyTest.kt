@@ -14,47 +14,47 @@ class HapticCapabilityPolicyTest {
             HapticCapabilityPolicy.select(
                 enabled = false,
                 hasVibrator = true,
-                supportsPrimitiveTick = true,
-                supportsPredefinedTick = true
+                supportsPrimitiveClick = true,
+                supportsPredefinedClick = true
             )
         )
     }
 
     @Test
-    fun `supported primitive selects primitive tick`() {
+    fun `supported primitive selects primitive click`() {
         assertEquals(
-            TypingHapticStrategy.PRIMITIVE_TICK,
+            TypingHapticStrategy.PRIMITIVE_CLICK,
             HapticCapabilityPolicy.select(
                 enabled = true,
                 hasVibrator = true,
-                supportsPrimitiveTick = true,
-                supportsPredefinedTick = true
+                supportsPrimitiveClick = true,
+                supportsPredefinedClick = true
             )
         )
     }
 
     @Test
-    fun `predefined tick is selected without primitive support`() {
+    fun `predefined click is selected without primitive support`() {
         assertEquals(
-            TypingHapticStrategy.PREDEFINED_TICK,
+            TypingHapticStrategy.PREDEFINED_CLICK,
             HapticCapabilityPolicy.select(
                 enabled = true,
                 hasVibrator = true,
-                supportsPrimitiveTick = false,
-                supportsPredefinedTick = true
+                supportsPrimitiveClick = false,
+                supportsPredefinedClick = true
             )
         )
     }
 
     @Test
-    fun `view fallback is selected without a direct tick path`() {
+    fun `view fallback is selected without a direct click path`() {
         assertEquals(
             TypingHapticStrategy.VIEW_FALLBACK,
             HapticCapabilityPolicy.select(
                 enabled = true,
                 hasVibrator = true,
-                supportsPrimitiveTick = false,
-                supportsPredefinedTick = false
+                supportsPrimitiveClick = false,
+                supportsPredefinedClick = false
             )
         )
     }
@@ -66,8 +66,8 @@ class HapticCapabilityPolicyTest {
             HapticCapabilityPolicy.select(
                 enabled = true,
                 hasVibrator = false,
-                supportsPrimitiveTick = false,
-                supportsPredefinedTick = false
+                supportsPrimitiveClick = false,
+                supportsPredefinedClick = false
             )
         )
     }
