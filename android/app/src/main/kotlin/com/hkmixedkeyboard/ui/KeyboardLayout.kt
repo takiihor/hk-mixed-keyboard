@@ -3,6 +3,7 @@ package com.hkmixedkeyboard.ui
 enum class KeyboardSurface {
     TEXT,
     NUMBER,
+    NUMERIC_PASSWORD,
     SIGNED_DECIMAL_NUMBER,
     PHONE,
     EMAIL
@@ -116,6 +117,7 @@ object KeyboardLayout {
         KeyboardSurface.TEXT -> textRows()
         KeyboardSurface.EMAIL -> alphabetRows + emailBottomRow()
         KeyboardSurface.NUMBER -> numberRows()
+        KeyboardSurface.NUMERIC_PASSWORD -> numberRows()
         KeyboardSurface.SIGNED_DECIMAL_NUMBER -> signedDecimalRows()
         KeyboardSurface.PHONE -> phoneRows()
     }

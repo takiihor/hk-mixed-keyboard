@@ -33,6 +33,15 @@ class EditorLayoutPolicyTest {
     }
 
     @Test
+    fun `maps numeric password editors to their own surface`() {
+        val numericPassword =
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+
+        assertEquals("NUMERIC_PASSWORD", EditorLayoutPolicy.surfaceFor(numericPassword).name)
+        assertTrue(EditorLayoutPolicy.usesDirectEntry(numericPassword))
+    }
+
+    @Test
     fun `maps email editors to email and URI editors to standard text`() {
         assertEquals(
             KeyboardSurface.EMAIL,

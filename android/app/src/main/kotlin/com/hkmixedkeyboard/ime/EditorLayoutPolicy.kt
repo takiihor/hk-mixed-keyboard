@@ -17,6 +17,9 @@ object EditorLayoutPolicy {
         val variation = inputType and InputType.TYPE_MASK_VARIATION
         return when {
             inputClass == InputType.TYPE_CLASS_NUMBER &&
+                variation == InputType.TYPE_NUMBER_VARIATION_PASSWORD ->
+                KeyboardSurface.NUMERIC_PASSWORD
+            inputClass == InputType.TYPE_CLASS_NUMBER &&
                 inputType and (InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL) != 0 ->
                 KeyboardSurface.SIGNED_DECIMAL_NUMBER
             inputClass == InputType.TYPE_CLASS_NUMBER -> KeyboardSurface.NUMBER
@@ -39,6 +42,7 @@ object EditorLayoutPolicy {
     fun usesDirectEntry(inputType: Int): Boolean =
         surfaceFor(inputType) in setOf(
             KeyboardSurface.NUMBER,
+            KeyboardSurface.NUMERIC_PASSWORD,
             KeyboardSurface.SIGNED_DECIMAL_NUMBER,
             KeyboardSurface.PHONE,
             KeyboardSurface.EMAIL
