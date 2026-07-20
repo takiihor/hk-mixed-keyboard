@@ -20,6 +20,7 @@ object KeyboardLayout {
     // Input-scheme switch (速成 → 粵拼 → 普通話拼音). Sentinel label; KeyboardView draws the live
     // scheme indicator (modeLabel) over it instead of this glyph.
     const val KEY_MODE = "⌨"
+    const val KEY_PIN_MODE = "123"
     const val KEY_SETTINGS = "⚙"
     const val KEY_NEXT_IME = "⌁"
     const val KEY_COMMA = "，"
@@ -120,7 +121,7 @@ object KeyboardLayout {
         enterAction: SymbolEnterAction = SymbolEnterAction.RETURN
     ): List<RowDef> = when (surface) {
         KeyboardSurface.TEXT -> textRows()
-        KeyboardSurface.TEXT_PASSWORD -> textRows()
+        KeyboardSurface.TEXT_PASSWORD -> textPasswordRows()
         KeyboardSurface.EMAIL -> alphabetRows + emailBottomRow()
         KeyboardSurface.NUMBER -> numberRows()
         KeyboardSurface.NUMERIC_PASSWORD -> numericPasswordRows(enterAction)
@@ -157,12 +158,16 @@ object KeyboardLayout {
         }
     }
 
-    private fun textRows(): List<RowDef> =
-        alphabetRows + actionRow(
+    private fun textRows(): List<RowDef> = alphabetRows + textActionRow(KEY_MODE)
+
+    private fun textPasswordRows(): List<RowDef> = alphabetRows + textActionRow(KEY_PIN_MODE)
+
+    private fun textActionRow(modeKey: String): RowDef =
+        actionRow(
             listOf(
                 KEY_SYMBOL to 1.2f,
                 KEY_EMOJI to 0.8f,
-                KEY_MODE to 1.05f,
+                modeKey to 1.05f,
                 KEY_SPACE to 3.50f,
                 KEY_PERIOD to 1.05f,
                 KEY_COMMA to 1.05f

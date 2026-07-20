@@ -88,6 +88,7 @@ class KeyboardView @JvmOverloads constructor(
         const val KEY_EMOJI = KeyboardLayout.KEY_EMOJI
         const val KEY_SYMBOL = KeyboardLayout.KEY_SYMBOL
         const val KEY_MODE = KeyboardLayout.KEY_MODE
+        const val KEY_PIN_MODE = KeyboardLayout.KEY_PIN_MODE
         const val KEY_SETTINGS = KeyboardLayout.KEY_SETTINGS
         const val KEY_NEXT_IME = KeyboardLayout.KEY_NEXT_IME
         const val KEY_COMMA = KeyboardLayout.KEY_COMMA
@@ -97,7 +98,7 @@ class KeyboardView @JvmOverloads constructor(
         private const val LATENCY_LOG_TAG = "HkIme.Latency"
         // Hoisted out of isSpecial() so onDraw doesn't allocate a Set per key per frame.
         private val SPECIAL_KEYS = setOf(
-            KEY_BACKSPACE, KEY_SHIFT, KEY_ENTER, KEY_EMOJI, KEY_SYMBOL, KEY_MODE,
+            KEY_BACKSPACE, KEY_SHIFT, KEY_ENTER, KEY_EMOJI, KEY_SYMBOL, KEY_MODE, KEY_PIN_MODE,
             KEY_SETTINGS, KEY_NEXT_IME
         )
     }
@@ -362,7 +363,7 @@ class KeyboardView @JvmOverloads constructor(
     private fun shouldShowPopup(label: String): Boolean =
         label != KEY_SPACE && label != KEY_ENTER &&
         label != KEY_SHIFT && label != KEY_BACKSPACE &&
-        label != KEY_EMOJI && label != KEY_SYMBOL && label != KEY_MODE &&
+        label != KEY_EMOJI && label != KEY_SYMBOL && label != KEY_MODE && label != KEY_PIN_MODE &&
         label != KEY_SETTINGS && label != KEY_NEXT_IME
 
     private fun drawKeyPopup(canvas: Canvas, cell: KeyCell) {

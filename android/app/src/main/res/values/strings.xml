@@ -116,6 +116,7 @@
     <string name="key_a11y_settings">鍵盤設定</string>
     <string name="key_a11y_next_ime">切換鍵盤</string>
     <string name="key_a11y_mode_current">切換輸入模式，現時%1$s</string>
+    <string name="key_a11y_pin_mode">切換至數字密碼鍵盤</string>
     <string name="key_a11y_comma">逗號鍵</string>
     <string name="key_a11y_period">句號鍵</string>
     <string name="key_a11y_question">問號或驚嘆號鍵</string>

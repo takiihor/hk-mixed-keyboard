@@ -55,4 +55,12 @@ class KeyboardAccessibilityLabelsTest {
         assertEquals("切換輸入模式，現時粵拼", description)
         assertFalse(description.contains("英文"))
     }
+
+    @Test
+    fun `numeric password switch has a Chinese description`() {
+        assertEquals(
+            "切換至數字密碼鍵盤",
+            KeyboardAccessibilityLabels.descriptionFor(KeyboardLayout.KEY_PIN_MODE)
+        )
+    }
 }

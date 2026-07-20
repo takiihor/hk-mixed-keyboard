@@ -120,6 +120,7 @@
     <string name="key_a11y_settings">Keyboard settings</string>
     <string name="key_a11y_next_ime">Switch keyboard</string>
     <string name="key_a11y_mode_current">Switch input mode, current mode %1$s</string>
+    <string name="key_a11y_pin_mode">Switch to numeric password keypad</string>
     <string name="key_a11y_comma">Comma key</string>
     <string name="key_a11y_period">Period key</string>
     <string name="key_a11y_question">Question or exclamation key</string>

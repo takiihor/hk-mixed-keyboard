@@ -5,6 +5,7 @@ import com.hkmixedkeyboard.ui.KeyboardSurface
 import com.hkmixedkeyboard.ui.SymbolEnterAction
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class KeyboardLayoutTest {
@@ -42,6 +43,24 @@ class KeyboardLayoutTest {
         assertEquals(3.50f, actionRow.single { it.label == KeyboardLayout.KEY_SPACE }.widthUnits)
         assertEquals(1.05f, actionRow.single { it.label == KeyboardLayout.KEY_PERIOD }.widthUnits)
         assertEquals(1.05f, actionRow.single { it.label == KeyboardLayout.KEY_COMMA }.widthUnits)
+    }
+
+    @Test
+    fun `text password keeps alphabet and symbols but replaces scheme switch with 123`() {
+        val rows = KeyboardLayout.rowsFor(
+            KeyboardSurface.TEXT_PASSWORD,
+            showNextInputMethod = false
+        )
+        val labels = rows.flatMap { row -> row.keys.map { it.label } }
+
+        assertEquals(KeyboardLayout.rows.take(4), rows.take(4))
+        assertTrue(labels.contains(KeyboardLayout.KEY_SYMBOL))
+        assertTrue(labels.contains(KeyboardLayout.KEY_PIN_MODE))
+        assertFalse(labels.contains(KeyboardLayout.KEY_MODE))
+        assertEquals(
+            1.05f,
+            rows.last().keys.single { it.label == KeyboardLayout.KEY_PIN_MODE }.widthUnits
+        )
     }
 
     @Test

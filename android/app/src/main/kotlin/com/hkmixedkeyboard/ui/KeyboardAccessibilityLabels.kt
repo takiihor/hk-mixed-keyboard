@@ -28,6 +28,7 @@ object KeyboardAccessibilityLabels {
         val settingsKey: String,
         val nextImeKey: String,
         val modeCurrentFormat: String,
+        val pinModeKey: String,
         val commaKey: String,
         val periodKey: String,
         val questionKey: String,
@@ -53,6 +54,7 @@ object KeyboardAccessibilityLabels {
         settingsKey = context.getString(R.string.key_a11y_settings),
         nextImeKey = context.getString(R.string.key_a11y_next_ime),
         modeCurrentFormat = context.getString(R.string.key_a11y_mode_current),
+        pinModeKey = context.getString(R.string.key_a11y_pin_mode),
         commaKey = context.getString(R.string.key_a11y_comma),
         periodKey = context.getString(R.string.key_a11y_period),
         questionKey = context.getString(R.string.key_a11y_question),
@@ -89,6 +91,7 @@ object KeyboardAccessibilityLabels {
         KeyboardLayout.KEY_SETTINGS -> text.settingsKey
         KeyboardLayout.KEY_NEXT_IME -> text.nextImeKey
         KeyboardLayout.KEY_MODE -> format(text, text.modeCurrentFormat, modeName(modeLabel, text))
+        KeyboardLayout.KEY_PIN_MODE -> text.pinModeKey
         KeyboardLayout.KEY_COMMA -> text.commaKey
         KeyboardLayout.KEY_PERIOD -> text.periodKey
         KeyboardLayout.KEY_QUESTION -> text.questionKey
@@ -141,6 +144,7 @@ object KeyboardAccessibilityLabels {
         settingsKey = "鍵盤設定",
         nextImeKey = "切換鍵盤",
         modeCurrentFormat = "切換輸入模式，現時%1\$s",
+        pinModeKey = "切換至數字密碼鍵盤",
         commaKey = "逗號鍵",
         periodKey = "句號鍵",
         questionKey = "問號或驚嘆號鍵",
