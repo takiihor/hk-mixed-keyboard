@@ -42,6 +42,20 @@ class EditorLayoutPolicyTest {
     }
 
     @Test
+    fun `numeric password takes precedence over signed decimal flags`() {
+        val numericPasswordWithFlags =
+            InputType.TYPE_CLASS_NUMBER or
+                InputType.TYPE_NUMBER_VARIATION_PASSWORD or
+                InputType.TYPE_NUMBER_FLAG_SIGNED or
+                InputType.TYPE_NUMBER_FLAG_DECIMAL
+
+        assertEquals(
+            KeyboardSurface.NUMERIC_PASSWORD,
+            EditorLayoutPolicy.surfaceFor(numericPasswordWithFlags)
+        )
+    }
+
+    @Test
     fun `maps email editors to email and URI editors to standard text`() {
         assertEquals(
             KeyboardSurface.EMAIL,
