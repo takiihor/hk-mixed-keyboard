@@ -95,7 +95,25 @@ class DirectInputPolicyTest {
     }
 
     @Test
-    fun `URI editors keep URL layout but compose letters`() {
+    fun `numeric editors commit directly`() {
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_NUMBER,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL,
+                packageName = "com.example.app",
+                privateImeOptions = null
+            )
+        )
+    }
+
+    @Test
+    fun `URI editors compose letters but commit URL symbols directly`() {
         val uriInputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
 
         assertFalse(
@@ -105,6 +123,33 @@ class DirectInputPolicyTest {
                 privateImeOptions = null
             )
         )
-        assertFalse(DirectInputPolicy.shouldCommitKeyDirectly("q", directLatinCommit = false))
+        assertFalse(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "q",
+                directLatinCommit = false,
+                directSymbolCommit = true
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "/",
+                directLatinCommit = false,
+                directSymbolCommit = true
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                ":",
+                directLatinCommit = false,
+                directSymbolCommit = true
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "-",
+                directLatinCommit = false,
+                directSymbolCommit = true
+            )
+        )
     }
 }
