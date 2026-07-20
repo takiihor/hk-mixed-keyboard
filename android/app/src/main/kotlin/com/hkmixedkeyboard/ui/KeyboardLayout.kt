@@ -115,12 +115,13 @@ object KeyboardLayout {
 
     fun rowsFor(
         surface: KeyboardSurface,
-        showNextInputMethod: Boolean
+        showNextInputMethod: Boolean,
+        enterAction: SymbolEnterAction = SymbolEnterAction.RETURN
     ): List<RowDef> = when (surface) {
         KeyboardSurface.TEXT -> textRows()
         KeyboardSurface.EMAIL -> alphabetRows + emailBottomRow()
         KeyboardSurface.NUMBER -> numberRows()
-        KeyboardSurface.NUMERIC_PASSWORD -> numericPasswordRows()
+        KeyboardSurface.NUMERIC_PASSWORD -> numericPasswordRows(enterAction)
         KeyboardSurface.SIGNED_DECIMAL_NUMBER -> signedDecimalRows()
         KeyboardSurface.PHONE -> phoneRows()
     }
@@ -184,18 +185,25 @@ object KeyboardLayout {
         compactActionRow()
     )
 
-    private fun numericPasswordRows(): List<RowDef> = listOf(
-        pinRow("1", "2", "3"),
-        pinRow("4", "5", "6"),
-        pinRow("7", "8", "9"),
-        row(
-            listOf(
-                "0" to PIN_KEY_WIDTH_UNITS,
-                KEY_BACKSPACE to PIN_KEY_WIDTH_UNITS
-            ),
-            startUnits = PIN_GRID_START_UNITS + PIN_KEY_WIDTH_UNITS
+    private fun numericPasswordRows(enterAction: SymbolEnterAction): List<RowDef> {
+        val bottomRow = if (enterAction == SymbolEnterAction.RETURN) {
+            row(
+                listOf(
+                    "0" to PIN_KEY_WIDTH_UNITS,
+                    KEY_BACKSPACE to PIN_KEY_WIDTH_UNITS
+                ),
+                startUnits = PIN_GRID_START_UNITS + PIN_KEY_WIDTH_UNITS
+            )
+        } else {
+            pinRow(KEY_ENTER, "0", KEY_BACKSPACE)
+        }
+        return listOf(
+            pinRow("1", "2", "3"),
+            pinRow("4", "5", "6"),
+            pinRow("7", "8", "9"),
+            bottomRow
         )
-    )
+    }
 
     private fun signedDecimalRows(): List<RowDef> = listOf(
         numericRow("1", "2", "3"),

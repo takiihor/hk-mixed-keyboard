@@ -68,8 +68,7 @@ class KeyboardView @JvmOverloads constructor(
         set(value) {
             if (field == value) return
             field = value
-            invalidate()
-            notifyAccessibilityStateChanged()
+            rebuildCellsForSurface()
         }
 
     // Shift state, driven by the IME. When active the letter faces render uppercase
@@ -216,7 +215,11 @@ class KeyboardView @JvmOverloads constructor(
 
     private fun buildCells(w: Float, h: Float) {
         cells.clear()
-        val rows = KeyboardLayout.rowsFor(keyboardSurface, showNextInputMethodAction)
+        val rows = KeyboardLayout.rowsFor(
+            keyboardSurface,
+            showNextInputMethodAction,
+            enterAction
+        )
         for (cell in KeyboardLayout.buildCells(w, h, rows)) {
             val logicalRect = RectF(
                 cell.bounds.left,

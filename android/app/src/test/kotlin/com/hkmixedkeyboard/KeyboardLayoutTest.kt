@@ -2,6 +2,7 @@ package com.hkmixedkeyboard
 
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardSurface
+import com.hkmixedkeyboard.ui.SymbolEnterAction
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Test
@@ -92,6 +93,31 @@ class KeyboardLayoutTest {
             cells.single { it.key.label == KeyboardLayout.KEY_BACKSPACE }.bounds.right,
             0.001f
         )
+    }
+
+    @Test
+    fun `numeric password bottom-left action appears only for meaningful editor actions`() {
+        val returnRows = KeyboardLayout.rowsFor(
+            KeyboardSurface.NUMERIC_PASSWORD,
+            showNextInputMethod = false,
+            enterAction = SymbolEnterAction.RETURN
+        )
+        val doneRows = KeyboardLayout.rowsFor(
+            KeyboardSurface.NUMERIC_PASSWORD,
+            showNextInputMethod = false,
+            enterAction = SymbolEnterAction.DONE
+        )
+
+        assertEquals(
+            listOf("0", KeyboardLayout.KEY_BACKSPACE),
+            returnRows.last().keys.map { it.label }
+        )
+        assertEquals(8f / 3f + 1f, returnRows.last().keys.first().startUnits, 0.001f)
+        assertEquals(
+            listOf(KeyboardLayout.KEY_ENTER, "0", KeyboardLayout.KEY_BACKSPACE),
+            doneRows.last().keys.map { it.label }
+        )
+        assertEquals(1f, doneRows.last().keys.first().startUnits, 0.001f)
     }
 
     @Test
