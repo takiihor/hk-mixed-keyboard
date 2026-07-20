@@ -5,8 +5,7 @@ enum class KeyboardSurface {
     NUMBER,
     SIGNED_DECIMAL_NUMBER,
     PHONE,
-    EMAIL,
-    URI
+    EMAIL
 }
 
 object KeyboardLayout {
@@ -116,7 +115,6 @@ object KeyboardLayout {
     ): List<RowDef> = when (surface) {
         KeyboardSurface.TEXT -> textRows()
         KeyboardSurface.EMAIL -> alphabetRows + emailBottomRow()
-        KeyboardSurface.URI -> alphabetRows + uriBottomRow()
         KeyboardSurface.NUMBER -> numberRows()
         KeyboardSurface.SIGNED_DECIMAL_NUMBER -> signedDecimalRows()
         KeyboardSurface.PHONE -> phoneRows()
@@ -169,16 +167,6 @@ object KeyboardLayout {
             "_" to 1f,
             KEY_MODE to 0.75f,
             KEY_SPACE to 5.1f,
-            "." to 0.8f
-        )
-    )
-
-    private fun uriBottomRow(): RowDef = actionRow(
-        listOf(
-            "/" to 0.8f,
-            ":" to 0.8f,
-            "-" to 0.8f,
-            KEY_SPACE to 5.45f,
             "." to 0.8f
         )
     )

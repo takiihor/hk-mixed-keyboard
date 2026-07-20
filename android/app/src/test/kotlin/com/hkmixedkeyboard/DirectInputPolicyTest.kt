@@ -113,43 +113,17 @@ class DirectInputPolicyTest {
     }
 
     @Test
-    fun `URI editors compose letters but commit URL symbols directly`() {
+    fun `URI editors compose letters and use standard symbol handling`() {
         val uriInputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
 
         assertFalse(
             DirectInputPolicy.shouldUseDirectLatinCommit(
                 inputType = uriInputType,
-                packageName = "org.mozilla.firefox",
+                packageName = "com.example.browser",
                 privateImeOptions = null
             )
         )
-        assertFalse(
-            DirectInputPolicy.shouldCommitKeyDirectly(
-                "q",
-                directLatinCommit = false,
-                directSymbolCommit = true
-            )
-        )
-        assertTrue(
-            DirectInputPolicy.shouldCommitKeyDirectly(
-                "/",
-                directLatinCommit = false,
-                directSymbolCommit = true
-            )
-        )
-        assertTrue(
-            DirectInputPolicy.shouldCommitKeyDirectly(
-                ":",
-                directLatinCommit = false,
-                directSymbolCommit = true
-            )
-        )
-        assertTrue(
-            DirectInputPolicy.shouldCommitKeyDirectly(
-                "-",
-                directLatinCommit = false,
-                directSymbolCommit = true
-            )
-        )
+        assertFalse(DirectInputPolicy.shouldCommitKeyDirectly("q", directLatinCommit = false))
+        assertFalse(DirectInputPolicy.shouldCommitKeyDirectly("/", directLatinCommit = false))
     }
 }

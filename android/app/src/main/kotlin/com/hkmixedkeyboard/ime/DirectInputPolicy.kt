@@ -6,12 +6,11 @@ object DirectInputPolicy {
     fun shouldCommitKeyDirectly(
         label: String,
         directLatinCommit: Boolean,
-        compositionBuffer: String = "",
-        directSymbolCommit: Boolean = false
+        compositionBuffer: String = ""
     ): Boolean =
         (isAsciiDigit(label) && (directLatinCommit || !isUnicodeFallbackPrefix(compositionBuffer))) ||
             (directLatinCommit && isAsciiLetter(label)) ||
-            ((directLatinCommit || directSymbolCommit) && isDirectEntrySymbol(label))
+            (directLatinCommit && isDirectEntrySymbol(label))
 
     fun shouldUseDirectLatinCommit(
         inputType: Int,

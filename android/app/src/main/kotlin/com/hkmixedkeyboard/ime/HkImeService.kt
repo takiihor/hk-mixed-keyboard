@@ -792,8 +792,7 @@ class HkImeService : InputMethodService() {
                 if (DirectInputPolicy.shouldCommitKeyDirectly(
                         typed,
                         directLatinCommit,
-                        imeState.buffer,
-                        directSymbolCommit = editorSurface == KeyboardSurface.URI
+                        imeState.buffer
                     )) {
                     if (isAsciiLetter(label)) { shiftController.consumeLetter(); refreshShiftVisual() }
                     committedPrefix = ""

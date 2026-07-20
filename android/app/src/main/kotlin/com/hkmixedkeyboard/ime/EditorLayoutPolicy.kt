@@ -26,8 +26,6 @@ object EditorLayoutPolicy {
                     InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
                     InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS
                 ) -> KeyboardSurface.EMAIL
-            inputClass == InputType.TYPE_CLASS_TEXT &&
-                variation == InputType.TYPE_TEXT_VARIATION_URI -> KeyboardSurface.URI
             else -> KeyboardSurface.TEXT
         }
     }

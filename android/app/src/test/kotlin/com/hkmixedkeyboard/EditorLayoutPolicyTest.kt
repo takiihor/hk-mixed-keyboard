@@ -33,7 +33,7 @@ class EditorLayoutPolicyTest {
     }
 
     @Test
-    fun `maps email and URI editors to direct-entry surfaces`() {
+    fun `maps email editors to email and URI editors to standard text`() {
         assertEquals(
             KeyboardSurface.EMAIL,
             EditorLayoutPolicy.surfaceFor(
@@ -41,7 +41,7 @@ class EditorLayoutPolicyTest {
             )
         )
         assertEquals(
-            KeyboardSurface.URI,
+            KeyboardSurface.TEXT,
             EditorLayoutPolicy.surfaceFor(
                 InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
             )
