@@ -39,5 +39,10 @@ object EditorLayoutPolicy {
         )
 
     fun usesDirectEntry(inputType: Int): Boolean =
-        surfaceFor(inputType) != KeyboardSurface.TEXT
+        surfaceFor(inputType) in setOf(
+            KeyboardSurface.NUMBER,
+            KeyboardSurface.SIGNED_DECIMAL_NUMBER,
+            KeyboardSurface.PHONE,
+            KeyboardSurface.EMAIL
+        )
 }

@@ -74,17 +74,10 @@ class DirectInputPolicyTest {
     }
 
     @Test
-    fun `email URI and phone editors commit their direct-entry characters`() {
+    fun `email and phone editors commit their direct-entry characters`() {
         assertTrue(
             DirectInputPolicy.shouldUseDirectLatinCommit(
                 inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
-                packageName = "com.example.app",
-                privateImeOptions = null
-            )
-        )
-        assertTrue(
-            DirectInputPolicy.shouldUseDirectLatinCommit(
-                inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI,
                 packageName = "com.example.app",
                 privateImeOptions = null
             )
@@ -99,5 +92,19 @@ class DirectInputPolicyTest {
         assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("@", directLatinCommit = true))
         assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("/", directLatinCommit = true))
         assertTrue(DirectInputPolicy.shouldCommitKeyDirectly("+", directLatinCommit = true))
+    }
+
+    @Test
+    fun `URI editors keep URL layout but compose letters`() {
+        val uriInputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
+
+        assertFalse(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = uriInputType,
+                packageName = "org.mozilla.firefox",
+                privateImeOptions = null
+            )
+        )
+        assertFalse(DirectInputPolicy.shouldCommitKeyDirectly("q", directLatinCommit = false))
     }
 }
