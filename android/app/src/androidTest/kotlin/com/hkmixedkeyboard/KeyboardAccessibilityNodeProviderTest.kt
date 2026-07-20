@@ -346,6 +346,70 @@ class KeyboardAccessibilityNodeProviderTest {
     }
 
     @Test
+    fun passwordPinToggleClickKeepsOriginalAccessibilityEventAfterSurfaceRebuild() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        instrumentation.runOnMainSync {
+            val accessibilityEvents = mutableListOf<Pair<Int, String>>()
+            val expectedDescription = KeyboardAccessibilityLabels.descriptionFor(
+                KeyboardLayout.KEY_PIN_MODE,
+                text = KeyboardAccessibilityLabels.from(instrumentation.targetContext)
+            )
+            val keyboard = KeyboardView(instrumentation.targetContext).apply {
+                keyboardSurface = KeyboardSurface.TEXT_PASSWORD
+                measure(
+                    View.MeasureSpec.makeMeasureSpec(1_000, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY)
+                )
+                layout(0, 0, measuredWidth, measuredHeight)
+            }
+            keyboard.keyListener = object : KeyboardView.KeyListener {
+                override fun onKey(label: String) {
+                    if (label == KeyboardLayout.KEY_PIN_MODE) {
+                        keyboard.keyboardSurface = KeyboardSurface.NUMERIC_PASSWORD
+                    }
+                }
+
+                override fun onKeyLongPress(label: String) = Unit
+                override fun onSpaceSwipe(delta: Int) = Unit
+            }
+            val parent = object : FrameLayout(instrumentation.targetContext) {
+                override fun requestSendAccessibilityEvent(
+                    child: View,
+                    event: AccessibilityEvent
+                ): Boolean {
+                    accessibilityEvents += event.eventType to event.contentDescription.toString()
+                    return true
+                }
+            }
+            parent.addView(keyboard)
+            val pinModeVirtualId = KeyboardLayout.buildCells(
+                1_000f,
+                500f,
+                KeyboardLayout.rowsFor(
+                    KeyboardSurface.TEXT_PASSWORD,
+                    showNextInputMethod = false
+                )
+            ).indexOfFirst { it.key.label == KeyboardLayout.KEY_PIN_MODE } + 1
+
+            assertTrue(
+                keyboard.accessibilityNodeProvider!!.performAction(
+                    pinModeVirtualId,
+                    AccessibilityNodeInfo.ACTION_CLICK,
+                    null
+                )
+            )
+
+            assertEquals(KeyboardSurface.NUMERIC_PASSWORD, keyboard.keyboardSurface)
+            assertEquals(
+                expectedDescription,
+                accessibilityEvents.single {
+                    it.first == AccessibilityEvent.TYPE_VIEW_CLICKED
+                }.second
+            )
+        }
+    }
+
+    @Test
     fun keyboardOmitsAccidentalActionsAndKeepsEditorActionAccessible() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         instrumentation.runOnMainSync {

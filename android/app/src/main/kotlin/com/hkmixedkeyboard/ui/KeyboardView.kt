@@ -679,8 +679,8 @@ class KeyboardView @JvmOverloads constructor(
             val cell = cellForVirtualId(virtualViewId) ?: return false
             return when (action) {
                 AccessibilityNodeInfo.ACTION_CLICK -> {
-                    emitKey(cell.def.label)
                     sendVirtualAccessibilityEvent(virtualViewId, AccessibilityEvent.TYPE_VIEW_CLICKED)
+                    emitKey(cell.def.label)
                     true
                 }
                 AccessibilityNodeInfo.ACTION_LONG_CLICK -> {
