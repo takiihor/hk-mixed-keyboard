@@ -49,6 +49,9 @@ class CorpusLoader(private val ctx: Context) {
     }
     val mixedPhrases: List<MixedPhraseEntry> by lazy { loadMixedPhrases() }
     val whitelist: List<WhitelistEntry> by lazy { loadWhitelist() }
+    private val hkscsSupplement: List<HkscsSupplement.Entry> by lazy {
+        HkscsSupplement.parse(parseCsv("corpus/hkscs_supplement.csv") { it })
+    }
     val englishAssist: List<EnglishAssistEntry> by lazy {
         cached("english_assist",
             read = { EnglishAssistEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
@@ -161,11 +164,27 @@ class CorpusLoader(private val ctx: Context) {
 
     // ── Loaders ────────────────────────────────────────────────────────────
 
-    private fun loadChars(): List<CharEntry> = parseCsv("corpus/hk_core_chars.csv") { cols ->
-        if (cols.size < 5) null
-        else CharEntry(cols[0], cols[1], cols[2], cols[3].toDoubleOrNull() ?: 0.0,
-            cols[4].trim() == "1")
-    }
+    private fun loadChars(): List<CharEntry> =
+        parseCsv("corpus/hk_core_chars.csv") { cols ->
+            if (cols.size < 5) null
+            else CharEntry(cols[0], cols[1], cols[2], cols[3].toDoubleOrNull() ?: 0.0,
+                cols[4].trim() == "1")
+        } + loadHkscsSupplementChars()
+
+    // Official HKSCS-2016 characters missing from the Quick corpus, added at
+    // frequency 0 so they are reachable/selectable without ever outranking a
+    // common candidate that shares the same Quick code. Fields:
+    // chinese, code_point, quick_code, jyutping.
+    private fun loadHkscsSupplementChars(): List<CharEntry> =
+        hkscsSupplement.asSequence()
+            .filter { it.quickCode.isNotBlank() }
+            .map { CharEntry(it.text, it.quickCode, "", 0.0, false) }
+            .toList()
+
+    private fun loadHkscsSupplementJyutping(): List<JyutpingEntry> =
+        hkscsSupplement.flatMap { entry ->
+            entry.jyutping.map { JyutpingEntry(it, entry.text, 0.0) }
+        }
 
     private fun loadPhrases(): List<PhraseEntry> = parseCsv("corpus/hk_core_phrases.csv") { cols ->
         if (cols.size < 4) null
@@ -207,7 +226,7 @@ class CorpusLoader(private val ctx: Context) {
         return JyutpingOverrides.merge(
             load("corpus/jyutping.csv"),
             load("corpus/jyutping_overrides.csv")
-        )
+        ) + loadHkscsSupplementJyutping()
     }
 
     private fun loadPinyin(): List<PinyinEntry> =
@@ -315,6 +334,6 @@ class CorpusLoader(private val ctx: Context) {
         (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 6
+        const val CORPUS_CONTENT_VERSION = 7
     }
 }
