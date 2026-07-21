@@ -8,7 +8,10 @@ import com.hkmixedkeyboard.memory.MemorySuggestion
 class CandidateDisplayPolicy {
     companion object {
         const val BAR_LIMIT = 15
-        const val EXPANDED_LIMIT = 80
+        // The expanded grid scrolls. It must not truncate a valid corpus candidate:
+        // a rare HKSCS character can share a code with more common entries and rank
+        // beyond an arbitrary display cap.
+        const val EXPANDED_LIMIT = Int.MAX_VALUE
     }
 
     fun order(
