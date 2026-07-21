@@ -1185,12 +1185,12 @@ class HkImeService : InputMethodService() {
                 learned = learned,
                 decoded = decoded,
                 limit = CandidateDisplayPolicy.BAR_LIMIT
-            ).filter { isRenderable(it.text) }
+            )
             val expanded = candidateDisplayPolicy.orderPredictions(
                 learned = learned,
                 decoded = decoded,
                 limit = CandidateDisplayPolicy.EXPANDED_LIMIT
-            ).filter { isRenderable(it.text) }
+            )
             mainThread.post {
                 if (committedPrefix == prefix && imeState.buffer.isEmpty()) {
                     lastCandidates = expanded
@@ -1232,7 +1232,7 @@ class HkImeService : InputMethodService() {
             literal = literal,
             chineseFirst = PinyinImePolicy.isChineseFirst(imeCtx.scheme, phraseExact),
             limit = limit
-        ).filter { isRenderable(it.text) }
+        )
     }
 
     private fun composingLearnedSuggestions(
@@ -1240,23 +1240,6 @@ class HkImeService : InputMethodService() {
         limit: Int
     ): List<com.hkmixedkeyboard.memory.MemorySuggestion> =
         (memory ?: fallbackMemory).suggestions(buffer, imeCtx.isSensitiveField, limit)
-
-    // Some corpus readings are rare supplementary-plane CJK characters (e.g. 𨳍)
-    // that a device's system font has no glyph for — they render as blank "tofu"
-    // cells in the bar / expanded grid. Drop any candidate the current font can't
-    // fully render. hasGlyph is device-font-aware, so a character still shows on
-    // devices that can render it and is hidden only where it would be blank.
-    private val glyphPaint = android.graphics.Paint()
-    private fun isRenderable(text: String): Boolean {
-        if (text.isEmpty()) return false
-        var i = 0
-        while (i < text.length) {
-            val cp = text.codePointAt(i)
-            if (!glyphPaint.hasGlyph(String(Character.toChars(cp)))) return false
-            i += Character.charCount(cp)
-        }
-        return true
-    }
 
     // ── Composition state ────────────────────────────────────────────────────
 

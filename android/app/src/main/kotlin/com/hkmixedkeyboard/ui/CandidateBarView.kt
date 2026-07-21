@@ -28,6 +28,7 @@ class CandidateBarView @JvmOverloads constructor(
     // Shared low-latency haptic engine, injected by the IME service.
     var haptics: TypingHapticEngine? = null
     private var renderSnapshot: CandidateRenderSnapshot? = null
+    private val glyphPaint = android.graphics.Paint()
     private var displayedCandidates: List<DecodeCandidate> = emptyList()
     private var systemMessageStyle: SystemMessageStyle? = null
 
@@ -158,7 +159,7 @@ class CandidateBarView @JvmOverloads constructor(
     }
 
     private fun bindCandidateView(tv: TextView, cand: DecodeCandidate) {
-        bindLabel(tv, cand.text)
+        bindLabel(tv, CandidatePresentation.label(cand.text) { glyphPaint.hasGlyph(it) })
         if (cand.type == CandidateType.EN_LITERAL) {
             tv.setTextColor(colorText)
             tv.background = android.graphics.drawable.GradientDrawable().apply {
