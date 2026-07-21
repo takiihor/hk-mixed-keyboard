@@ -191,12 +191,19 @@ class CorpusLoader(private val ctx: Context) {
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
 
-    private fun loadJyutping(): List<JyutpingEntry> =
-        parseCsv("corpus/jyutping.csv") { cols ->
+    // The source snapshot stays untouched on disk; the reviewed layer is merged over
+    // it at load time (see JyutpingOverrides).
+    private fun loadJyutping(): List<JyutpingEntry> {
+        fun load(path: String) = parseCsv(path) { cols ->
             if (cols.size < 3) null
             else JyutpingEntry(cols[0].lowercase(), cols[1],
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
+        return JyutpingOverrides.merge(
+            load("corpus/jyutping.csv"),
+            load("corpus/jyutping_overrides.csv")
+        )
+    }
 
     private fun loadPinyin(): List<PinyinEntry> =
         parseCsv("corpus/pinyin.csv") { cols ->
@@ -303,6 +310,6 @@ class CorpusLoader(private val ctx: Context) {
         (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 4
+        const val CORPUS_CONTENT_VERSION = 5
     }
 }
