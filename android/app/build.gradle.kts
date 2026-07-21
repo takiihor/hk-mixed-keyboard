@@ -84,6 +84,7 @@ val appVersionName = "0.$versionMinor.0"
         targetSdk = 36
         versionCode = buildNumber
         versionName = appVersionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
           buildConfigField("int", "BUILD_NUMBER", "$buildNumber")
           buildConfigField("String", "BUILD_TIME", "\"$buildTime\"")
@@ -189,4 +190,8 @@ dependencies {
     kapt(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
