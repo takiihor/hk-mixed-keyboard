@@ -184,12 +184,17 @@ class CorpusLoader(private val ctx: Context) {
         else WhitelistEntry(cols[0], if (cols.size > 1) cols[1] else "")
     }
 
-    private fun loadEnglishAssist(): List<EnglishAssistEntry> =
-        parseCsv("corpus/english_assist.csv") { cols ->
+    private fun loadEnglishAssist(): List<EnglishAssistEntry> {
+        fun load(path: String) = parseCsv(path) { cols ->
             if (cols.size < 3) null
             else EnglishAssistEntry(cols[0].lowercase(), cols[1],
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
+        // Reviewed Hong Kong renderings (巴士/的士/雪櫃…) are layered after the raw
+        // CC-CEDICT gloss so their higher frequency ranks them first per key. Unlike
+        // the Jyutping layer these only promote, so a plain append is enough.
+        return load("corpus/english_assist.csv") + load("corpus/english_assist_overrides.csv")
+    }
 
     // The source snapshot stays untouched on disk; the reviewed layer is merged over
     // it at load time (see JyutpingOverrides).
@@ -310,6 +315,6 @@ class CorpusLoader(private val ctx: Context) {
         (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 5
+        const val CORPUS_CONTENT_VERSION = 6
     }
 }
