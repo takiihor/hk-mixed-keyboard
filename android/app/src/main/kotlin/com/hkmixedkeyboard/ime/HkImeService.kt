@@ -673,7 +673,8 @@ class HkImeService : InputMethodService() {
             KeyboardView.KEY_EXCLAIM  -> ctrl.onPunctuation(label, imeState, precedingContext())
             else                      -> {
                 val typed = applyShiftCase(label)
-                if (DirectInputPolicy.shouldCommitKeyDirectly(typed, directLatinCommit)) {
+                if (DirectInputPolicy.shouldCommitKeyDirectly(
+                        typed, directLatinCommit, imeState.buffer)) {
                     if (isAsciiLetter(label)) { shiftController.consumeLetter(); refreshShiftVisual() }
                     committedPrefix = ""
                     commitDirectText(typed)

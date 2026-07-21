@@ -9,9 +9,10 @@ in the shipped Quick (`hk_core_chars.csv`) and Jyutping (`jyutping.csv`)
 corpora.
 
 It reports measured numbers only — it never asserts "100% Cantonese". With
-`--emit-supplement` it also writes the still-missing characters together with a
-Quick code (first + last Cangjie letter) and toneless Jyutping reading derived
-from the same authoritative source, so the gap can be closed reproducibly.
+`--emit-supplement` writes every official HKSCS Han character together with its
+official Quick code (first + last Cangjie letter) and toneless Jyutping reading.
+Records with neither source mapping receive an explicitly technical Unicode
+escape at runtime, rather than an invented linguistic mapping.
 """
 
 from __future__ import annotations
@@ -173,6 +174,21 @@ class Coverage:
     jyutping_covered: int
     jyutping_supplementary_covered: int
     missing_both: list[HkscsChar]
+    unicode_fallbacks: list[HkscsChar]
+
+    @property
+    def runtime_reachable(self) -> int:
+        """Characters reachable through a source mapping or Unicode fallback."""
+        return self.total - len(
+            [entry for entry in self.missing_both if unicode_fallback_code(entry) is None]
+        )
+
+
+def unicode_fallback_code(entry: HkscsChar) -> str | None:
+    """Technical route for an official record with no official input mapping."""
+    if entry.cangjie or entry.cantonese:
+        return None
+    return f"u{entry.codepoint:x}"
 
 
 def measure(han: list[HkscsChar], quick: set[str], jyutping: set[str]) -> Coverage:
@@ -188,27 +204,28 @@ def measure(han: list[HkscsChar], quick: set[str], jyutping: set[str]) -> Covera
         jyutping_covered=len(jyut_hit),
         jyutping_supplementary_covered=sum(1 for c in jyut_hit if c.supplementary),
         missing_both=missing_both,
+        unicode_fallbacks=[entry for entry in missing_both if unicode_fallback_code(entry)],
     )
 
 
 def emit_supplement(han: list[HkscsChar], quick: set[str], jyutping: set[str], output: Path) -> int:
-    """Write still-missing HKSCS characters with authoritative Quick/Jyutping."""
+    """Write the full official HKSCS overlay with only source-derived routes."""
+    # Retain the inputs in the public API so existing manifest verification calls
+    # remain stable. The full overlay intentionally does not depend on coverage of
+    # legacy corpora: it needs to retain an official route even where that corpus
+    # already contains a different historical mapping.
+    del quick, jyutping
     rows: list[tuple[str, str, str, str]] = []
     for c in han:
-        in_quick = c.char in quick
-        in_jyut = c.char in jyutping
-        if in_quick and in_jyut:
-            continue
-        qc = "" if in_quick else (quick_code(c.cangjie) or "")
-        jp = "" if in_jyut else (";".join(toneless_jyutping(c.cantonese)))
-        if not qc and not jp:
-            continue
+        qc = quick_code(c.cangjie) or ""
+        jp = ";".join(toneless_jyutping(c.cantonese))
         rows.append((c.char, f"U+{c.codepoint:04X}", qc, jp))
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", encoding="utf-8", newline="") as handle:
-        handle.write("# HKSCS-2016 augmentation supplement (authoritative, generated).\n")
-        handle.write("# Missing HKSCS Han characters with official Quick code and toneless\n")
-        handle.write("# Jyutping readings. Fields: chinese, code_point, quick_code, jyutping.\n")
+        handle.write("# HKSCS-2016 official input overlay (authoritative, generated).\n")
+        handle.write("# Every HKSCS Han record, with only official Quick code and toneless\n")
+        handle.write("# Jyutping readings. Blank route fields mean no official input mapping.\n")
+        handle.write("# Fields: chinese, code_point, quick_code, jyutping.\n")
         writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(("chinese", "code_point", "quick_code", "jyutping"))
         writer.writerows(rows)
@@ -251,10 +268,15 @@ def main() -> int:
         print("  No official input mapping: " + ", ".join(
             f"{entry.char} (U+{entry.codepoint:04X})" for entry in cov.missing_both
         ))
+    print(f"  Runtime reachable (official routes or Unicode fallback): {cov.runtime_reachable}/{cov.total}")
+    if cov.unicode_fallbacks:
+        print("  Unicode fallback (tap-only): " + ", ".join(
+            f"{entry.char} ({unicode_fallback_code(entry)})" for entry in cov.unicode_fallbacks
+        ))
 
     if args.emit_supplement is not None:
         written = emit_supplement(han, base_quick, base_jyutping, args.emit_supplement)
-        print(f"  Wrote {written} augmentation rows to {args.emit_supplement}")
+        print(f"  Wrote {written} official overlay rows to {args.emit_supplement}")
     return 0
 
 

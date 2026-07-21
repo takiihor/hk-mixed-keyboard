@@ -7,6 +7,7 @@ import com.hkmixedkeyboard.decoder.CorpusBackedDecoder
 import com.hkmixedkeyboard.decoder.CorpusLoader
 import com.hkmixedkeyboard.decoder.HkscsSupplement
 import com.hkmixedkeyboard.decoder.Scheme
+import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.util.Csv
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -44,7 +45,35 @@ class HkscsSupplementTest {
         assertTrue(decoder.decode("bui", Scheme.JYUTPING).candidates.any { it.text == "𠀾" })
     }
 
+    @Test
+    fun `records without an official mapping get a tap-only Unicode route`() {
+        val entries = HkscsSupplement.parse(supplementRows)
+        val unmapped = entries.filter { it.unicodeFallbackCode != null }
+
+        assertEquals(
+            listOf("u200ca", "u200cb", "u200cd", "u200d1", "u2010c", "u2010e", "u21fe8"),
+            unmapped.map { it.unicodeFallbackCode }
+        )
+        // The escape must never be presented as a linguistic reading.
+        assertTrue(unmapped.all { it.quickCode.isBlank() && it.jyutping.isEmpty() })
+    }
+
+    @Test
+    fun `the Unicode fallback is offered but never exact`() {
+        val loader = bareLoader().also { it.setHkscsEntries(HkscsSupplement.parse(supplementRows)) }
+        val result = CorpusBackedDecoder(loader).decode("u200cd", Scheme.QUICK)
+
+        assertEquals("\uD840\uDCCD", result.candidates.single().text)
+        assertEquals(SourceSchema.HKSCS_UNICODE, result.candidates.single().sourceSchema)
+        // isExactCode stays false, so Space/punctuation keep committing the literal
+        // buffer rather than auto-committing a technical escape.
+        assertTrue(!result.isExactCode)
+    }
+
     private fun CorpusLoader.setHkscsEntries(entries: List<HkscsSupplement.Entry>) {
+        // Also injected so the fallback index never touches assets, which a
+        // unit-test Context cannot read.
+        setLazy("hkscsSupplement", lazyOf(entries))
         setLazy("chars", lazyOf(entries.filter { it.quickCode.isNotBlank() }.map {
             CharEntry(it.text, it.quickCode, "", 0.0, false)
         }))

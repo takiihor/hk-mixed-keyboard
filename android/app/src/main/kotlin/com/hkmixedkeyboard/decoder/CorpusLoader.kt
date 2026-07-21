@@ -52,6 +52,28 @@ class CorpusLoader(private val ctx: Context) {
     private val hkscsSupplement: List<HkscsSupplement.Entry> by lazy {
         HkscsSupplement.parse(parseCsv("corpus/hkscs_supplement.csv") { it })
     }
+    /**
+     * Official HKSCS records without an input mapping remain selectable through a
+     * technical Unicode escape (e.g. `u200cd`). These candidates are intentionally
+     * tap-only and are not presented as official Quick or Jyutping codes.
+     */
+    val hkscsUnicodeFallbackIndex: Map<String, DecodeCandidate> by lazy {
+        val routedByCorpus = HashSet<String>(chars.size + jyutping.size)
+        chars.forEach { routedByCorpus.add(it.char) }
+        jyutping.forEach { routedByCorpus.add(it.chinese) }
+        hkscsSupplement.mapNotNull { entry ->
+            entry.unicodeFallbackCode?.takeIf { entry.text !in routedByCorpus }?.let { code ->
+                code to DecodeCandidate(
+                    entry.text,
+                    code,
+                    SourceSchema.HKSCS_UNICODE,
+                    CandidateType.CHAR,
+                    0.0,
+                    false
+                )
+            }
+        }.toMap()
+    }
     val englishAssist: List<EnglishAssistEntry> by lazy {
         cached("english_assist",
             read = { EnglishAssistEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
@@ -334,6 +356,6 @@ class CorpusLoader(private val ctx: Context) {
         (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 7
+        const val CORPUS_CONTENT_VERSION = 8
     }
 }

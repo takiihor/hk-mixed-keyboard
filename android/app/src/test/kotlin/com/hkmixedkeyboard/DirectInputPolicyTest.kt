@@ -48,4 +48,27 @@ class DirectInputPolicyTest {
             )
         )
     }
+    @Test
+    fun `digits remain composing only while completing a Unicode fallback escape`() {
+        assertFalse(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "2", directLatinCommit = false, compositionBuffer = "u"
+            )
+        )
+        assertFalse(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "1", directLatinCommit = false, compositionBuffer = "u200c"
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "2", directLatinCommit = false, compositionBuffer = "u200cd"
+            )
+        )
+        assertTrue(
+            DirectInputPolicy.shouldCommitKeyDirectly(
+                "2", directLatinCommit = true, compositionBuffer = "u"
+            )
+        )
+    }
 }

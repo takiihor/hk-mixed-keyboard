@@ -24,6 +24,11 @@ class HkscsCoverageTest(unittest.TestCase):
         jyutping = coverage._single_char_texts(JYUTPING, text_col=1)
         supplement = coverage.load_supplement(SUPPLEMENT)
 
+        # The overlay carries every official HKSCS Han record, including the ones
+        # whose route fields are blank because no official mapping exists.
+        self.assertEqual(4606, len(supplement))
+        self.assertEqual(7, sum(not e.cangjie and not e.cantonese for e in han))
+
         quick.update(entry.char for entry in supplement if entry.quick_code)
         jyutping.update(entry.char for entry in supplement if entry.jyutping)
         measured = coverage.measure(han, quick, jyutping)
@@ -41,6 +46,13 @@ class HkscsCoverageTest(unittest.TestCase):
             ["𠃊", "𠃋", "𠃍", "𠃑", "𠄌", "𠄎", "𡿨"],
             [entry.char for entry in measured.missing_both],
         )
+        # Each of those gets a technical, tap-only Unicode escape, which is what
+        # closes runtime reachability to the full set.
+        self.assertEqual(
+            ["u200ca", "u200cb", "u200cd", "u200d1", "u2010c", "u2010e", "u21fe8"],
+            [coverage.unicode_fallback_code(e) for e in measured.unicode_fallbacks],
+        )
+        self.assertEqual(4606, measured.runtime_reachable)
 
         with tempfile.TemporaryDirectory() as tmp:
             generated = Path(tmp) / "supplement.csv"

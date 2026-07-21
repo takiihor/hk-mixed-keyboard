@@ -36,6 +36,15 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
     override fun decode(buffer: String, scheme: Scheme): DecodeResult {
         if (scheme == Scheme.MIXED_EXPERIMENTAL) return empty(buffer, scheme)
 
+        // Technical, tap-only route for official HKSCS records that carry no
+        // Cangjie or Cantonese mapping. Offered in every scheme, and never marked
+        // exact, so Space/punctuation keep committing the literal buffer.
+        if (HkscsSupplement.isUnicodeFallbackInput(buffer)) {
+            corpus.hkscsUnicodeFallbackIndex[buffer.lowercase()]?.let { fallback ->
+                return DecodeResult(buffer, scheme, buffer.length, false, false, listOf(fallback))
+            }
+        }
+
         if (scheme == Scheme.PINYIN) return corpus.pinyinDecoder.decode(buffer)
 
         // JYUTPING primary mode: treat Latin buffer as Jyutping and surface
