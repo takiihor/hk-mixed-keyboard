@@ -17,6 +17,9 @@ import com.hkmixedkeyboard.util.Csv
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.BufferedReader
+import java.io.FilterInputStream
+import java.io.InputStream
 import java.io.IOException
 
 /**
@@ -108,6 +111,7 @@ class DictionaryExportActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val (imported, skipped) = withContext(Dispatchers.IO) {
+                    rejectOversizedProviderFile(uri)
                     // Existing (display, quickCode) pairs, so re-importing the same file
                     // doesn't pile up duplicates — the PK autogenerates, so the REPLACE
                     // conflict strategy never actually fires on a content match.
@@ -116,22 +120,41 @@ class DictionaryExportActivity : AppCompatActivity() {
                     var skip = 0
                     val input = contentResolver.openInputStream(uri)
                         ?: throw IOException("無法開啟檔案")
-                    input.bufferedReader().useLines { lines ->
-                        lines.forEach { line ->
-                            val trimmed = line.trim()
-                            if (trimmed.isBlank() || trimmed.startsWith("#") || trimmed.startsWith("display"))
-                                return@forEach
-                            val cols = Csv.split(trimmed)
-                            if (cols.size < 2) { skip++; return@forEach }
-                            val display = cols[0].trim()
-                            val code    = cols[1].trim().lowercase()
-                            if (display.isBlank() || code.isBlank()) { skip++; return@forEach }
-                            // seen.add returns false when the pair is already present
-                            // (on disk or earlier in this file) → skip the duplicate.
-                            if (!seen.add(display to code)) { skip++; return@forEach }
-                            toInsert.add(CustomWordEntity(display = display, quickCode = code))
+                    SizeLimitedInputStream(input, CustomWordValidator.MAX_IMPORT_BYTES)
+                        .bufferedReader().use { reader ->
+                            while (true) {
+                                val line = reader.readBoundedImportLine() ?: break
+                                if (line.exceedsLimit) { skip++; continue }
+                                val trimmed = line.text.trim()
+                                if (trimmed.isBlank() || trimmed.startsWith("#")) continue
+
+                                val cols = Csv.split(trimmed)
+                                if (cols.size != 2 || isHeader(cols)) {
+                                    if (cols.size != 2) skip++
+                                    continue
+                                }
+                                val valid = when (val result = CustomWordValidator.validate(cols[0], cols[1])) {
+                                    is CustomWordValidator.Result.Invalid -> {
+                                        skip++
+                                        continue
+                                    }
+                                    is CustomWordValidator.Result.Valid -> result
+                                }
+                                // seen.add returns false when the pair is already present
+                                // (on disk or earlier in this file) → skip the duplicate.
+                                if (!seen.add(valid.display to valid.quickCode) ||
+                                    !CustomWordValidator.canAcceptImportRow(toInsert.size)) {
+                                    skip++
+                                    continue
+                                }
+                                toInsert.add(
+                                    CustomWordEntity(
+                                        display = valid.display,
+                                        quickCode = valid.quickCode
+                                    )
+                                )
+                            }
                         }
-                    }
                     if (toInsert.isNotEmpty()) {
                         dao.insertAll(toInsert)
                         KeyboardSettings.bumpCustomWordsToken(this@DictionaryExportActivity)
@@ -144,6 +167,63 @@ class DictionaryExportActivity : AppCompatActivity() {
                 Toast.makeText(this@DictionaryExportActivity,
                     "匯入失敗: ${e.message}", Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    private fun rejectOversizedProviderFile(uri: Uri) {
+        contentResolver.openAssetFileDescriptor(uri, "r")?.use { descriptor ->
+            if (descriptor.length > CustomWordValidator.MAX_IMPORT_BYTES) {
+                throw IOException("匯入檔案不可超過 1 MiB")
+            }
+        }
+    }
+
+    private fun isHeader(columns: List<String>): Boolean =
+        columns[0].equals("display", ignoreCase = true) &&
+            columns[1].equals("quick_code", ignoreCase = true)
+
+    private data class ImportLine(val text: String, val exceedsLimit: Boolean)
+
+    private fun BufferedReader.readBoundedImportLine(): ImportLine? {
+        val line = StringBuilder()
+        var exceedsLimit = false
+        var sawCharacter = false
+        while (true) {
+            val next = read()
+            if (next == -1) {
+                if (!sawCharacter) return null
+                break
+            }
+            sawCharacter = true
+            if (next == '\n'.code) break
+            if (next == '\r'.code) continue
+            if (line.length < CustomWordValidator.MAX_IMPORT_LINE_CHARACTERS) {
+                line.append(next.toChar())
+            } else {
+                exceedsLimit = true
+            }
+        }
+        return ImportLine(line.toString(), exceedsLimit)
+    }
+
+    private class SizeLimitedInputStream(
+        input: InputStream,
+        private val byteLimit: Long
+    ) : FilterInputStream(input) {
+        private var bytesRead = 0L
+
+        override fun read(): Int = super.read().also { byte ->
+            if (byte != -1) recordBytes(1)
+        }
+
+        override fun read(bytes: ByteArray, offset: Int, length: Int): Int =
+            super.read(bytes, offset, length).also { count ->
+                if (count > 0) recordBytes(count)
+            }
+
+        private fun recordBytes(count: Int) {
+            bytesRead += count
+            if (bytesRead > byteLimit) throw IOException("匯入檔案不可超過 1 MiB")
         }
     }
 
