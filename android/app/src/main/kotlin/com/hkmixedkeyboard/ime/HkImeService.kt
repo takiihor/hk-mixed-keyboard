@@ -43,6 +43,7 @@ import com.hkmixedkeyboard.ui.AndroidTypingHapticBackend
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.KeyboardView
+import com.hkmixedkeyboard.ui.JyutpingLearningPreview
 import com.hkmixedkeyboard.ui.MainKeyboardLongPressPolicy
 import com.hkmixedkeyboard.ui.ShiftState
 import com.hkmixedkeyboard.ui.ShiftStateController
@@ -71,6 +72,7 @@ class HkImeService : InputMethodService() {
         // One-time purge of memory entries learned from the pre-v0.47 corpus,
         // which emitted these variant forms before HK normalization (爲→為 …).
         private const val VARIANT_PURGE_FLAG = "variant_purge_v47"
+        private const val JYUTPING_CONFIRMATION_DURATION_MS = 1_400L
         private val STALE_VARIANT_CHARS =
             "僞喫嬀擡柺棱溼潙潨爲癡皁祕竈糉纔脣臺菸蔿衆覈踊鉢鍼".toSet()
     }
@@ -155,6 +157,10 @@ class HkImeService : InputMethodService() {
     private var decodePendingGeneration: Long = 0L
     private var decodePendingSession: Long = 0L
     private val candidateDisplayPolicy = CandidateDisplayPolicy()
+    private val jyutpingLearningPreview by lazy {
+        JyutpingLearningPreview(corpus.jyutpingReadingLookup)
+    }
+    private var jyutpingConfirmationClear: Runnable? = null
 
     private var imeState = ImeStateData()
     private var imeCtx = ImeContext()
@@ -343,6 +349,7 @@ class HkImeService : InputMethodService() {
 
     override fun onDestroy() {
         serviceDestroyed = true
+        clearJyutpingConfirmation()
         super.onDestroy()
         cancelCandidateDecode()
         serviceJob.cancel()
@@ -901,9 +908,11 @@ class HkImeService : InputMethodService() {
             commitPredictionChar(candidate.text)
             return
         }
+        val learningLabel = jyutpingLearningPreview.committedLabel(imeCtx.scheme, candidate)
         val out = ctrl.onCandidateTap(candidate, imeState)
         committedPrefix = if (isCjk(out.committedText)) out.committedText!! else ""
         applyOutput(out)
+        learningLabel?.let(::showJyutpingConfirmation)
     }
 
     private fun commitPredictionChar(text: String) {
@@ -924,6 +933,25 @@ class HkImeService : InputMethodService() {
         committedPrefix = prefix + text
         imeState = ImeStateData()
         showNextCharPredictions()
+    }
+
+    private fun showJyutpingConfirmation(label: String) {
+        if (!::candidateBar.isInitialized || imeCtx.isSensitiveField) return
+        clearJyutpingConfirmation()
+        candidateBar.setLearningPreview(label)
+        val clear = Runnable {
+            jyutpingConfirmationClear = null
+            if (imeState.buffer.isEmpty() && !imeCtx.isSensitiveField) {
+                candidateBar.setLearningPreview(null)
+            }
+        }
+        jyutpingConfirmationClear = clear
+        mainThread.postDelayed(clear, JYUTPING_CONFIRMATION_DURATION_MS)
+    }
+
+    private fun clearJyutpingConfirmation() {
+        jyutpingConfirmationClear?.let(mainThread::removeCallbacks)
+        jyutpingConfirmationClear = null
     }
 
     // Show the characters that commonly follow the committed prefix (我 → 們/哋…).
@@ -1020,6 +1048,7 @@ class HkImeService : InputMethodService() {
     private fun updateCandidateBar(@Suppress("UNUSED_PARAMETER") out: CommitOutput) {
         if (!::candidateBar.isInitialized) return
         if (imeCtx.isSensitiveField) {
+            clearJyutpingConfirmation()
             cancelCandidateDecode()
             candidateBar.showSafeMode()
             return
@@ -1034,6 +1063,8 @@ class HkImeService : InputMethodService() {
             LatencyLogger.firstCandidateRender()
             return
         }
+        clearJyutpingConfirmation()
+        candidateBar.setLearningPreview(null)
         // Cold start: the dictionary for this scheme may still be loading. Show a
         // brief hint instead of a blank bar; the decode we schedule next builds the
         // index if needed and replaces the hint with real candidates.
@@ -1133,6 +1164,9 @@ class HkImeService : InputMethodService() {
                 compositionSession == session) {
                 lastCandidates = expanded
                 candidateBar.setCandidates(display)
+                candidateBar.setLearningPreview(
+                    jyutpingLearningPreview.liveLabel(decodeScheme, display)
+                )
                 LatencyLogger.firstCandidateRender()
                 PerfTracer.mark("first_candidate_render") { "gen=$gen size=${display.size}" }
             }
@@ -1196,7 +1230,8 @@ class HkImeService : InputMethodService() {
             mainThread.post {
                 if (committedPrefix == prefix && imeState.buffer.isEmpty()) {
                     lastCandidates = expanded
-                    if (display.isEmpty()) candidateBar.clear() else candidateBar.setCandidates(display)
+                    if (display.isEmpty()) candidateBar.clear(clearLearningPreview = false)
+                    else candidateBar.setCandidates(display)
                 }
             }
         }
@@ -1247,11 +1282,13 @@ class HkImeService : InputMethodService() {
 
     private fun resetCompositionState() {
         cancelCandidateDecode()
+        clearJyutpingConfirmation()
         pinyinSpaceIntent.cancel()
         compositionSession++
         compositionDecodeGeneration = 0L
         imeState = ImeStateData()
         committedPrefix = ""
+        if (::candidateBar.isInitialized) candidateBar.setLearningPreview(null)
         currentInputConnection?.finishComposingText()
     }
 
@@ -1342,6 +1379,7 @@ class HkImeService : InputMethodService() {
 
     private fun clearCompositionAfterStandaloneInsert() {
         cancelCandidateDecode()
+        clearJyutpingConfirmation()
         compositionSession++
         imeState = ImeStateData()
         committedPrefix = ""

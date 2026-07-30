@@ -161,14 +161,14 @@ class CandidateBarView @JvmOverloads constructor(
         previewLabel.visibility = if (label.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
-    fun clear() {
+    fun clear(clearLearningPreview: Boolean = true) {
         if (CandidateBarDisplayStatePolicy.afterClear(displayState) == CandidateBarDisplayState.SYSTEM_MESSAGE) {
             return
         }
         renderSnapshot = null
         displayedCandidates = emptyList()
         systemMessageStyle = null
-        setLearningPreview(null)
+        if (clearLearningPreview) setLearningPreview(null)
         row.removeAllViews()
         setRowWidth(FrameLayout.LayoutParams.WRAP_CONTENT)
         updateDisplayState(CandidateBarDisplayState.EMPTY)
