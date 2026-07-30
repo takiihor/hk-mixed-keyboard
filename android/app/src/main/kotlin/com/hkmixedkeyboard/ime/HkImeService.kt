@@ -387,6 +387,7 @@ class HkImeService : InputMethodService() {
         runCatching {
             corpus.quickIndex
             corpus.quickPrefixCandidateIndex
+            corpus.jyutpingReadingLookup
         }
         quickWarm = true
         PerfTracer.mark("warm_quick_done")
