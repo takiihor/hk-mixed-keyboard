@@ -17,7 +17,9 @@ import argparse
 import csv
 import gzip
 import re
+from collections import Counter, defaultdict
 from pathlib import Path
+from typing import Iterable
 
 # Trad Simp [pinyin] /gloss/…/
 CEDICT_ENTRY = re.compile(r"^(\S+)\s+\S+\s+\[([^]]*)]\s+/(.*)/\s*$")
@@ -75,6 +77,28 @@ def is_secondary(raw_reading: str, glosses: str) -> bool:
     return bool(raw_reading[:1].isupper() or SECONDARY_GLOSS.match(glosses.split("/", 1)[0]))
 
 
+def character_votes(rows: Iterable[tuple[str, str, str]]) -> dict[str, Counter]:
+    """Count, per character, which reading the words containing it actually use.
+
+    CC-CEDICT writes one space-separated syllable per character, so a multi-character
+    headword aligns its reading to its text position by position. Entries where the
+    two counts disagree (digits, embedded Latin) are skipped rather than guessed at.
+    """
+    votes: dict[str, Counter] = defaultdict(Counter)
+    for text, raw, glosses in rows:
+        if len(text) < 2 or is_secondary(raw, glosses):
+            continue
+        reading = normalize_reading(raw)
+        if not TONED_PINYIN.fullmatch(reading):
+            continue
+        syllables = reading.split(" ")
+        if len(syllables) != len(text):
+            continue
+        for character, syllable in zip(text, syllables):
+            votes[character][syllable] += 1
+    return votes
+
+
 def build_readings(cedict: Path, quick_chars: Path, quick_phrases: Path) -> dict[str, str]:
     """Return ``text -> toned pinyin`` for every Quick-reachable headword.
 
@@ -82,29 +106,38 @@ def build_readings(cedict: Path, quick_chars: Path, quick_phrases: Path) -> dict
     except that a name/variant reading never displaces an ordinary one — 王 should
     teach ``wang2`` the word rather than ``Wang2`` the surname.
 
-    CC-CEDICT ranks nothing beyond that, so a genuinely polyphonic headword whose
-    readings are all ordinary (行 hang2/xing2, 重 chong2/zhong4) still resolves by
-    source order. Multi-character text is unaffected: every phrase reading comes
-    from an exact headword rather than from joining its characters.
+    CC-CEDICT ranks nothing beyond that, so a genuinely polyphonic character
+    (行 hang2/xing2, 重 chong2/zhong4) would otherwise resolve by source order and
+    teach whichever reading happened to be listed first. For single characters the
+    words containing them break the tie instead: 行 reads xing2 in 行為, 進行 and
+    旅行 but hang2 in 銀行, and the majority wins. Multi-character text is
+    unaffected — every phrase reading still comes from its own exact headword
+    rather than from joining possibly polyphonic characters.
     """
     reachable = _quick_texts(quick_chars) | _quick_texts(quick_phrases)
-    readings: dict[str, str] = {}
-    secondary_only: set[str] = set()
+    rows = list(_cedict_rows(cedict))
+    votes = character_votes(rows)
 
-    for text, raw, glosses in _cedict_rows(cedict):
+    candidates: dict[str, list[tuple[str, bool]]] = defaultdict(list)
+    for text, raw, glosses in rows:
         if text not in reachable:
             continue
         reading = normalize_reading(raw)
         if not TONED_PINYIN.fullmatch(reading):
             continue
-        secondary = is_secondary(raw, glosses)
-        if text not in readings:
-            readings[text] = reading
-            if secondary:
-                secondary_only.add(text)
-        elif not secondary and text in secondary_only:
-            readings[text] = reading
-            secondary_only.discard(text)
+        candidates[text].append((reading, is_secondary(raw, glosses)))
+
+    readings: dict[str, str] = {}
+    for text, options in candidates.items():
+        ordinary = [reading for reading, secondary in options if not secondary]
+        preferred = ordinary or [reading for reading, _ in options]
+        if len(text) == 1 and len(set(preferred)) > 1:
+            counts = votes.get(text, Counter())
+            # Source order, captured before sorting: it is the tie-break for
+            # readings the corpus attests equally often, or not at all.
+            source_order = {reading: i for i, reading in enumerate(dict.fromkeys(preferred))}
+            preferred.sort(key=lambda r: (-counts[r], source_order[r]))
+        readings[text] = preferred[0]
     return readings
 
 

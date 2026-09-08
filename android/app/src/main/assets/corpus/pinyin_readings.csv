@@ -260,7 +260,7 @@ text,pinyin
 三項,san1 xiang4
 三體,san1 ti3
 三鹿,san1 lu4
-上,shang3
+上,shang4
 上一個,shang4 yi1 ge5
 上一頁,shang4 yi1 ye4
 上下,shang4 xia4
@@ -1045,7 +1045,7 @@ text,pinyin
 乶,fu3
 乸,na3
 乹,qian2
-乾,qian2
+乾,gan1
 乾坤,qian2 kun1
 乾旱,gan1 han4
 乾洗,gan1 xi3
@@ -1074,7 +1074,7 @@ text,pinyin
 了結,liao3 jie2
 了解,liao3 jie3
 亇,ge4
-予,yu2
+予,yu3
 予以,yu3 yi3
 亊,shi4
 事,shi4
@@ -1288,7 +1288,7 @@ text,pinyin
 亳,bo2
 亶,dan3
 亷,lian2
-亹,men2
+亹,wei3
 人,ren2
 人世,ren2 shi4
 人世間,ren2 shi4 jian1
@@ -1419,7 +1419,7 @@ text,pinyin
 仍,reng2
 仍然,reng2 ran2
 仍舊,reng2 jiu4
-仔,zi1
+仔,zi3
 仔細,zi3 xi4
 仔豬,zi3 zhu1
 仕,shi4
@@ -1480,7 +1480,7 @@ text,pinyin
 代購,dai4 gou4
 代辦,dai4 ban4
 代銷,dai4 xiao1
-令,ling2
+令,ling4
 令人,ling4 ren2
 令人滿意,ling4 ren2 man3 yi4
 令人髮指,ling4 ren2 fa4 zhi3
@@ -1594,7 +1594,7 @@ text,pinyin
 伢,ya2
 伩,xin4
 伭,xian2
-伯,bai3
+伯,bo2
 伯伯,bo2 bo5
 伯克利,bo2 ke4 li4
 伯樂,bo2 le4
@@ -1620,15 +1620,15 @@ text,pinyin
 伸直,shen1 zhi2
 伸縮,shen1 suo1
 伹,qu1
-伺,ci4
+伺,si4
 伺候,ci4 hou5
 伻,beng1
-似,shi4
+似,si4
 似乎,si4 hu1
 似地,shi4 de5
 似曾相識,si4 ceng2 xiang1 shi2
 似的,shi4 de5
-伽,ga1
+伽,jia1
 伽利略,jia1 li4 lüe4
 伾,pi1
 佀,si4
@@ -1731,7 +1731,7 @@ text,pinyin
 佛經,fo2 jing1
 佛羅倫薩,fo2 luo2 lun2 sa4
 佛陀,fo2 tuo2
-作,zuo1
+作,zuo4
 作假,zuo4 jia3
 作出,zuo4 chu1
 作品,zuo4 pin3
@@ -2027,7 +2027,7 @@ text,pinyin
 保養品,bao3 yang3 pin3
 保鮮,bao3 xian1
 俞,yu2
-俟,qi2
+俟,si4
 俠,xia2
 俠客,xia2 ke4
 信,xin4
@@ -2115,7 +2115,7 @@ text,pinyin
 倉促,cang1 cu4
 倉儲,cang1 chu3
 倉庫,cang1 ku4
-個,ge3
+個,ge4
 個人,ge4 ren2
 個人電腦,ge4 ren2 dian4 nao3
 個例,ge4 li4
@@ -2161,7 +2161,7 @@ text,pinyin
 倖免,xing4 mian3
 倖存,xing4 cun2
 倖存者,xing4 cun2 zhe3
-倘,chang2
+倘,tang3
 倘若,tang3 ruo4
 候,hou4
 候選,hou4 xuan3
@@ -2184,7 +2184,7 @@ text,pinyin
 倢,jie2
 倣,fang3
 値,zhi2
-倥,kong1
+倥,kong3
 倦,juan4
 倨,ju4
 倩,qian4
@@ -2208,7 +2208,7 @@ text,pinyin
 倽,sha2
 偁,cheng1
 偃,yan3
-假,gei1
+假,jia3
 假冒,jia3 mao4
 假名,jia3 ming2
 假如,jia3 ru2
@@ -2317,7 +2317,7 @@ text,pinyin
 偯,yi3
 偰,xie4
 偱,xun2
-偲,cai1
+偲,si1
 側,ce4
 側重,ce4 zhong4
 側重點,ce4 zhong4 dian3
@@ -2347,7 +2347,7 @@ text,pinyin
 偽,wei3
 偽裝,wei3 zhuang1
 偽造,wei3 zao4
-傀,gui1
+傀,kui3
 傀儡,kui3 lei3
 傅,fu4
 傈,li4
@@ -2758,7 +2758,7 @@ text,pinyin
 免費,mian3 fei4
 免除,mian3 chu2
 兎,tu4
-兒,er2
+兒,r5
 兒女,er2 nü3
 兒媳,er2 xi2
 兒子,er2 zi5
@@ -3481,7 +3481,7 @@ text,pinyin
 分離,fen1 li2
 分頁,fen1 ye4
 分類,fen1 lei4
-切,qie1
+切,qie4
 切入,qie1 ru4
 切削,qie1 xiao1
 切割,qie1 ge1
@@ -3650,7 +3650,7 @@ text,pinyin
 刷題,shua1 ti2
 券,quan4
 券商,quan4 shang1
-刺,ci1
+刺,ci4
 刺客,ci4 ke4
 刺殺,ci4 sha1
 刺激,ci4 ji1
@@ -3678,7 +3678,7 @@ text,pinyin
 剅,lou2
 則,ze2
 剉,cuo4
-削,xiao1
+削,xue1
 削弱,xue1 ruo4
 削減,xue1 jian3
 剋,kei1
@@ -3745,7 +3745,7 @@ text,pinyin
 前門,qian2 men2
 前面,qian2 mian4
 前頭,qian2 tou5
-剎,cha4
+剎,sha1
 剎車,sha1 che1
 剎那,cha4 na4
 剏,chuang4
@@ -3766,7 +3766,7 @@ text,pinyin
 剛才,gang1 cai2
 剛需,gang1 xu1
 剜,wan1
-剝,bao1
+剝,bo1
 剝削,bo1 xue1
 剝奪,bo1 duo2
 剝皮,bao1 pi2
@@ -3802,7 +3802,7 @@ text,pinyin
 割裂,ge1 lie4
 剳,da2
 剴,kai3
-創,chuang1
+創,chuang4
 創下,chuang4 xia4
 創世,chuang4 shi4
 創作,chuang4 zuo4
@@ -3830,11 +3830,11 @@ text,pinyin
 剺,li2
 剽,piao1
 剽竊,piao1 qie4
-剿,chao1
+剿,jiao3
 劀,gua1
 劁,qiao1
 劂,jue2
-劃,hua2
+劃,hua4
 劃分,hua4 fen1
 劃定,hua4 ding4
 劃掉,hua4 diao4
@@ -4102,7 +4102,7 @@ text,pinyin
 勤勞,qin2 lao2
 勤奮,qin2 fen4
 勤快,qin2 kuai4
-勦,chao1
+勦,jiao3
 勩,yi4
 勯,dan1
 勰,xie2
@@ -4387,7 +4387,7 @@ text,pinyin
 協議,xie2 yi4
 協議書,xie2 yi4 shu1
 協辦,xie2 ban4
-南,na1
+南,nan2
 南下,nan2 xia4
 南亞,nan2 ya4
 南京,nan2 jing1
@@ -4453,7 +4453,7 @@ text,pinyin
 卝,guan4
 卞,bian4
 卟,bu3
-占,zhan1
+占,zhan4
 占卜,zhan1 bu3
 卡,ka3
 卡丁車,ka3 ding1 che1
@@ -4625,7 +4625,7 @@ text,pinyin
 去除,qu4 chu2
 厾,du1
 叁,san1
-參,san1
+參,can1
 參加,can1 jia1
 參展,can1 zhan3
 參差不齊,cen1 ci1 bu4 qi2
@@ -4952,7 +4952,7 @@ text,pinyin
 可選,ke3 xuan3
 可靠,ke3 kao4
 可靠性,ke3 kao4 xing4
-台,tai1
+台,tai2
 台下,tai2 xia4
 台前,tai2 qian2
 台北,tai2 bei3
@@ -5053,7 +5053,7 @@ text,pinyin
 吅,song4
 吆,yao1
 吆喝,yao1 he5
-合,ge3
+合,he2
 合一,he2 yi1
 合並,he2 bing4
 合乎,he2 hu1
@@ -5260,7 +5260,7 @@ text,pinyin
 含量,han2 liang4
 含金量,han2 jin1 liang4
 听,yin3
-吭,hang2
+吭,keng1
 吮,shun3
 吰,hong2
 吱,zhi1
@@ -5332,9 +5332,9 @@ text,pinyin
 呝,e4
 呠,pen1
 呡,wen3
-呢,ne5
+呢,ni2
 呣,m2
-呤,ling2
+呤,ling4
 呦,you1
 呧,di3
 周,zhou1
@@ -5357,11 +5357,11 @@ text,pinyin
 周遭,zhou1 zao1
 周邊,zhou1 bian1
 呪,zhou4
-呫,che4
+呫,tie4
 呬,xi4
 呯,ping2
 呰,zi3
-呱,gu1
+呱,gua1
 呲,ci1
 味,wei4
 味兒,wei4 r5
@@ -5434,7 +5434,7 @@ text,pinyin
 咒語,zhou4 yu3
 咔,ka3
 咕,gu1
-咖,ga1
+咖,ka1
 咖啡,ka1 fei1
 咖啡因,ka1 fei1 yin1
 咖啡師,ka1 fei1 shi1
@@ -5473,7 +5473,7 @@ text,pinyin
 咱們,zan2 men5
 咱家,za2 jia1
 咲,xiao4
-咳,hai1
+咳,ke2
 咳嗽,ke2 sou5
 咴,hui1
 咷,tao2
@@ -5544,7 +5544,7 @@ text,pinyin
 哥大,ge1 da4
 哥斯拉,ge1 si1 la1
 哥特,ge1 te4
-哦,e2
+哦,o4
 哧,chi1
 哨,shao4
 哩,li3
@@ -5706,7 +5706,7 @@ text,pinyin
 啖,dan4
 啗,dan4
 啜,chuo4
-啞,ya1
+啞,ya3
 啞巴,ya3 ba5
 啞鈴,ya3 ling2
 啟,qi3
@@ -5734,7 +5734,7 @@ text,pinyin
 喀,ka1
 喀什,ka1 shi2
 喁,yong2
-喂,wei2
+喂,wei4
 喃,nan2
 喃喃,nan2 nan2
 善,shan4
@@ -5747,7 +5747,7 @@ text,pinyin
 善良,shan4 liang2
 善解人意,shan4 jie3 ren2 yi4
 喆,zhe2
-喇,la1
+喇,la3
 喇叭,la3 ba5
 喇嘛,la3 ma5
 喈,jie1
@@ -5758,7 +5758,7 @@ text,pinyin
 喋,die2
 喌,zhou1
 喎,wai1
-喏,nuo4
+喏,re3
 喑,yin1
 喒,zan2
 喓,yao1
@@ -5796,7 +5796,7 @@ text,pinyin
 喧囂,xuan1 xiao1
 喧鬧,xuan1 nao4
 喨,liang4
-喪,sang1
+喪,sang4
 喪失,sang4 shi1
 喪屍,sang1 shi1
 喪心病狂,sang4 xin1 bing4 kuang2
@@ -5806,7 +5806,7 @@ text,pinyin
 喬布斯,qiao2 bu4 si1
 喬治,qiao2 zhi4
 喭,yan4
-單,chan2
+單,dan1
 單一,dan1 yi1
 單人,dan1 ren2
 單位,dan1 wei4
@@ -5864,7 +5864,7 @@ text,pinyin
 嗊,gong4
 嗌,ai4
 嗍,suo1
-嗎,ma2
+嗎,ma5
 嗐,hai4
 嗑,ke4
 嗒,da1
@@ -5894,7 +5894,7 @@ text,pinyin
 嗩,suo3
 嗪,qin2
 嗬,he1
-嗯,en1
+嗯,en5
 嗰,ge4
 嗲,dia3
 嗵,tong1
@@ -5905,7 +5905,7 @@ text,pinyin
 嗽,sou4
 嗾,sou3
 嗿,tan3
-嘀,di1
+嘀,di2
 嘀咕,di2 gu5
 嘁,qi1
 嘂,jiao4
@@ -5938,7 +5938,7 @@ text,pinyin
 嘗,chang2
 嘗試,chang2 shi4
 嘚,de1
-嘛,ma2
+嘛,ma5
 嘜,mai4
 嘞,lei5
 嘟,du1
@@ -5949,7 +5949,7 @@ text,pinyin
 嘥,sai1
 嘦,jiao4
 嘧,mi4
-嘩,hua1
+嘩,hua2
 嘩嘩,hua1 hua1
 嘫,ran2
 嘬,chuai4
@@ -5971,7 +5971,7 @@ text,pinyin
 嘶,si1
 嘶吼,si1 hou3
 嘷,hao2
-嘸,fu3
+嘸,m2
 嘹,liao2
 嘻,xi1
 嘻哈,xi1 ha1
@@ -6045,7 +6045,7 @@ text,pinyin
 嚄,huo4
 嚅,ru2
 嚆,hao1
-嚇,he4
+嚇,xia4
 嚇人,xia4 ren2
 嚇唬,xia4 hu5
 嚇壞,xia4 huai4
@@ -6055,7 +6055,7 @@ text,pinyin
 嚎,hao2
 嚏,ti4
 嚐,chang2
-嚓,ca1
+嚓,cha1
 嚔,ti4
 嚕,lu1
 嚗,bo2
@@ -6108,7 +6108,7 @@ text,pinyin
 囈,yi4
 囉,luo1
 囉嗦,luo1 suo5
-囊,nang1
+囊,nang2
 囊括,nang2 kuo4
 囊腫,nang2 zhong3
 囌,su1
@@ -6211,7 +6211,7 @@ text,pinyin
 因而,yin1 er2
 囡,nan1
 囡囡,nan1 nan1
-囤,dun4
+囤,tun2
 囤積,tun2 ji1
 囤貨,tun2 huo4
 囥,kang4
@@ -6253,7 +6253,7 @@ text,pinyin
 圄,yu3
 圅,han2
 圇,lun2
-圈,juan1
+圈,quan1
 圈內,quan1 nei4
 圈圈,quan1 quan5
 圈套,quan1 tao4
@@ -6444,7 +6444,7 @@ text,pinyin
 圭,gui1
 圮,pi3
 圯,yi2
-地,de5
+地,di4
 地上,di4 shang5
 地下,di4 xia4
 地下城,di4 xia4 cheng2
@@ -6558,7 +6558,7 @@ text,pinyin
 坳,ao4
 坴,lu4
 坵,qiu1
-坷,ke1
+坷,ke3
 坻,chi2
 坼,che4
 坽,ling2
@@ -6811,7 +6811,7 @@ text,pinyin
 報關員,bao4 guan1 yuan2
 堲,ji2
 堳,mei2
-場,chang2
+場,chang3
 場合,chang3 he2
 場地,chang3 di4
 場子,chang3 zi5
@@ -6860,7 +6860,7 @@ text,pinyin
 塙,que4
 塚,zhong3
 塝,bang4
-塞,sai1
+塞,se4
 塞爾維亞,sai4 er3 wei2 ya4
 塞爾達,sai4 er3 da2
 塟,zang4
@@ -7643,13 +7643,13 @@ text,pinyin
 夸,kua1
 夸克,kua1 ke4
 夼,kuang3
-夾,ga1
+夾,jia1
 夾子,jia1 zi5
 夾擊,jia1 ji1
 夾角,jia1 jiao3
 夾雜,jia1 za2
 奄,yan3
-奇,ji1
+奇,qi2
 奇妙,qi2 miao4
 奇幻,qi2 huan4
 奇怪,qi2 guai4
@@ -7930,7 +7930,7 @@ text,pinyin
 姁,xu3
 姄,min2
 姅,ban4
-姆,m1
+姆,mu3
 姈,ling2
 姉,zi3
 姊,zi3
@@ -7953,7 +7953,7 @@ text,pinyin
 姓,xing4
 姓名,xing4 ming2
 姓氏,xing4 shi4
-委,wei1
+委,wei3
 委內瑞拉,wei3 nei4 rui4 la1
 委員,wei3 yuan2
 委員會,wei3 yuan2 hui4
@@ -8024,7 +8024,7 @@ text,pinyin
 娛樂,yu2 le4
 娛樂圈,yu2 le4 quan1
 娛樂場所,yu2 le4 chang3 suo3
-娜,na4
+娜,nuo2
 娜娜,na4 na4
 娟,juan1
 娠,shen1
@@ -8183,7 +8183,7 @@ text,pinyin
 嬖,bi4
 嬗,shan4
 嬙,qiang2
-嬛,huan2
+嬛,xuan1
 嬝,niao3
 嬡,ai4
 嬤,mo2
@@ -8208,7 +8208,7 @@ text,pinyin
 孅,xian1
 孌,luan2
 孏,lan3
-子,zi3
+子,zi5
 子公司,zi3 gong1 si1
 子女,zi3 nü3
 子孫,zi3 sun1
@@ -8878,7 +8878,7 @@ text,pinyin
 射門,she4 men2
 射頻,she4 pin2
 尅,ke4
-將,jiang1
+將,jiang4
 將來,jiang1 lai2
 將士,jiang4 shi4
 將就,jiang1 jiu5
@@ -9216,7 +9216,7 @@ text,pinyin
 尷尬,gan1 ga4
 尸,shi1
 尹,yin3
-尺,che3
+尺,chi3
 尺寸,chi3 cun5
 尺度,chi3 du4
 尺碼,chi3 ma3
@@ -9254,7 +9254,7 @@ text,pinyin
 屁眼,pi4 yan3
 屁股,pi4 gu5
 屄,bi1
-居,ji1
+居,ju1
 居中,ju1 zhong1
 居住,ju1 zhu4
 居住地,ju1 zhu4 di4
@@ -9282,7 +9282,7 @@ text,pinyin
 屍,shi1
 屍體,shi1 ti3
 屎,shi3
-屏,bing1
+屏,ping2
 屏保,ping2 bao3
 屏幕,ping2 mu4
 屏蔽,ping2 bi4
@@ -9422,7 +9422,7 @@ text,pinyin
 峋,xun2
 峒,dong4
 峓,yi2
-峙,shi4
+峙,zhi4
 峚,mi4
 峝,tong2
 峞,wei2
@@ -9563,7 +9563,7 @@ text,pinyin
 嶽,yue4
 巂,gui1
 巃,long2
-巆,hong1
+巆,ying2
 巇,xi1
 巉,chan2
 巋,kui1
@@ -9780,7 +9780,7 @@ text,pinyin
 帔,pei4
 帕,pa4
 帕薩特,pa4 sa4 te4
-帖,tie1
+帖,tie3
 帖子,tie3 zi5
 帗,fu2
 帘,lian2
@@ -9869,7 +9869,7 @@ text,pinyin
 常規賽,chang2 gui1 sai4
 常識,chang2 shi2
 常駐,chang2 zhu4
-帹,qie4
+帹,sha4
 帺,qi2
 帽,mao4
 帽子,mao4 zi5
@@ -10053,7 +10053,7 @@ text,pinyin
 幽靈,you1 ling2
 幽靜,you1 jing4
 幽默,you1 mo4
-幾,ji1
+幾,ji3
 幾乎,ji1 hu1
 幾乎不,ji1 hu1 bu4
 幾何,ji3 he2
@@ -10090,7 +10090,7 @@ text,pinyin
 序幕,xu4 mu4
 序號,xu4 hao4
 庒,zhuang1
-底,de5
+底,di3
 底下,di3 xia5
 底子,di3 zi5
 底層,di3 ceng2
@@ -10297,7 +10297,7 @@ text,pinyin
 廾,gong3
 廿,nian4
 弁,bian4
-弄,long4
+弄,nong4
 弄到,nong4 dao4
 弄懂,nong4 dong3
 弄明白,nong4 ming2 bai5
@@ -10399,7 +10399,7 @@ text,pinyin
 張韶涵,zhang1 shao2 han2
 張飛,zhang1 fei1
 弶,jiang4
-強,jiang4
+強,qiang2
 強人,qiang2 ren2
 強制,qiang2 zhi4
 強力,qiang2 li4
@@ -10569,7 +10569,7 @@ text,pinyin
 征途,zheng1 tu2
 徂,cu2
 徃,wang3
-待,dai1
+待,dai4
 待人,dai4 ren2
 待定,dai4 ding4
 待會兒,dai1 hui4 r5
@@ -11054,7 +11054,7 @@ text,pinyin
 怪物,guai4 wu5
 怪獸,guai4 shou4
 怪異,guai4 yi4
-怫,fei4
+怫,fu2
 怭,bi4
 怯,qie4
 怱,cong1
@@ -11200,7 +11200,7 @@ text,pinyin
 悳,de2
 悴,cui4
 悵,chang4
-悶,men1
+悶,men4
 悶熱,men1 re4
 悶騷,men1 sao1
 悷,li4
@@ -11274,7 +11274,7 @@ text,pinyin
 惠州,hui4 zhou1
 惠普,hui4 pu3
 惠民,hui4 min2
-惡,e3
+惡,e4
 惡人,e4 ren2
 惡作劇,e4 zuo4 ju4
 惡劣,e4 lie4
@@ -11607,7 +11607,7 @@ text,pinyin
 懇請,ken3 qing3
 懈,xie4
 懈怠,xie4 dai4
-應,ying1
+應,ying4
 應付,ying4 fu5
 應力,ying4 li4
 應對,ying4 dui4
@@ -11700,7 +11700,7 @@ text,pinyin
 戈壁,ge1 bi4
 戉,yue4
 戊,wu4
-戌,qu5
+戌,xu1
 戍,shu4
 戎,rong2
 成,cheng2
@@ -11773,7 +11773,7 @@ text,pinyin
 或者,huo4 zhe3
 或許,huo4 xu3
 戚,qi1
-戛,ga1
+戛,jia2
 戛然而止,jia2 ran2 er2 zhi3
 戛納,ga1 na4
 戝,zei2
@@ -11901,7 +11901,7 @@ text,pinyin
 扂,dian4
 扃,jiong1
 扆,yi3
-扇,shan1
+扇,shan4
 扇子,shan4 zi5
 扇貝,shan4 bei4
 扈,hu4
@@ -11966,8 +11966,8 @@ text,pinyin
 扎堆,zha1 dui1
 扎實,zha1 shi5
 扐,le4
-扒,ba1
-打,da2
+扒,pa2
+打,da3
 打下,da3 xia4
 打不過,da3 bu5 guo4
 打中,da3 zhong4
@@ -12059,7 +12059,7 @@ text,pinyin
 托盤,tuo1 pan2
 托福,tuo1 fu2
 托馬斯,tuo1 ma3 si1
-扛,gang1
+扛,kang2
 扞,han4
 扠,cha1
 扡,chi3
@@ -12237,7 +12237,7 @@ text,pinyin
 抗議,kang4 yi4
 抗震,kang4 zhen4
 抗體,kang4 ti3
-折,she2
+折,zhe2
 折合,zhe2 he2
 折射,zhe2 she4
 折扣,zhe2 kou4
@@ -12284,7 +12284,7 @@ text,pinyin
 抵觸,di3 chu4
 抵達,di3 da2
 抶,chi4
-抹,ma1
+抹,mo3
 抹去,mo3 qu4
 抹布,ma1 bu4
 抹黑,mo3 hei1
@@ -12380,7 +12380,7 @@ text,pinyin
 拑,qian2
 拒,ju4
 拒絕,ju4 jue2
-拓,ta4
+拓,tuo4
 拓寬,tuo4 kuan1
 拓展,tuo4 zhan3
 拓撲,tuo4 pu1
@@ -12401,7 +12401,7 @@ text,pinyin
 拖沓,tuo1 ta4
 拖累,tuo1 lei3
 拖鞋,tuo1 xie2
-拗,ao3
+拗,ao4
 拘,ju1
 拘束,ju1 shu4
 拘留,ju1 liu2
@@ -12456,7 +12456,7 @@ text,pinyin
 拳擊,quan2 ji1
 拳頭,quan2 tou5
 拴,shuan1
-拶,za1
+拶,zan3
 拷,kao3
 拷貝,kao3 bei4
 拼,pin1
@@ -12468,8 +12468,8 @@ text,pinyin
 拼湊,pin1 cou4
 拼車,pin1 che1
 拼音,pin1 yin1
-拽,zhuai1
-拾,she4
+拽,zhuai4
+拾,shi2
 拿,na2
 拿下,na2 xia4
 拿來,na2 lai2
@@ -12560,7 +12560,7 @@ text,pinyin
 挖掘,wa1 jue2
 挖掘機,wa1 jue2 ji1
 挖礦,wa1 kuang4
-挨,ai1
+挨,ai2
 挨個,ai1 ge4
 挨罵,ai2 ma4
 挪,nuo2
@@ -12575,7 +12575,7 @@ text,pinyin
 振奮,zhen4 fen4
 振興,zhen4 xing1
 挱,suo1
-挲,sa1
+挲,suo1
 挵,nong4
 挶,ju2
 挹,yi4
@@ -12600,7 +12600,7 @@ text,pinyin
 捆綁,kun3 bang3
 捉,zhuo1
 捉弄,zhuo1 nong4
-捋,lü3
+捋,luo1
 捌,ba1
 捍,han4
 捍衛,han4 wei4
@@ -12711,10 +12711,10 @@ text,pinyin
 排隊,pai2 dui4
 排骨,pai2 gu3
 掔,qian1
-掖,ye1
+掖,ye4
 掗,ya4
 掘,jue2
-掙,zheng1
+掙,zheng4
 掙扎,zheng1 zha2
 掙脫,zheng4 tuo1
 掙錢,zheng4 qian2
@@ -12871,7 +12871,7 @@ text,pinyin
 描寫,miao2 xie3
 描繪,miao2 hui4
 描述,miao2 shu4
-提,di1
+提,ti2
 提交,ti2 jiao1
 提供,ti2 gong1
 提供商,ti2 gong1 shang1
@@ -12951,7 +12951,7 @@ text,pinyin
 握,wo4
 握住,wo4 zhu4
 握手,wo4 shou3
-揣,chuai1
+揣,chuai3
 揣摩,chuai3 mo2
 揣測,chuai3 ce4
 揥,ti4
@@ -13071,8 +13071,8 @@ text,pinyin
 搲,wa1
 搳,hua2
 搴,qian1
-搵,wen3
-搶,qiang1
+搵,wen4
+搶,qiang3
 搶佔,qiang3 zhan4
 搶修,qiang3 xiu1
 搶先,qiang3 xian1
@@ -13110,14 +13110,14 @@ text,pinyin
 摛,chi1
 摜,guan4
 摞,luo4
-摟,lou1
+摟,lou3
 摟住,lou3 zhu4
 摠,zong3
 摦,hua4
 摧,cui1
 摧殘,cui1 can2
 摧毀,cui1 hui3
-摩,ma1
+摩,mo2
 摩托,mo2 tuo1
 摩托羅拉,mo2 tuo1 luo2 la1
 摩托車,mo2 tuo1 che1
@@ -13149,7 +13149,7 @@ text,pinyin
 撂,liao4
 撅,jue1
 撆,pie1
-撇,pie1
+撇,pie3
 撇開,pie1 kai1
 撈,lao1
 撈錢,lao1 qian2
@@ -13192,7 +13192,7 @@ text,pinyin
 撥通,bo1 tong1
 撦,che3
 撧,jue1
-撩,liao1
+撩,liao2
 撩人,liao2 ren2
 撫,fu3
 撫慰,fu3 wei4
@@ -13221,7 +13221,7 @@ text,pinyin
 撼,han4
 撼動,han4 dong4
 撽,qiao4
-撾,wo1
+撾,zhua1
 撿,jian3
 撿漏,jian3 lou4
 擀,gan3
@@ -13308,7 +13308,7 @@ text,pinyin
 擬定,ni3 ding4
 擭,huo4
 擯,bin4
-擰,ning2
+擰,ning3
 擱,ge1
 擱淺,ge1 qian3
 擱置,ge1 zhi4
@@ -13631,7 +13631,7 @@ text,pinyin
 敘事,xu4 shi4
 敘利亞,xu4 li4 ya4
 敘述,xu4 shu4
-教,jiao1
+教,jiao4
 教主,jiao4 zhu3
 教務,jiao4 wu4
 教員,jiao4 yuan2
@@ -13671,7 +13671,7 @@ text,pinyin
 敞開,chang3 kai1
 敢,gan3
 敢於,gan3 yu2
-散,san3
+散,san4
 散佈,san4 bu4
 散光,san3 guang1
 散射,san3 she4
@@ -13735,7 +13735,7 @@ text,pinyin
 敵軍,di2 jun1
 敷,fu1
 敷衍,fu1 yan3
-數,shu3
+數,shu4
 數一數二,shu3 yi1 shu3 er4
 數不勝數,shu3 bu4 sheng4 shu3
 數不清,shu3 bu5 qing1
@@ -14323,7 +14323,7 @@ text,pinyin
 時限,shi2 xian4
 時隔,shi2 ge2
 時髦,shi2 mao2
-晃,huang3
+晃,huang4
 晃動,huang4 dong4
 晄,huang3
 晅,xuan1
@@ -14425,7 +14425,7 @@ text,pinyin
 暄,xuan1
 暆,yi2
 暇,xia2
-暈,yun1
+暈,yun4
 暈倒,yun1 dao3
 暈死,yun1 si3
 暉,hui1
@@ -14532,7 +14532,7 @@ text,pinyin
 曚,meng2
 曛,xun1
 曜,yao4
-曝,bao4
+曝,pu4
 曝光,bao4 guang1
 曠,kuang4
 曡,die2
@@ -14606,7 +14606,7 @@ text,pinyin
 曼城,man4 cheng2
 曼聯,man4 lian2
 曼谷,man4 gu3
-曾,ceng2
+曾,zeng1
 曾國藩,zeng1 guo2 fan1
 曾經,ceng2 jing1
 替,ti4
@@ -14933,7 +14933,7 @@ text,pinyin
 本題,ben3 ti2
 本體,ben3 ti3
 札,zha2
-朮,shu4
+朮,zhu2
 朱,zhu1
 朱元璋,zhu1 yuan2 zhang1
 朱廣滬,zhu1 guang3 hu4
@@ -14941,7 +14941,7 @@ text,pinyin
 朱棣,zhu1 di4
 朱雀,zhu1 que4
 朳,ba1
-朴,po1
+朴,po4
 朵,duo3
 朶,duo3
 朽,xiu3
@@ -14951,7 +14951,7 @@ text,pinyin
 杆,gan1
 杆子,gan1 zi5
 杇,wu1
-杈,cha1
+杈,cha4
 杉,shan1
 杌,wu4
 李,li3
@@ -14994,7 +14994,7 @@ text,pinyin
 村里,cun1 li3
 村鎮,cun1 zhen4
 村長,cun1 zhang3
-杓,biao1
+杓,shao2
 杕,di4
 杖,zhang4
 杗,mang2
@@ -15059,7 +15059,7 @@ text,pinyin
 杴,xian1
 杵,chu3
 杶,chun1
-杷,ba4
+杷,pa2
 杸,shu1
 杻,chou3
 杼,zhu4
@@ -15141,7 +15141,7 @@ text,pinyin
 架設,jia4 she4
 枷,jia1
 枷鎖,jia1 suo3
-枸,gou1
+枸,gou3
 枸杞,gou3 qi3
 枹,fu1
 枻,yi4
@@ -15184,7 +15184,7 @@ text,pinyin
 柚子,you4 zi5
 柜,ju3
 柝,tuo4
-柞,zha4
+柞,zuo4
 柟,nan2
 柢,di3
 柣,zhi2
@@ -15241,7 +15241,7 @@ text,pinyin
 栝,gua1
 栞,kan1
 栟,bing1
-校,jiao4
+校,xiao4
 校內,xiao4 nei4
 校區,xiao4 qu1
 校友,xiao4 you3
@@ -15299,7 +15299,7 @@ text,pinyin
 根源,gen1 yuan2
 根目錄,gen1 mu4 lu4
 栻,shi4
-格,ge1
+格,ge2
 格力,ge2 li4
 格外,ge2 wai4
 格子,ge2 zi5
@@ -15359,7 +15359,7 @@ text,pinyin
 桭,zhen1
 桮,bei1
 桯,ting1
-桲,bo2
+桲,po5
 桴,fu2
 桶,tong3
 桷,jue2
@@ -15503,7 +15503,7 @@ text,pinyin
 植物園,zhi2 wu4 yuan2
 植物油,zhi2 wu4 you2
 植被,zhi2 bei4
-椎,chui2
+椎,zhui1
 椎間盤,zhui1 jian1 pan2
 椏,ya1
 椐,ju1
@@ -15526,7 +15526,7 @@ text,pinyin
 椾,jian1
 椿,chun1
 楀,yu3
-楂,cha2
+楂,zha1
 楅,bi4
 楊,yang2
 楊丞琳,yang2 cheng2 lin2
@@ -15597,7 +15597,7 @@ text,pinyin
 極致,ji2 zhi4
 極限,ji2 xian4
 極點,ji2 dian3
-楷,jie1
+楷,kai3
 楷書,kai3 shu1
 楷模,kai3 mo2
 楸,qiu1
@@ -15710,7 +15710,7 @@ text,pinyin
 槾,man2
 槿,jin3
 樁,zhuang1
-樂,lao4
+樂,le4
 樂器,yue4 qi4
 樂園,le4 yuan2
 樂團,yue4 tuan2
@@ -15837,7 +15837,7 @@ text,pinyin
 橄欖球,gan3 lan3 qiu2
 橆,wu2
 橇,qiao1
-橈,nao2
+橈,rao2
 橊,liu2
 橋,qiao2
 橋梁,qiao2 liang2
@@ -15923,7 +15923,7 @@ text,pinyin
 檎,qin2
 檐,yan2
 檑,lei2
-檔,dang3
+檔,dang4
 檔期,dang4 qi1
 檔案,dang4 an4
 檔案館,dang4 an4 guan3
@@ -16054,7 +16054,7 @@ text,pinyin
 欵,kuan3
 欶,shuo4
 欷,xi1
-欸,ai1
+欸,ai3
 欹,yi1
 欺,qi1
 欺凌,qi1 ling2
@@ -16133,7 +16133,7 @@ text,pinyin
 止痛,zhi3 tong4
 止痛藥,zhi3 tong4 yao4
 止血,zhi3 xue4
-正,zheng1
+正,zheng4
 正中,zheng4 zhong1
 正事,zheng4 shi4
 正值,zheng4 zhi2
@@ -16351,7 +16351,7 @@ text,pinyin
 段位,duan4 wei4
 段子,duan4 zi5
 段落,duan4 luo4
-殷,yan1
+殷,yin1
 殷勤,yin1 qin2
 殸,qing4
 殹,yi4
@@ -16371,7 +16371,7 @@ text,pinyin
 殺菌,sha1 jun1
 殻,qiao4
 殼,ke2
-殽,xiao2
+殽,yao2
 殿,dian4
 殿下,dian4 xia4
 殿堂,dian4 tang2
@@ -16426,7 +16426,7 @@ text,pinyin
 毒藥,du2 yao4
 毒蛇,du2 she2
 毓,yu4
-比,bi1
+比,bi3
 比不上,bi3 bu4 shang4
 比不了,bi3 bu4 liao3
 比亞迪,bi3 ya4 di2
@@ -16689,7 +16689,7 @@ text,pinyin
 氺,shui3
 氼,ni4
 氽,tun3
-氾,fan2
+氾,fan4
 氾濫,fan4 lan4
 氿,gui3
 汀,ting1
@@ -16808,7 +16808,7 @@ text,pinyin
 沅,yuan2
 沆,hang4
 沇,yan3
-沈,shen3
+沈,chen2
 沉,chen2
 沉寂,chen2 ji4
 沉思,chen2 si1
@@ -16858,7 +16858,7 @@ text,pinyin
 沒錯,mei2 cuo4
 沒關係,mei2 guan1 xi5
 沒電,mei2 dian4
-沓,da2
+沓,ta4
 沔,mian3
 沕,wu4
 沖,chong1
@@ -16970,7 +16970,7 @@ text,pinyin
 泉州,quan2 zhou1
 泉水,quan2 shui3
 泊,bo2
-泌,bi4
+泌,mi4
 泐,le4
 泑,you3
 泒,gu1
@@ -17024,7 +17024,7 @@ text,pinyin
 泜,zhi1
 泝,su4
 泠,ling2
-泡,pao1
+泡,pao4
 泡妞,pao4 niu1
 泡沫,pao4 mo4
 泡泡,pao4 pao5
@@ -17184,7 +17184,7 @@ text,pinyin
 洼,wa1
 洽,qia4
 洽談,qia4 tan2
-派,pa1
+派,pai4
 派出,pai4 chu1
 派出所,pai4 chu1 suo3
 派對,pai4 dui4
@@ -17558,7 +17558,7 @@ text,pinyin
 淵,yuan1
 淵源,yuan1 yuan2
 淶,lai2
-混,hun2
+混,hun4
 混亂,hun4 luan4
 混凝土,hun4 ning2 tu3
 混合,hun4 he2
@@ -17577,7 +17577,7 @@ text,pinyin
 淹,yan1
 淹死,yan1 si3
 淹沒,yan1 mo4
-淺,jian1
+淺,qian3
 淺析,qian3 xi1
 淺色,qian3 se4
 淺薄,qian3 bo2
@@ -17661,7 +17661,7 @@ text,pinyin
 減震,jian3 zhen4
 渝,yu2
 渟,ting2
-渠,ju4
+渠,qu2
 渠道,qu2 dao4
 渡,du4
 渡過,du4 guo4
@@ -17672,7 +17672,7 @@ text,pinyin
 渤,bo2
 渤海,bo2 hai3
 渥,wo4
-渦,guo1
+渦,wo1
 渦輪,wo1 lun2
 渧,di4
 渨,wei1
@@ -17762,7 +17762,7 @@ text,pinyin
 湩,dong4
 湫,jiao3
 湮,yan1
-湯,shang1
+湯,tang1
 湯圓,tang1 yuan2
 湯姆,tang1 mu3
 湯汁,tang1 zhi1
@@ -17978,7 +17978,7 @@ text,pinyin
 漖,jiao4
 漘,chun2
 漙,tuan2
-漚,ou1
+漚,ou4
 漜,ye3
 漠,mo4
 漠視,mo4 shi4
@@ -18042,7 +18042,7 @@ text,pinyin
 漵,xu4
 漶,huan4
 漷,kuo4
-漸,jian1
+漸,jian4
 漸漸,jian4 jian4
 漸變,jian4 bian4
 漸進,jian4 jin4
@@ -18088,7 +18088,7 @@ text,pinyin
 潤滑,run4 hua2
 潤滑油,run4 hua2 you2
 潤色,run4 se4
-潦,lao3
+潦,liao2
 潭,tan2
 潮,chao2
 潮州,chao2 zhou1
@@ -18097,7 +18097,7 @@ text,pinyin
 潮流,chao2 liu2
 潮濕,chao2 shi1
 潯,xun2
-潰,hui4
+潰,kui4
 潰瘍,kui4 yang2
 潲,shao4
 潵,san4
@@ -18203,7 +18203,7 @@ text,pinyin
 濛,meng2
 濜,jin4
 濞,bi4
-濟,ji3
+濟,ji4
 濟南,ji3 nan2
 濟南市,ji3 nan2 shi4
 濟寧,ji3 ning2
@@ -18246,7 +18246,7 @@ text,pinyin
 瀏,liu2
 瀏覽,liu2 lan3
 瀏覽器,liu2 lan3 qi4
-瀑,bao4
+瀑,pu4
 瀑布,pu4 bu4
 瀒,se4
 瀔,gu3
@@ -18393,7 +18393,7 @@ text,pinyin
 炫酷,xuan4 ku4
 炬,ju4
 炭,tan4
-炮,bao1
+炮,pao4
 炮兵,pao4 bing1
 炮彈,pao4 dan4
 炮灰,pao4 hui1
@@ -18406,7 +18406,7 @@ text,pinyin
 炳,bing3
 炴,yang3
 炷,zhu4
-炸,zha2
+炸,zha4
 炸彈,zha4 dan4
 炸藥,zha4 yao4
 炸裂,zha4 lie4
@@ -18504,7 +18504,7 @@ text,pinyin
 焞,tun1
 焟,xi1
 焠,cui4
-無,mo2
+無,wu2
 無不,wu2 bu4
 無中生有,wu2 zhong1 sheng1 you3
 無人,wu2 ren2
@@ -18618,7 +18618,7 @@ text,pinyin
 無需,wu2 xu1
 無非,wu2 fei1
 無須,wu2 xu1
-焢,hong1
+焢,kong4
 焦,jiao1
 焦作,jiao1 zuo4
 焦急,jiao1 ji2
@@ -18675,7 +18675,7 @@ text,pinyin
 煚,jiong3
 煜,yu4
 煝,mei4
-煞,sha1
+煞,sha4
 煟,wei4
 煠,ye4
 煢,qiong2
@@ -18757,8 +18757,8 @@ text,pinyin
 熠,yi4
 熤,yi4
 熥,teng1
-熨,yu4
-熬,ao1
+熨,yun4
+熬,ao2
 熬夜,ao2 ye4
 熯,han4
 熰,ou1
@@ -18925,7 +18925,7 @@ text,pinyin
 爤,lan4
 爥,zhu2
 爨,cuan4
-爪,zhao3
+爪,zhua3
 爪子,zhua3 zi5
 爫,zhao3
 爬,pa2
@@ -18985,7 +18985,7 @@ text,pinyin
 牆紙,qiang2 zhi3
 牆角,qiang2 jiao3
 牆面,qiang2 mian4
-片,pian1
+片,pian4
 片中,pian4 zhong1
 片刻,pian4 ke4
 片名,pian1 ming2
@@ -19309,7 +19309,7 @@ text,pinyin
 猳,jia1
 猴,hou2
 猴子,hou2 zi5
-猵,bian1
+猵,pian4
 猶,you2
 猶太,you2 tai4
 猶太人,you2 tai4 ren2
@@ -19487,7 +19487,7 @@ text,pinyin
 玟,min2
 玠,jie4
 玡,ya2
-玢,bin1
+玢,fen1
 玤,bang4
 玥,yue4
 玦,jue2
@@ -20069,7 +20069,7 @@ text,pinyin
 男裝,nan2 zhuang1
 甸,dian4
 甹,ping1
-町,ding1
+町,ting3
 甽,quan3
 甾,zai1
 甿,meng2
@@ -20277,7 +20277,7 @@ text,pinyin
 疳,gan1
 疵,ci1
 疶,xie4
-疸,da5
+疸,dan3
 疹,zhen3
 疼,teng2
 疼愛,teng2 ai4
@@ -20407,7 +20407,7 @@ text,pinyin
 瘦身,shou4 shen1
 瘧,nüe4
 瘨,dian1
-瘩,da2
+瘩,da5
 瘭,biao1
 瘮,shen4
 瘯,cu4
@@ -20433,7 +20433,7 @@ text,pinyin
 癆,lao2
 癇,xian2
 癈,fei4
-癉,dan1
+癉,dan4
 癌,ai2
 癌症,ai2 zheng4
 癌細胞,ai2 xi4 bao1
@@ -20731,7 +20731,7 @@ text,pinyin
 盔,kui1
 盔甲,kui1 jia3
 盚,qiu2
-盛,cheng2
+盛,sheng4
 盛世,sheng4 shi4
 盛典,sheng4 dian3
 盛名,sheng4 ming2
@@ -20934,7 +20934,7 @@ text,pinyin
 省長,sheng3 zhang3
 省電,sheng3 dian4
 眂,shi4
-眄,mian3
+眄,mian4
 眅,pan1
 眇,miao3
 眈,dan1
@@ -20943,7 +20943,7 @@ text,pinyin
 眉目,mei2 mu4
 眉頭,mei2 tou2
 眊,mao4
-看,kan1
+看,kan4
 看一看,kan4 yi1 kan4
 看上,kan4 shang4
 看上去,kan4 shang5 qu5
@@ -21257,12 +21257,12 @@ text,pinyin
 矮,ai3
 矮人,ai3 ren2
 矮子,ai3 zi5
-矯,jiao2
+矯,jiao3
 矯情,jiao2 qing5
 矯正,jiao3 zheng4
 矰,zeng1
 矱,yue1
-石,dan4
+石,shi2
 石化,shi2 hua4
 石塊,shi2 kuai4
 石子,shi2 zi3
@@ -21405,7 +21405,7 @@ text,pinyin
 碇,ding4
 碈,hun1
 碉,diao1
-碌,liu4
+碌,lu4
 碎,sui4
 碎片,sui4 pian4
 碎石,sui4 shi2
@@ -21683,7 +21683,7 @@ text,pinyin
 祻,gu4
 祼,guan4
 祿,lu4
-禁,jin1
+禁,jin4
 禁不住,jin1 bu5 zhu4
 禁令,jin4 ling4
 禁區,jin4 qu1
@@ -21854,7 +21854,7 @@ text,pinyin
 租金,zu1 jin1
 秠,pi1
 秣,mo4
-秤,cheng1
+秤,cheng4
 秦,qin2
 秦國,qin2 guo2
 秦始皇,qin2 shi3 huang2
@@ -21952,7 +21952,7 @@ text,pinyin
 種種,zhong3 zhong3
 種草,zhong4 cao3
 種類,zhong3 lei4
-稱,chen4
+稱,cheng1
 稱之為,cheng1 zhi1 wei2
 稱作,cheng1 zuo4
 稱呼,cheng1 hu5
@@ -22124,7 +22124,7 @@ text,pinyin
 窟,ku1
 窠,ke1
 窣,su1
-窨,xun1
+窨,yin4
 窩,wo1
 窩囊,wo1 nang5
 窪,wa1
@@ -22140,7 +22140,7 @@ text,pinyin
 窸,xi1
 窺,kui1
 窻,chuang1
-窾,cuan4
+窾,kuan3
 窿,long2
 竁,cui4
 竃,zao4
@@ -22345,7 +22345,7 @@ text,pinyin
 筑,zhu4
 筒,tong3
 筒子,tong3 zi5
-答,da1
+答,da2
 答卷,da2 juan4
 答應,da1 ying5
 答案,da2 an4
@@ -22674,7 +22674,7 @@ text,pinyin
 粞,xi1
 粟,su4
 粢,zi1
-粥,yu4
+粥,zhou1
 粦,lin2
 粧,zhuang1
 粩,lao1
@@ -22741,7 +22741,7 @@ text,pinyin
 糆,mian4
 糈,xu3
 糉,zong4
-糊,hu1
+糊,hu2
 糊塗,hu2 tu5
 糊弄,hu4 nong5
 糌,zan1
@@ -22758,7 +22758,7 @@ text,pinyin
 糖漿,tang2 jiang1
 糗,qiu3
 糙,cao1
-糜,mei2
+糜,mi2
 糜爛,mi2 lan4
 糝,san3
 糞,fen4
@@ -22815,7 +22815,7 @@ text,pinyin
 紀錄片,ji4 lu4 pian4
 紂,zhou4
 紃,xun2
-約,yao1
+約,yue1
 約定,yue1 ding4
 約旦,yue1 dan4
 約會,yue1 hui4
@@ -22825,7 +22825,7 @@ text,pinyin
 約等於,yue1 deng3 yu2
 約翰,yue1 han4
 約翰遜,yue1 han4 xun4
-紅,gong1
+紅,hong2
 紅人,hong2 ren2
 紅利,hong2 li4
 紅包,hong2 bao1
@@ -23030,7 +23030,7 @@ text,pinyin
 絍,ren4
 絎,hang2
 絏,xie4
-結,jie1
+結,jie2
 結交,jie2 jiao1
 結伴,jie2 ban4
 結合,jie2 he2
@@ -23084,11 +23084,11 @@ text,pinyin
 絘,ci4
 絚,geng1
 絛,tao1
-絜,jie2
+絜,xie2
 絝,ku4
 絞,jiao3
 絞盡腦汁,jiao3 jin4 nao3 zhi1
-絡,lao4
+絡,luo4
 絢,xuan4
 絢爛,xuan4 lan4
 絢麗,xuan4 li4
@@ -23187,7 +23187,7 @@ text,pinyin
 綖,yan2
 綗,jiong3
 綘,feng2
-綜,zeng4
+綜,zong1
 綜上所述,zong1 shang4 suo3 shu4
 綜合,zong1 he2
 綜合徵,zong1 he2 zheng1
@@ -23286,7 +23286,7 @@ text,pinyin
 綺,qi3
 綻,zhan4
 綻放,zhan4 fang4
-綽,chao1
+綽,chuo4
 綽綽有餘,chuo4 chuo4 you3 yu2
 綽號,chuo4 hao4
 綾,ling2
@@ -23527,7 +23527,7 @@ text,pinyin
 繄,yi1
 繅,sao1
 繆,mou2
-繇,yao2
+繇,you2
 繈,qiang3
 繋,xi4
 繐,sui4
@@ -23557,7 +23557,7 @@ text,pinyin
 繪本,hui4 ben3
 繪畫,hui4 hua4
 繪製,hui4 zhi4
-繫,ji4
+繫,xi4
 繭,jian3
 繮,jiang1
 繯,huan2
@@ -23870,7 +23870,7 @@ text,pinyin
 翱,ao2
 翱翔,ao2 xiang2
 翳,yi4
-翹,qiao2
+翹,qiao4
 翺,ao2
 翻,fan1
 翻來覆去,fan1 lai2 fu4 qu4
@@ -24052,7 +24052,7 @@ text,pinyin
 耗資,hao4 zi1
 耗電,hao4 dian4
 耘,yun2
-耙,ba4
+耙,pa2
 耜,si4
 耝,qu4
 耞,jia1
@@ -24263,7 +24263,7 @@ text,pinyin
 肖邦,xiao1 bang1
 肘,zhou3
 肙,yuan1
-肚,du3
+肚,du4
 肚子,du4 zi5
 肚皮,du4 pi2
 肛,gang1
@@ -24343,7 +24343,7 @@ text,pinyin
 胄,zhou4
 胇,fei4
 胊,qu2
-背,bei1
+背,bei4
 背光,bei4 guang1
 背包,bei1 bao1
 背叛,bei4 pan4
@@ -24369,7 +24369,7 @@ text,pinyin
 胏,zi3
 胑,zhi1
 胔,zi4
-胖,pan2
+胖,pang4
 胖子,pang4 zi5
 胗,zhen1
 胙,zuo4
@@ -24401,7 +24401,7 @@ text,pinyin
 胰島素,yi2 dao3 su4
 胱,guang1
 胲,hai3
-胳,ga1
+胳,ge1
 胳膊,ge1 bo5
 胴,dong4
 胷,xiong1
@@ -24632,7 +24632,7 @@ text,pinyin
 膵,cui4
 膷,xiang1
 膺,ying1
-膻,dan4
+膻,shan1
 膽,dan3
 膽固醇,dan3 gu4 chun2
 膽大,dan3 da4
@@ -24663,7 +24663,7 @@ text,pinyin
 臉面,lian3 mian4
 臉頰,lian3 jia2
 臉龐,lian3 pang2
-臊,sao1
+臊,sao4
 臋,tun2
 臌,gu3
 臍,qi2
@@ -24912,7 +24912,7 @@ text,pinyin
 舊版,jiu4 ban3
 舊金山,jiu4 jin1 shan1
 舋,xin4
-舌,ji1
+舌,she2
 舌尖,she2 jian1
 舌頭,she2 tou5
 舍,she4
@@ -25012,7 +25012,7 @@ text,pinyin
 艫,lu2
 艬,chan2
 艭,shuang1
-艮,gen3
+艮,gen4
 良,liang2
 良久,liang2 jiu3
 良好,liang2 hao3
@@ -25056,7 +25056,7 @@ text,pinyin
 芊,qian1
 芋,yu4
 芋頭,yu4 tou5
-芍,que4
+芍,shao2
 芎,xiong1
 芏,du4
 芑,qi3
@@ -25082,7 +25082,7 @@ text,pinyin
 芨,ji2
 芩,qin2
 芪,qi2
-芫,yan2
+芫,yuan2
 芬,fen1
 芬芳,fen1 fang1
 芬蘭,fen1 lan2
@@ -25148,7 +25148,7 @@ text,pinyin
 苑,yuan4
 苒,ran3
 苓,ling2
-苔,tai1
+苔,tai2
 苕,tiao2
 苗,miao2
 苗族,miao2 zu2
@@ -25167,7 +25167,7 @@ text,pinyin
 苢,yi3
 苣,ju4
 苤,pie3
-若,re3
+若,ruo4
 若干,ruo4 gan1
 若是,ruo4 shi4
 苦,ku3
@@ -25226,7 +25226,7 @@ text,pinyin
 茂名,mao4 ming2
 茂盛,mao4 sheng4
 范,fan4
-茄,jia1
+茄,qie2
 茄子,qie2 zi5
 茅,mao2
 茆,mao3
@@ -25258,7 +25258,7 @@ text,pinyin
 茭,jiao1
 茯,fu2
 茱,zhu1
-茲,ci2
+茲,zi1
 茳,jiang1
 茴,hui2
 茵,yin1
@@ -25350,7 +25350,7 @@ text,pinyin
 莛,ting2
 莜,you2
 莝,cuo4
-莞,guan1
+莞,wan3
 莠,you3
 莢,jia2
 莦,shao1
@@ -25517,7 +25517,7 @@ text,pinyin
 萹,bian1
 萻,an1
 萼,e4
-落,la4
+落,luo4
 落下,luo4 xia4
 落伍,luo4 wu3
 落入,luo4 ru4
@@ -25554,7 +25554,7 @@ text,pinyin
 葑,feng1
 葒,hong2
 葖,tu1
-著,zhao1
+著,zhe5
 著作,zhu4 zuo4
 著作權,zhu4 zuo4 quan2
 著名,zhu4 ming2
@@ -25603,7 +25603,7 @@ text,pinyin
 蒓,chun2
 蒔,shi2
 蒗,lang4
-蒙,meng1
+蒙,meng2
 蒙古,meng3 gu3
 蒙古人,meng3 gu3 ren2
 蒙古族,meng3 gu3 zu2
@@ -25698,7 +25698,7 @@ text,pinyin
 蔎,she4
 蔑,mie4
 蔑視,mie4 shi4
-蔓,man2
+蔓,man4
 蔓延,man4 yan2
 蔔,bo2
 蔕,di4
@@ -25777,7 +25777,7 @@ text,pinyin
 薀,yun4
 薁,yu4
 薃,hao4
-薄,bao2
+薄,bo2
 薄弱,bo2 ruo4
 薄膜,bo2 mo2
 薄荷,bo4 he5
@@ -25836,7 +25836,7 @@ text,pinyin
 藁,gao3
 藄,qi2
 藇,xu4
-藉,ji2
+藉,jie4
 藉口,jie4 kou3
 藉此,jie4 ci3
 藊,bian3
@@ -25891,7 +25891,7 @@ text,pinyin
 藥物,yao4 wu4
 藥用,yao4 yong4
 藦,mo2
-藨,biao1
+藨,pao1
 藩,fan1
 藪,sou3
 藭,qiong2
@@ -25972,7 +25972,7 @@ text,pinyin
 虓,xiao1
 虔,qian2
 虔誠,qian2 cheng2
-處,chu3
+處,chu4
 處世,chu3 shi4
 處事,chu3 shi4
 處分,chu3 fen4
@@ -26013,7 +26013,7 @@ text,pinyin
 虛空,xu1 kong1
 虜,lu3
 虞,yu2
-號,hao2
+號,hao4
 號召,hao4 zhao4
 號召力,hao4 zhao4 li4
 號碼,hao4 ma3
@@ -26035,7 +26035,7 @@ text,pinyin
 虸,zi3
 虹,hong2
 虹橋,hong2 qiao2
-虺,hui1
+虺,hui3
 虻,meng2
 虼,ge4
 蚄,fang1
@@ -26130,7 +26130,7 @@ text,pinyin
 蜃,shen4
 蜅,fu3
 蜆,xian3
-蜇,zhe1
+蜇,zhe2
 蜈,wu2
 蜉,fu2
 蜊,li2
@@ -26171,7 +26171,7 @@ text,pinyin
 蜿,wan1
 蜿蜒,wan1 yan2
 蝀,dong1
-蝃,di4
+蝃,zhuo1
 蝄,wang3
 蝌,ke1
 蝍,ji2
@@ -26195,7 +26195,7 @@ text,pinyin
 蝣,you2
 蝤,qiu2
 蝥,mao2
-蝦,ha2
+蝦,xia1
 蝦米,xia1 mi3
 蝨,shi1
 蝮,fu4
@@ -26235,7 +26235,7 @@ text,pinyin
 螘,yi3
 螙,du4
 螚,nai4
-螞,ma1
+螞,ma3
 螞蟻,ma3 yi3
 螟,ming2
 螠,yi4
@@ -26243,7 +26243,7 @@ text,pinyin
 螢,ying2
 螢火蟲,ying2 huo3 chong2
 螣,teng2
-螫,shi4
+螫,zhe1
 螬,cao2
 螭,chi1
 螮,di4
@@ -26380,7 +26380,7 @@ text,pinyin
 衉,ke4
 衊,mie4
 衋,xi4
-行,hang2
+行,xing2
 行之有效,xing2 zhi1 you3 xiao4
 行事,xing2 shi4
 行人,xing2 ren2
@@ -26648,7 +26648,7 @@ text,pinyin
 裰,duo1
 裱,biao3
 裲,liang3
-裳,chang2
+裳,shang5
 裴,pei2
 裵,pei2
 裸,luo3
@@ -26659,7 +26659,7 @@ text,pinyin
 裸露,luo3 lu4
 裸體,luo3 ti3
 裹,guo3
-裼,ti4
+裼,xi1
 製,zhi4
 製作,zhi4 zuo4
 製作人,zhi4 zuo4 ren2
@@ -26728,7 +26728,7 @@ text,pinyin
 褲子,ku4 zi5
 褳,lian2
 褵,li2
-褶,xi2
+褶,zhe3
 褶皺,zhe3 zhou4
 褸,lü3
 褻,xie4
@@ -26829,7 +26829,7 @@ text,pinyin
 西雅圖,xi1 ya3 tu2
 西雙版納,xi1 shuang1 ban3 na4
 西餐,xi1 can1
-要,yao1
+要,yao4
 要不,yao4 bu4
 要不是,yao4 bu5 shi4
 要不然,yao4 bu4 ran2
@@ -26962,7 +26962,7 @@ text,pinyin
 覰,qu4
 覲,jin4
 覷,qu4
-覺,jiao4
+覺,jue2
 覺察,jue2 cha2
 覺得,jue2 de5
 覺悟,jue2 wu4
@@ -27199,7 +27199,7 @@ text,pinyin
 註釋,zhu4 shi4
 註銷,zhu4 xiao1
 証,zheng4
-訾,zi1
+訾,zi3
 詀,zhan1
 詁,gu3
 詅,ling2
@@ -27413,7 +27413,7 @@ text,pinyin
 誦,song4
 誧,pu3
 誨,hui4
-說,shui4
+說,shuo1
 說不上,shuo1 bu5 shang4
 說不出,shuo1 bu5 chu1
 說不定,shuo1 bu5 ding4
@@ -27650,7 +27650,7 @@ text,pinyin
 謹慎,jin3 shen4
 謹防,jin3 fang2
 謼,hu1
-謾,man2
+謾,man4
 謾罵,man4 ma4
 譁,hua2
 譅,se4
@@ -27742,7 +27742,7 @@ text,pinyin
 譹,hao2
 譽,yu4
 譾,jian3
-讀,dou4
+讀,du2
 讀出,du2 chu1
 讀卡器,du2 ka3 qi4
 讀取,du2 qu3
@@ -27830,7 +27830,7 @@ text,pinyin
 谷歌,gu3 ge1
 谽,han1
 谿,xi1
-豁,hua2
+豁,huo4
 豁免,huo4 mian3
 豁然開朗,huo4 ran2 kai1 lang3
 豁達,huo4 da2
@@ -28392,7 +28392,7 @@ text,pinyin
 趙薇,zhao4 wei1
 趙軍,zhao4 jun1
 趙雲,zhao4 yun2
-趟,tang1
+趟,tang4
 趡,cui3
 趣,qu4
 趣事,qu4 shi4
@@ -28406,7 +28406,7 @@ text,pinyin
 趮,zao4
 趯,ti4
 趲,zan3
-足,ju4
+足,zu2
 足不出戶,zu2 bu4 chu1 hu4
 足以,zu2 yi3
 足協,zu2 xie2
@@ -28427,7 +28427,7 @@ text,pinyin
 趾,zhi3
 趿,ta1
 跁,pa2
-跂,ji1
+跂,qi2
 跅,tuo4
 跆,tai2
 跆拳道,tai2 quan2 dao4
@@ -28443,7 +28443,7 @@ text,pinyin
 跎,tuo2
 跏,jia1
 跐,ci3
-跑,pao2
+跑,pao3
 跑出,pao3 chu1
 跑掉,pao3 diao4
 跑步,pao3 bu4
@@ -28543,10 +28543,10 @@ text,pinyin
 跼,ju2
 跽,ji4
 踁,jing4
-踅,chi4
+踅,xue2
 踆,qun1
 踈,shu1
-踉,liang2
+踉,liang4
 踊,yong3
 踋,jiao3
 踏,ta4
@@ -28598,9 +28598,9 @@ text,pinyin
 蹇,jian3
 蹈,dao3
 蹉,cuo1
-蹊,qi1
+蹊,xi1
 蹋,ta4
-蹌,qiang1
+蹌,qiang4
 蹎,dian1
 蹏,ti2
 蹐,ji2
@@ -28628,7 +28628,7 @@ text,pinyin
 蹭,ceng4
 蹮,xian1
 蹯,fan2
-蹲,cun2
+蹲,dun1
 蹲下,dun1 xia4
 蹴,cu4
 蹵,cu4
@@ -28744,7 +28744,7 @@ text,pinyin
 車間,che1 jian1
 車隊,che1 dui4
 車險,che1 xian3
-軋,ga2
+軋,ya4
 軌,gui3
 軌跡,gui3 ji4
 軌道,gui3 dao4
@@ -28825,7 +28825,7 @@ text,pinyin
 輅,lu4
 輇,quan2
 輈,zhou1
-載,zai3
+載,zai4
 載人,zai4 ren2
 載入,zai3 ru4
 載荷,zai4 he4
@@ -28927,7 +28927,7 @@ text,pinyin
 輿,yu2
 輿論,yu2 lun4
 轀,wen1
-轂,gu1
+轂,gu3
 轄,xia2
 轄區,xia2 qu1
 轅,yuan2
@@ -29133,7 +29133,7 @@ text,pinyin
 迪奧,di2 ao4
 迪拜,di2 bai4
 迪斯尼,di2 si1 ni2
-迫,pai3
+迫,po4
 迫不及待,po4 bu4 ji2 dai4
 迫使,po4 shi3
 迫切,po4 qie4
@@ -29173,7 +29173,7 @@ text,pinyin
 迹,ji4
 迺,nai3
 迻,yi2
-追,dui1
+追,zhui1
 追上,zhui1 shang4
 追劇,zhui1 ju4
 追加,zhui1 jia1
@@ -29408,7 +29408,7 @@ text,pinyin
 逥,hui2
 逩,ben4
 逭,huan4
-逮,dai3
+逮,dai4
 逮捕,dai4 bu3
 逯,lu4
 週,zhou1
@@ -29474,7 +29474,7 @@ text,pinyin
 逾期,yu2 qi1
 逿,dang4
 遁,dun4
-遂,sui2
+遂,sui4
 遄,chuan2
 遇,yu4
 遇上,yu4 shang4
@@ -29638,7 +29638,7 @@ text,pinyin
 遙望,yao2 wang4
 遙遙,yao2 yao2
 遙遠,yao2 yuan3
-遛,liu2
+遛,liu4
 遜,xun4
 遜色,xun4 se4
 遝,ta4
@@ -29785,7 +29785,7 @@ text,pinyin
 邂,xie4
 邂逅,xie4 hou4
 邃,sui4
-還,hai2
+還,huan2
 還不如,hai2 bu4 ru2
 還債,huan2 zhai4
 還價,huan2 jia4
@@ -29928,7 +29928,7 @@ text,pinyin
 郵輪,you2 lun2
 郵電,you2 dian4
 郹,ju2
-都,dou1
+都,du1
 都城,du1 cheng2
 都市,du1 shi4
 都會,du1 hui4
@@ -30009,7 +30009,7 @@ text,pinyin
 酇,zan4
 酈,li4
 酉,you3
-酊,ding1
+酊,ding3
 酋,qiu2
 酋長,qiu2 zhang3
 酌,zhuo2
@@ -30187,7 +30187,7 @@ text,pinyin
 里昂,li3 ang2
 里程,li3 cheng2
 里程碑,li3 cheng2 bei1
-重,chong2
+重,zhong4
 重中之重,zhong4 zhong1 zhi1 zhong4
 重任,zhong4 ren4
 重來,chong2 lai2
@@ -30259,7 +30259,7 @@ text,pinyin
 野豬,ye3 zhu1
 野雞,ye3 ji1
 野馬,ye3 ma3
-量,liang2
+量,liang4
 量化,liang4 hua4
 量子,liang4 zi3
 量子力學,liang4 zi3 li4 xue2
@@ -30333,7 +30333,7 @@ text,pinyin
 釣,diao4
 釣魚,diao4 yu2
 釣魚島,diao4 yu2 dao3
-釤,shan1
+釤,shan4
 釦,kou4
 釦子,kou4 zi5
 釧,chuan4
@@ -30496,7 +30496,7 @@ text,pinyin
 鋇,bei4
 鋈,wu4
 鋊,yu4
-鋌,ding4
+鋌,ting3
 鋍,bo2
 鋏,jia2
 鋐,hong2
@@ -30781,7 +30781,7 @@ text,pinyin
 鐵鍋,tie3 guo1
 鐶,huan2
 鐸,duo2
-鐺,cheng1
+鐺,dang1
 鐻,ju4
 鐽,da2
 鐾,bei4
@@ -31096,13 +31096,13 @@ text,pinyin
 闊,kuo4
 闋,que4
 闌,lan2
-闍,du1
+闍,she2
 闐,tian2
 闑,nie4
 闒,ta4
 闓,kai3
 闔,he2
-闕,que1
+闕,que4
 闖,chuang3
 闖入,chuang3 ru4
 闖蕩,chuang3 dang4
@@ -31372,7 +31372,7 @@ text,pinyin
 陷害,xian4 hai4
 陷於,xian4 yu2
 陷阱,xian4 jing3
-陸,liu4
+陸,lu4
 陸地,lu4 di4
 陸續,lu4 xu4
 陸軍,lu4 jun1
@@ -31394,7 +31394,7 @@ text,pinyin
 隃,yu2
 隄,di1
 隅,yu2
-隆,long1
+隆,long2
 隆起,long2 qi3
 隆重,long2 zhong4
 隈,wei1
@@ -31507,7 +31507,7 @@ text,pinyin
 隻,zhi1
 隻身,zhi1 shen1
 隼,sun3
-雀,qiao1
+雀,que4
 雀巢,que4 chao2
 雀斑,que4 ban1
 雁,yan4
@@ -31865,7 +31865,7 @@ text,pinyin
 霫,xi2
 霮,dan4
 霰,xian4
-露,lou4
+露,lu4
 露出,lu4 chu1
 露天,lu4 tian1
 露營,lu4 ying2
@@ -31939,7 +31939,7 @@ text,pinyin
 青雲,qing1 yun2
 青龍,qing1 long2
 靖,jing4
-靚,jing4
+靚,liang4
 靚女,liang4 nü3
 靚麗,liang4 li4
 靛,dian4
@@ -31975,7 +31975,7 @@ text,pinyin
 靠攏,kao4 long3
 靠譜,kao4 pu3
 靠近,kao4 jin4
-靡,mi2
+靡,mi3
 面,mian4
 面世,mian4 shi4
 面值,mian4 zhi2
@@ -32150,7 +32150,7 @@ text,pinyin
 響聲,xiang3 sheng1
 響起,xiang3 qi3
 頀,hu4
-頁,xie2
+頁,ye4
 頁碼,ye4 ma3
 頁面,ye4 mian4
 頂,ding3
@@ -32331,7 +32331,7 @@ text,pinyin
 頳,cheng1
 頴,ying3
 頷,han4
-頸,geng3
+頸,jing3
 頸椎,jing3 zhui1
 頸椎病,jing3 zhui1 bing4
 頸部,jing3 bu4
@@ -32652,7 +32652,7 @@ text,pinyin
 餒,nei3
 餓,e4
 餓死,e4 si3
-餔,bu1
+餔,bu4
 餕,jun4
 餖,dou4
 餗,su4
@@ -32691,7 +32691,7 @@ text,pinyin
 餵奶,wei4 nai3
 餵養,wei4 yang3
 餶,gu3
-餷,cha1
+餷,zha5
 餸,song4
 餹,tang2
 餺,bo2
@@ -32820,7 +32820,7 @@ text,pinyin
 馭,yu4
 馮,ping2
 馯,han4
-馱,duo4
+馱,tuo2
 馲,tuo1
 馳,chi2
 馳騁,chi2 cheng3
@@ -32893,7 +32893,7 @@ text,pinyin
 騋,lai2
 騌,zong1
 騍,ke4
-騎,ji4
+騎,qi2
 騎兵,qi2 bing1
 騎士,qi2 shi4
 騎手,qi2 shou3
@@ -33005,7 +33005,7 @@ text,pinyin
 驩,huan1
 驪,li2
 驫,biao1
-骨,gu1
+骨,gu3
 骨幹,gu3 gan4
 骨折,gu3 zhe2
 骨架,gu3 jia4
@@ -33047,7 +33047,7 @@ text,pinyin
 髒,zang1
 髒話,zang1 hua4
 髓,sui3
-體,ti1
+體,ti3
 體位,ti3 wei4
 體內,ti3 nei4
 體制,ti3 zhi4
@@ -33566,7 +33566,7 @@ text,pinyin
 鵝,e2
 鵞,e2
 鵟,kuang2
-鵠,gu3
+鵠,hu2
 鵡,wu3
 鵩,fu2
 鵪,an1
@@ -33686,7 +33686,7 @@ text,pinyin
 麃,biao1
 麄,cu1
 麅,pao2
-麇,jun1
+麇,qun2
 麈,zhu3
 麋,mi2
 麌,wu2
@@ -33736,7 +33736,7 @@ text,pinyin
 麻辣燙,ma2 la4 tang4
 麻醉,ma2 zui4
 麻雀,ma2 que4
-麼,ma2
+麼,me5
 麼麼,me5 me5
 麾,hui1
 麾下,hui1 xia4

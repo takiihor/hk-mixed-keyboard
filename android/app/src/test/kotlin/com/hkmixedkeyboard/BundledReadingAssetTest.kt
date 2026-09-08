@@ -36,6 +36,22 @@ class BundledReadingAssetTest {
     }
 
     @Test
+    fun `a polyphonic character teaches the reading its words actually use`() {
+        // Resolved by how the words containing the character read, not by
+        // whichever reading CC-CEDICT happened to list first.
+        assertEquals("xing2", pinyin.readingFor("行"))
+        assertEquals("zhong4", pinyin.readingFor("重"))
+        assertEquals("le4", pinyin.readingFor("樂"))
+        assertEquals("jue2", pinyin.readingFor("覺"))
+    }
+
+    @Test
+    fun `a word keeps its own exact reading regardless of its characters`() {
+        assertEquals("yin2 hang2", pinyin.readingFor("銀行"))
+        assertEquals("shui4 jiao4", pinyin.readingFor("睡覺"))
+    }
+
+    @Test
     fun `Pinyin readings spell the u umlaut rather than the ASCII digraph`() {
         assertEquals("lü4", pinyin.readingFor("綠"))
         assertEquals("nü3", pinyin.readingFor("女"))
