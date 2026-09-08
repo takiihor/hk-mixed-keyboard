@@ -27,8 +27,9 @@ License:  GNU General Public License v3.0 (GPL-3.0)
 
 3. CC-CEDICT — Chinese-English dictionary
 -----------------------------------------
-Used for: English → Chinese meaning assist (english_assist) and offline
-          Mandarin Pinyin input (pinyin.csv; Traditional headwords + pinyin).
+Used for: English → Chinese meaning assist (english_assist), offline
+          Mandarin Pinyin input (pinyin.csv; Traditional headwords + pinyin),
+          and the toned 拼音 learning hint (pinyin_readings.csv).
 Project:  https://cc-cedict.org/
 Snapshot: https://cc-cedict.org/editor/editor_export_cedict.php?c=gz
 Date:     2026-07-12T16:23:25Z
@@ -40,8 +41,8 @@ License:  Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
 
 4. rime-cantonese — Jyutping dictionary (jyut6ping3)
 ----------------------------------------------------
-Used for: 粵拼 input (jyutping) and the toned Jyutping learning preview shown
-          while typing 速成 (jyutping_readings.csv).
+Used for: 粵拼 input (jyutping) and the toned 粵拼 learning hint
+          (jyutping_readings.csv).
 Project:  https://github.com/rime/rime-cantonese
 Revision: c99b16e44d2df77a5cb8fb0867dd2bab7a112cb0
 License:  Creative Commons Attribution 4.0 (CC BY 4.0) and
