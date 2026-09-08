@@ -1464,6 +1464,7 @@ class HkImeService : InputMethodService() {
             decoded = decoded,
             literal = literal,
             chineseFirst = PinyinImePolicy.isChineseFirst(imeCtx.scheme, phraseExact),
+            cnRatio = (memory ?: fallbackMemory).cnRatio(buffer),
             limit = limit
         )
     }

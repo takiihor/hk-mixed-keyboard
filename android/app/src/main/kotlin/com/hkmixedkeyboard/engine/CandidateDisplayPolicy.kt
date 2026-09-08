@@ -18,6 +18,12 @@ class CandidateDisplayPolicy {
         // many is reachable without scrolling while the characters the user is
         // actively building a word from still lead.
         const val LEADING_PREDICTIONS = 5
+        // Latin buffers this short are assumed Chinese unless the user's own
+        // history for the buffer says otherwise.
+        const val SHORT_BUFFER_LENGTH = 2
+        // Commits of this exact buffer before its history outranks the length rule.
+        const val CN_PREFERENCE_MIN_COUNT = 3
+        const val CN_PREFERENCE_MIN_CONFIDENCE = 0.75
         // The expanded grid scrolls. It must not truncate a valid corpus candidate:
         // a rare HKSCS character can share a code with more common entries and rank
         // beyond an arbitrary display cap.
@@ -34,6 +40,9 @@ class CandidateDisplayPolicy {
         // buffer is romanization) and for exact Quick phrase matches (unambiguously
         // Chinese intent). Otherwise long Latin buffers are assumed to be English.
         chineseFirst: Boolean = false,
+        // Share of this exact buffer's past commits that were Chinese. 0.5 means
+        // "no opinion"; evidence is counted from [learned] so the policy stays pure.
+        cnRatio: Double = 0.5,
         limit: Int = BAR_LIMIT
     ): List<DecodeCandidate> {
         // User custom words (自訂詞庫) are an explicit code→word mapping, so they
@@ -61,7 +70,7 @@ class CandidateDisplayPolicy {
                 it.code.equals(buffer, ignoreCase = true)
         }
 
-        val ordered = if (chineseFirst || buffer.length <= 2) {
+        val ordered = if (chineseFirst || leadsWithChinese(buffer, learned, cnRatio)) {
             custom + learnedChinese + decodedChinese + learnedEnglish +
                 decodedEnglish + literal + english
         } else {
@@ -103,6 +112,29 @@ class CandidateDisplayPolicy {
             chinese.drop(LEADING_PREDICTIONS))
             .distinctBy { it.text }
             .take(limit)
+    }
+
+    /**
+     * Whether Chinese candidates lead for a Latin buffer.
+     *
+     * Buffer length is a crude proxy for intent, and it is wrong for exactly the
+     * buffers a code-switching typist uses most: "ok" and "no" are short but
+     * usually English, while a habitual Quick code may be long and always
+     * Chinese. The memory layer has tracked a per-buffer Chinese/English ratio all
+     * along and the ordering never asked for it — so consult it once the user has
+     * shown a consistent habit for this buffer, and fall back to length otherwise.
+     */
+    private fun leadsWithChinese(
+        buffer: String,
+        learned: List<MemorySuggestion>,
+        cnRatio: Double
+    ): Boolean {
+        val evidence = learned.sumOf { it.exactCount }
+        if (evidence >= CN_PREFERENCE_MIN_COUNT) {
+            if (cnRatio >= CN_PREFERENCE_MIN_CONFIDENCE) return true
+            if (cnRatio <= 1.0 - CN_PREFERENCE_MIN_CONFIDENCE) return false
+        }
+        return buffer.length <= SHORT_BUFFER_LENGTH
     }
 
     private fun isChinese(candidate: DecodeCandidate): Boolean =
