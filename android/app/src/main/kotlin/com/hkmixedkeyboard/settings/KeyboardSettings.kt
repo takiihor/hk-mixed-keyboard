@@ -30,6 +30,20 @@ object Keys {
     // signal instead of querying Room every time the keyboard opens.
     val CUSTOM_WORDS_TOKEN = longPreferencesKey("custom_words_token")
     val KEYBOARD_THEME = stringPreferencesKey("keyboard_theme")
+    // Direct (raw Latin) input for terminals and remote desktops. AUTO detects the
+    // field; ALWAYS/NEVER let the user override a wrong guess.
+    val DIRECT_INPUT = stringPreferencesKey("direct_input")
+}
+
+/**
+ * Whether Latin letters bypass the composing buffer and commit straight to the
+ * editor. Terminals and remote-desktop clients need that; ordinary text fields
+ * need composition for Chinese input, so detection defaults to [AUTO].
+ */
+enum class DirectInputMode {
+    AUTO,
+    ALWAYS,
+    NEVER
 }
 
 enum class KeyboardTheme {
@@ -55,7 +69,8 @@ data class KeyboardPrefs(
     val simplifiedOutput: Boolean = false,
     val memoryClearToken: Long = 0L,
     val customWordsToken: Long = 0L,
-    val theme: KeyboardTheme = KeyboardTheme.DARK
+    val theme: KeyboardTheme = KeyboardTheme.DARK,
+    val directInput: DirectInputMode = DirectInputMode.AUTO
 )
 
 object KeyboardSettings {
@@ -72,7 +87,8 @@ object KeyboardSettings {
                 simplifiedOutput = p[Keys.SIMPLIFIED_OUTPUT] ?: false,
                 memoryClearToken = p[Keys.MEMORY_CLEAR_TOKEN] ?: 0L,
                 customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L,
-                theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME])
+                theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME]),
+                directInput = DirectInputPreference.resolve(p[Keys.DIRECT_INPUT])
             )
         }
 
@@ -99,6 +115,9 @@ object KeyboardSettings {
     suspend fun setSimplifiedOutput(ctx: Context, v: Boolean) =
         ctx.settingsDataStore.edit { it[Keys.SIMPLIFIED_OUTPUT] = v }
 
+    suspend fun setDirectInput(ctx: Context, mode: DirectInputMode) =
+        ctx.settingsDataStore.edit { it[Keys.DIRECT_INPUT] = DirectInputPreference.serialize(mode) }
+
     suspend fun setTheme(ctx: Context, theme: KeyboardTheme) =
         ctx.settingsDataStore.edit { it[Keys.KEYBOARD_THEME] = KeyboardThemePreference.serialize(theme) }
 
@@ -110,6 +129,27 @@ object KeyboardSettings {
 
     suspend fun bumpCustomWordsToken(ctx: Context) =
         ctx.settingsDataStore.edit { it[Keys.CUSTOM_WORDS_TOKEN] = (it[Keys.CUSTOM_WORDS_TOKEN] ?: 0L) + 1 }
+}
+
+/** Pure policy for parsing the persisted direct-input mode. */
+object DirectInputPreference {
+    fun resolve(stored: String?): DirectInputMode = when (stored) {
+        "always" -> DirectInputMode.ALWAYS
+        "never" -> DirectInputMode.NEVER
+        else -> DirectInputMode.AUTO
+    }
+
+    fun serialize(mode: DirectInputMode): String = when (mode) {
+        DirectInputMode.ALWAYS -> "always"
+        DirectInputMode.NEVER -> "never"
+        DirectInputMode.AUTO -> "auto"
+    }
+
+    fun label(mode: DirectInputMode): String = when (mode) {
+        DirectInputMode.AUTO -> "自動偵測"
+        DirectInputMode.ALWAYS -> "永遠直接輸入"
+        DirectInputMode.NEVER -> "永不直接輸入"
+    }
 }
 
 /** Pure policy for parsing the persisted keyboard theme. */

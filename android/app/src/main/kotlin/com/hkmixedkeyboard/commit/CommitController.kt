@@ -126,7 +126,14 @@ class CommitController(
         else canonical
 
     fun onEnter(state: ImeStateData): CommitOutput {
+        // Terminals and remote shells: Enter must always reach the app, or the first
+        // press only ends the composition and the command never runs. Anything still
+        // composing is flushed literally ahead of the newline rather than dropped.
         if (ctx.enterPolicy == EnterPolicy.ALWAYS_PASS_THROUGH) {
+            if (state.buffer.isNotEmpty()) {
+                val flushed = commitLiteralBuffer(state.buffer, learn = false, state = state)
+                return flushed.copy(committedText = (flushed.committedText ?: "") + "\n")
+            }
             return CommitOutput(
                 committedText = "\n",
                 newState = state.idle(),

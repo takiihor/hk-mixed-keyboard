@@ -126,6 +126,26 @@ class SettingsActivity : AppCompatActivity() {
             lifecycleScope.launch { KeyboardSettings.setSimplifiedOutput(this@SettingsActivity, v) }
         }
 
+        root.addView(header("直接輸入"))
+        root.addView(label("終端機、SSH 及遠端桌面需要逐鍵直接輸入英文，" +
+            "不經組字緩衝。自動偵測失效時可在此強制開啟或關閉。"))
+        val directGroup = RadioGroup(this).apply { orientation = RadioGroup.VERTICAL }
+        var applyingDirectHydration = false
+        val directButtons = DirectInputMode.entries.associateWith { mode ->
+            RadioButton(this).apply {
+                id = android.view.View.generateViewId()
+                text = DirectInputPreference.label(mode)
+                directGroup.addView(this)
+            }
+        }
+        directGroup.setOnCheckedChangeListener { _, checkedId ->
+            if (applyingDirectHydration) return@setOnCheckedChangeListener
+            val mode = directButtons.entries.firstOrNull { it.value.id == checkedId }?.key
+                ?: return@setOnCheckedChangeListener
+            lifecycleScope.launch { KeyboardSettings.setDirectInput(this@SettingsActivity, mode) }
+        }
+        root.addView(directGroup)
+
         // Load current prefs and apply to switches
         lifecycleScope.launch {
             try {
@@ -151,6 +171,12 @@ class SettingsActivity : AppCompatActivity() {
                 else -> Unit
             }
             simpSwitch.isChecked  = prefs.simplifiedOutput
+            applyingDirectHydration = true
+            try {
+                directButtons[prefs.directInput]?.isChecked = true
+            } finally {
+                applyingDirectHydration = false
+            }
             applyingThemeHydration = true
             try {
                 themeButtons[prefs.theme]?.isChecked = true

@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard.ime
 
 import android.text.InputType
+import com.hkmixedkeyboard.settings.DirectInputMode
 
 object DirectInputPolicy {
     fun shouldCommitKeyDirectly(
@@ -11,7 +12,24 @@ object DirectInputPolicy {
         (isAsciiDigit(label) && (directLatinCommit || !isUnicodeFallbackPrefix(compositionBuffer))) ||
             (directLatinCommit && isAsciiLetter(label))
 
+    /**
+     * [mode] is the user's setting: AUTO detects the field, ALWAYS/NEVER override a
+     * wrong guess. Detection can only ever be a heuristic — an app that reports an
+     * ordinary text field but behaves like a terminal is indistinguishable — so the
+     * override is the escape hatch rather than an ever-growing hint list.
+     */
     fun shouldUseDirectLatinCommit(
+        inputType: Int,
+        packageName: String?,
+        privateImeOptions: String?,
+        mode: DirectInputMode = DirectInputMode.AUTO
+    ): Boolean = when (mode) {
+        DirectInputMode.ALWAYS -> true
+        DirectInputMode.NEVER -> false
+        DirectInputMode.AUTO -> detectDirectLatinField(inputType, packageName, privateImeOptions)
+    }
+
+    private fun detectDirectLatinField(
         inputType: Int,
         packageName: String?,
         privateImeOptions: String?
@@ -48,6 +66,9 @@ object DirectInputPolicy {
         InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
     )
 
+    // Substring matches against the client package name. Terminals first, then
+    // remote-desktop clients: a remote session forwards every keystroke to another
+    // machine, so composing text would be swallowed or echoed twice.
     private val TERMINAL_PACKAGE_HINTS = listOf(
         "termux",
         "terminal",
@@ -56,7 +77,16 @@ object DirectInputPolicy {
         "connectbot",
         "juicessh",
         "serverauditor",
-        "ssh"
+        "ssh",
+        "mosh",
+        "putty",
+        "microsoft.rdc",
+        "rdp",
+        "vnc",
+        "teamviewer",
+        "rustdesk",
+        "anydesk",
+        "remotedesktop"
     )
 
     private val TERMINAL_PRIVATE_HINTS = listOf(
