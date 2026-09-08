@@ -16,6 +16,7 @@ import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.CorpusBackedDecoder
 import com.hkmixedkeyboard.decoder.CorpusLoader
 import com.hkmixedkeyboard.decoder.DecodeCandidate
+import com.hkmixedkeyboard.decoder.NextCharPredictionPolicy
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.engine.CandidateDisplayPolicy
@@ -1376,7 +1377,9 @@ class HkImeService : InputMethodService() {
     private fun schedulePredictions(prefix: String) {
         predictScheduled?.let { decodeHandler.removeCallbacks(it) }
         val runnable = Runnable {
-            val decoded = corpus.nextCharIndex[prefix].orEmpty()
+            // Backs off to the longest known suffix, so the chain survives past
+            // the index's three-character keys (NextCharPredictionPolicy).
+            val decoded = NextCharPredictionPolicy.predict(corpus.nextCharIndex, prefix)
             val learned = (memory ?: fallbackMemory).suggestions(
                 prefix,
                 imeCtx.isSensitiveField,
