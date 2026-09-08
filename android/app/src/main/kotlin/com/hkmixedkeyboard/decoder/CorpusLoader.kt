@@ -187,8 +187,8 @@ class CorpusLoader(private val ctx: Context) {
     // frequency of the phrase they came from.
 
     val nextCharIndex: Map<String, List<DecodeCandidate>> by lazy {
-        // prefix -> (nextChar -> best phrase frequency)
-        val acc = HashMap<String, HashMap<String, Double>>()
+        // prefix -> (nextChar -> accumulated support)
+        val acc = HashMap<String, HashMap<String, Support>>()
         for (p in phrases) {
             val s = p.phrase
             val n = s.length
@@ -199,16 +199,49 @@ class CorpusLoader(private val ctx: Context) {
                 val prefix = s.substring(0, i)
                 val next = s.substring(i, i + 1)
                 val m = acc.getOrPut(prefix) { HashMap() }
-                if (p.freq > (m[next] ?: 0.0)) m[next] = p.freq
+                val support = m.getOrPut(next) { Support() }
+                support.best = maxOf(support.best, p.freq)
+                support.total += p.freq
+                support.isHkCore = support.isHkCore || p.isHkCore
             }
         }
         acc.mapValues { (_, nexts) ->
-            nexts.entries.sortedByDescending { it.value }
+            nexts.entries
+                .sortedWith(
+                    compareByDescending<Map.Entry<String, Support>> { if (it.value.isHkCore) 1 else 0 }
+                        .thenByDescending { it.value.score }
+                )
                 .take(20)
-                .map { (ch, f) ->
-                    DecodeCandidate(ch, "", SourceSchema.QUICK, CandidateType.CHAR, f, false)
+                .map { (ch, support) ->
+                    DecodeCandidate(ch, "", SourceSchema.QUICK, CandidateType.CHAR,
+                        support.score, support.isHkCore)
                 }
         }
+    }
+
+    /**
+     * How strongly the corpus backs one continuation.
+     *
+     * Ranking by the single best phrase alone let a continuation attested by one
+     * frequent phrase outrank one attested by twenty moderately common ones,
+     * which is the wrong way round for a next-character guess. Score keeps that
+     * peak as the base and adds a bounded bonus for breadth, so a well-attested
+     * continuation rises without a single very common word being displaced by a
+     * crowd of rare ones.
+     *
+     * Breadth alone would quietly de-Cantonese the keyboard, though: 哋 sits in
+     * one high-frequency hk_core row while 們 spans dozens of ordinary ones, so
+     * 我哋 and 你哋 would lose their slot to 我們 and 你們. Every other index sorts
+     * hk_core first and this one never did — so it does now, and breadth only
+     * orders continuations within the same class.
+     */
+    private class Support {
+        var best: Double = 0.0
+        var total: Double = 0.0
+        var isHkCore: Boolean = false
+
+        val score: Double
+            get() = best + BREADTH_WEIGHT * (total - best)
     }
 
     // ── Whitelist helpers ──────────────────────────────────────────────────
@@ -393,6 +426,10 @@ class CorpusLoader(private val ctx: Context) {
 
     private companion object {
         const val CORPUS_CONTENT_VERSION = 8
+        // Weight on the supporting phrases beyond the strongest one. Small, so
+        // breadth breaks ties and lifts well-attested continuations rather than
+        // letting a crowd of rare words outrank a genuinely common one.
+        const val BREADTH_WEIGHT = 0.15
         const val MIN_REVERSE_GLOSS_LENGTH = 2
         const val MAX_REVERSE_GLOSSES = 3
     }
