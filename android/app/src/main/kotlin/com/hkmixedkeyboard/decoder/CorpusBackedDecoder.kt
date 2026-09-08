@@ -45,7 +45,13 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
             }
         }
 
-        if (scheme == Scheme.PINYIN) return corpus.pinyinDecoder.decode(buffer)
+        if (scheme == Scheme.PINYIN) {
+            val pinyin = corpus.pinyinDecoder.decode(buffer)
+            // Only when Pinyin itself has nothing: a fallback, never a competitor
+            // for the Mandarin candidates the user is actually typing.
+            if (pinyin.candidates.isNotEmpty()) return pinyin
+            return assistFallback(buffer, scheme) ?: pinyin
+        }
 
         // JYUTPING primary mode: treat Latin buffer as Jyutping and surface
         // characters directly as committable (cnExactParsed=true) so Space commits.
@@ -69,7 +75,9 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
             // Multi-syllable segmentation: continuous romanization that is neither a
             // single syllable nor a dictionary phrase key (e.g. "neihou" → 你好).
             composeSegmentedPhrase(lower)?.let { return it }
-            return empty(buffer, scheme)
+            // Nothing Cantonese matched, so English meaning can no longer crowd
+            // anything out — the alternative here is an empty bar.
+            return assistFallback(buffer, scheme) ?: empty(buffer, scheme)
         }
 
         // 1. Direct CJK input
@@ -225,6 +233,24 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         // isExactCode=true + PHRASE type ⇒ cnHasPhraseMatch, so the composed phrase
         // surfaces as the top candidate in the bar (one tap to commit).
         return DecodeResult(lower, Scheme.JYUTPING, lower.length, true, false, candidates)
+    }
+
+    /**
+     * English-meaning and code-switching candidates for a romanization scheme
+     * whose own dictionary produced nothing. 粵拼 and 拼音 returned before ever
+     * reaching the assist path, so a romanization typist got the raw Latin
+     * literal and nothing else — the feature was absent from two of three modes
+     * rather than deprioritised within them.
+     */
+    private fun assistFallback(buffer: String, scheme: Scheme): DecodeResult? {
+        val lower = buffer.lowercase()
+        val candidates = AssistFallbackPolicy.merge(
+            corpus.englishAssistIndex[lower].orEmpty(),
+            mixedPhrases(lower)
+        )
+        if (candidates.isEmpty()) return null
+        // Never exact: Space keeps committing the literal buffer.
+        return DecodeResult(buffer, scheme, buffer.length, false, false, candidates)
     }
 
     /**
