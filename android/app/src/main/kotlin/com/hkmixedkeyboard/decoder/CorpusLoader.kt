@@ -134,6 +134,30 @@ class CorpusLoader(private val ctx: Context) {
         SortedPrefixIndex(englishAssistIndex.keys)
     }
 
+    /**
+     * The other half of 中英互相建議: Chinese text -> the English words that gloss
+     * it, so a committed 討論 can offer "discuss". Inverted from the assist rows
+     * already parsed and cached for the English -> Chinese direction, so it costs
+     * one more grouping rather than another asset.
+     *
+     * Single characters are excluded: they carry many weak glosses (我 -> I, me,
+     * my …) that would crowd the prediction bar without helping anyone.
+     */
+    val englishByChinese: Map<String, List<DecodeCandidate>> by lazy {
+        englishAssist.asSequence()
+            .filter { it.chinese.length >= MIN_REVERSE_GLOSS_LENGTH }
+            .groupBy { it.chinese }
+            .mapValues { (chinese, entries) ->
+                entries.sortedByDescending { it.freq }
+                    .distinctBy { it.english }
+                    .take(MAX_REVERSE_GLOSSES)
+                    .map {
+                        DecodeCandidate(it.english, chinese, SourceSchema.ENGLISH,
+                            CandidateType.EN_LITERAL, it.freq, false)
+                    }
+            }
+    }
+
     // ── Jyutping romanization indices ──────────────────────────────────────
 
     val jyutpingIndex: Map<String, List<DecodeCandidate>> by lazy { buildJyutpingIndex() }
@@ -369,5 +393,7 @@ class CorpusLoader(private val ctx: Context) {
 
     private companion object {
         const val CORPUS_CONTENT_VERSION = 8
+        const val MIN_REVERSE_GLOSS_LENGTH = 2
+        const val MAX_REVERSE_GLOSSES = 3
     }
 }

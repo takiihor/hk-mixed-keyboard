@@ -1032,7 +1032,7 @@ class HkImeService : InputMethodService() {
         // No active composition → this is a next-character prediction tap; commit
         // it directly and extend the chain so the bar offers the following char.
         if (imeState.buffer.isEmpty()) {
-            commitPredictionChar(candidate.text)
+            commitPrediction(candidate)
             return
         }
         val learningLabel = readingHintPolicy.committedLabel(readingHints, candidate)
@@ -1040,6 +1040,17 @@ class HkImeService : InputMethodService() {
         committedPrefix = if (isCjk(out.committedText)) out.committedText!! else ""
         applyOutput(out)
         learningLabel?.let(::showReadingHintConfirmation)
+    }
+
+    private fun commitPrediction(candidate: DecodeCandidate) {
+        // An English gloss ends the Chinese run rather than extending it: the
+        // prediction index is keyed on 繁體, so "discuss" would poison the chain.
+        if (candidate.type == CandidateType.EN_LITERAL) {
+            commitDirectText(candidate.text)
+            showNextCharPredictions()
+            return
+        }
+        commitPredictionChar(candidate.text)
     }
 
     private fun commitPredictionChar(text: String) {
@@ -1385,14 +1396,21 @@ class HkImeService : InputMethodService() {
                 imeCtx.isSensitiveField,
                 limit = CandidateDisplayPolicy.EXPANDED_LIMIT
             )
+            // 中英互相建議, Chinese -> English: the run just committed can be
+            // offered back as its English gloss. Suppressed in sensitive fields
+            // along with everything else the bar would reveal.
+            val english = if (imeCtx.isSensitiveField) emptyList()
+                else corpus.englishByChinese[prefix].orEmpty()
             val display = candidateDisplayPolicy.orderPredictions(
                 learned = learned,
                 decoded = decoded,
+                english = english,
                 limit = CandidateDisplayPolicy.BAR_LIMIT
             )
             val expanded = candidateDisplayPolicy.orderPredictions(
                 learned = learned,
                 decoded = decoded,
+                english = english,
                 limit = CandidateDisplayPolicy.EXPANDED_LIMIT
             )
             mainThread.post {

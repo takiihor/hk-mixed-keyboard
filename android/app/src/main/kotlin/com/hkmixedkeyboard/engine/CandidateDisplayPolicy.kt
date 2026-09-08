@@ -13,6 +13,11 @@ class CandidateDisplayPolicy {
         // verb, which on a scrolling strip pushes send返 out of sight entirely —
         // and in Hong Kong chat that phrase is likelier than the fifth synonym.
         const val LEADING_EXACT_ASSIST = 2
+        // Continuations shown before the English gloss of the run just committed.
+        // The strip fits roughly seven candidates, so a gloss placed after this
+        // many is reachable without scrolling while the characters the user is
+        // actively building a word from still lead.
+        const val LEADING_PREDICTIONS = 5
         // The expanded grid scrolls. It must not truncate a valid corpus candidate:
         // a rare HKSCS character can share a code with more common entries and rank
         // beyond an arbitrary display cap.
@@ -72,17 +77,30 @@ class CandidateDisplayPolicy {
         return ordered.distinctBy { it.text }.take(limit)
     }
 
+    /**
+     * Bar contents after a Chinese commit: what commonly follows, then — once the
+     * next characters have had their room — the English glosses for the run just
+     * committed, completing 中英互相建議 in the Chinese -> English direction.
+     */
     fun orderPredictions(
         learned: List<MemorySuggestion>,
         decoded: List<DecodeCandidate>,
+        english: List<DecodeCandidate> = emptyList(),
         limit: Int = BAR_LIMIT
     ): List<DecodeCandidate> {
         val learnedChinese = learned
             .filter { isChinese(it.candidate) }
             .map { it.candidate.asLearnedCandidate() }
 
-        return (learnedChinese + decoded)
+        val chinese = (learnedChinese + decoded)
             .filter(::isChinese)
+            .distinctBy { it.text }
+
+        // Continuations lead, the glosses sit just inside the visible strip, and
+        // the remaining continuations follow — so a translation is findable
+        // without displacing the character the user was building.
+        return (chinese.take(LEADING_PREDICTIONS) + english +
+            chinese.drop(LEADING_PREDICTIONS))
             .distinctBy { it.text }
             .take(limit)
     }
