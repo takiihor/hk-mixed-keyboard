@@ -1,5 +1,11 @@
 # Quick Jyutping Learning Preview Design
 
+> **Superseded (2026-09-08)** by
+> `2026-09-08-reading-hints-design.md`, which puts this preview behind a
+> user toggle, shows it in every input scheme rather than 速成 only, and adds
+> the matching 拼音 hint. The pronunciation-data and architecture sections
+> below still describe how the 粵拼 reading asset is produced.
+
 ## Goal
 
 Help a 速成 user learn accurate 粵拼 during ordinary typing without changing
