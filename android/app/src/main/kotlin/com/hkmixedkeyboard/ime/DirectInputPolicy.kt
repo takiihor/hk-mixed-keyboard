@@ -1,6 +1,7 @@
 package com.hkmixedkeyboard.ime
 
 import android.text.InputType
+import android.view.inputmethod.EditorInfo
 import com.hkmixedkeyboard.settings.DirectInputMode
 
 object DirectInputPolicy {
@@ -22,20 +23,24 @@ object DirectInputPolicy {
         inputType: Int,
         packageName: String?,
         privateImeOptions: String?,
+        imeOptions: Int = 0,
         mode: DirectInputMode = DirectInputMode.AUTO
     ): Boolean = when (mode) {
         DirectInputMode.ALWAYS -> true
         DirectInputMode.NEVER -> false
-        DirectInputMode.AUTO -> detectDirectLatinField(inputType, packageName, privateImeOptions)
+        DirectInputMode.AUTO ->
+            detectDirectLatinField(inputType, packageName, privateImeOptions, imeOptions)
     }
 
     private fun detectDirectLatinField(
         inputType: Int,
         packageName: String?,
-        privateImeOptions: String?
+        privateImeOptions: String?,
+        imeOptions: Int
     ): Boolean {
         if (inputType == InputType.TYPE_NULL) return true
         if (isPasswordStyleText(inputType)) return true
+        if (isTerminalStyleTextField(inputType, imeOptions)) return true
 
         val packageHint = packageName.orEmpty().lowercase()
         if (TERMINAL_PACKAGE_HINTS.any { it in packageHint }) return true
@@ -60,6 +65,26 @@ object DirectInputPolicy {
             variation in PASSWORD_STYLE_TEXT_VARIATIONS
     }
 
+    /**
+     * Terminal clients that declare an ordinary text field still describe it very
+     * differently from a message box: a FILTER variation (the field is not prose),
+     * no suggestions, and no personalised learning (nothing typed here should be
+     * remembered). Observed on RelayShell — inputType 0x800b1, imeOptions 0x3000001.
+     *
+     * All three are required. FILTER alone is a list-filter or search box, where
+     * committing Latin directly would stop the user typing Chinese into it, and
+     * NO_SUGGESTIONS with NO_PERSONALIZED_LEARNING alone is what a privacy-minded
+     * chat app sets on an ordinary message field.
+     */
+    private fun isTerminalStyleTextField(inputType: Int, imeOptions: Int): Boolean {
+        if (inputType and InputType.TYPE_MASK_CLASS != InputType.TYPE_CLASS_TEXT) return false
+        if (inputType and InputType.TYPE_MASK_VARIATION != InputType.TYPE_TEXT_VARIATION_FILTER) {
+            return false
+        }
+        if (inputType and InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS == 0) return false
+        return imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING != 0
+    }
+
     private val PASSWORD_STYLE_TEXT_VARIATIONS = setOf(
         InputType.TYPE_TEXT_VARIATION_PASSWORD,
         InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
@@ -74,6 +99,7 @@ object DirectInputPolicy {
         "terminal",
         "androidterm",
         "termius",
+        "relayshell",
         "connectbot",
         "juicessh",
         "serverauditor",

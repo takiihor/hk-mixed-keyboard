@@ -645,6 +645,7 @@ class HkImeService : InputMethodService() {
             inputType = attribute.inputType,
             packageName = attribute.packageName?.toString(),
             privateImeOptions = attribute.privateImeOptions,
+            imeOptions = attribute.imeOptions,
             mode = directInputMode
         )
         imeCtx = imeCtx.copy(

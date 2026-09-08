@@ -83,6 +83,69 @@ class TerminalInputTest {
         }
     }
 
+    // Values captured from the device with dumpsys input_method, so a change in the
+    // detector is checked against what these apps really report rather than a guess.
+    private val relayShellInputType = 0x800b1   // TEXT | VARIATION_FILTER | NO_SUGGESTIONS
+    private val relayShellImeOptions = 0x3000001 // ACTION_NONE | NO_FULLSCREEN | NO_PERSONALIZED_LEARNING
+
+    @Test
+    fun `an SSH client declaring a plain text field is detected`() {
+        // RelayShell matches no package hint and is not TYPE_NULL; only the shape of
+        // the field gives it away.
+        assertTrue(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = relayShellInputType,
+                packageName = "com.relayshell.relayshell",
+                privateImeOptions = null,
+                imeOptions = relayShellImeOptions
+            )
+        )
+    }
+
+    @Test
+    fun `a note body setting NO_SUGGESTIONS is left composing`() {
+        // Google Keep: inputType 0xac001, imeOptions 0x54000001. Treating
+        // NO_SUGGESTIONS alone as a terminal signal would break Chinese input here.
+        assertFalse(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = 0xac001,
+                packageName = "com.google.android.keep",
+                privateImeOptions = null,
+                imeOptions = 0x54000001
+            )
+        )
+    }
+
+    @Test
+    fun `a list filter box is left composing`() {
+        // FILTER + NO_SUGGESTIONS without NO_PERSONALIZED_LEARNING is a search box;
+        // direct commit there would stop the user searching in Chinese.
+        assertFalse(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = relayShellInputType,
+                packageName = "com.example.launcher",
+                privateImeOptions = null,
+                imeOptions = 0x2000001
+            )
+        )
+    }
+
+    @Test
+    fun `a private chat field is left composing`() {
+        // NO_SUGGESTIONS + NO_PERSONALIZED_LEARNING on an ordinary message box is
+        // what an incognito-keyboard setting produces, not a terminal.
+        assertFalse(
+            DirectInputPolicy.shouldUseDirectLatinCommit(
+                inputType = InputType.TYPE_CLASS_TEXT or
+                    InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or
+                    InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+                packageName = "org.example.messenger",
+                privateImeOptions = null,
+                imeOptions = 0x3000001
+            )
+        )
+    }
+
     @Test
     fun `an ordinary chat field is left composing`() {
         assertFalse(
