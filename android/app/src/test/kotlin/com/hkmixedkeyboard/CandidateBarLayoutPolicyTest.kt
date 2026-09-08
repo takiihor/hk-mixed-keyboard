@@ -13,7 +13,7 @@ class CandidateBarLayoutPolicyTest {
     @Test
     fun `empty candidates and system messages all keep fixed height`() {
         val density = 2f
-        val expected = (42f * density).toInt()
+        val expected = (58f * density).toInt()
 
         CandidateBarDisplayState.entries.forEach { state ->
             assertEquals(expected, CandidateBarLayoutPolicy.heightPx(density, state))
@@ -39,9 +39,10 @@ class CandidateBarLayoutPolicyTest {
     }
 
     @Test
-    fun `candidate typography is comfortably sized and single line`() {
+    fun `candidate strip reserves a compact Jyutping learning line`() {
         assertEquals(21f, CandidateBarLayoutPolicy.TEXT_SIZE_SP)
-        assertEquals(42f, CandidateBarLayoutPolicy.VISIBLE_HEIGHT_DP)
+        assertEquals(13f, CandidateBarLayoutPolicy.PREVIEW_TEXT_SIZE_SP)
+        assertEquals(58f, CandidateBarLayoutPolicy.VISIBLE_HEIGHT_DP)
         assertEquals(1, CandidateBarLayoutPolicy.SYSTEM_MESSAGE_MAX_LINES)
     }
 

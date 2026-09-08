@@ -114,6 +114,16 @@ class CorpusLoader(private val ctx: Context) {
     val quickPrefixCandidateIndex: QuickPrefixCandidateIndex by lazy {
         QuickPrefixCandidateIndex(quickIndex)
     }
+    val jyutpingReadingLookup: JyutpingReadingLookup by lazy {
+        runCatching {
+            ctx.assets.open("corpus/jyutping_readings.csv").bufferedReader().use {
+                JyutpingReadingLookup.from(it)
+            }
+        }.getOrElse {
+            android.util.Log.e("CorpusLoader", "Failed to load Jyutping learning readings", it)
+            JyutpingReadingLookup.empty()
+        }
+    }
 
     // ── English meaning assist indices ─────────────────────────────────────
 

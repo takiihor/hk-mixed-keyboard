@@ -40,8 +40,10 @@ License:  Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)
 
 4. rime-cantonese — Jyutping dictionary (jyut6ping3)
 ----------------------------------------------------
-Used for: 粵拼 input (jyutping).
+Used for: 粵拼 input (jyutping) and the toned Jyutping learning preview shown
+          while typing 速成 (jyutping_readings.csv).
 Project:  https://github.com/rime/rime-cantonese
+Revision: c99b16e44d2df77a5cb8fb0867dd2bab7a112cb0
 License:  Creative Commons Attribution 4.0 (CC BY 4.0) and
           Open Data Commons Open Database License (ODbL) 1.0
           https://creativecommons.org/licenses/by/4.0/
