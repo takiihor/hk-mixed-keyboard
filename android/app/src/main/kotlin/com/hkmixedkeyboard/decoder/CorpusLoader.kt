@@ -81,7 +81,7 @@ class CorpusLoader(private val ctx: Context) {
             parse = ::loadEnglishAssist)
     }
     val englishCompletionIndex: EnglishCompletionIndex by lazy {
-        EnglishCompletionIndex(englishAssist)
+        EnglishCompletionIndex(englishAssist, com.hkmixedkeyboard.engine.EnglishLexicon.LOCAL_TOKENS)
     }
     val jyutping: List<JyutpingEntry> by lazy {
         cached("jyutping",

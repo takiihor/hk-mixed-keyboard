@@ -4,6 +4,7 @@ import com.hkmixedkeyboard.decoder.EnglishAssistEntry
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.engine.Classifier
 import com.hkmixedkeyboard.engine.EnglishCompletionIndex
+import com.hkmixedkeyboard.engine.EnglishLexicon
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -96,5 +97,44 @@ class EnglishCompletionTest {
 
         assertTrue(english.any { it.text == "communication" })
         assertTrue(chinese.any { it.text == "溝通" })
+    }
+
+    // ── Hong Kong tokens (EnglishLexicon.LOCAL_TOKENS) ────────────────────
+
+    @Test
+    fun `a Hong Kong acronym completes with its canonical casing`() {
+        val index = EnglishCompletionIndex(emptyList(), EnglishLexicon.LOCAL_TOKENS)
+
+        assertEquals(listOf("MTR"), index.forPrefix("mt").map { it.text })
+        // "hkd" itself is excluded as an exact match — completion, not lookup —
+        // so its canonical casing is reached from the shorter prefix. Typing the
+        // whole token gets its casing at commit, via CANONICAL_CASE.
+        assertTrue(index.forPrefix("hk").map { it.text }.contains("HKD"))
+    }
+
+    @Test
+    fun `canonical casing ignores how the token was typed`() {
+        val index = EnglishCompletionIndex(emptyList(), EnglishLexicon.LOCAL_TOKENS)
+
+        assertEquals(listOf("MTR"), index.forPrefix("MT").map { it.text })
+        assertEquals(listOf("MTR"), index.forPrefix("Mt").map { it.text })
+    }
+
+    @Test
+    fun `a token without canonical casing follows the typed pattern`() {
+        val index = EnglishCompletionIndex(emptyList(), mapOf("doc" to null))
+
+        assertEquals(listOf("doc"), index.forPrefix("do").map { it.text })
+        assertEquals(listOf("Doc"), index.forPrefix("Do").map { it.text })
+    }
+
+    @Test
+    fun `a local token outranks ordinary vocabulary for its own prefix`() {
+        val index = EnglishCompletionIndex(
+            listOf(EnglishAssistEntry("mtg", "會議", 0.9)),
+            mapOf("mtr" to "MTR")
+        )
+
+        assertEquals("MTR", index.forPrefix("mt").first().text)
     }
 }

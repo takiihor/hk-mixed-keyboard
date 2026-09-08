@@ -24,6 +24,9 @@ class CandidateDisplayPolicy {
         // Commits of this exact buffer before its history outranks the length rule.
         const val CN_PREFERENCE_MIN_COUNT = 3
         const val CN_PREFERENCE_MIN_CONFIDENCE = 0.75
+        // Chinese candidates shown before a Hong Kong English token on a buffer
+        // that is also a Quick code.
+        const val LEADING_CHINESE_BEFORE_LOCAL = 4
         // The expanded grid scrolls. It must not truncate a valid corpus candidate:
         // a rare HKSCS character can share a code with more common entries and rank
         // beyond an arbitrary display cap.
@@ -70,9 +73,16 @@ class CandidateDisplayPolicy {
                 it.code.equals(buffer, ignoreCase = true)
         }
 
+        // Hong Kong tokens (MTR, HKD …) are marked isHkCore by the completion
+        // index. General English completions belong at the tail, but these do
+        // not: "mt" is also a Quick code, so its fifteen Chinese candidates fill
+        // the bar and truncate the tail away entirely.
+        val (localEnglish, generalEnglish) = english.partition { it.isHkCore }
+
         val ordered = if (chineseFirst || leadsWithChinese(buffer, learned, cnRatio)) {
-            custom + learnedChinese + decodedChinese + learnedEnglish +
-                decodedEnglish + literal + english
+            custom + learnedChinese + decodedChinese.take(LEADING_CHINESE_BEFORE_LOCAL) +
+                localEnglish + decodedChinese.drop(LEADING_CHINESE_BEFORE_LOCAL) +
+                learnedEnglish + decodedEnglish + literal + generalEnglish
         } else {
             // Latin buffer assumed to be English: after explicit custom words, an
             // exact Traditional-Chinese meaning and the code-switching phrases for
@@ -80,8 +90,9 @@ class CandidateDisplayPolicy {
             // Chinese candidates stay immediately after the literal instead of
             // trailing English decoder noise.
             custom + exactEnglishAssist.take(LEADING_EXACT_ASSIST) + exactMixed +
-                exactEnglishAssist.drop(LEADING_EXACT_ASSIST) + learnedEnglish +
-                english + literal + learnedChinese + decodedChinese + decodedEnglish
+                exactEnglishAssist.drop(LEADING_EXACT_ASSIST) + localEnglish +
+                learnedEnglish + generalEnglish + literal + learnedChinese +
+                decodedChinese + decodedEnglish
         }
         return ordered.distinctBy { it.text }.take(limit)
     }

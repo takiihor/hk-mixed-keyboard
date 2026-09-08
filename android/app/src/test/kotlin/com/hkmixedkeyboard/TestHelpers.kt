@@ -23,28 +23,23 @@ fun clearChinese(buffer: String, cnText: String, code: String = buffer, isHkCore
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = true, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = listOf(cnChar(cnText, code, isHkCore)),
-        enLiteral = buffer, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+        cnCandidates = listOf(cnChar(cnText, code, isHkCore))
     )
 
 /** Buffer where EN is a known word and CN has no match. */
-fun clearEnglish(buffer: String, autocomplete: String? = null, enStrong: Boolean = false) =
+fun clearEnglish(buffer: String) =
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = false, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = emptyList(),
-        enLiteral = buffer, enAutocomplete = autocomplete,
-        enIsWord = true, enStrongPrefix = enStrong
+        cnCandidates = emptyList()
     )
 
 /** Buffer with both CN exact match and EN word recognition (collision). */
-fun collision(buffer: String, cnText: String, isHkCore: Boolean, enIsWord: Boolean = true) =
+fun collision(buffer: String, cnText: String, isHkCore: Boolean) =
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = true, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = listOf(cnChar(cnText, buffer, isHkCore)),
-        enLiteral = buffer, enAutocomplete = null,
-        enIsWord = enIsWord, enStrongPrefix = false
+        cnCandidates = listOf(cnChar(cnText, buffer, isHkCore))
     )
 
 /** No CN match, no EN word — pure unknown buffer. */
@@ -52,8 +47,7 @@ fun unknown(buffer: String) =
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = false, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = emptyList(),
-        enLiteral = buffer, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+        cnCandidates = emptyList()
     )
 
 /**
@@ -65,8 +59,7 @@ fun assistCandidates(buffer: String, candidates: List<DecodeCandidate>) =
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = false, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = candidates,
-        enLiteral = buffer, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+        cnCandidates = candidates
     )
 
 // ── Controller factory ────────────────────────────────────────────────────
