@@ -37,6 +37,35 @@ object NextCharPredictionPolicy {
     }
 
     /**
+     * Builds a next-character index over arbitrary text, in the same shape as
+     * [CorpusLoader.nextCharIndex]. Used for the user's 自訂詞庫 words, which
+     * reach the decoder keyed by Quick code and so were never reachable as
+     * continuations: adding 曬冷 let you type its code but never offered 冷 after
+     * committing 曬 — the one place a personal dictionary should feel personal.
+     */
+    fun indexOf(texts: Collection<String>): Map<String, List<DecodeCandidate>> {
+        val acc = LinkedHashMap<String, LinkedHashSet<String>>()
+        for (text in texts) {
+            val count = text.codePointCount(0, text.length)
+            if (count < 2) continue
+            val longest = minOf(MAX_KEY_LENGTH, count - 1)
+            for (length in 1..longest) {
+                val split = text.offsetByCodePoints(0, length)
+                val prefix = text.substring(0, split)
+                val next = text.substring(split, text.offsetByCodePoints(split, 1))
+                acc.getOrPut(prefix) { LinkedHashSet() }.add(next)
+            }
+        }
+        return acc.mapValues { (prefix, nexts) ->
+            nexts.map {
+                // Frequency 1.0: an explicit user mapping outranks any corpus
+                // continuation it shares a prefix with.
+                DecodeCandidate(it, prefix, SourceSchema.USER_MEMORY, CandidateType.CHAR, 1.0, true)
+            }
+        }
+    }
+
+    /**
      * Continuations for [run], most specific context first and de-duplicated, so
      * a character offered by a longer suffix is never displaced by the same
      * character offered by a shorter one.

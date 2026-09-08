@@ -86,6 +86,46 @@ class NextCharPredictionPolicyTest {
         assertEquals(1, out.count { it.text == "日" })
     }
 
+    // ── Custom-word continuations (自訂詞庫) ───────────────────────────────
+
+    @Test
+    fun `a custom word becomes reachable as a continuation`() {
+        val custom = NextCharPredictionPolicy.indexOf(listOf("曬冷"))
+
+        assertEquals(listOf("冷"), NextCharPredictionPolicy.predict(custom, "曬").map { it.text })
+    }
+
+    @Test
+    fun `custom continuations cover every prefix length up to the key cap`() {
+        val custom = NextCharPredictionPolicy.indexOf(listOf("我哋今日"))
+
+        assertEquals(listOf("哋"), NextCharPredictionPolicy.predict(custom, "我").map { it.text })
+        assertEquals(listOf("今"), NextCharPredictionPolicy.predict(custom, "我哋").map { it.text })
+        assertEquals(listOf("日"), NextCharPredictionPolicy.predict(custom, "我哋今").map { it.text })
+    }
+
+    @Test
+    fun `single-character custom words contribute no continuation`() {
+        assertTrue(NextCharPredictionPolicy.indexOf(listOf("冧")).isEmpty())
+    }
+
+    @Test
+    fun `custom continuations outrank the corpus for the same prefix`() {
+        val custom = NextCharPredictionPolicy.indexOf(listOf("我叻"))
+        val merged = NextCharPredictionPolicy.predict(custom, "我") +
+            NextCharPredictionPolicy.predict(index, "我")
+
+        assertEquals("叻", merged.first().text)
+        assertTrue(merged.map { it.text }.containsAll(listOf("叻", "哋", "們")))
+    }
+
+    @Test
+    fun `custom words built from supplementary characters stay intact`() {
+        val custom = NextCharPredictionPolicy.indexOf(listOf("𠮟人"))
+
+        assertEquals(listOf("人"), NextCharPredictionPolicy.predict(custom, "𠮟").map { it.text })
+    }
+
     @Test
     fun `an unknown run yields nothing rather than throwing`() {
         assertEquals(emptyList<String>(), NextCharPredictionPolicy.predict(index, "零零零").map { it.text })

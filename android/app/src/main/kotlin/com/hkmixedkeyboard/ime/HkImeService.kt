@@ -166,6 +166,10 @@ class HkImeService : InputMethodService() {
     // Mirrors KeyboardPrefs so the first input view is built at the right height,
     // before the settings flow's first emission arrives.
     private var readingHints = ReadingHints(jyutping = true, pinyin = false)
+    // Continuations from the user's own 自訂詞庫 words. Rebuilt on the IO thread
+    // whenever the table changes, read on the decode thread — the whole immutable
+    // map is swapped at once.
+    @Volatile private var customNextCharIndex: Map<String, List<DecodeCandidate>> = emptyMap()
     private var readingHintConfirmationClear: Runnable? = null
 
     private var imeState = ImeStateData()
@@ -1016,6 +1020,9 @@ class HkImeService : InputMethodService() {
                     }
                 }
             decoder.setCustomWords(byCode)
+            customNextCharIndex = NextCharPredictionPolicy.indexOf(
+                rows.map { it.display }.filter { it.isNotBlank() }
+            )
         }
     }
 
@@ -1390,7 +1397,10 @@ class HkImeService : InputMethodService() {
         val runnable = Runnable {
             // Backs off to the longest known suffix, so the chain survives past
             // the index's three-character keys (NextCharPredictionPolicy).
-            val decoded = NextCharPredictionPolicy.predict(corpus.nextCharIndex, prefix)
+            // The user's own words lead: an explicit 自訂詞庫 mapping should beat
+            // anything the shipped corpus offers for the same prefix.
+            val decoded = NextCharPredictionPolicy.predict(customNextCharIndex, prefix) +
+                NextCharPredictionPolicy.predict(corpus.nextCharIndex, prefix)
             val learned = (memory ?: fallbackMemory).suggestions(
                 prefix,
                 imeCtx.isSensitiveField,
