@@ -8,6 +8,11 @@ import com.hkmixedkeyboard.memory.MemorySuggestion
 class CandidateDisplayPolicy {
     companion object {
         const val BAR_LIMIT = 15
+        // Exact English meanings shown before the code-switching phrases for the
+        // same word. CC-CEDICT often supplies five or more glosses for a common
+        // verb, which on a scrolling strip pushes send返 out of sight entirely —
+        // and in Hong Kong chat that phrase is likelier than the fifth synonym.
+        const val LEADING_EXACT_ASSIST = 2
         // The expanded grid scrolls. It must not truncate a valid corpus candidate:
         // a rare HKSCS character can share a code with more common entries and rank
         // beyond an arbitrary display cap.
@@ -43,17 +48,26 @@ class CandidateDisplayPolicy {
             it.sourceSchema == SourceSchema.ENGLISH_ASSIST &&
                 it.code.equals(buffer, ignoreCase = true)
         }
+        // Code-switching completions for the exact word typed (send → send返).
+        // Without their own slot they sort with ordinary decoded Chinese, which on
+        // a Latin buffer lands them behind the literal and every learned entry.
+        val exactMixed = decodedChinese.filter {
+            it.sourceSchema == SourceSchema.MIXED_PHRASE &&
+                it.code.equals(buffer, ignoreCase = true)
+        }
 
         val ordered = if (chineseFirst || buffer.length <= 2) {
             custom + learnedChinese + decodedChinese + learnedEnglish +
                 decodedEnglish + literal + english
         } else {
             // Latin buffer assumed to be English: after explicit custom words, an
-            // exact Traditional-Chinese meaning leads all learned and built-in
-            // completions. Other Chinese candidates stay immediately after the
-            // literal instead of trailing English decoder noise.
-            custom + exactEnglishAssist + learnedEnglish + english + literal +
-                learnedChinese + decodedChinese + decodedEnglish
+            // exact Traditional-Chinese meaning and the code-switching phrases for
+            // that same word lead all learned and built-in completions. Other
+            // Chinese candidates stay immediately after the literal instead of
+            // trailing English decoder noise.
+            custom + exactEnglishAssist.take(LEADING_EXACT_ASSIST) + exactMixed +
+                exactEnglishAssist.drop(LEADING_EXACT_ASSIST) + learnedEnglish +
+                english + literal + learnedChinese + decodedChinese + decodedEnglish
         }
         return ordered.distinctBy { it.text }.take(limit)
     }

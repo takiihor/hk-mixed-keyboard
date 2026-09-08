@@ -83,6 +83,9 @@ class HkscsSupplementTest {
             }
         }))
         setLazy("phrases", lazyOf(emptyList<com.hkmixedkeyboard.decoder.PhraseEntry>()))
+        // Decoding now consults the code-switching phrases too, so this lazy has to
+        // be seeded as well or the fake Context's failed asset read logs and throws.
+        setLazy("mixedPhrases", lazyOf(emptyList<com.hkmixedkeyboard.decoder.MixedPhraseEntry>()))
     }
 
     private fun CorpusLoader.setLazy(property: String, value: Lazy<*>) {
