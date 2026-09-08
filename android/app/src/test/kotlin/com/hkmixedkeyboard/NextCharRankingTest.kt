@@ -35,17 +35,20 @@ class NextCharRankingTest {
             val hkCore = cols[3].trim() == "1"
             if (phrase.length < 2) return@forEachLine
             for (i in 1..minOf(3, phrase.length - 1)) {
-                val support = acc.getOrPut(phrase.substring(0, i)) { HashMap() }
-                    .getOrPut(phrase.substring(i, i + 1)) { Support() }
-                support.best = maxOf(support.best, freq)
-                support.total += freq
-                support.hkCore = support.hkCore || hkCore
+                val bucket = acc.getOrPut(phrase.substring(0, i)) { HashMap() }
+                for (end in intArrayOf(i + 1, phrase.length)) {
+                    val support = bucket.getOrPut(phrase.substring(i, end)) { Support() }
+                    support.best = maxOf(support.best, freq)
+                    support.total += freq
+                    support.hkCore = support.hkCore || hkCore
+                }
             }
         }
         acc.mapValues { (_, nexts) ->
             nexts.entries
                 .sortedWith(
                     compareByDescending<Map.Entry<String, Support>> { if (it.value.hkCore) 1 else 0 }
+                        .thenByDescending { if (it.key.length == 1) 1 else 0 }
                         .thenByDescending { it.value.score }
                 )
                 .map { it.key to it.value }
@@ -100,6 +103,43 @@ class NextCharRankingTest {
             }
         }
         assertTrue("expected the known mixed prefixes, saw $mixed", mixed >= 5)
+    }
+
+    // ── Word-level completions ────────────────────────────────────────────
+
+    @Test
+    fun `a prefix offers the rest of the word, not just the next character`() {
+        val words = index["香"].orEmpty().map { it.first }.filter { it.length > 1 }
+
+        assertTrue("香 offers no word completion: $words", words.isNotEmpty())
+        assertTrue("香 -> $words", words.contains("港人"))
+    }
+
+    @Test
+    fun `single characters still lead the word completions`() {
+        val ranked = index["香"].orEmpty().map { it.first }
+        val firstWord = ranked.indexOfFirst { it.length > 1 }
+        val lastChar = ranked.indexOfLast { it.length == 1 }
+
+        assertTrue("香 -> $ranked", firstWord > 0)
+        assertTrue("a word completion precedes a character: $ranked", lastChar < firstWord)
+    }
+
+    @Test
+    fun `a continuation is never listed twice`() {
+        // For a two-character phrase the "next character" and the "rest of the
+        // word" are the same string, so the two must collapse into one entry.
+        listOf("香", "我", "你", "電").forEach { prefix ->
+            val ranked = index[prefix].orEmpty().map { it.first }
+            assertEquals("$prefix has duplicates: $ranked", ranked.size, ranked.distinct().size)
+        }
+    }
+
+    @Test
+    fun `word completions reach a useful share of prefixes`() {
+        val withWords = index.count { (_, ranked) -> ranked.any { it.first.length > 1 } }
+
+        assertTrue("only $withWords prefixes offer a word completion", withWords > 2_000)
     }
 
     private companion object {

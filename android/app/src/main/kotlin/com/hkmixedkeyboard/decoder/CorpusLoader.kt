@@ -197,24 +197,36 @@ class CorpusLoader(private val ctx: Context) {
             val maxPrefix = minOf(3, n - 1)
             for (i in 1..maxPrefix) {
                 val prefix = s.substring(0, i)
-                val next = s.substring(i, i + 1)
                 val m = acc.getOrPut(prefix) { HashMap() }
-                val support = m.getOrPut(next) { Support() }
-                support.best = maxOf(support.best, p.freq)
-                support.total += p.freq
-                support.isHkCore = support.isHkCore || p.isHkCore
+                // The next character, and — when more of the word remains — the
+                // whole remainder, so one tap can finish 香 → 港島 instead of
+                // spelling it out a character at a time.
+                for (end in intArrayOf(i + 1, n)) {
+                    val continuation = s.substring(i, end)
+                    val support = m.getOrPut(continuation) { Support() }
+                    support.best = maxOf(support.best, p.freq)
+                    support.total += p.freq
+                    support.isHkCore = support.isHkCore || p.isHkCore
+                }
             }
         }
         acc.mapValues { (_, nexts) ->
             nexts.entries
                 .sortedWith(
                     compareByDescending<Map.Entry<String, Support>> { if (it.value.isHkCore) 1 else 0 }
+                        // Single characters keep the head of the list: they are the
+                        // finer-grained choice, and word completions are an
+                        // additional offer rather than a replacement.
+                        .thenByDescending { if (it.key.length == 1) 1 else 0 }
                         .thenByDescending { it.value.score }
                 )
-                .take(20)
-                .map { (ch, support) ->
-                    DecodeCandidate(ch, "", SourceSchema.QUICK, CandidateType.CHAR,
-                        support.score, support.isHkCore)
+                .take(NEXT_CHAR_FANOUT)
+                .map { (continuation, support) ->
+                    DecodeCandidate(
+                        continuation, "", SourceSchema.QUICK,
+                        if (continuation.length == 1) CandidateType.CHAR else CandidateType.PHRASE,
+                        support.score, support.isHkCore
+                    )
                 }
         }
     }
@@ -430,6 +442,9 @@ class CorpusLoader(private val ctx: Context) {
         // breadth breaks ties and lifts well-attested continuations rather than
         // letting a crowd of rare words outrank a genuinely common one.
         const val BREADTH_WEIGHT = 0.15
+        // Continuations kept per prefix. Raised with word completions so they do
+        // not crowd out the single characters they sit beside.
+        const val NEXT_CHAR_FANOUT = 30
         const val MIN_REVERSE_GLOSS_LENGTH = 2
         const val MAX_REVERSE_GLOSSES = 3
     }
