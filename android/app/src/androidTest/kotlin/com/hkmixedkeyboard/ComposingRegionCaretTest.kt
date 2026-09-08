@@ -25,9 +25,12 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ComposingRegionCaretTest {
 
+    // fullEditor = true matters: in dummy mode BaseInputConnection clears its buffer
+    // after every commitText() and re-sends the text as key events, so no committed
+    // text would survive to compose against.
     private fun connection(): BaseInputConnection {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        return BaseInputConnection(View(context), false)
+        return BaseInputConnection(View(context), true)
     }
 
     @Test
