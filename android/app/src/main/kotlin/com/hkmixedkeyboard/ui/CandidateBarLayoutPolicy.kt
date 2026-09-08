@@ -18,18 +18,35 @@ object CandidateBarDisplayStatePolicy {
 }
 
 object CandidateBarLayoutPolicy {
-    const val VISIBLE_HEIGHT_DP = 58f
+    const val VISIBLE_HEIGHT_DP = 42f
+    /** Extra strip height reserved for the single-line reading hint. */
+    const val READING_HINT_HEIGHT_DP = 16f
     const val TEXT_SIZE_SP = 21f
     const val PREVIEW_TEXT_SIZE_SP = 13f
     const val VERTICAL_PADDING_DP = 4
     const val SYSTEM_MESSAGE_MAX_LINES = 1
 
-    fun heightPx(density: Float, state: CandidateBarDisplayState): Int = when (state) {
+    /**
+     * The strip keeps one fixed height for every display state, so the IME window
+     * never jumps while typing. It grows only when the learner turns a reading
+     * hint on — a settings change, never a keystroke.
+     */
+    fun visibleHeightDp(showsReadingHint: Boolean): Float =
+        if (showsReadingHint) VISIBLE_HEIGHT_DP + READING_HINT_HEIGHT_DP else VISIBLE_HEIGHT_DP
+
+    fun heightPx(
+        density: Float,
+        state: CandidateBarDisplayState,
+        showsReadingHint: Boolean
+    ): Int = when (state) {
         CandidateBarDisplayState.EMPTY,
         CandidateBarDisplayState.CANDIDATES_OR_COMPOSING,
-        CandidateBarDisplayState.SYSTEM_MESSAGE -> (VISIBLE_HEIGHT_DP * density).toInt()
+        CandidateBarDisplayState.SYSTEM_MESSAGE -> (visibleHeightDp(showsReadingHint) * density).toInt()
     }
 
-    fun inputViewMinimumHeightPx(density: Float, state: CandidateBarDisplayState): Int =
-        KeyboardLayout.keyboardHeightPx(density) + heightPx(density, state)
+    fun inputViewMinimumHeightPx(
+        density: Float,
+        state: CandidateBarDisplayState,
+        showsReadingHint: Boolean
+    ): Int = KeyboardLayout.keyboardHeightPx(density) + heightPx(density, state, showsReadingHint)
 }

@@ -126,6 +126,16 @@ class SettingsActivity : AppCompatActivity() {
             lifecycleScope.launch { KeyboardSettings.setSimplifiedOutput(this@SettingsActivity, v) }
         }
 
+        root.addView(header("學習提示"))
+        root.addView(label("在候選欄上方顯示所選字詞的注音，幫助學習發音。" +
+            "只作顯示，不影響選字或輸出。"))
+        val jyutpingHintSwitch = addSwitch(root, "顯示粵拼（粵語注音）", false) { v ->
+            lifecycleScope.launch { KeyboardSettings.setJyutpingHint(this@SettingsActivity, v) }
+        }
+        val pinyinHintSwitch = addSwitch(root, "顯示拼音（普通話注音）", false) { v ->
+            lifecycleScope.launch { KeyboardSettings.setPinyinHint(this@SettingsActivity, v) }
+        }
+
         root.addView(header("直接輸入"))
         root.addView(label("終端機、SSH 及遠端桌面需要逐鍵直接輸入英文，" +
             "不經組字緩衝。自動偵測失效時可在此強制開啟或關閉。"))
@@ -171,6 +181,8 @@ class SettingsActivity : AppCompatActivity() {
                 else -> Unit
             }
             simpSwitch.isChecked  = prefs.simplifiedOutput
+            jyutpingHintSwitch.isChecked = prefs.jyutpingHint
+            pinyinHintSwitch.isChecked = prefs.pinyinHint
             applyingDirectHydration = true
             try {
                 directButtons[prefs.directInput]?.isChecked = true

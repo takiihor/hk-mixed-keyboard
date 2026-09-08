@@ -44,7 +44,8 @@ import com.hkmixedkeyboard.ui.AndroidTypingHapticBackend
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.KeyboardView
-import com.hkmixedkeyboard.ui.JyutpingLearningPreview
+import com.hkmixedkeyboard.ui.ReadingHintPolicy
+import com.hkmixedkeyboard.ui.ReadingHints
 import com.hkmixedkeyboard.ui.MainKeyboardLongPressPolicy
 import com.hkmixedkeyboard.ui.ShiftState
 import com.hkmixedkeyboard.ui.ShiftStateController
@@ -73,7 +74,7 @@ class HkImeService : InputMethodService() {
         // One-time purge of memory entries learned from the pre-v0.47 corpus,
         // which emitted these variant forms before HK normalization (爲→為 …).
         private const val VARIANT_PURGE_FLAG = "variant_purge_v47"
-        private const val JYUTPING_CONFIRMATION_DURATION_MS = 1_400L
+        private const val READING_HINT_CONFIRMATION_MS = 1_400L
         private val STALE_VARIANT_CHARS =
             "僞喫嬀擡柺棱溼潙潨爲癡皁祕竈糉纔脣臺菸蔿衆覈踊鉢鍼".toSet()
     }
@@ -158,10 +159,13 @@ class HkImeService : InputMethodService() {
     private var decodePendingGeneration: Long = 0L
     private var decodePendingSession: Long = 0L
     private val candidateDisplayPolicy = CandidateDisplayPolicy()
-    private val jyutpingLearningPreview by lazy {
-        JyutpingLearningPreview(corpus.jyutpingReadingLookup)
+    private val readingHintPolicy by lazy {
+        ReadingHintPolicy(corpus.jyutpingReadingLookup, corpus.pinyinReadingLookup)
     }
-    private var jyutpingConfirmationClear: Runnable? = null
+    // Mirrors KeyboardPrefs so the first input view is built at the right height,
+    // before the settings flow's first emission arrives.
+    private var readingHints = ReadingHints(jyutping = true, pinyin = false)
+    private var readingHintConfirmationClear: Runnable? = null
 
     private var imeState = ImeStateData()
     private var imeCtx = ImeContext()
@@ -284,6 +288,12 @@ class HkImeService : InputMethodService() {
                         vibrationEnabled = prefs.vibration
                         soundEnabled = prefs.sound
                         showCangjieRoots = prefs.showRoots
+                        applyReadingHints(
+                            ReadingHints(
+                                jyutping = prefs.jyutpingHint,
+                                pinyin = prefs.pinyinHint
+                            )
+                        )
                         if (directInputMode != prefs.directInput) {
                             directInputMode = prefs.directInput
                             // Re-decide for the field already focused, so the change
@@ -364,7 +374,7 @@ class HkImeService : InputMethodService() {
 
     override fun onDestroy() {
         serviceDestroyed = true
-        clearJyutpingConfirmation()
+        clearReadingHintConfirmation()
         super.onDestroy()
         cancelCandidateDecode()
         serviceJob.cancel()
@@ -452,7 +462,7 @@ class HkImeService : InputMethodService() {
 
     private fun buildInputView(): View {
         val density = resources.displayMetrics.density
-        val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density)
+        val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density, readingHints.any)
         val keyboardHeight = KeyboardLayout.keyboardHeightPx(density)
         val root = LinearLayout(this).also { inputRoot = it }.apply {
             orientation = LinearLayout.VERTICAL
@@ -460,7 +470,7 @@ class HkImeService : InputMethodService() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density)
+            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density, readingHints.any)
             setBackgroundColor(currentThemeColors.keyboardBackground)
         }
 
@@ -574,9 +584,39 @@ class HkImeService : InputMethodService() {
         (altPanel as? EmojiPanelView)?.themeColors = colors
     }
 
+    /**
+     * Applies the learner's hint preferences. Turning the last one off clears any
+     * hint already on screen; turning the first one on (or the last one off) also
+     * changes the strip's height, so the input view is re-measured. Runs only on
+     * the main thread, from the settings collector.
+     */
+    private fun applyReadingHints(hints: ReadingHints) {
+        if (readingHints == hints) return
+        val heightChanged = readingHints.any != hints.any
+        readingHints = hints
+        if (!hints.any && ::candidateBar.isInitialized) {
+            clearReadingHintConfirmation()
+            candidateBar.setLearningPreview(null)
+        }
+        if (heightChanged) resizeCandidateBar()
+    }
+
+    private fun resizeCandidateBar() {
+        if (!::candidateBar.isInitialized) return
+        val density = resources.displayMetrics.density
+        candidateBar.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            KeyboardLayout.candidateBarHeightPx(density, readingHints.any)
+        )
+        if (::inputRoot.isInitialized) {
+            inputRoot.minimumHeight = KeyboardLayout.inputViewMinHeightPx(density, readingHints.any)
+            inputRoot.requestLayout()
+        }
+    }
+
     private fun buildFallbackInputView(): View {
         val density = resources.displayMetrics.density
-        val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density)
+        val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density, readingHints.any)
         val keyboardHeight = KeyboardLayout.keyboardHeightPx(density)
         val root = LinearLayout(this).also { inputRoot = it }.apply {
             orientation = LinearLayout.VERTICAL
@@ -584,7 +624,7 @@ class HkImeService : InputMethodService() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density)
+            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density, readingHints.any)
             setBackgroundColor(currentThemeColors.keyboardBackground)
         }
         candidateBar = CandidateBarView(this).apply {
@@ -994,11 +1034,11 @@ class HkImeService : InputMethodService() {
             commitPredictionChar(candidate.text)
             return
         }
-        val learningLabel = jyutpingLearningPreview.committedLabel(imeCtx.scheme, candidate)
+        val learningLabel = readingHintPolicy.committedLabel(readingHints, candidate)
         val out = ctrl.onCandidateTap(candidate, imeState)
         committedPrefix = if (isCjk(out.committedText)) out.committedText!! else ""
         applyOutput(out)
-        learningLabel?.let(::showJyutpingConfirmation)
+        learningLabel?.let(::showReadingHintConfirmation)
     }
 
     private fun commitPredictionChar(text: String) {
@@ -1021,23 +1061,23 @@ class HkImeService : InputMethodService() {
         showNextCharPredictions()
     }
 
-    private fun showJyutpingConfirmation(label: String) {
+    private fun showReadingHintConfirmation(label: String) {
         if (!::candidateBar.isInitialized || imeCtx.isSensitiveField) return
-        clearJyutpingConfirmation()
+        clearReadingHintConfirmation()
         candidateBar.setLearningPreview(label)
         val clear = Runnable {
-            jyutpingConfirmationClear = null
+            readingHintConfirmationClear = null
             if (imeState.buffer.isEmpty() && !imeCtx.isSensitiveField) {
                 candidateBar.setLearningPreview(null)
             }
         }
-        jyutpingConfirmationClear = clear
-        mainThread.postDelayed(clear, JYUTPING_CONFIRMATION_DURATION_MS)
+        readingHintConfirmationClear = clear
+        mainThread.postDelayed(clear, READING_HINT_CONFIRMATION_MS)
     }
 
-    private fun clearJyutpingConfirmation() {
-        jyutpingConfirmationClear?.let(mainThread::removeCallbacks)
-        jyutpingConfirmationClear = null
+    private fun clearReadingHintConfirmation() {
+        readingHintConfirmationClear?.let(mainThread::removeCallbacks)
+        readingHintConfirmationClear = null
     }
 
     // Show the characters that commonly follow the committed prefix (我 → 們/哋…).
@@ -1156,7 +1196,7 @@ class HkImeService : InputMethodService() {
     private fun updateCandidateBar(@Suppress("UNUSED_PARAMETER") out: CommitOutput) {
         if (!::candidateBar.isInitialized) return
         if (imeCtx.isSensitiveField) {
-            clearJyutpingConfirmation()
+            clearReadingHintConfirmation()
             cancelCandidateDecode()
             candidateBar.showSafeMode()
             return
@@ -1171,7 +1211,7 @@ class HkImeService : InputMethodService() {
             LatencyLogger.firstCandidateRender()
             return
         }
-        clearJyutpingConfirmation()
+        clearReadingHintConfirmation()
         candidateBar.setLearningPreview(null)
         // Cold start: the dictionary for this scheme may still be loading. Show a
         // brief hint instead of a blank bar; the decode we schedule next builds the
@@ -1279,7 +1319,7 @@ class HkImeService : InputMethodService() {
                 lastCandidates = expanded
                 candidateBar.setCandidates(display)
                 candidateBar.setLearningPreview(
-                    jyutpingLearningPreview.liveLabel(decodeScheme, display)
+                    readingHintPolicy.liveLabel(readingHints, display)
                 )
                 LatencyLogger.firstCandidateRender()
                 PerfTracer.mark("first_candidate_render") { "gen=$gen size=${display.size}" }
@@ -1407,7 +1447,7 @@ class HkImeService : InputMethodService() {
 
     private fun resetCompositionState() {
         cancelCandidateDecode()
-        clearJyutpingConfirmation()
+        clearReadingHintConfirmation()
         pinyinSpaceIntent.cancel()
         compositionSession++
         compositionDecodeGeneration = 0L
@@ -1509,7 +1549,7 @@ class HkImeService : InputMethodService() {
 
     private fun clearCompositionAfterStandaloneInsert() {
         cancelCandidateDecode()
-        clearJyutpingConfirmation()
+        clearReadingHintConfirmation()
         compositionSession++
         imeState = ImeStateData()
         committedPrefix = ""

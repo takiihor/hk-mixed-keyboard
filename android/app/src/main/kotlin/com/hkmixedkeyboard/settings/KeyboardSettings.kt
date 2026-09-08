@@ -33,6 +33,10 @@ object Keys {
     // Direct (raw Latin) input for terminals and remote desktops. AUTO detects the
     // field; ALWAYS/NEVER let the user override a wrong guess.
     val DIRECT_INPUT = stringPreferencesKey("direct_input")
+    // Learning hints: show the toned 粵拼 / 拼音 reading of the leading candidate
+    // above the candidate strip. Display only — neither affects decoding.
+    val JYUTPING_HINT = booleanPreferencesKey("jyutping_hint")
+    val PINYIN_HINT = booleanPreferencesKey("pinyin_hint")
 }
 
 /**
@@ -70,7 +74,12 @@ data class KeyboardPrefs(
     val memoryClearToken: Long = 0L,
     val customWordsToken: Long = 0L,
     val theme: KeyboardTheme = KeyboardTheme.DARK,
-    val directInput: DirectInputMode = DirectInputMode.AUTO
+    val directInput: DirectInputMode = DirectInputMode.AUTO,
+    // 粵拼 defaults on: it is the Cantonese learning aid this keyboard exists for,
+    // and it is the behaviour the preview shipped with. 拼音 is additive, so it
+    // stays opt-in rather than making everyone's candidate strip taller.
+    val jyutpingHint: Boolean = true,
+    val pinyinHint: Boolean = false
 )
 
 object KeyboardSettings {
@@ -88,7 +97,9 @@ object KeyboardSettings {
                 memoryClearToken = p[Keys.MEMORY_CLEAR_TOKEN] ?: 0L,
                 customWordsToken = p[Keys.CUSTOM_WORDS_TOKEN] ?: 0L,
                 theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME]),
-                directInput = DirectInputPreference.resolve(p[Keys.DIRECT_INPUT])
+                directInput = DirectInputPreference.resolve(p[Keys.DIRECT_INPUT]),
+                jyutpingHint = p[Keys.JYUTPING_HINT] ?: true,
+                pinyinHint = p[Keys.PINYIN_HINT] ?: false
             )
         }
 
@@ -114,6 +125,12 @@ object KeyboardSettings {
 
     suspend fun setSimplifiedOutput(ctx: Context, v: Boolean) =
         ctx.settingsDataStore.edit { it[Keys.SIMPLIFIED_OUTPUT] = v }
+
+    suspend fun setJyutpingHint(ctx: Context, v: Boolean) =
+        ctx.settingsDataStore.edit { it[Keys.JYUTPING_HINT] = v }
+
+    suspend fun setPinyinHint(ctx: Context, v: Boolean) =
+        ctx.settingsDataStore.edit { it[Keys.PINYIN_HINT] = v }
 
     suspend fun setDirectInput(ctx: Context, mode: DirectInputMode) =
         ctx.settingsDataStore.edit { it[Keys.DIRECT_INPUT] = DirectInputPreference.serialize(mode) }

@@ -1,15 +1,15 @@
 package com.hkmixedkeyboard
 
-import com.hkmixedkeyboard.decoder.JyutpingReadingLookup
+import com.hkmixedkeyboard.decoder.ReadingLookup
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class JyutpingReadingLookupTest {
+class ReadingLookupTest {
 
     @Test
     fun `loads exact word readings with tones and spaces`() {
-        val lookup = JyutpingReadingLookup.from(
+        val lookup = ReadingLookup.from(
             "text,jyutping\n香港,hoeng1 gong2\n你,nei5\n".reader()
         )
 
@@ -19,7 +19,7 @@ class JyutpingReadingLookupTest {
 
     @Test
     fun `keeps first reading and skips malformed rows`() {
-        val lookup = JyutpingReadingLookup.from(
+        val lookup = ReadingLookup.from(
             """
             # generated data
             text,jyutping

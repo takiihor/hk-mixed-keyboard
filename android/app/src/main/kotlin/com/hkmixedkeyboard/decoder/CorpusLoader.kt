@@ -114,15 +114,17 @@ class CorpusLoader(private val ctx: Context) {
     val quickPrefixCandidateIndex: QuickPrefixCandidateIndex by lazy {
         QuickPrefixCandidateIndex(quickIndex)
     }
-    val jyutpingReadingLookup: JyutpingReadingLookup by lazy {
-        runCatching {
-            ctx.assets.open("corpus/jyutping_readings.csv").bufferedReader().use {
-                JyutpingReadingLookup.from(it)
-            }
-        }.getOrElse {
-            android.util.Log.e("CorpusLoader", "Failed to load Jyutping learning readings", it)
-            JyutpingReadingLookup.empty()
-        }
+    // Toned readings for the learning hints. Separate from the input dictionaries,
+    // which are deliberately toneless and so cannot teach pronunciation. Either
+    // asset failing to load degrades to "no hint" and never affects decoding.
+    val jyutpingReadingLookup: ReadingLookup by lazy { readingLookup("jyutping_readings.csv") }
+    val pinyinReadingLookup: ReadingLookup by lazy { readingLookup("pinyin_readings.csv") }
+
+    private fun readingLookup(assetName: String): ReadingLookup = runCatching {
+        ctx.assets.open("corpus/$assetName").bufferedReader().use { ReadingLookup.from(it) }
+    }.getOrElse {
+        android.util.Log.e("CorpusLoader", "Failed to load learning readings: $assetName", it)
+        ReadingLookup.empty()
     }
 
     // ── English meaning assist indices ─────────────────────────────────────
