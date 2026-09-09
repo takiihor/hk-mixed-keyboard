@@ -9,8 +9,8 @@ import org.junit.Test
 class SymbolPageLayoutTest {
 
     @Test
-    fun `symbol page data starts with Chinese comma`() {
-        assertEquals("，", SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.first().first().commitText)
+    fun `symbol page data starts with the digits row`() {
+        assertEquals("1", SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.first().first().commitText)
     }
 
     @Test

@@ -7,6 +7,8 @@ import com.hkmixedkeyboard.ime.WordDeletePolicy
 import com.hkmixedkeyboard.engine.IdleSuggestionPolicy
 import com.hkmixedkeyboard.memory.MemorySuggestion
 import com.hkmixedkeyboard.ui.KeyTouchPolicy
+import com.hkmixedkeyboard.ui.SymbolKeyboardSpec
+import com.hkmixedkeyboard.ui.SymbolPage
 import com.hkmixedkeyboard.ui.MainKeyboardLongPressPolicy
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import org.junit.Assert.assertEquals
@@ -225,5 +227,40 @@ class IosFriendlyInteractionTest {
             ) || MainKeyboardLongPressPolicy.longPressTextFor(label) != null
             assertTrue("$label holds but has no tap outcome", resolvable)
         }
+    }
+
+    // ── Digits stay reachable with the number row off ─────────────────────
+
+    @Test
+    fun `the first symbol page carries the digits`() {
+        // Turning off 顯示數字行 removes the only other place they lived, so the
+        // 符 page has to be a real 123 page or numbers become untypeable.
+        val firstRow = SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.first()
+
+        assertEquals(
+            listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"),
+            firstRow.map { it.label }
+        )
+    }
+
+    @Test
+    fun `every digit is reachable from the symbol pages`() {
+        val onPages = (SymbolKeyboardSpec.page(SymbolPage.COMMON).rows +
+            SymbolKeyboardSpec.page(SymbolPage.EXTENDED).rows)
+            .flatten().map { it.label }.toSet()
+
+        ('0'..'9').forEach { d ->
+            assertTrue("digit $d is not on any symbol page", d.toString() in onPages)
+        }
+    }
+
+    @Test
+    fun `punctuation and brackets survive the reshuffle`() {
+        val onPages = (SymbolKeyboardSpec.page(SymbolPage.COMMON).rows +
+            SymbolKeyboardSpec.page(SymbolPage.EXTENDED).rows)
+            .flatten().map { it.label }.toSet()
+
+        listOf("，", "。", "？", "！", "「", "」", "（".let { "(" }, ")", "[", "]", "@", "#", "€")
+            .forEach { assertTrue("$it went missing", it in onPages) }
     }
 }

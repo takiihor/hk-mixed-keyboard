@@ -47,6 +47,14 @@ object SymbolKeyboardSpec {
     val bottomKeyWeights = listOf(1.25f, 0.90f, 2.60f, 1.05f, 1.20f)
 
     private val labels = mapOf(
+        "0" to "數字零", "1" to "數字一", "2" to "數字二", "3" to "數字三", "4" to "數字四",
+        "5" to "數字五", "6" to "數字六", "7" to "數字七", "8" to "數字八", "9" to "數字九",
+        "⁰" to "上標零", "¹" to "上標一", "²" to "上標二", "³" to "上標三",
+        "①" to "圈一", "②" to "圈二", "③" to "圈三", "④" to "圈四", "⑤" to "圈五",
+        "⑥" to "圈六", "⑦" to "圈七", "⑧" to "圈八", "⑨" to "圈九",
+        "零" to "中文零", "○" to "圈零",
+        "一" to "中文一", "二" to "中文二", "三" to "中文三", "四" to "中文四", "五" to "中文五",
+        "六" to "中文六", "七" to "中文七", "八" to "中文八", "九" to "中文九",
         "，" to "中文逗號", "。" to "中文句號", "？" to "中文問號", "！" to "中文驚嘆號",
         "、" to "頓號", "：" to "冒號", "；" to "分號", "…" to "省略號", "—" to "破折號", "·" to "間隔號",
         "「" to "左單引號", "」" to "右單引號", "『" to "左雙引號", "』" to "右雙引號",
@@ -104,23 +112,48 @@ object SymbolKeyboardSpec {
         "/" to listOf("\\", "|", "÷")
     )
 
+    // Digits lead the first page, the way iOS's 123 page does. They used to live
+    // only on the main keyboard's number row, so turning that row off left no way
+    // to type a number at all. Long-pressing a digit reaches its superscript, and
+    // 0 reaches the full-width form used in Chinese typesetting.
+    private val digitLongPressAlternatives = mapOf(
+        "1" to listOf("¹", "①", "一"),
+        "2" to listOf("²", "②", "二"),
+        "3" to listOf("³", "③", "三"),
+        "4" to listOf("④", "四"),
+        "5" to listOf("⑤", "五"),
+        "6" to listOf("⑥", "六"),
+        "7" to listOf("⑦", "七"),
+        "8" to listOf("⑧", "八"),
+        "9" to listOf("⑨", "九"),
+        "0" to listOf("⁰", "○", "零")
+    )
+
     private val commonRows = listOf(
+        listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"),
         listOf("，", "。", "？", "！", "、", "：", "；", "…", "—", "·"),
         listOf("「", "」", "『", "』", "“", "”", "‘", "’", "《", "》"),
-        listOf("@", "#", "$", "%", "&", "*", "-", "+", "=", "_"),
-        listOf("(", ")", "[", "]", "{", "}", "<", ">", "/", "\\")
+        listOf("@", "#", "$", "%", "&", "*", "-", "+", "=", "_")
     ).map { row ->
         row.map { symbol ->
-            textKey(symbol, commonLongPressAlternatives[symbol].orEmpty())
+            textKey(
+                symbol,
+                (commonLongPressAlternatives[symbol]
+                    ?: digitLongPressAlternatives[symbol]).orEmpty()
+            )
         }
     }
 
+    // ASCII brackets moved here to make room for the digits. Their Chinese
+    // counterparts stay one long press away on this same row.
     private val extendedRows = listOf(
+        listOf("(", ")", "[", "]", "{", "}", "<", ">", "/", "\\"),
         listOf("~", "`", "^", "|", "\\", "°", "•", "©", "®", "™"),
         listOf("±", "×", "÷", "≠", "≈", "≤", "≥", "√", "∞", "%"),
-        listOf("€", "£", "¥", "₩", "₹", "¢", "§", "¶", "#", "@"),
-        listOf("〔", "〕", "〈", "〉", "【", "】", "〖", "〗", "（", "）")
-    ).map { row -> row.map(::textKey) }
+        listOf("€", "£", "¥", "₩", "₹", "¢", "§", "¶", "#", "@")
+    ).map { row ->
+        row.map { symbol -> textKey(symbol, commonLongPressAlternatives[symbol].orEmpty()) }
+    }
 
     private val pages = mapOf(
         SymbolPage.COMMON to SymbolPageSpec(SymbolPage.COMMON, commonRows),
@@ -130,8 +163,8 @@ object SymbolKeyboardSpec {
     fun page(page: SymbolPage): SymbolPageSpec = pages.getValue(page)
 
     fun pageAnnouncement(page: SymbolPage): String = when (page) {
-        SymbolPage.COMMON -> "符號第 1 頁，共用標點"
-        SymbolPage.EXTENDED -> "符號第 2 頁，數學貨幣及特殊符號"
+        SymbolPage.COMMON -> "符號第 1 頁，數字及共用標點"
+        SymbolPage.EXTENDED -> "符號第 2 頁，括號、數學及貨幣符號"
     }
 
     fun accessibilityDescription(key: SymbolKeySpec): String =

@@ -13,9 +13,12 @@ class SymbolKeyboardRoutingTest {
 
     @Test
     fun `text keys route their exact Unicode payload without punctuation conversion`() {
-        val commonComma = SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.first().first()
-        val reverseSlash = SymbolKeyboardSpec.page(SymbolPage.EXTENDED).rows.first()[4]
+        // Row 1 of the common page is the digits now; the comma moved down one.
+        val digitOne = SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.first().first()
+        val commonComma = SymbolKeyboardSpec.page(SymbolPage.COMMON).rows[1].first()
+        val reverseSlash = SymbolKeyboardSpec.page(SymbolPage.EXTENDED).rows[1][4]
 
+        assertEquals(SymbolKeyboardRouting.Event.CommitText("1"), SymbolKeyboardRouting.eventFor(digitOne))
         assertEquals(SymbolKeyboardRouting.Event.CommitText("，"), SymbolKeyboardRouting.eventFor(commonComma))
         assertEquals(SymbolKeyboardRouting.Event.CommitText("\\"), SymbolKeyboardRouting.eventFor(reverseSlash))
     }

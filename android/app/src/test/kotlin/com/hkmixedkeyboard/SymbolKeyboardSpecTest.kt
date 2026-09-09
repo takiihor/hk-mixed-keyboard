@@ -12,10 +12,10 @@ class SymbolKeyboardSpecTest {
     fun `common page keeps the approved Traditional Chinese punctuation matrix`() {
         assertEquals(
             listOf(
+                listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"),
                 listOf("，", "。", "？", "！", "、", "：", "；", "…", "—", "·"),
                 listOf("「", "」", "『", "』", "“", "”", "‘", "’", "《", "》"),
-                listOf("@", "#", "$", "%", "&", "*", "-", "+", "=", "_"),
-                listOf("(", ")", "[", "]", "{", "}", "<", ">", "/", "\\")
+                listOf("@", "#", "$", "%", "&", "*", "-", "+", "=", "_")
             ),
             SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.map { row -> row.map { it.commitText } }
         )
@@ -25,10 +25,10 @@ class SymbolKeyboardSpecTest {
     fun `extended page keeps the approved technical symbol matrix`() {
         assertEquals(
             listOf(
+                listOf("(", ")", "[", "]", "{", "}", "<", ">", "/", "\\"),
                 listOf("~", "`", "^", "|", "\\", "°", "•", "©", "®", "™"),
                 listOf("±", "×", "÷", "≠", "≈", "≤", "≥", "√", "∞", "%"),
-                listOf("€", "£", "¥", "₩", "₹", "¢", "§", "¶", "#", "@"),
-                listOf("〔", "〕", "〈", "〉", "【", "】", "〖", "〗", "（", "）")
+                listOf("€", "£", "¥", "₩", "₹", "¢", "§", "¶", "#", "@")
             ),
             SymbolKeyboardSpec.page(SymbolPage.EXTENDED).rows.map { row -> row.map { it.commitText } }
         )
@@ -51,10 +51,14 @@ class SymbolKeyboardSpecTest {
 
     @Test
     fun `long press alternatives keep exact Unicode including escaped backslash`() {
-        fun alternatives(symbol: String) = SymbolKeyboardSpec.page(SymbolPage.COMMON)
-            .rows
+        // Brackets moved to page 2 when the digits took the first row, so look
+        // across both pages rather than assuming which one a symbol sits on.
+        fun alternatives(symbol: String) = (
+            SymbolKeyboardSpec.page(SymbolPage.COMMON).rows +
+                SymbolKeyboardSpec.page(SymbolPage.EXTENDED).rows
+            )
             .flatten()
-            .single { it.commitText == symbol }
+            .first { it.commitText == symbol }
             .longPressAlternatives
             .map { it.commitText }
 
@@ -73,6 +77,9 @@ class SymbolKeyboardSpecTest {
         assertEquals(listOf("〈", "《", "≤"), alternatives("<"))
         assertEquals(listOf("〉", "》", "≥"), alternatives(">"))
         assertEquals(listOf("\\", "|", "÷"), alternatives("/"))
+        // Digits reach their superscript, circled and Chinese forms.
+        assertEquals(listOf("¹", "①", "一"), alternatives("1"))
+        assertEquals(listOf("⁰", "○", "零"), alternatives("0"))
     }
 
     @Test
@@ -90,7 +97,8 @@ class SymbolKeyboardSpecTest {
 
     @Test
     fun `long press alternatives are discoverable through the semantic description`() {
-        val comma = SymbolKeyboardSpec.page(SymbolPage.COMMON).rows.first().first()
+        // Row 1 is the digits now; the comma leads row 2.
+        val comma = SymbolKeyboardSpec.page(SymbolPage.COMMON).rows[1].first()
 
         assertTrue(SymbolKeyboardSpec.accessibilityDescription(comma).contains("長按可選"))
         assertTrue(SymbolKeyboardSpec.accessibilityDescription(comma).contains("英文逗號"))
