@@ -62,7 +62,7 @@ class BundledReadingAssetTest {
         val policy = ReadingHintPolicy(jyutping, pinyin)
 
         assertEquals(
-            "香港 · 粵 hoeng1 gong2 · 拼 xiang1 gang3",
+            "香港 · 粵 hoeng1 gong2 · 拼 xiāng gǎng",
             policy.liveLabel(
                 ReadingHints(jyutping = true, pinyin = true),
                 listOf(cnPhrase("香港", "theng"))

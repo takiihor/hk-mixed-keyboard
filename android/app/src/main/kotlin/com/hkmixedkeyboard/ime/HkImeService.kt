@@ -296,7 +296,8 @@ class HkImeService : InputMethodService() {
                         applyReadingHints(
                             ReadingHints(
                                 jyutping = prefs.jyutpingHint,
-                                pinyin = prefs.pinyinHint
+                                pinyin = prefs.pinyinHint,
+                                cantonese = prefs.cantoneseNotation
                             )
                         )
                         if (directInputMode != prefs.directInput) {

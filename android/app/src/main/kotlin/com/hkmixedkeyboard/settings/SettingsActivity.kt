@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.hkmixedkeyboard.BuildConfig
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.memory.UserMemoryDatabase
+import com.hkmixedkeyboard.ui.CantoneseNotation
 import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.toColors
 import kotlinx.coroutines.flow.first
@@ -132,6 +133,26 @@ class SettingsActivity : AppCompatActivity() {
         val jyutpingHintSwitch = addSwitch(root, "顯示粵拼（粵語注音）", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setJyutpingHint(this@SettingsActivity, v) }
         }
+        root.addView(label("粵語注音格式"))
+        val notationGroup = RadioGroup(this).apply { orientation = RadioGroup.VERTICAL }
+        var applyingNotationHydration = false
+        val notationButtons = CantoneseNotation.entries.associateWith { notation ->
+            RadioButton(this).apply {
+                id = android.view.View.generateViewId()
+                text = CantoneseNotationPreference.label(notation)
+                notationGroup.addView(this)
+            }
+        }
+        notationGroup.setOnCheckedChangeListener { _, checkedId ->
+            if (applyingNotationHydration) return@setOnCheckedChangeListener
+            val notation = notationButtons.entries.firstOrNull { it.value.id == checkedId }?.key
+                ?: return@setOnCheckedChangeListener
+            lifecycleScope.launch {
+                KeyboardSettings.setCantoneseNotation(this@SettingsActivity, notation)
+            }
+        }
+        root.addView(notationGroup)
+
         val pinyinHintSwitch = addSwitch(root, "顯示拼音（普通話注音）", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setPinyinHint(this@SettingsActivity, v) }
         }
@@ -183,6 +204,12 @@ class SettingsActivity : AppCompatActivity() {
             simpSwitch.isChecked  = prefs.simplifiedOutput
             jyutpingHintSwitch.isChecked = prefs.jyutpingHint
             pinyinHintSwitch.isChecked = prefs.pinyinHint
+            applyingNotationHydration = true
+            try {
+                notationButtons[prefs.cantoneseNotation]?.isChecked = true
+            } finally {
+                applyingNotationHydration = false
+            }
             applyingDirectHydration = true
             try {
                 directButtons[prefs.directInput]?.isChecked = true

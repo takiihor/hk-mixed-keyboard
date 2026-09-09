@@ -2,12 +2,26 @@ package com.hkmixedkeyboard.ui
 
 import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.DecodeCandidate
+import com.hkmixedkeyboard.decoder.PinyinDiacritics
 import com.hkmixedkeyboard.decoder.ReadingLookup
+import com.hkmixedkeyboard.decoder.YaleRomanization
+
+/**
+ * How the Cantonese reading is spelled.
+ *
+ * Jyutping is the standard this app's data is built on, but Hong Kong schools
+ * teach no Cantonese romanisation, so its `j`, `c`, `oe` and `eo` read wrong to
+ * someone with English or Pinyin instincts. Yale spells the same phonology
+ * closer to that intuition and marks tone with accents, so a learner can pick
+ * whichever they can actually read.
+ */
+enum class CantoneseNotation { JYUTPING, YALE }
 
 /** Which romanizations the learner asked to see above the candidate strip. */
 data class ReadingHints(
     val jyutping: Boolean = false,
-    val pinyin: Boolean = false
+    val pinyin: Boolean = false,
+    val cantonese: CantoneseNotation = CantoneseNotation.JYUTPING
 ) {
     val any: Boolean get() = jyutping || pinyin
 
@@ -44,19 +58,38 @@ class ReadingHintPolicy(
         if (candidate.type == CandidateType.EN_LITERAL) return null
         val readings = buildList {
             if (hints.jyutping) {
-                jyutping.readingFor(candidate.text)?.let { add("$JYUTPING_MARK $it") }
+                jyutping.readingFor(candidate.text)
+                    ?.let { spellCantonese(it, hints.cantonese) }
+                    ?.let { add("${cantoneseMark(hints.cantonese)} $it") }
             }
             if (hints.pinyin) {
-                pinyin.readingFor(candidate.text)?.let { add("$PINYIN_MARK $it") }
+                // Stored numbered; shown with the diacritics schools teach.
+                pinyin.readingFor(candidate.text)
+                    ?.let { PinyinDiacritics.format(it) }
+                    ?.let { add("$PINYIN_MARK $it") }
             }
         }
         if (readings.isEmpty()) return null
         return (listOf(candidate.text) + readings).joinToString(SEPARATOR)
     }
 
+    private fun spellCantonese(jyutping: String, notation: CantoneseNotation): String? =
+        when (notation) {
+            CantoneseNotation.JYUTPING -> jyutping
+            // A reading Yale cannot spell shows nothing rather than a Jyutping
+            // form mislabelled as Yale.
+            CantoneseNotation.YALE -> YaleRomanization.fromJyutping(jyutping)
+        }
+
+    private fun cantoneseMark(notation: CantoneseNotation): String = when (notation) {
+        CantoneseNotation.JYUTPING -> JYUTPING_MARK
+        CantoneseNotation.YALE -> YALE_MARK
+    }
+
     private companion object {
         const val SEPARATOR = " · "
         const val JYUTPING_MARK = "粵"
+        const val YALE_MARK = "耶"
         const val PINYIN_MARK = "拼"
     }
 }

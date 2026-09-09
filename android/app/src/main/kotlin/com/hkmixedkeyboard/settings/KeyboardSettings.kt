@@ -11,6 +11,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.hkmixedkeyboard.decoder.Scheme
+import com.hkmixedkeyboard.ui.CantoneseNotation
 
 // Restore the DataStore extension property that was accidentally removed
 val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(name = "hk_keyboard_settings")
@@ -37,6 +38,8 @@ object Keys {
     // above the candidate strip. Display only — neither affects decoding.
     val JYUTPING_HINT = booleanPreferencesKey("jyutping_hint")
     val PINYIN_HINT = booleanPreferencesKey("pinyin_hint")
+    // How the Cantonese hint is spelled: 粵拼 (Jyutping) or 耶魯 (Yale).
+    val CANTONESE_NOTATION = stringPreferencesKey("cantonese_notation")
 }
 
 /**
@@ -79,7 +82,10 @@ data class KeyboardPrefs(
     // and it is the behaviour the preview shipped with. 拼音 is additive, so it
     // stays opt-in rather than making everyone's candidate strip taller.
     val jyutpingHint: Boolean = true,
-    val pinyinHint: Boolean = false
+    val pinyinHint: Boolean = false,
+    // Jyutping by default: it is the standard the app's Cantonese data is built
+    // on, and the one a learner ends up sharing with dictionaries.
+    val cantoneseNotation: CantoneseNotation = CantoneseNotation.JYUTPING
 )
 
 object KeyboardSettings {
@@ -99,7 +105,8 @@ object KeyboardSettings {
                 theme = KeyboardThemePreference.resolve(p[Keys.KEYBOARD_THEME]),
                 directInput = DirectInputPreference.resolve(p[Keys.DIRECT_INPUT]),
                 jyutpingHint = p[Keys.JYUTPING_HINT] ?: true,
-                pinyinHint = p[Keys.PINYIN_HINT] ?: false
+                pinyinHint = p[Keys.PINYIN_HINT] ?: false,
+                cantoneseNotation = CantoneseNotationPreference.resolve(p[Keys.CANTONESE_NOTATION])
             )
         }
 
@@ -132,6 +139,11 @@ object KeyboardSettings {
     suspend fun setPinyinHint(ctx: Context, v: Boolean) =
         ctx.settingsDataStore.edit { it[Keys.PINYIN_HINT] = v }
 
+    suspend fun setCantoneseNotation(ctx: Context, notation: CantoneseNotation) =
+        ctx.settingsDataStore.edit {
+            it[Keys.CANTONESE_NOTATION] = CantoneseNotationPreference.serialize(notation)
+        }
+
     suspend fun setDirectInput(ctx: Context, mode: DirectInputMode) =
         ctx.settingsDataStore.edit { it[Keys.DIRECT_INPUT] = DirectInputPreference.serialize(mode) }
 
@@ -146,6 +158,22 @@ object KeyboardSettings {
 
     suspend fun bumpCustomWordsToken(ctx: Context) =
         ctx.settingsDataStore.edit { it[Keys.CUSTOM_WORDS_TOKEN] = (it[Keys.CUSTOM_WORDS_TOKEN] ?: 0L) + 1 }
+}
+
+/** Pure policy for parsing the persisted Cantonese notation. */
+object CantoneseNotationPreference {
+    fun resolve(stored: String?): CantoneseNotation =
+        if (stored == "yale") CantoneseNotation.YALE else CantoneseNotation.JYUTPING
+
+    fun serialize(notation: CantoneseNotation): String = when (notation) {
+        CantoneseNotation.YALE -> "yale"
+        CantoneseNotation.JYUTPING -> "jyutping"
+    }
+
+    fun label(notation: CantoneseNotation): String = when (notation) {
+        CantoneseNotation.JYUTPING -> "粵拼（標準，詞典通用）"
+        CantoneseNotation.YALE -> "耶魯拼音（較易讀）"
+    }
 }
 
 /** Pure policy for parsing the persisted direct-input mode. */

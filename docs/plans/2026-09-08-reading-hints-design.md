@@ -22,8 +22,30 @@ above them, following the leading ranked candidate:
 香港 · 粵 hoeng1 gong2 · 拼 xiang1 gang3
 ```
 
-Each romanization is labelled (`粵` / `拼`) so the two are never confused, and so
-a single enabled hint still says which system it is teaching. Tapping a candidate
+Each romanization is labelled (`粵` / `耶` / `拼`) so they are never confused, and
+so a single enabled hint still says which system it is teaching.
+
+## Notation (added 2026-09-09)
+
+Hong Kong schools teach no Cantonese romanisation, so Jyutping's letter values
+read wrong to someone with English or Pinyin instincts — `j` is a *y* sound, `c`
+is *ts*, `oe`/`eo` are a vowel English does not write. A **粵語注音格式** choice
+under the 粵拼 switch offers:
+
+- **粵拼（標準，詞典通用）** — default. The LSHK standard the corpus is built on,
+  and what dictionaries use; tone digits are its official form.
+- **耶魯拼音（較易讀）** — Yale. Spellings closer to English intuition and tone by
+  accent, as adult Cantonese courses teach it.
+
+Yale is *derived* from Jyutping at display time (`YaleRomanization`), so it needs
+no second corpus: both transcribe the same phonology. A reading Yale cannot spell
+shows nothing rather than a Jyutping form mislabelled as Yale.
+
+Pinyin is likewise stored numbered but **shown with diacritics**
+(`PinyinDiacritics`): schools teach `xiāng gǎng`, not `xiang1 gang3`, and neutral
+tone unmarked — 912 bundled readings carried a tone `5` that does not exist in
+taught Pinyin. The asymmetry is deliberate: Jyutping has no official diacritic
+form, so it correctly stays numeric. Tapping a candidate
 briefly confirms the reading of the word actually committed, then the ordinary
 next-character predictions continue underneath.
 
