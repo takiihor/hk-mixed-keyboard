@@ -49,6 +49,31 @@ class CorpusLoader(private val ctx: Context) {
     }
     val mixedPhrases: List<MixedPhraseEntry> by lazy { loadMixedPhrases() }
     val whitelist: List<WhitelistEntry> by lazy { loadWhitelist() }
+    private val hkscsSupplement: List<HkscsSupplement.Entry> by lazy {
+        HkscsSupplement.parse(parseCsv("corpus/hkscs_supplement.csv") { it })
+    }
+    /**
+     * Official HKSCS records without an input mapping remain selectable through a
+     * technical Unicode escape (e.g. `u200cd`). These candidates are intentionally
+     * tap-only and are not presented as official Quick or Jyutping codes.
+     */
+    val hkscsUnicodeFallbackIndex: Map<String, DecodeCandidate> by lazy {
+        val routedByCorpus = HashSet<String>(chars.size + jyutping.size)
+        chars.forEach { routedByCorpus.add(it.char) }
+        jyutping.forEach { routedByCorpus.add(it.chinese) }
+        hkscsSupplement.mapNotNull { entry ->
+            entry.unicodeFallbackCode?.takeIf { entry.text !in routedByCorpus }?.let { code ->
+                code to DecodeCandidate(
+                    entry.text,
+                    code,
+                    SourceSchema.HKSCS_UNICODE,
+                    CandidateType.CHAR,
+                    0.0,
+                    false
+                )
+            }
+        }.toMap()
+    }
     val englishAssist: List<EnglishAssistEntry> by lazy {
         cached("english_assist",
             read = { EnglishAssistEntry(it.readUTF(), it.readUTF(), it.readDouble()) },
@@ -56,7 +81,7 @@ class CorpusLoader(private val ctx: Context) {
             parse = ::loadEnglishAssist)
     }
     val englishCompletionIndex: EnglishCompletionIndex by lazy {
-        EnglishCompletionIndex(englishAssist)
+        EnglishCompletionIndex(englishAssist, com.hkmixedkeyboard.engine.EnglishLexicon.LOCAL_TOKENS)
     }
     val jyutping: List<JyutpingEntry> by lazy {
         cached("jyutping",
@@ -89,12 +114,48 @@ class CorpusLoader(private val ctx: Context) {
     val quickPrefixCandidateIndex: QuickPrefixCandidateIndex by lazy {
         QuickPrefixCandidateIndex(quickIndex)
     }
+    // Toned readings for the learning hints. Separate from the input dictionaries,
+    // which are deliberately toneless and so cannot teach pronunciation. Either
+    // asset failing to load degrades to "no hint" and never affects decoding.
+    val jyutpingReadingLookup: ReadingLookup by lazy { readingLookup("jyutping_readings.csv") }
+    val pinyinReadingLookup: ReadingLookup by lazy { readingLookup("pinyin_readings.csv") }
+
+    private fun readingLookup(assetName: String): ReadingLookup = runCatching {
+        ctx.assets.open("corpus/$assetName").bufferedReader().use { ReadingLookup.from(it) }
+    }.getOrElse {
+        android.util.Log.e("CorpusLoader", "Failed to load learning readings: $assetName", it)
+        ReadingLookup.empty()
+    }
 
     // ── English meaning assist indices ─────────────────────────────────────
 
     val englishAssistIndex: Map<String, List<DecodeCandidate>> by lazy { buildEnglishAssistIndex() }
     val englishAssistPrefixIndex: SortedPrefixIndex by lazy {
         SortedPrefixIndex(englishAssistIndex.keys)
+    }
+
+    /**
+     * The other half of 中英互相建議: Chinese text -> the English words that gloss
+     * it, so a committed 討論 can offer "discuss". Inverted from the assist rows
+     * already parsed and cached for the English -> Chinese direction, so it costs
+     * one more grouping rather than another asset.
+     *
+     * Single characters are excluded: they carry many weak glosses (我 -> I, me,
+     * my …) that would crowd the prediction bar without helping anyone.
+     */
+    val englishByChinese: Map<String, List<DecodeCandidate>> by lazy {
+        englishAssist.asSequence()
+            .filter { it.chinese.length >= MIN_REVERSE_GLOSS_LENGTH }
+            .groupBy { it.chinese }
+            .mapValues { (chinese, entries) ->
+                entries.sortedByDescending { it.freq }
+                    .distinctBy { it.english }
+                    .take(MAX_REVERSE_GLOSSES)
+                    .map {
+                        DecodeCandidate(it.english, chinese, SourceSchema.ENGLISH,
+                            CandidateType.EN_LITERAL, it.freq, false)
+                    }
+            }
     }
 
     // ── Jyutping romanization indices ──────────────────────────────────────
@@ -126,8 +187,8 @@ class CorpusLoader(private val ctx: Context) {
     // frequency of the phrase they came from.
 
     val nextCharIndex: Map<String, List<DecodeCandidate>> by lazy {
-        // prefix -> (nextChar -> best phrase frequency)
-        val acc = HashMap<String, HashMap<String, Double>>()
+        // prefix -> (nextChar -> accumulated support)
+        val acc = HashMap<String, HashMap<String, Support>>()
         for (p in phrases) {
             val s = p.phrase
             val n = s.length
@@ -136,18 +197,63 @@ class CorpusLoader(private val ctx: Context) {
             val maxPrefix = minOf(3, n - 1)
             for (i in 1..maxPrefix) {
                 val prefix = s.substring(0, i)
-                val next = s.substring(i, i + 1)
                 val m = acc.getOrPut(prefix) { HashMap() }
-                if (p.freq > (m[next] ?: 0.0)) m[next] = p.freq
+                // The next character, and — when more of the word remains — the
+                // whole remainder, so one tap can finish 香 → 港島 instead of
+                // spelling it out a character at a time.
+                for (end in intArrayOf(i + 1, n)) {
+                    val continuation = s.substring(i, end)
+                    val support = m.getOrPut(continuation) { Support() }
+                    support.best = maxOf(support.best, p.freq)
+                    support.total += p.freq
+                    support.isHkCore = support.isHkCore || p.isHkCore
+                }
             }
         }
         acc.mapValues { (_, nexts) ->
-            nexts.entries.sortedByDescending { it.value }
-                .take(20)
-                .map { (ch, f) ->
-                    DecodeCandidate(ch, "", SourceSchema.QUICK, CandidateType.CHAR, f, false)
+            nexts.entries
+                .sortedWith(
+                    compareByDescending<Map.Entry<String, Support>> { if (it.value.isHkCore) 1 else 0 }
+                        // Single characters keep the head of the list: they are the
+                        // finer-grained choice, and word completions are an
+                        // additional offer rather than a replacement.
+                        .thenByDescending { if (it.key.length == 1) 1 else 0 }
+                        .thenByDescending { it.value.score }
+                )
+                .take(NEXT_CHAR_FANOUT)
+                .map { (continuation, support) ->
+                    DecodeCandidate(
+                        continuation, "", SourceSchema.QUICK,
+                        if (continuation.length == 1) CandidateType.CHAR else CandidateType.PHRASE,
+                        support.score, support.isHkCore
+                    )
                 }
         }
+    }
+
+    /**
+     * How strongly the corpus backs one continuation.
+     *
+     * Ranking by the single best phrase alone let a continuation attested by one
+     * frequent phrase outrank one attested by twenty moderately common ones,
+     * which is the wrong way round for a next-character guess. Score keeps that
+     * peak as the base and adds a bounded bonus for breadth, so a well-attested
+     * continuation rises without a single very common word being displaced by a
+     * crowd of rare ones.
+     *
+     * Breadth alone would quietly de-Cantonese the keyboard, though: 哋 sits in
+     * one high-frequency hk_core row while 們 spans dozens of ordinary ones, so
+     * 我哋 and 你哋 would lose their slot to 我們 and 你們. Every other index sorts
+     * hk_core first and this one never did — so it does now, and breadth only
+     * orders continuations within the same class.
+     */
+    private class Support {
+        var best: Double = 0.0
+        var total: Double = 0.0
+        var isHkCore: Boolean = false
+
+        val score: Double
+            get() = best + BREADTH_WEIGHT * (total - best)
     }
 
     // ── Whitelist helpers ──────────────────────────────────────────────────
@@ -161,11 +267,27 @@ class CorpusLoader(private val ctx: Context) {
 
     // ── Loaders ────────────────────────────────────────────────────────────
 
-    private fun loadChars(): List<CharEntry> = parseCsv("corpus/hk_core_chars.csv") { cols ->
-        if (cols.size < 5) null
-        else CharEntry(cols[0], cols[1], cols[2], cols[3].toDoubleOrNull() ?: 0.0,
-            cols[4].trim() == "1")
-    }
+    private fun loadChars(): List<CharEntry> =
+        parseCsv("corpus/hk_core_chars.csv") { cols ->
+            if (cols.size < 5) null
+            else CharEntry(cols[0], cols[1], cols[2], cols[3].toDoubleOrNull() ?: 0.0,
+                cols[4].trim() == "1")
+        } + loadHkscsSupplementChars()
+
+    // Official HKSCS-2016 characters missing from the Quick corpus, added at
+    // frequency 0 so they are reachable/selectable without ever outranking a
+    // common candidate that shares the same Quick code. Fields:
+    // chinese, code_point, quick_code, jyutping.
+    private fun loadHkscsSupplementChars(): List<CharEntry> =
+        hkscsSupplement.asSequence()
+            .filter { it.quickCode.isNotBlank() }
+            .map { CharEntry(it.text, it.quickCode, "", 0.0, false) }
+            .toList()
+
+    private fun loadHkscsSupplementJyutping(): List<JyutpingEntry> =
+        hkscsSupplement.flatMap { entry ->
+            entry.jyutping.map { JyutpingEntry(it, entry.text, 0.0) }
+        }
 
     private fun loadPhrases(): List<PhraseEntry> = parseCsv("corpus/hk_core_phrases.csv") { cols ->
         if (cols.size < 4) null
@@ -184,19 +306,31 @@ class CorpusLoader(private val ctx: Context) {
         else WhitelistEntry(cols[0], if (cols.size > 1) cols[1] else "")
     }
 
-    private fun loadEnglishAssist(): List<EnglishAssistEntry> =
-        parseCsv("corpus/english_assist.csv") { cols ->
+    private fun loadEnglishAssist(): List<EnglishAssistEntry> {
+        fun load(path: String) = parseCsv(path) { cols ->
             if (cols.size < 3) null
             else EnglishAssistEntry(cols[0].lowercase(), cols[1],
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
+        // Reviewed Hong Kong renderings (巴士/的士/雪櫃…) are layered after the raw
+        // CC-CEDICT gloss so their higher frequency ranks them first per key. Unlike
+        // the Jyutping layer these only promote, so a plain append is enough.
+        return load("corpus/english_assist.csv") + load("corpus/english_assist_overrides.csv")
+    }
 
-    private fun loadJyutping(): List<JyutpingEntry> =
-        parseCsv("corpus/jyutping.csv") { cols ->
+    // The source snapshot stays untouched on disk; the reviewed layer is merged over
+    // it at load time (see JyutpingOverrides).
+    private fun loadJyutping(): List<JyutpingEntry> {
+        fun load(path: String) = parseCsv(path) { cols ->
             if (cols.size < 3) null
             else JyutpingEntry(cols[0].lowercase(), cols[1],
                 cols[2].toDoubleOrNull() ?: 0.0)
         }
+        return JyutpingOverrides.merge(
+            load("corpus/jyutping.csv"),
+            load("corpus/jyutping_overrides.csv")
+        ) + loadHkscsSupplementJyutping()
+    }
 
     private fun loadPinyin(): List<PinyinEntry> =
         parseCsv("corpus/pinyin.csv") { cols ->
@@ -303,6 +437,15 @@ class CorpusLoader(private val ctx: Context) {
         (CORPUS_CONTENT_VERSION shl 24) or (BuildConfig.BUILD_NUMBER and 0x00FFFFFF)
 
     private companion object {
-        const val CORPUS_CONTENT_VERSION = 4
+        const val CORPUS_CONTENT_VERSION = 8
+        // Weight on the supporting phrases beyond the strongest one. Small, so
+        // breadth breaks ties and lifts well-attested continuations rather than
+        // letting a crowd of rare words outrank a genuinely common one.
+        const val BREADTH_WEIGHT = 0.15
+        // Continuations kept per prefix. Raised with word completions so they do
+        // not crowd out the single characters they sit beside.
+        const val NEXT_CHAR_FANOUT = 30
+        const val MIN_REVERSE_GLOSS_LENGTH = 2
+        const val MAX_REVERSE_GLOSSES = 3
     }
 }

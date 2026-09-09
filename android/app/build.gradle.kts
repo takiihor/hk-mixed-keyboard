@@ -84,6 +84,7 @@ val appVersionName = "0.$versionMinor.0"
         targetSdk = 36
         versionCode = buildNumber
         versionName = appVersionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
           buildConfigField("int", "BUILD_NUMBER", "$buildNumber")
           buildConfigField("String", "BUILD_TIME", "\"$buildTime\"")
@@ -92,6 +93,10 @@ val appVersionName = "0.$versionMinor.0"
           buildConfigField("boolean", "PERF_TRACING", "false")
           // Optional: enable decode coalescing (cancels older pending decodes). Off by default.
           buildConfigField("boolean", "DECODE_COALESCE", "false")
+          // Per-keystroke latency logging (HkIme.Latency). Deliberately separate
+          // from SHOW_DEBUG_PANEL: measuring typing latency must not also draw a
+          // debug panel, which would change what is on screen while measuring.
+          buildConfigField("boolean", "LATENCY_LOGGING", "false")
 
           // Haptic tuning defaults (overridden in debug below)
           buildConfigField("float", "HAPTIC_INTENSITY", "1.0f") // 0.1–1.0 scale → maps to 26–255 amplitude
@@ -123,6 +128,7 @@ val appVersionName = "0.$versionMinor.0"
           // Enable perf tracing in debug builds by default.
           buildConfigField("boolean", "PERF_TRACING", "true")
           buildConfigField("boolean", "DECODE_COALESCE", "false")
+          buildConfigField("boolean", "LATENCY_LOGGING", "true")
 
           // Stronger, crisp haptics for debug without lengthening (avoid overlap)
           buildConfigField("float", "HAPTIC_INTENSITY", "1.0f")
@@ -136,6 +142,7 @@ val appVersionName = "0.$versionMinor.0"
           buildConfigField("boolean", "SHOW_DEBUG_PANEL", "false")
           buildConfigField("boolean", "PERF_TRACING", "false")
           buildConfigField("boolean", "DECODE_COALESCE", "false")
+          buildConfigField("boolean", "LATENCY_LOGGING", "false")
           if (hasReleaseSigning) {
             signingConfig = signingConfigs.getByName("release")
           }
@@ -189,4 +196,8 @@ dependencies {
     kapt(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

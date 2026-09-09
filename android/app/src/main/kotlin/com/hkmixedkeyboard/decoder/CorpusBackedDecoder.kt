@@ -36,7 +36,22 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
     override fun decode(buffer: String, scheme: Scheme): DecodeResult {
         if (scheme == Scheme.MIXED_EXPERIMENTAL) return empty(buffer, scheme)
 
-        if (scheme == Scheme.PINYIN) return corpus.pinyinDecoder.decode(buffer)
+        // Technical, tap-only route for official HKSCS records that carry no
+        // Cangjie or Cantonese mapping. Offered in every scheme, and never marked
+        // exact, so Space/punctuation keep committing the literal buffer.
+        if (HkscsSupplement.isUnicodeFallbackInput(buffer)) {
+            corpus.hkscsUnicodeFallbackIndex[buffer.lowercase()]?.let { fallback ->
+                return DecodeResult(buffer, scheme, buffer.length, false, false, listOf(fallback))
+            }
+        }
+
+        if (scheme == Scheme.PINYIN) {
+            val pinyin = corpus.pinyinDecoder.decode(buffer)
+            // Only when Pinyin itself has nothing: a fallback, never a competitor
+            // for the Mandarin candidates the user is actually typing.
+            if (pinyin.candidates.isNotEmpty()) return pinyin
+            return assistFallback(buffer, scheme) ?: pinyin
+        }
 
         // JYUTPING primary mode: treat Latin buffer as Jyutping and surface
         // characters directly as committable (cnExactParsed=true) so Space commits.
@@ -60,7 +75,9 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
             // Multi-syllable segmentation: continuous romanization that is neither a
             // single syllable nor a dictionary phrase key (e.g. "neihou" → 你好).
             composeSegmentedPhrase(lower)?.let { return it }
-            return empty(buffer, scheme)
+            // Nothing Cantonese matched, so English meaning can no longer crowd
+            // anything out — the alternative here is an empty bar.
+            return assistFallback(buffer, scheme) ?: empty(buffer, scheme)
         }
 
         // 1. Direct CJK input
@@ -74,8 +91,11 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         val customExact = customWords.exact(lower)
         val quickExact = corpus.quickIndex[lower]
         if (customExact.isNotEmpty() || quickExact != null) {
+            // "ok", "no" and "go" are real Quick codes as well as code-switching
+            // triggers. Returning here without the mixed phrases would make them
+            // the three triggers the feature could never fire for.
             return DecodeResult(buffer, scheme, buffer.length, true, false,
-                customExact + quickExact.orEmpty())
+                customExact + quickExact.orEmpty() + mixedPhrases(lower))
         }
 
         // 3. Prefix match — custom words first, then Quick prefixes.
@@ -95,7 +115,10 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
             val remainingAssist = assistCands.filterNot {
                 it.sourceSchema == SourceSchema.ENGLISH_ASSIST && it.code == lower
             }
-            val cands = (exactAssist + customPrefix + quickPrefix + remainingAssist)
+            // Code-switching phrases stay with the exact meaning rather than
+            // trailing a dozen incomplete Quick choices.
+            val cands = (exactAssist + mixedPhrases(lower) + customPrefix +
+                quickPrefix + remainingAssist)
                 .distinctBy { it.text }
             return DecodeResult(buffer, scheme, buffer.length, false, false, cands)
         }
@@ -128,6 +151,7 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         // typist didn't intend.
         val englishExact = mutableListOf<DecodeCandidate>()
         val englishPrefix = mutableListOf<DecodeCandidate>()
+        val mixed = mixedPhrases(lower)
         val jyutpingExact = mutableListOf<DecodeCandidate>()
         val jyutpingPrefix = mutableListOf<DecodeCandidate>()
 
@@ -154,13 +178,16 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
                 .flatMapTo(jyutpingPrefix) { corpus.jyutpingIndex[it].orEmpty() }
         }
 
-        val hasExact = englishExact.isNotEmpty() || jyutpingExact.isNotEmpty()
+        val hasExact = englishExact.isNotEmpty() || jyutpingExact.isNotEmpty() || mixed.isNotEmpty()
         if (!hasExact && englishPrefix.isEmpty() && jyutpingPrefix.isEmpty())
             return Pair(emptyList(), false)
 
-        // English (exact → prefix) then Jyutping (exact → prefix); frequency orders
-        // within each group. distinctBy keeps the first, highest-priority copy.
+        // English meaning (exact) then the code-switching phrases for that exact
+        // word, then the weaker prefix and Jyutping signals. "send" therefore
+        // offers send → 傳送, then send返 / send咗未, before discussion-style
+        // completions of longer words that merely start with it.
         val deduped = (englishExact.sortedByDescending { it.frequency } +
+            mixed +
             englishPrefix.sortedByDescending { it.frequency } +
             jyutpingExact.sortedByDescending { it.frequency } +
             jyutpingPrefix.sortedByDescending { it.frequency })
@@ -207,6 +234,32 @@ class CorpusBackedDecoder(private val corpus: CorpusLoader) : DecoderContract {
         // surfaces as the top candidate in the bar (one tap to commit).
         return DecodeResult(lower, Scheme.JYUTPING, lower.length, true, false, candidates)
     }
+
+    /**
+     * English-meaning and code-switching candidates for a romanization scheme
+     * whose own dictionary produced nothing. 粵拼 and 拼音 returned before ever
+     * reaching the assist path, so a romanization typist got the raw Latin
+     * literal and nothing else — the feature was absent from two of three modes
+     * rather than deprioritised within them.
+     */
+    private fun assistFallback(buffer: String, scheme: Scheme): DecodeResult? {
+        val lower = buffer.lowercase()
+        val candidates = AssistFallbackPolicy.merge(
+            corpus.englishAssistIndex[lower].orEmpty(),
+            mixedPhrases(lower)
+        )
+        if (candidates.isEmpty()) return null
+        // Never exact: Space keeps committing the literal buffer.
+        return DecodeResult(buffer, scheme, buffer.length, false, false, candidates)
+    }
+
+    /**
+     * Hong Kong code-switching completions for an exact English trigger
+     * ("send" → send返, send個file). Tap-only, like every other assist source:
+     * Space always commits the literal buffer.
+     */
+    private fun mixedPhrases(lower: String): List<DecodeCandidate> =
+        corpus.mixedIndex[lower].orEmpty()
 
     private fun decodeCjkDirect(buffer: String, scheme: Scheme): DecodeResult {
         if (buffer.length == 1) {

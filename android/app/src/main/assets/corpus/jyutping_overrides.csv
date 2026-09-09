@@ -1,0 +1,44 @@
+# Reviewed Hong Kong Cantonese ranking overrides.
+# The source snapshot remains unchanged in jyutping.csv; a row here REPLACES the
+# snapshot row for the same (jyutping, chinese) pair, so it can promote or demote.
+# Multi-syllable keys are exact-lookup phrases, so they also bypass the toneless
+# continuous-segmentation errors the audit found (e.g. sikfaan -> 式飯).
+#
+# Demotions keep the candidate selectable — the entry is never removed, and the
+# frequency stays high enough to remain inside the candidates the decoder shows.
+jyutping,chinese,freq,reason
+hai,係,2.11,highest-frequency Cantonese copula (我係香港人); must lead
+hai,喺,2.10,common Cantonese locative (喺屋企)
+hai,閪,0.2100,demoted below the common readings; remains selectable
+hai,屄,0.2095,demoted below the common readings; remains selectable
+mhai,唔係,2.31,high-frequency negated copula; direct phrase fixes mhai -> 唔喺
+haimai,係咪,2.31,high-frequency yes-no question; direct phrase fixes haimai -> 喺米
+sik,食,2.09,common Cantonese verb
+mou,冇,2.08,common Cantonese negation
+zo,咗,2.07,common Cantonese perfective particle
+dei,哋,2.06,common Cantonese plural suffix
+keoi,佢,2.11,common Cantonese third-person pronoun
+gam,咁,2.11,common Cantonese degree adverb
+ge,嘅,2.05,common Cantonese possessive/nominalizer particle
+je,嘢,2.05,common Cantonese noun thing
+di,啲,2.05,common Cantonese plural/quantity particle
+me,咩,2.04,common Cantonese question particle
+ngodei,我哋,2.20,high-frequency direct phrase
+keoidei,佢哋,2.19,high-frequency direct phrase
+haibin,喺邊,2.18,high-frequency direct phrase
+haido,喺度,2.17,high-frequency direct phrase
+moumantai,冇問題,2.16,high-frequency direct phrase
+neihou,你好,2.30,high-frequency greeting; direct phrase avoids synthesis
+mgoi,唔該,2.29,high-frequency politeness; direct phrase
+dimgaai,點解,2.28,high-frequency why; direct phrase
+sikfaan,食飯,2.27,direct phrase; fixes sikfaan -> 式飯 synthesis error
+taihei,睇戲,2.26,high-frequency watch-a-film; direct phrase
+msai,唔使,2.25,high-frequency no-need; direct phrase
+jigaa,而家,2.24,high-frequency now; direct phrase
+kamjat,琴日,2.23,high-frequency yesterday; direct phrase
+tingjat,聽日,2.22,direct phrase; fixes tingjat -> 聽一 synthesis error
+gamjat,今日,2.21,high-frequency today; direct phrase
+doze,多謝,2.15,high-frequency thanks; direct phrase
+deoimzyu,對唔住,2.14,high-frequency apology; direct phrase
+dakhaan,得閒,2.13,high-frequency free-time; direct phrase
+zungji,鍾意,2.12,high-frequency to-like; direct phrase

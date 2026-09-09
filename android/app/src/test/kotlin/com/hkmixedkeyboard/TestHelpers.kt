@@ -23,28 +23,23 @@ fun clearChinese(buffer: String, cnText: String, code: String = buffer, isHkCore
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = true, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = listOf(cnChar(cnText, code, isHkCore)),
-        enLiteral = buffer, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+        cnCandidates = listOf(cnChar(cnText, code, isHkCore))
     )
 
 /** Buffer where EN is a known word and CN has no match. */
-fun clearEnglish(buffer: String, autocomplete: String? = null, enStrong: Boolean = false) =
+fun clearEnglish(buffer: String) =
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = false, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = emptyList(),
-        enLiteral = buffer, enAutocomplete = autocomplete,
-        enIsWord = true, enStrongPrefix = enStrong
+        cnCandidates = emptyList()
     )
 
 /** Buffer with both CN exact match and EN word recognition (collision). */
-fun collision(buffer: String, cnText: String, isHkCore: Boolean, enIsWord: Boolean = true) =
+fun collision(buffer: String, cnText: String, isHkCore: Boolean) =
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = true, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = listOf(cnChar(cnText, buffer, isHkCore)),
-        enLiteral = buffer, enAutocomplete = null,
-        enIsWord = enIsWord, enStrongPrefix = false
+        cnCandidates = listOf(cnChar(cnText, buffer, isHkCore))
     )
 
 /** No CN match, no EN word — pure unknown buffer. */
@@ -52,8 +47,7 @@ fun unknown(buffer: String) =
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = false, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = emptyList(),
-        enLiteral = buffer, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+        cnCandidates = emptyList()
     )
 
 /**
@@ -65,8 +59,7 @@ fun assistCandidates(buffer: String, candidates: List<DecodeCandidate>) =
     ClassifyResult(
         buffer = buffer,
         cnExactParsed = false, cnHasPhraseMatch = false, cnPrefixParsed = false,
-        cnCandidates = candidates,
-        enLiteral = buffer, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+        cnCandidates = candidates
     )
 
 // ── Controller factory ────────────────────────────────────────────────────
@@ -152,6 +145,28 @@ fun readEnglishAssist(csvPath: String): List<Triple<String, String, Double>> {
     return result
 }
 
+/** Reads mixed_phrases.csv. Returns list of (triggerEn, phrase, freq). */
+fun readMixedPhrases(csvPath: String): List<Triple<String, String, Double>> {
+    val f = java.io.File(csvPath)
+    if (!f.exists()) return emptyList()
+    val result = mutableListOf<Triple<String, String, Double>>()
+    var headerSkipped = false
+    f.forEachLine { line ->
+        val t = line.trim()
+        if (t.startsWith("#") || t.isBlank()) return@forEachLine
+        if (!headerSkipped) { headerSkipped = true; return@forEachLine }
+        val cols = t.split(",")
+        if (cols.size >= 3) {
+            val trigger = cols[0].trim().lowercase()
+            val phrase  = cols[1].trim()
+            val freq    = cols[2].trim().toDoubleOrNull() ?: 0.0
+            if (trigger.isNotEmpty() && phrase.isNotEmpty())
+                result.add(Triple(trigger, phrase, freq))
+        }
+    }
+    return result
+}
+
 /** Reads jyutping.csv. Returns list of (jyutping, chinese, freq). */
 fun readJyutping(csvPath: String): List<Triple<String, String, Double>> {
     val f = java.io.File(csvPath)
@@ -208,8 +223,10 @@ fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
         for (k in quickIndex.keys) for (i in 1..k.length) add(k.substring(0, i))
     }
 
-    // English assist
-    val enAssistRaw = readEnglishAssist("$corpusDir/english_assist.csv")
+    // English assist (base gloss + reviewed Hong Kong overrides, mirroring
+    // CorpusLoader.loadEnglishAssist so HK renderings rank first by frequency).
+    val enAssistRaw = readEnglishAssist("$corpusDir/english_assist.csv") +
+        readEnglishAssist("$corpusDir/english_assist_overrides.csv")
     val englishAssistIndex: Map<String, List<DecodeCandidate>> = enAssistRaw
         .groupBy { it.first }
         .mapValues { (eng, entries) ->
@@ -223,6 +240,18 @@ fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
     val englishAssistPrefixSet: Set<String> = buildSet {
         for (k in englishAssistIndex.keys) for (i in 1..k.length) add(k.substring(0, i))
     }
+
+    // Mixed Chinese-English code-switching phrases (send → send返).
+    val mixedIndex: Map<String, List<DecodeCandidate>> =
+        readMixedPhrases("$corpusDir/mixed_phrases.csv")
+            .groupBy { it.first }
+            .mapValues { (trigger, entries) ->
+                entries.sortedByDescending { it.third }
+                    .map { (_, phrase, freq) ->
+                        DecodeCandidate(phrase, trigger, SourceSchema.MIXED_PHRASE,
+                            CandidateType.MIXED_PHRASE, freq, false)
+                    }
+            }
 
     // Jyutping
     val jpRaw = readJyutping("$corpusDir/jyutping.csv")
@@ -247,9 +276,11 @@ fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
         override fun decode(buffer: String, scheme: Scheme): DecodeResult {
             val lower = buffer.lowercase()
 
+            val mixed = mixedIndex[lower].orEmpty()
+
             // Quick exact
             quickIndex[lower]?.let {
-                return DecodeResult(buffer, scheme, buffer.length, true, false, it)
+                return DecodeResult(buffer, scheme, buffer.length, true, false, it + mixed)
             }
 
             // English meaning (4) before Jyutping fallback (5); within each source
@@ -275,8 +306,10 @@ fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
                     .flatMap { it.value }.forEach { jyutpingPrefix.add(it) }
             }
 
-            val hasExact = englishExact.isNotEmpty() || jyutpingExact.isNotEmpty()
+            val hasExact = englishExact.isNotEmpty() || jyutpingExact.isNotEmpty() ||
+                mixed.isNotEmpty()
             val deduped = (englishExact.sortedByDescending { it.frequency } +
+                mixed +
                 englishPrefix.sortedByDescending { it.frequency } +
                 jyutpingExact.sortedByDescending { it.frequency } +
                 jyutpingPrefix.sortedByDescending { it.frequency })
@@ -297,7 +330,7 @@ fun buildFullCorpusDecoder(corpusDir: String): DecoderContract {
                 val remainingAssist = deduped.filterNot {
                     it.sourceSchema == SourceSchema.ENGLISH_ASSIST && it.code == lower
                 }
-                val cands = (exactAssist + quickPrefix + remainingAssist)
+                val cands = (exactAssist + mixed + quickPrefix + remainingAssist)
                     .distinctBy { it.text }
                 return DecodeResult(buffer, scheme, buffer.length, false, false, cands)
             }

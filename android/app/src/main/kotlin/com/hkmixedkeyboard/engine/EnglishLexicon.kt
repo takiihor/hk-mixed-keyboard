@@ -1,39 +1,31 @@
 package com.hkmixedkeyboard.engine
 
 /**
- * Single source of truth for the small built-in English vocabulary used by both
- * the [Classifier] (candidate classification) and the commit layer
- * (com.hkmixedkeyboard.commit.CommitController) for commit-target selection.
+ * Hand-curated English vocabulary specific to Hong Kong.
  *
- * These lists previously lived, duplicated, in both classes and could drift apart.
+ * This object used to carry three more lists — ENGLISH_WORDS and
+ * HIGH_FREQ_COMPLETIONS alongside these — which fed only the classifier's
+ * English half. Nothing read that half, so a six-entry hardcoded completion
+ * table (hap → happy) influenced nothing while EnglishCompletionIndex served
+ * the bar from 20,330 words. They are gone; what remains is live.
  */
 object EnglishLexicon {
 
-    // Two-or-three letter tokens that should be treated as English even though they
-    // collide with short Quick codes (e.g. "ok", "mtr", "hkd").
-    val SHORT_WHITELIST = setOf(
-        "ok", "no", "go", "hi", "pm", "am", "ai", "it", "hr", "cv", "id", "ot",
-        "dm", "ig", "fb", "tg", "qr", "kpi", "pdf", "doc", "ppt", "tax",
-        "mtr", "fps", "mpf", "hk", "hkd", "usd"
-    )
-
-    // Canonical casing for acronyms typed in lowercase.
-    val CANONICAL_CASE = mapOf(
+    /**
+     * Short tokens a Hong Kong typist means as English even though they collide
+     * with Quick codes, mapped to canonical casing where the token is an acronym.
+     * Fed to [EnglishCompletionIndex], which the CC-CEDICT-derived word list
+     * cannot supply: "mtr" and "hkd" are not English dictionary headwords.
+     */
+    val LOCAL_TOKENS: Map<String, String?> = mapOf(
         "mtr" to "MTR", "fps" to "FPS", "mpf" to "MPF", "hkd" to "HKD",
-        "usd" to "USD", "pdf" to "PDF", "qr" to "QR"
+        "usd" to "USD", "pdf" to "PDF", "qr" to "QR", "kpi" to "KPI",
+        "cv" to "CV", "id" to "ID", "hr" to "HR", "ai" to "AI",
+        "doc" to null, "ppt" to null, "tax" to null, "hk" to "HK",
+        "ok" to null, "dm" to "DM", "ig" to "IG", "fb" to "FB", "tg" to "TG"
     )
 
-    // Whole words recognised as committable English. Includes SHORT_WHITELIST plus
-    // a few high-frequency words and their completion prefixes.
-    val ENGLISH_WORDS = SHORT_WHITELIST + setOf(
-        "send",
-        "happy", "meeting", "reply", "confirm", "check", "call", "file", "email",
-        "hap", "mee", "con", "rep", "che"
-    )
-
-    // Prefix → full word for built-in autocompletion of common English words.
-    val HIGH_FREQ_COMPLETIONS = mapOf(
-        "hap" to "happy", "mee" to "meeting", "con" to "confirm",
-        "rep" to "reply", "che" to "check", "cal" to "call"
-    )
+    /** Canonical casing for acronyms typed in lowercase, used at commit time. */
+    val CANONICAL_CASE: Map<String, String> =
+        LOCAL_TOKENS.filterValues { it != null }.mapValues { it.value!! }
 }

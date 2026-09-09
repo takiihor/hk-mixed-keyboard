@@ -100,14 +100,18 @@ object KeyboardLayout {
     val totalHeightWeight: Float =
         rows.sumOf { it.heightWeight.toDouble() }.toFloat()
 
-    fun candidateBarHeightPx(density: Float): Int =
-        CandidateBarLayoutPolicy.heightPx(density, CandidateBarDisplayState.CANDIDATES_OR_COMPOSING)
+    fun candidateBarHeightPx(density: Float, showsReadingHint: Boolean = false): Int =
+        CandidateBarLayoutPolicy.heightPx(
+            density,
+            CandidateBarDisplayState.CANDIDATES_OR_COMPOSING,
+            showsReadingHint
+        )
 
     fun keyboardHeightPx(density: Float): Int =
         (BASE_ROW_HEIGHT_DP * totalHeightWeight * density).toInt()
 
-    fun inputViewMinHeightPx(density: Float): Int =
-        keyboardHeightPx(density) + candidateBarHeightPx(density)
+    fun inputViewMinHeightPx(density: Float, showsReadingHint: Boolean = false): Int =
+        keyboardHeightPx(density) + candidateBarHeightPx(density, showsReadingHint)
 
     fun buildCells(width: Float, height: Float): List<KeyCell> {
         val unitWidth = width / GRID_WIDTH_UNITS

@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,7 +17,7 @@ import com.hkmixedkeyboard.decoder.DecodeCandidate
 class CandidateBarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : HorizontalScrollView(context, attrs) {
+) : LinearLayout(context, attrs) {
 
     interface CandidateListener {
         fun onCandidateTap(candidate: DecodeCandidate)
@@ -28,6 +29,7 @@ class CandidateBarView @JvmOverloads constructor(
     // Shared low-latency haptic engine, injected by the IME service.
     var haptics: TypingHapticEngine? = null
     private var renderSnapshot: CandidateRenderSnapshot? = null
+    private val glyphPaint = android.graphics.Paint()
     private var displayedCandidates: List<DecodeCandidate> = emptyList()
     private var systemMessageStyle: SystemMessageStyle? = null
 
@@ -53,19 +55,61 @@ class CandidateBarView @JvmOverloads constructor(
         }
     }
 
-    private val row = LinearLayout(context).also {
-        it.orientation = LinearLayout.HORIZONTAL
-        it.gravity = Gravity.CENTER_VERTICAL
-        addView(it, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT))
-    }
-
     private val colorText get() = themeColors.candidateText
     private val colorHkText get() = themeColors.candidatePriorityText
     private val colorEnPill get() = themeColors.candidatePillBackground
 
     private val textSizeSp = CandidateBarLayoutPolicy.TEXT_SIZE_SP
+    private val previewTextSizeSp = CandidateBarLayoutPolicy.PREVIEW_TEXT_SIZE_SP
     private val padH = dp(18)
     private val padV = dp(CandidateBarLayoutPolicy.VERTICAL_PADDING_DP)
+
+    private val previewLabel = TextView(context).apply {
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, previewTextSizeSp)
+        typeface = android.graphics.Typeface.create(
+            "sans-serif-medium",
+            android.graphics.Typeface.NORMAL
+        )
+        gravity = Gravity.CENTER_VERTICAL
+        setSingleLine(true)
+        ellipsize = TextUtils.TruncateAt.END
+        isFocusable = false
+        visibility = View.GONE
+        setPadding(padH, 0, padH, 0)
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+    }
+
+    private val row = LinearLayout(context).also {
+        it.orientation = LinearLayout.HORIZONTAL
+        it.gravity = Gravity.CENTER_VERTICAL
+    }
+
+    private val scroller = HorizontalScrollView(context).apply {
+        isHorizontalScrollBarEnabled = false
+        addView(
+            row,
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+        )
+    }
+
+    init {
+        orientation = VERTICAL
+        addView(previewLabel)
+        addView(
+            scroller,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1f
+            )
+        )
+    }
 
     fun showSafeMode() {
         showSystemMessage(
@@ -94,7 +138,7 @@ class CandidateBarView @JvmOverloads constructor(
         renderSnapshot = nextSnapshot
         displayedCandidates = candidates
         systemMessageStyle = null
-        setRowWidth(LayoutParams.WRAP_CONTENT)
+        setRowWidth(FrameLayout.LayoutParams.WRAP_CONTENT)
         updateDisplayState(CandidateBarDisplayState.CANDIDATES_OR_COMPOSING)
         setBackgroundColor(themeColors.candidateBackground)
 
@@ -109,18 +153,24 @@ class CandidateBarView @JvmOverloads constructor(
             bindCandidateView(row.getChildAt(index) as TextView, cand)
         }
         bindExpandView(row.getChildAt(candidates.size) as TextView)
-        scrollTo(0, 0)
+        scroller.scrollTo(0, 0)
     }
 
-    fun clear() {
+    fun setLearningPreview(label: String?) {
+        previewLabel.text = label.orEmpty()
+        previewLabel.visibility = if (label.isNullOrEmpty()) View.GONE else View.VISIBLE
+    }
+
+    fun clear(clearLearningPreview: Boolean = true) {
         if (CandidateBarDisplayStatePolicy.afterClear(displayState) == CandidateBarDisplayState.SYSTEM_MESSAGE) {
             return
         }
         renderSnapshot = null
         displayedCandidates = emptyList()
         systemMessageStyle = null
+        if (clearLearningPreview) setLearningPreview(null)
         row.removeAllViews()
-        setRowWidth(LayoutParams.WRAP_CONTENT)
+        setRowWidth(FrameLayout.LayoutParams.WRAP_CONTENT)
         updateDisplayState(CandidateBarDisplayState.EMPTY)
         setBackgroundColor(themeColors.candidateBackground)
     }
@@ -134,8 +184,9 @@ class CandidateBarView @JvmOverloads constructor(
         renderSnapshot = null
         displayedCandidates = emptyList()
         systemMessageStyle = null
+        setLearningPreview(null)
         row.removeAllViews()
-        setRowWidth(LayoutParams.WRAP_CONTENT)
+        setRowWidth(FrameLayout.LayoutParams.WRAP_CONTENT)
         updateDisplayState(CandidateBarDisplayState.EMPTY)
         setBackgroundColor(themeColors.candidateBackground)
     }
@@ -146,6 +197,7 @@ class CandidateBarView @JvmOverloads constructor(
             return
         }
         setBackgroundColor(themeColors.candidateBackground)
+        previewLabel.setTextColor(colorHkText)
         when (displayState) {
             CandidateBarDisplayState.CANDIDATES_OR_COMPOSING -> displayedCandidates.forEachIndexed { index, candidate ->
                 (row.getChildAt(index) as? TextView)?.let { bindCandidateView(it, candidate) }
@@ -158,7 +210,7 @@ class CandidateBarView @JvmOverloads constructor(
     }
 
     private fun bindCandidateView(tv: TextView, cand: DecodeCandidate) {
-        bindLabel(tv, cand.text)
+        bindLabel(tv, CandidatePresentation.label(cand.text) { glyphPaint.hasGlyph(it) })
         if (cand.type == CandidateType.EN_LITERAL) {
             tv.setTextColor(colorText)
             tv.background = android.graphics.drawable.GradientDrawable().apply {
@@ -220,8 +272,9 @@ class CandidateBarView @JvmOverloads constructor(
         renderSnapshot = null
         displayedCandidates = emptyList()
         systemMessageStyle = style
+        setLearningPreview(null)
         row.removeAllViews()
-        setRowWidth(LayoutParams.MATCH_PARENT)
+        setRowWidth(FrameLayout.LayoutParams.MATCH_PARENT)
         row.addView(makeSystemMessageLabel(text))
         updateDisplayState(CandidateBarDisplayState.SYSTEM_MESSAGE)
         bindSystemMessageTheme(row.getChildAt(0) as? TextView)
@@ -252,7 +305,10 @@ class CandidateBarView @JvmOverloads constructor(
     }
 
     private fun setRowWidth(width: Int) {
-        row.layoutParams = LayoutParams(width, LayoutParams.MATCH_PARENT)
+        row.layoutParams = FrameLayout.LayoutParams(
+            width,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        )
     }
 
     private fun updateDisplayState(next: CandidateBarDisplayState) {

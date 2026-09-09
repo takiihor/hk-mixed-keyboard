@@ -1,0 +1,48 @@
+# Hong Kong English -> Chinese assist overrides (reviewed, project-curated).
+# Layered after english_assist.csv so Hong Kong renderings rank first; the raw
+# CC-CEDICT gloss rows remain available lower in the list. Traditional output.
+# Fields: english, chinese, freq
+english,chinese,freq
+bus,巴士,0.99
+minibus,小巴,0.99
+taxi,的士,0.99
+tram,電車,0.98
+lift,𨋢,0.99
+lift,升降機,0.97
+elevator,𨋢,0.99
+elevator,升降機,0.97
+fridge,雪櫃,0.99
+refrigerator,雪櫃,0.99
+home,屋企,0.99
+flat,單位,0.98
+sorry,對唔住,0.99
+sorry,唔好意思,0.98
+sorry,抱歉,0.97
+thanks,唔該,0.99
+thanks,多謝,0.98
+thank,唔該,0.99
+please,唔該,0.98
+hello,你好,0.99
+boss,老細,0.99
+colleague,同事,0.98
+friend,朋友,0.98
+girlfriend,女朋友,0.99
+boyfriend,男朋友,0.99
+teacher,老師,0.98
+student,學生,0.98
+police,警察,0.98
+money,錢,0.98
+expensive,貴,0.98
+cheap,平,0.98
+eat,食,0.98
+delicious,好食,0.99
+beautiful,靚,0.99
+pretty,靚,0.98
+happy,開心,0.98
+angry,嬲,0.99
+umbrella,遮,0.99
+shoes,鞋,0.98
+water,水,0.98
+rain,落雨,0.99
+hot,熱,0.98
+cold,凍,0.98

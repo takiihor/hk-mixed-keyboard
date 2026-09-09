@@ -21,6 +21,7 @@ class CandidateGridView(private val context: Context) {
     var vibrationEnabled: Boolean = true
     // Shared low-latency haptic engine, injected by the IME service.
     var haptics: TypingHapticEngine? = null
+    private val glyphPaint = android.graphics.Paint()
     var themeColors: KeyboardThemeColors = KeyboardThemeColors.from(context)
         set(value) {
             field = value
@@ -53,8 +54,10 @@ class CandidateGridView(private val context: Context) {
         this.grid = grid
 
         candidates.forEach { cand ->
+            val label = CandidatePresentation.label(cand.text) { glyphPaint.hasGlyph(it) }
             val cell = TextView(context).apply {
-                text = cand.text
+                text = label
+                contentDescription = label
                 setTextColor(candidateTextColor(cand))
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
                 setPadding(padH, padV, padH, padV)

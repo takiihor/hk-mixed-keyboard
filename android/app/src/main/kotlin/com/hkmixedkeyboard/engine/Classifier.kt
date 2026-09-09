@@ -6,31 +6,18 @@ import com.hkmixedkeyboard.decoder.Scheme
 
 class Classifier(private val decoder: DecoderContract) {
 
-    private val shortWhitelist = EnglishLexicon.SHORT_WHITELIST
     private val canonicalCase = EnglishLexicon.CANONICAL_CASE
-    private val englishWords = EnglishLexicon.ENGLISH_WORDS
-    private val highFreqCompletions = EnglishLexicon.HIGH_FREQ_COMPLETIONS
 
     fun classify(buffer: String, scheme: Scheme): ClassifyResult {
         val lower = InputCasePolicy.lookupForm(buffer)
         val dr = decoder.decode(lower, scheme)
-
-        val enIsWord = englishWords.contains(lower) || shortWhitelist.contains(lower)
-        val enAutocomplete = highFreqCompletions[lower]?.let {
-            InputCasePolicy.applyPattern(it, buffer)
-        }
-        val enStrongPrefix = buffer.length >= 3 && !dr.isExactCode && enAutocomplete != null
 
         return ClassifyResult(
             buffer = buffer,
             cnExactParsed = dr.cnExactParsed,
             cnHasPhraseMatch = dr.cnHasPhraseMatch,
             cnPrefixParsed = dr.cnPrefixParsed,
-            cnCandidates = rankCandidates(dr.candidates, scheme),
-            enLiteral = buffer,
-            enAutocomplete = enAutocomplete,
-            enIsWord = enIsWord,
-            enStrongPrefix = enStrongPrefix
+            cnCandidates = rankCandidates(dr.candidates, scheme)
         )
     }
 

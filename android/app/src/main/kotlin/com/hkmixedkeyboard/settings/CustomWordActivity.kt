@@ -60,12 +60,15 @@ class CustomWordActivity : AppCompatActivity() {
     }
 
     private fun addWord(display: String, code: String) {
-        if (display.isBlank() || code.isBlank()) {
-            Toast.makeText(this, "請填寫詞語及 Quick 碼", Toast.LENGTH_SHORT).show()
-            return
+        val valid = when (val result = CustomWordValidator.validate(display, code)) {
+            is CustomWordValidator.Result.Invalid -> {
+                Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
+                return
+            }
+            is CustomWordValidator.Result.Valid -> result
         }
         lifecycleScope.launch {
-            dao.insert(CustomWordEntity(display = display.trim(), quickCode = code.trim().lowercase()))
+            dao.insert(CustomWordEntity(display = valid.display, quickCode = valid.quickCode))
             KeyboardSettings.bumpCustomWordsToken(this@CustomWordActivity)
             runOnUiThread { refreshList() }
         }

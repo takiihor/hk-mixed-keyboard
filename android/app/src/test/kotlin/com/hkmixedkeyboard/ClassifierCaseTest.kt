@@ -4,6 +4,7 @@ import com.hkmixedkeyboard.decoder.DecodeResult
 import com.hkmixedkeyboard.decoder.DecoderContract
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.engine.Classifier
+import com.hkmixedkeyboard.engine.InputCasePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -33,21 +34,25 @@ class ClassifierCaseTest {
 
         assertEquals("rr", decodedBuffer)
         assertEquals("Rr", result.buffer)
-        assertEquals("Rr", result.enLiteral)
+    }
+
+    // Case-pattern completion moved out of the classifier, whose English half was
+    // computed and never read. The live path is EnglishCompletionIndex, which
+    // applies the same InputCasePolicy rule to the bar's completions.
+
+    @Test
+    fun `initial capital completion follows the typed pattern`() {
+        assertEquals("Happy", InputCasePolicy.applyPattern("happy", "Hap"))
     }
 
     @Test
-    fun `classifier initial capital autocomplete follows typed pattern`() {
-        val result = Classifier(emptyDecoder()).classify("Hap", Scheme.QUICK)
-
-        assertEquals("Happy", result.enAutocomplete)
+    fun `uppercase completion follows the typed pattern`() {
+        assertEquals("HAPPY", InputCasePolicy.applyPattern("happy", "HAP"))
     }
 
     @Test
-    fun `classifier uppercase autocomplete follows typed pattern`() {
-        val result = Classifier(emptyDecoder()).classify("HAP", Scheme.QUICK)
-
-        assertEquals("HAPPY", result.enAutocomplete)
+    fun `lowercase typing leaves the completion alone`() {
+        assertEquals("happy", InputCasePolicy.applyPattern("happy", "hap"))
     }
 
     private fun emptyDecoder() = object : DecoderContract {

@@ -97,9 +97,13 @@ class KeyboardLayoutTest {
     }
 
     @Test
-    fun `fixed candidate bar plus comfortable keyboard reserves 282dp`() {
+    fun `candidate bar plus comfortable keyboard reserves 282dp, 298dp with a reading hint`() {
         val density = 2f
         assertEquals((240f * density).toInt(), KeyboardLayout.keyboardHeightPx(density))
         assertEquals((282f * density).toInt(), KeyboardLayout.inputViewMinHeightPx(density))
+        assertEquals(
+            (298f * density).toInt(),
+            KeyboardLayout.inputViewMinHeightPx(density, showsReadingHint = true)
+        )
     }
 }

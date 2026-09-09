@@ -15,11 +15,15 @@ import org.junit.Test
 class JyutpingSegmentationCorpusTest {
 
     private val corpusDir = "src/main/assets/corpus"
+    private val rows by lazy {
+        readJyutping("$corpusDir/jyutping.csv") +
+            readJyutping("$corpusDir/jyutping_overrides.csv")
+    }
 
     // (syllable -> single-char readings, most frequent first), built exactly the way
     // CorpusLoader does, so the syllable set and composition mirror production.
     private val readings: Map<String, List<String>> by lazy {
-        readJyutping("$corpusDir/jyutping.csv")
+        rows
             .filter { it.second.length == 1 }
             .groupBy { it.first }
             .mapValues { (_, rows) -> rows.sortedByDescending { it.third }.map { it.second } }
@@ -49,10 +53,11 @@ class JyutpingSegmentationCorpusTest {
     @Test
     fun `a non-dictionary phrase that the old engine missed now segments`() {
         assumeTrue(readings.isNotEmpty())
-        // "neihou" is not a key in the dictionary, proving segmentation is what makes
-        // it work (the exact/prefix paths would return nothing).
+        // "hounei" is not a key in the dictionary (unlike the reviewed direct phrase
+        // "neihou"), proving segmentation is what makes it work — the exact/prefix
+        // paths would return nothing.
         assertEquals(emptyList<Triple<String, String, Double>>(),
-            readJyutping("$corpusDir/jyutping.csv").filter { it.first == "neihou" })
-        assertNotNull(seg.segment("neihou"))
+            rows.filter { it.first == "hounei" })
+        assertNotNull(seg.segment("hounei"))
     }
 }

@@ -9,6 +9,9 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityNodeProvider
 import com.hkmixedkeyboard.BuildConfig
 
 class KeyboardView @JvmOverloads constructor(
@@ -41,15 +44,6 @@ class KeyboardView @JvmOverloads constructor(
     var shiftActive: Boolean = false
     var shiftLocked: Boolean = false
 
-    private val CANGJIE = mapOf(
-        "A" to "日", "B" to "月", "C" to "金", "D" to "木", "E" to "水",
-        "F" to "火", "G" to "土", "H" to "竹", "I" to "戈", "J" to "十",
-        "K" to "大", "L" to "中", "M" to "一", "N" to "弓", "O" to "人",
-        "P" to "心", "Q" to "手", "R" to "口", "S" to "尸", "T" to "廿",
-        "U" to "山", "V" to "女", "W" to "田", "X" to "難", "Y" to "卜",
-        "Z" to "重"
-    )
-
     // Key label constants for special keys
     companion object {
         const val KEY_BACKSPACE = KeyboardLayout.KEY_BACKSPACE
@@ -79,6 +73,11 @@ class KeyboardView @JvmOverloads constructor(
     )
 
     private val cells = mutableListOf<KeyCell>()
+    // Stable virtual IDs follow the immutable keyboard layout order: 1 maps to the
+    // first key, 2 to the second, and so on. The cells are rebuilt only from that
+    // same layout when size changes.
+    private val keyboardAccessibilityProvider = KeyboardAccessibilityProvider()
+    private var accessibilityFocusedVirtualId = View.NO_ID
     // Per-pointer press tracking. A single shared "pressed key" dropped characters
     // during fast two-finger typing (rollover): the second finger's DOWN overwrote
     // the first finger's key before its UP could emit it. Mapping pointerId → cell
@@ -152,9 +151,19 @@ class KeyboardView @JvmOverloads constructor(
         )
     }
 
+    init {
+        importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES
+        isFocusable = true
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         buildCells(w.toFloat(), h.toFloat())
+        // The virtual node bounds are the cell rects, so a relayout invalidates
+        // everything an accessibility service has cached about this keyboard.
+        if (isAttachedToWindow) {
+            sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED)
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -241,10 +250,10 @@ class KeyboardView @JvmOverloads constructor(
                     canvas.drawText(modeLabel, cx,
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
                 }
-                showCangjieRoots && CANGJIE.containsKey(label) -> {
+                showCangjieRoots && KeyboardAccessibilityLabels.cangjieRootFor(label) != null -> {
                     // Centred Cangjie root; Latin hint anchored inside the top-right.
                     paintRoot.color = themeColors.label
-                    canvas.drawText(CANGJIE[label]!!, cx,
+                    canvas.drawText(KeyboardAccessibilityLabels.cangjieRootFor(label)!!, cx,
                         cy - (paintRoot.ascent() + paintRoot.descent()) / 2, paintRoot)
                     paintHint.color = themeColors.hint
                     canvas.drawText(
@@ -430,8 +439,20 @@ class KeyboardView @JvmOverloads constructor(
 
     override fun performClick(): Boolean { super.performClick(); return true }
 
+    override fun getAccessibilityNodeProvider(): AccessibilityNodeProvider =
+        keyboardAccessibilityProvider
+
+    override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(info)
+        info.className = KeyboardView::class.java.name
+        info.contentDescription = "鍵盤"
+        info.isScrollable = false
+        for (index in cells.indices) info.addChild(this, virtualIdFor(index))
+    }
+
     override fun onDetachedFromWindow() {
         cancelActiveTouches()
+        accessibilityFocusedVirtualId = View.NO_ID
         // The engine is shared and owned by the IME service, so we don't release it
         // here; just stop any tick still in flight for this view.
         haptics?.cancel()
@@ -476,6 +497,147 @@ class KeyboardView @JvmOverloads constructor(
             android.util.Log.d(LATENCY_LOG_TAG, "key_dispatch ns=" + SystemClock.elapsedRealtimeNanos())
         }
         keyListener?.onKey(label)
+    }
+
+    private fun virtualIdFor(cellIndex: Int): Int = cellIndex + 1
+
+    private fun cellForVirtualId(virtualViewId: Int): KeyCell? =
+        cells.getOrNull(virtualViewId - 1)
+
+    private fun accessibilityDescription(cell: KeyCell): String =
+        KeyboardAccessibilityLabels.descriptionFor(
+            label = cell.def.label,
+            showCangjieRoots = showCangjieRoots,
+            spaceLabel = spaceLabel,
+            modeLabel = modeLabel,
+            shiftActive = shiftActive,
+            shiftLocked = shiftLocked
+        )
+
+    @Suppress("DEPRECATION") // Platform virtual-node creation remains required on minSdk 26.
+    private fun sendVirtualAccessibilityEvent(virtualViewId: Int, eventType: Int) {
+        val cell = cellForVirtualId(virtualViewId) ?: return
+        val event = AccessibilityEvent.obtain(eventType).apply {
+            packageName = context.packageName
+            className = android.widget.Button::class.java.name
+            contentDescription = accessibilityDescription(cell)
+            text.add(accessibilityDescription(cell))
+            setSource(this@KeyboardView, virtualViewId)
+        }
+        parent?.requestSendAccessibilityEvent(this, event) ?: sendAccessibilityEventUnchecked(event)
+    }
+
+    @Suppress("DEPRECATION") // Platform virtual-node creation remains required on minSdk 26.
+    private inner class KeyboardAccessibilityProvider : AccessibilityNodeProvider() {
+        override fun createAccessibilityNodeInfo(virtualViewId: Int): AccessibilityNodeInfo? =
+            when (virtualViewId) {
+                HOST_VIEW_ID -> createHostNode()
+                else -> createKeyNode(virtualViewId)
+            }
+
+        override fun findAccessibilityNodeInfosByText(
+            searched: String?,
+            virtualViewId: Int
+        ): List<AccessibilityNodeInfo> {
+            val query = searched?.toString()?.trim().orEmpty()
+            if (query.isEmpty()) return emptyList()
+            return cells.mapIndexedNotNull { index, cell ->
+                if (accessibilityDescription(cell).contains(query, ignoreCase = true)) {
+                    createKeyNode(virtualIdFor(index))
+                } else {
+                    null
+                }
+            }
+        }
+
+        override fun findFocus(focus: Int): AccessibilityNodeInfo? =
+            if (focus == AccessibilityNodeInfo.FOCUS_ACCESSIBILITY &&
+                accessibilityFocusedVirtualId != View.NO_ID) {
+                createKeyNode(accessibilityFocusedVirtualId)
+            } else {
+                null
+            }
+
+        override fun performAction(
+            virtualViewId: Int,
+            action: Int,
+            arguments: android.os.Bundle?
+        ): Boolean {
+            val cell = cellForVirtualId(virtualViewId) ?: return false
+            return when (action) {
+                AccessibilityNodeInfo.ACTION_CLICK -> {
+                    emitKey(cell.def.label)
+                    sendVirtualAccessibilityEvent(virtualViewId, AccessibilityEvent.TYPE_VIEW_CLICKED)
+                    true
+                }
+                AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS -> {
+                    if (accessibilityFocusedVirtualId == virtualViewId) return false
+                    val previous = accessibilityFocusedVirtualId
+                    accessibilityFocusedVirtualId = virtualViewId
+                    if (previous != View.NO_ID) {
+                        sendVirtualAccessibilityEvent(
+                            previous,
+                            AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED
+                        )
+                    }
+                    sendVirtualAccessibilityEvent(
+                        virtualViewId,
+                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED
+                    )
+                    true
+                }
+                AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS -> {
+                    if (accessibilityFocusedVirtualId != virtualViewId) return false
+                    accessibilityFocusedVirtualId = View.NO_ID
+                    sendVirtualAccessibilityEvent(
+                        virtualViewId,
+                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED
+                    )
+                    true
+                }
+                else -> false
+            }
+        }
+
+        private fun createHostNode(): AccessibilityNodeInfo = AccessibilityNodeInfo.obtain().apply {
+            setSource(this@KeyboardView)
+            packageName = context.packageName
+            className = KeyboardView::class.java.name
+            contentDescription = "鍵盤"
+            isEnabled = this@KeyboardView.isEnabled
+            isFocusable = true
+            for (index in cells.indices) addChild(this@KeyboardView, virtualIdFor(index))
+        }
+
+        private fun createKeyNode(virtualViewId: Int): AccessibilityNodeInfo? {
+            val cell = cellForVirtualId(virtualViewId) ?: return null
+            return AccessibilityNodeInfo.obtain().apply {
+                setSource(this@KeyboardView, virtualViewId)
+                setParent(this@KeyboardView)
+                packageName = context.packageName
+                className = android.widget.Button::class.java.name
+                contentDescription = accessibilityDescription(cell)
+                setBoundsInParent(
+                    Rect(
+                        cell.rect.left.toInt(),
+                        cell.rect.top.toInt(),
+                        cell.rect.right.toInt(),
+                        cell.rect.bottom.toInt()
+                    )
+                )
+                isVisibleToUser = this@KeyboardView.isShown
+                isEnabled = this@KeyboardView.isEnabled
+                isFocusable = true
+                isClickable = true
+                addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK)
+                if (accessibilityFocusedVirtualId == virtualViewId) {
+                    isAccessibilityFocused = true
+                    addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLEAR_ACCESSIBILITY_FOCUS)
+                } else {
+                    addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_ACCESSIBILITY_FOCUS)
+                }
+            }
+        }
     }
 
     private fun haptic() {

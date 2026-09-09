@@ -16,6 +16,7 @@ import com.hkmixedkeyboard.decoder.CandidateType
 import com.hkmixedkeyboard.decoder.CorpusBackedDecoder
 import com.hkmixedkeyboard.decoder.CorpusLoader
 import com.hkmixedkeyboard.decoder.DecodeCandidate
+import com.hkmixedkeyboard.decoder.NextCharPredictionPolicy
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.engine.CandidateDisplayPolicy
@@ -30,6 +31,7 @@ import com.hkmixedkeyboard.performance.LatencyLogger
 import com.hkmixedkeyboard.performance.PerfTracer
 import com.hkmixedkeyboard.privacy.SensitiveFieldDetector
 import com.hkmixedkeyboard.settings.ChangeTokenTracker
+import com.hkmixedkeyboard.settings.DirectInputMode
 import com.hkmixedkeyboard.settings.KeyboardTheme
 import com.hkmixedkeyboard.settings.KeyboardSettings
 import com.hkmixedkeyboard.settings.InputSchemePreference
@@ -43,6 +45,8 @@ import com.hkmixedkeyboard.ui.AndroidTypingHapticBackend
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.KeyboardView
+import com.hkmixedkeyboard.ui.ReadingHintPolicy
+import com.hkmixedkeyboard.ui.ReadingHints
 import com.hkmixedkeyboard.ui.MainKeyboardLongPressPolicy
 import com.hkmixedkeyboard.ui.ShiftState
 import com.hkmixedkeyboard.ui.ShiftStateController
@@ -71,6 +75,7 @@ class HkImeService : InputMethodService() {
         // One-time purge of memory entries learned from the pre-v0.47 corpus,
         // which emitted these variant forms before HK normalization (爲→為 …).
         private const val VARIANT_PURGE_FLAG = "variant_purge_v47"
+        private const val READING_HINT_CONFIRMATION_MS = 1_400L
         private val STALE_VARIANT_CHARS =
             "僞喫嬀擡柺棱溼潙潨爲癡皁祕竈糉纔脣臺菸蔿衆覈踊鉢鍼".toSet()
     }
@@ -155,6 +160,17 @@ class HkImeService : InputMethodService() {
     private var decodePendingGeneration: Long = 0L
     private var decodePendingSession: Long = 0L
     private val candidateDisplayPolicy = CandidateDisplayPolicy()
+    private val readingHintPolicy by lazy {
+        ReadingHintPolicy(corpus.jyutpingReadingLookup, corpus.pinyinReadingLookup)
+    }
+    // Mirrors KeyboardPrefs so the first input view is built at the right height,
+    // before the settings flow's first emission arrives.
+    private var readingHints = ReadingHints(jyutping = true, pinyin = false)
+    // Continuations from the user's own 自訂詞庫 words. Rebuilt on the IO thread
+    // whenever the table changes, read on the decode thread — the whole immutable
+    // map is swapped at once.
+    @Volatile private var customNextCharIndex: Map<String, List<DecodeCandidate>> = emptyMap()
+    private var readingHintConfirmationClear: Runnable? = null
 
     private var imeState = ImeStateData()
     private var imeCtx = ImeContext()
@@ -163,6 +179,11 @@ class HkImeService : InputMethodService() {
     private val schemeTransition = InputSchemeTransitionCoordinator(Scheme.QUICK)
     private val schemeWrites = Channel<Scheme>(Channel.UNLIMITED)
     private var directLatinCommit = false
+    // User override for direct-Latin detection (terminals / remote desktops).
+    @Volatile private var directInputMode = DirectInputMode.AUTO
+    // Mirror of the caret, so onUpdateSelection can tell our own edits apart from
+    // the user tapping elsewhere. See SelectionChangePolicy.
+    private val cursorTracker = ComposingCursorTracker()
     private var vibrationEnabled = true
     private var showCangjieRoots = true
     private var currentThemeColors: KeyboardThemeColors = KeyboardTheme.DARK.toColors()
@@ -272,6 +293,22 @@ class HkImeService : InputMethodService() {
                         vibrationEnabled = prefs.vibration
                         soundEnabled = prefs.sound
                         showCangjieRoots = prefs.showRoots
+                        applyReadingHints(
+                            ReadingHints(
+                                jyutping = prefs.jyutpingHint,
+                                pinyin = prefs.pinyinHint,
+                                cantonese = prefs.cantoneseNotation
+                            )
+                        )
+                        if (directInputMode != prefs.directInput) {
+                            directInputMode = prefs.directInput
+                            // Re-decide for the field already focused, so the change
+                            // takes effect without closing the keyboard first.
+                            activeEditorInfo?.let {
+                                applyDirectInputPolicy(it)
+                                rebuildCommitController()
+                            }
+                        }
                         applyTheme(prefs.theme.toColors())
                         when (val action = schemeTransition.onPersisted(prefs.inputScheme)) {
                             is InputSchemeTransitionCoordinator.Action.Apply ->
@@ -343,6 +380,7 @@ class HkImeService : InputMethodService() {
 
     override fun onDestroy() {
         serviceDestroyed = true
+        clearReadingHintConfirmation()
         super.onDestroy()
         cancelCandidateDecode()
         serviceJob.cancel()
@@ -387,6 +425,7 @@ class HkImeService : InputMethodService() {
         runCatching {
             corpus.quickIndex
             corpus.quickPrefixCandidateIndex
+            corpus.jyutpingReadingLookup
         }
         quickWarm = true
         PerfTracer.mark("warm_quick_done")
@@ -429,7 +468,7 @@ class HkImeService : InputMethodService() {
 
     private fun buildInputView(): View {
         val density = resources.displayMetrics.density
-        val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density)
+        val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density, readingHints.any)
         val keyboardHeight = KeyboardLayout.keyboardHeightPx(density)
         val root = LinearLayout(this).also { inputRoot = it }.apply {
             orientation = LinearLayout.VERTICAL
@@ -437,7 +476,7 @@ class HkImeService : InputMethodService() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density)
+            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density, readingHints.any)
             setBackgroundColor(currentThemeColors.keyboardBackground)
         }
 
@@ -551,9 +590,39 @@ class HkImeService : InputMethodService() {
         (altPanel as? EmojiPanelView)?.themeColors = colors
     }
 
+    /**
+     * Applies the learner's hint preferences. Turning the last one off clears any
+     * hint already on screen; turning the first one on (or the last one off) also
+     * changes the strip's height, so the input view is re-measured. Runs only on
+     * the main thread, from the settings collector.
+     */
+    private fun applyReadingHints(hints: ReadingHints) {
+        if (readingHints == hints) return
+        val heightChanged = readingHints.any != hints.any
+        readingHints = hints
+        if (!hints.any && ::candidateBar.isInitialized) {
+            clearReadingHintConfirmation()
+            candidateBar.setLearningPreview(null)
+        }
+        if (heightChanged) resizeCandidateBar()
+    }
+
+    private fun resizeCandidateBar() {
+        if (!::candidateBar.isInitialized) return
+        val density = resources.displayMetrics.density
+        candidateBar.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            KeyboardLayout.candidateBarHeightPx(density, readingHints.any)
+        )
+        if (::inputRoot.isInitialized) {
+            inputRoot.minimumHeight = KeyboardLayout.inputViewMinHeightPx(density, readingHints.any)
+            inputRoot.requestLayout()
+        }
+    }
+
     private fun buildFallbackInputView(): View {
         val density = resources.displayMetrics.density
-        val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density)
+        val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density, readingHints.any)
         val keyboardHeight = KeyboardLayout.keyboardHeightPx(density)
         val root = LinearLayout(this).also { inputRoot = it }.apply {
             orientation = LinearLayout.VERTICAL
@@ -561,7 +630,7 @@ class HkImeService : InputMethodService() {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density)
+            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density, readingHints.any)
             setBackgroundColor(currentThemeColors.keyboardBackground)
         }
         candidateBar = CandidateBarView(this).apply {
@@ -609,14 +678,11 @@ class HkImeService : InputMethodService() {
         activeEditorInfo = attribute
         symbolKeyboardState = SymbolKeyboardState()
         val sensitive = SensitiveFieldDetector.isSensitive(attribute)
-        directLatinCommit = DirectInputPolicy.shouldUseDirectLatinCommit(
-            inputType = attribute.inputType,
-            packageName = attribute.packageName?.toString(),
-            privateImeOptions = attribute.privateImeOptions
-        )
+        applyDirectInputPolicy(attribute)
         imeCtx = imeCtx.copy(isSensitiveField = sensitive)
         rebuildCommitController()
         resetCompositionState()
+        cursorTracker.syncTo(attribute.initialSelStart, attribute.initialSelEnd)
         shiftController.reset()
         refreshShiftVisual()
         if (::candidateBar.isInitialized) {
@@ -624,10 +690,69 @@ class HkImeService : InputMethodService() {
         }
     }
 
+    // Direct-Latin commit and the Enter policy are two faces of the same decision:
+    // in a terminal or remote session letters must reach the app unbuffered AND
+    // Enter must always pass through, or the first press only ends a composition and
+    // the command never runs.
+    private fun applyDirectInputPolicy(attribute: EditorInfo) {
+        directLatinCommit = DirectInputPolicy.shouldUseDirectLatinCommit(
+            inputType = attribute.inputType,
+            packageName = attribute.packageName?.toString(),
+            privateImeOptions = attribute.privateImeOptions,
+            imeOptions = attribute.imeOptions,
+            mode = directInputMode
+        )
+        imeCtx = imeCtx.copy(
+            enterPolicy = if (directLatinCommit) EnterPolicy.ALWAYS_PASS_THROUGH
+                          else EnterPolicy.COMMIT_THEN_SWALLOW
+        )
+    }
+
+    // The caret moved. If it left an active composing region — the user tapped
+    // elsewhere, dragged the handle, or selected a range — the region is still
+    // anchored at the old offsets, so the next setComposingText() would replace THAT
+    // text and yank the caret back to the end of it. Finalize where it sits instead.
+    override fun onUpdateSelection(
+        oldSelStart: Int,
+        oldSelEnd: Int,
+        newSelStart: Int,
+        newSelEnd: Int,
+        candidatesStart: Int,
+        candidatesEnd: Int
+    ) {
+        super.onUpdateSelection(
+            oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd
+        )
+        // Only consume a pending position for a collapsed caret; a range selection is
+        // the user's doing whatever the mirror says.
+        val matchesOurEdit = newSelStart == newSelEnd && cursorTracker.confirm(newSelStart)
+        val external = SelectionChangePolicy.isExternalMove(
+            composingBuffer = imeState.buffer,
+            matchesOurEdit = matchesOurEdit,
+            haveMirror = cursorTracker.hasMirror,
+            newSelStart = newSelStart,
+            newSelEnd = newSelEnd,
+            candidatesStart = candidatesStart,
+            candidatesEnd = candidatesEnd
+        )
+        if (external) {
+            resetCompositionState()
+            lastCandidates = emptyList()
+            if (::candidateBar.isInitialized) {
+                candidateGrid?.dismiss()
+                if (imeCtx.isSensitiveField) candidateBar.showSafeMode() else candidateBar.clear()
+            }
+        }
+        // Composition finished (or never started): the editor's position is now the
+        // truth, so re-sync the mirror instead of extrapolating from it.
+        if (imeState.buffer.isEmpty()) cursorTracker.syncTo(newSelStart, newSelEnd)
+    }
+
     override fun onFinishInput() {
         super.onFinishInput()
         activeEditorInfo = null
         resetCompositionState()
+        cursorTracker.invalidate()
     }
 
     override fun onWindowHidden() {
@@ -673,7 +798,8 @@ class HkImeService : InputMethodService() {
             KeyboardView.KEY_EXCLAIM  -> ctrl.onPunctuation(label, imeState, precedingContext())
             else                      -> {
                 val typed = applyShiftCase(label)
-                if (DirectInputPolicy.shouldCommitKeyDirectly(typed, directLatinCommit)) {
+                if (DirectInputPolicy.shouldCommitKeyDirectly(
+                        typed, directLatinCommit, imeState.buffer)) {
                     if (isAsciiLetter(label)) { shiftController.consumeLetter(); refreshShiftVisual() }
                     committedPrefix = ""
                     commitDirectText(typed)
@@ -736,10 +862,21 @@ class HkImeService : InputMethodService() {
 
     private fun handleSpaceSwipe(delta: Int) {
         val ic = currentInputConnection ?: return
+        // The caret is about to leave the composing region, so finalize it first —
+        // otherwise the next keystroke's setComposingText() would drag the caret
+        // straight back to the end of what was being typed.
+        if (imeState.buffer.isNotEmpty()) {
+            ic.finishComposingText()
+            cursorTracker.onFinishComposing()
+            clearCompositionAfterStandaloneInsert()
+        }
         val keyCode = if (delta < 0) android.view.KeyEvent.KEYCODE_DPAD_LEFT
                       else android.view.KeyEvent.KEYCODE_DPAD_RIGHT
         ic.sendKeyEvent(android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, keyCode))
         ic.sendKeyEvent(android.view.KeyEvent(android.view.KeyEvent.ACTION_UP, keyCode))
+        // Where the key event actually lands is the editor's call; the
+        // onUpdateSelection it triggers re-syncs the mirror.
+        cursorTracker.invalidate()
     }
 
     private fun handlePinyinSpace() {
@@ -780,6 +917,10 @@ class HkImeService : InputMethodService() {
     // anything else (space, start of text, other punctuation) → NEUTRAL, which the
     // controller resolves to full-width by default.
     private fun precedingContext(): PrecedingContext {
+        // Terminals and remote shells return nothing from getTextBeforeCursor, which
+        // would fall through to NEUTRAL and emit full-width ，。？！ into a command
+        // line. The field is Latin by construction, so say so.
+        if (directLatinCommit) return PrecedingContext.LATIN
         val ic = currentInputConnection ?: return PrecedingContext.NEUTRAL
         val ch = ic.getTextBeforeCursor(1, 0)?.lastOrNull() ?: return PrecedingContext.NEUTRAL
         return when {
@@ -880,6 +1021,9 @@ class HkImeService : InputMethodService() {
                     }
                 }
             decoder.setCustomWords(byCode)
+            customNextCharIndex = NextCharPredictionPolicy.indexOf(
+                rows.map { it.display }.filter { it.isNotBlank() }
+            )
         }
     }
 
@@ -896,12 +1040,25 @@ class HkImeService : InputMethodService() {
         // No active composition → this is a next-character prediction tap; commit
         // it directly and extend the chain so the bar offers the following char.
         if (imeState.buffer.isEmpty()) {
-            commitPredictionChar(candidate.text)
+            commitPrediction(candidate)
             return
         }
+        val learningLabel = readingHintPolicy.committedLabel(readingHints, candidate)
         val out = ctrl.onCandidateTap(candidate, imeState)
         committedPrefix = if (isCjk(out.committedText)) out.committedText!! else ""
         applyOutput(out)
+        learningLabel?.let(::showReadingHintConfirmation)
+    }
+
+    private fun commitPrediction(candidate: DecodeCandidate) {
+        // An English gloss ends the Chinese run rather than extending it: the
+        // prediction index is keyed on 繁體, so "discuss" would poison the chain.
+        if (candidate.type == CandidateType.EN_LITERAL) {
+            commitDirectText(candidate.text)
+            showNextCharPredictions()
+            return
+        }
+        commitPredictionChar(candidate.text)
     }
 
     private fun commitPredictionChar(text: String) {
@@ -922,6 +1079,25 @@ class HkImeService : InputMethodService() {
         committedPrefix = prefix + text
         imeState = ImeStateData()
         showNextCharPredictions()
+    }
+
+    private fun showReadingHintConfirmation(label: String) {
+        if (!::candidateBar.isInitialized || imeCtx.isSensitiveField) return
+        clearReadingHintConfirmation()
+        candidateBar.setLearningPreview(label)
+        val clear = Runnable {
+            readingHintConfirmationClear = null
+            if (imeState.buffer.isEmpty() && !imeCtx.isSensitiveField) {
+                candidateBar.setLearningPreview(null)
+            }
+        }
+        readingHintConfirmationClear = clear
+        mainThread.postDelayed(clear, READING_HINT_CONFIRMATION_MS)
+    }
+
+    private fun clearReadingHintConfirmation() {
+        readingHintConfirmationClear?.let(mainThread::removeCallbacks)
+        readingHintConfirmationClear = null
     }
 
     // Show the characters that commonly follow the committed prefix (我 → 們/哋…).
@@ -955,8 +1131,11 @@ class HkImeService : InputMethodService() {
         ic.beginBatchEdit()
         if (imeState.buffer.isNotEmpty()) {
             ic.finishComposingText()
+            cursorTracker.onFinishComposing()
         }
-        ic.commitText(outputText(text), 1)
+        val committed = outputText(text)
+        ic.commitText(committed, 1)
+        cursorTracker.onCommit(committed.length)
         ic.endBatchEdit()
         clearCompositionAfterStandaloneInsert()
         updateDebugPanel()
@@ -971,22 +1150,38 @@ class HkImeService : InputMethodService() {
         //    then delete the already-committed characters before the cursor.
         if (out.deletedBefore > 0) {
             ic.finishComposingText()
+            cursorTracker.onFinishComposing()
             ic.deleteSurroundingText(out.deletedBefore, 0)
+            cursorTracker.onDeleteBefore(out.deletedBefore)
         }
 
         // 2. Commit finalized text. commitText() replaces the active composing
         //    region (the in-progress code/word) with the committed string.
         out.committedText?.let { text ->
-            if (text == "\n" && !out.swallowEnter) {
+            // A pass-through Enter can arrive with flushed text ahead of it ("ls\n"
+            // in a terminal). Commit the text, then send Enter as a real key event —
+            // committing "\n" as a character would insert a newline instead of
+            // running the command.
+            val split = EnterKeySplit.split(text, out.swallowEnter)
+            val sendsEnter = split.sendEnter
+            val body = split.text
+            if (body.isNotEmpty()) {
+                // Same-length t2s conversion keeps deletedBefore revert counts
+                // valid (the controller records the traditional text's length).
+                val committed = outputText(body)
+                ic.commitText(committed, 1)
+                cursorTracker.onCommit(committed.length)
+            }
+            if (sendsEnter) {
                 ic.finishComposingText()
+                cursorTracker.onFinishComposing()
                 // A real ENTER key event inserts a newline in multi-line fields
                 // (notes, chat) and triggers the action in single-line ones —
                 // unlike sendDefaultEditorAction, which does nothing in notes.
                 sendDownUpKeyEvents(android.view.KeyEvent.KEYCODE_ENTER)
-            } else if (text.isNotEmpty()) {
-                // Same-length t2s conversion keeps deletedBefore revert counts
-                // valid (the controller records the traditional text's length).
-                ic.commitText(outputText(text), 1)
+                // Newline or editor action — the app decides; let the resulting
+                // onUpdateSelection re-sync rather than guessing.
+                cursorTracker.invalidate()
             }
         }
 
@@ -997,9 +1192,12 @@ class HkImeService : InputMethodService() {
         val buf = out.newState.buffer
         if (buf.isNotEmpty()) {
             ic.setComposingText(buf, 1)
+            cursorTracker.onCompose(buf.length)
         } else if (out.committedText == null) {
             ic.setComposingText("", 1)
+            cursorTracker.onCompose(0)
             ic.finishComposingText()
+            cursorTracker.onFinishComposing()
         }
 
         ic.endBatchEdit()
@@ -1018,6 +1216,7 @@ class HkImeService : InputMethodService() {
     private fun updateCandidateBar(@Suppress("UNUSED_PARAMETER") out: CommitOutput) {
         if (!::candidateBar.isInitialized) return
         if (imeCtx.isSensitiveField) {
+            clearReadingHintConfirmation()
             cancelCandidateDecode()
             candidateBar.showSafeMode()
             return
@@ -1032,6 +1231,8 @@ class HkImeService : InputMethodService() {
             LatencyLogger.firstCandidateRender()
             return
         }
+        clearReadingHintConfirmation()
+        candidateBar.setLearningPreview(null)
         // Cold start: the dictionary for this scheme may still be loading. Show a
         // brief hint instead of a blank bar; the decode we schedule next builds the
         // index if needed and replaces the hint with real candidates.
@@ -1075,11 +1276,17 @@ class HkImeService : InputMethodService() {
         val cr = try {
             PerfTracer.time("classify") { classifier.classify(buffer, decodeScheme) }
         } catch (e: Exception) {
-            if (decodeScheme != Scheme.PINYIN) throw e
-            android.util.Log.e(TAG, "Pinyin decode failed", e)
-            pinyinWarm = false
-            publishPinyinResolution(buffer, gen, session, candidate = null)
-            publishPinyinUnavailable(buffer, gen)
+            // A corpus or index defect must degrade to an empty candidate bar. This
+            // runs on the decode thread, where an escaping exception would reach the
+            // default handler and kill the IME process mid-sentence.
+            android.util.Log.e(TAG, "Decode failed for $decodeScheme", e)
+            if (decodeScheme == Scheme.PINYIN) {
+                pinyinWarm = false
+                publishPinyinResolution(buffer, gen, session, candidate = null)
+                publishPinyinUnavailable(buffer, gen)
+            } else {
+                publishDecodeFailed(buffer, gen)
+            }
             finishDecode()
             return
         }
@@ -1131,6 +1338,9 @@ class HkImeService : InputMethodService() {
                 compositionSession == session) {
                 lastCandidates = expanded
                 candidateBar.setCandidates(display)
+                candidateBar.setLearningPreview(
+                    readingHintPolicy.liveLabel(readingHints, display)
+                )
                 LatencyLogger.firstCandidateRender()
                 PerfTracer.mark("first_candidate_render") { "gen=$gen size=${display.size}" }
             }
@@ -1146,6 +1356,17 @@ class HkImeService : InputMethodService() {
     ) {
         val token = pinyinSpaceIntent.onDecoded(buffer, session, gen, candidate) ?: return
         mainThread.post { resolvePinyinSpace(token) }
+    }
+
+    // Non-Pinyin decode failure: clear the bar rather than leaving stale candidates
+    // that no longer correspond to the buffer.
+    private fun publishDecodeFailed(buffer: String, gen: Long) {
+        mainThread.post {
+            if (candidateRequestGate.isCurrent(gen) && imeState.buffer == buffer) {
+                lastCandidates = emptyList()
+                if (::candidateBar.isInitialized) candidateBar.clear()
+            }
+        }
     }
 
     private fun publishPinyinUnavailable(buffer: String, gen: Long) {
@@ -1175,26 +1396,39 @@ class HkImeService : InputMethodService() {
     private fun schedulePredictions(prefix: String) {
         predictScheduled?.let { decodeHandler.removeCallbacks(it) }
         val runnable = Runnable {
-            val decoded = corpus.nextCharIndex[prefix].orEmpty()
+            // Backs off to the longest known suffix, so the chain survives past
+            // the index's three-character keys (NextCharPredictionPolicy).
+            // The user's own words lead: an explicit 自訂詞庫 mapping should beat
+            // anything the shipped corpus offers for the same prefix.
+            val decoded = NextCharPredictionPolicy.predict(customNextCharIndex, prefix) +
+                NextCharPredictionPolicy.predict(corpus.nextCharIndex, prefix)
             val learned = (memory ?: fallbackMemory).suggestions(
                 prefix,
                 imeCtx.isSensitiveField,
                 limit = CandidateDisplayPolicy.EXPANDED_LIMIT
             )
+            // 中英互相建議, Chinese -> English: the run just committed can be
+            // offered back as its English gloss. Suppressed in sensitive fields
+            // along with everything else the bar would reveal.
+            val english = if (imeCtx.isSensitiveField) emptyList()
+                else corpus.englishByChinese[prefix].orEmpty()
             val display = candidateDisplayPolicy.orderPredictions(
                 learned = learned,
                 decoded = decoded,
+                english = english,
                 limit = CandidateDisplayPolicy.BAR_LIMIT
-            ).filter { isRenderable(it.text) }
+            )
             val expanded = candidateDisplayPolicy.orderPredictions(
                 learned = learned,
                 decoded = decoded,
+                english = english,
                 limit = CandidateDisplayPolicy.EXPANDED_LIMIT
-            ).filter { isRenderable(it.text) }
+            )
             mainThread.post {
                 if (committedPrefix == prefix && imeState.buffer.isEmpty()) {
                     lastCandidates = expanded
-                    if (display.isEmpty()) candidateBar.clear() else candidateBar.setCandidates(display)
+                    if (display.isEmpty()) candidateBar.clear(clearLearningPreview = false)
+                    else candidateBar.setCandidates(display)
                 }
             }
         }
@@ -1231,8 +1465,9 @@ class HkImeService : InputMethodService() {
             decoded = decoded,
             literal = literal,
             chineseFirst = PinyinImePolicy.isChineseFirst(imeCtx.scheme, phraseExact),
+            cnRatio = (memory ?: fallbackMemory).cnRatio(buffer),
             limit = limit
-        ).filter { isRenderable(it.text) }
+        )
     }
 
     private fun composingLearnedSuggestions(
@@ -1241,33 +1476,19 @@ class HkImeService : InputMethodService() {
     ): List<com.hkmixedkeyboard.memory.MemorySuggestion> =
         (memory ?: fallbackMemory).suggestions(buffer, imeCtx.isSensitiveField, limit)
 
-    // Some corpus readings are rare supplementary-plane CJK characters (e.g. 𨳍)
-    // that a device's system font has no glyph for — they render as blank "tofu"
-    // cells in the bar / expanded grid. Drop any candidate the current font can't
-    // fully render. hasGlyph is device-font-aware, so a character still shows on
-    // devices that can render it and is hidden only where it would be blank.
-    private val glyphPaint = android.graphics.Paint()
-    private fun isRenderable(text: String): Boolean {
-        if (text.isEmpty()) return false
-        var i = 0
-        while (i < text.length) {
-            val cp = text.codePointAt(i)
-            if (!glyphPaint.hasGlyph(String(Character.toChars(cp)))) return false
-            i += Character.charCount(cp)
-        }
-        return true
-    }
-
     // ── Composition state ────────────────────────────────────────────────────
 
     private fun resetCompositionState() {
         cancelCandidateDecode()
+        clearReadingHintConfirmation()
         pinyinSpaceIntent.cancel()
         compositionSession++
         compositionDecodeGeneration = 0L
         imeState = ImeStateData()
         committedPrefix = ""
+        if (::candidateBar.isInitialized) candidateBar.setLearningPreview(null)
         currentInputConnection?.finishComposingText()
+        cursorTracker.onFinishComposing()
     }
 
     private fun isAtAutoCommitPosition(): Boolean {
@@ -1341,8 +1562,11 @@ class HkImeService : InputMethodService() {
         ic.beginBatchEdit()
         if (imeState.buffer.isNotEmpty()) {
             ic.finishComposingText()
+            cursorTracker.onFinishComposing()
         }
-        ic.commitText(outputText(text), 1)
+        val committed = outputText(text)
+        ic.commitText(committed, 1)
+        cursorTracker.onCommit(committed.length)
         ic.endBatchEdit()
         clearCompositionAfterStandaloneInsert()
     }
@@ -1352,11 +1576,13 @@ class HkImeService : InputMethodService() {
     private fun flushComposingBuffer() {
         if (imeState.buffer.isEmpty()) return
         currentInputConnection?.finishComposingText()
+        cursorTracker.onFinishComposing()
         clearCompositionAfterStandaloneInsert()
     }
 
     private fun clearCompositionAfterStandaloneInsert() {
         cancelCandidateDecode()
+        clearReadingHintConfirmation()
         compositionSession++
         imeState = ImeStateData()
         committedPrefix = ""

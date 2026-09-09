@@ -52,7 +52,7 @@ class ConservativeSpaceTest {
     @Test
     fun `Space on hap commits hap literal not happy autocomplete`() {
         val ctrl = makeCtrl(classify = { buf ->
-            clearEnglish(buf, autocomplete = "happy", enStrong = true)
+            clearEnglish(buf)
         })
         val state = ImeStateData(buffer = "hap", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
@@ -64,7 +64,7 @@ class ConservativeSpaceTest {
     @Test
     fun `Space on mee commits mee literal not meeting autocomplete`() {
         val ctrl = makeCtrl(classify = { buf ->
-            clearEnglish(buf, autocomplete = "meeting", enStrong = true)
+            clearEnglish(buf)
         })
         val state = ImeStateData(buffer = "mee", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
@@ -83,8 +83,7 @@ class ConservativeSpaceTest {
                 com.hkmixedkeyboard.engine.ClassifyResult(
                     buffer = buf,
                     cnExactParsed = false, cnHasPhraseMatch = false, cnPrefixParsed = true,
-                    cnCandidates = listOf(cnChar("唔", "rr")),
-                    enLiteral = buf, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+                    cnCandidates = listOf(cnChar("唔", "rr"))
                 )
             } else unknown(buf)
         })
@@ -128,8 +127,7 @@ class ConservativeSpaceTest {
                 com.hkmixedkeyboard.engine.ClassifyResult(
                     buffer = buf,
                     cnExactParsed = false, cnHasPhraseMatch = true, cnPrefixParsed = false,
-                    cnCandidates = listOf(cnPhrase("唔該", "rryo", isHkCore = true)),
-                    enLiteral = buf, enAutocomplete = null, enIsWord = false, enStrongPrefix = false
+                    cnCandidates = listOf(cnPhrase("唔該", "rryo", isHkCore = true))
                 )
             }
         )
@@ -146,7 +144,7 @@ class ConservativeSpaceTest {
             ctx = ImeContext(
                 scheme = com.hkmixedkeyboard.decoder.Scheme.JYUTPING
             ),
-            classify = { collision(it, "個", isHkCore = false, enIsWord = true) }
+            classify = { collision(it, "個", isHkCore = false) }
         )
 
         val out = ctrl.onSpace(ImeStateData(buffer = "go", imeState = ImeState.COMPOSING))
@@ -238,7 +236,7 @@ class ConservativeSpaceTest {
     fun `Space on ok collision commits ok literal cold-start (not HK core)`() {
         val ctrl = makeCtrl(classify = { buf ->
             // ok has both 仗 (not HK core) and EN word
-            collision(buf, "仗", isHkCore = false, enIsWord = true)
+            collision(buf, "仗", isHkCore = false)
         })
         val state = ImeStateData(buffer = "ok", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
@@ -249,7 +247,7 @@ class ConservativeSpaceTest {
     @Test
     fun `Space on 2-letter rr commits EN literal (short input stays English)`() {
         val ctrl = makeCtrl(classify = { buf ->
-            collision(buf, "唔", isHkCore = true, enIsWord = false)
+            collision(buf, "唔", isHkCore = true)
         })
         val state = ImeStateData(buffer = "rr", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)
@@ -264,7 +262,7 @@ class ConservativeSpaceTest {
         // a single Space emits the literal + exactly one space and leaves composing
         // (no second Space needed to separate the next word).
         val ctrl = makeCtrl(classify = { buf ->
-            collision(buf, "我", isHkCore = true, enIsWord = true)
+            collision(buf, "我", isHkCore = true)
         })
         val state = ImeStateData(buffer = "hi", imeState = ImeState.COMPOSING)
         val out = ctrl.onSpace(state)

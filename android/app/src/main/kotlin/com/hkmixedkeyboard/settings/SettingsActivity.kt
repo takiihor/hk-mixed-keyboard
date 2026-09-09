@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.hkmixedkeyboard.BuildConfig
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.memory.UserMemoryDatabase
+import com.hkmixedkeyboard.ui.CantoneseNotation
 import com.hkmixedkeyboard.ui.KeyboardThemeColors
 import com.hkmixedkeyboard.ui.toColors
 import kotlinx.coroutines.flow.first
@@ -126,6 +127,56 @@ class SettingsActivity : AppCompatActivity() {
             lifecycleScope.launch { KeyboardSettings.setSimplifiedOutput(this@SettingsActivity, v) }
         }
 
+        root.addView(header("學習提示"))
+        root.addView(label("在候選欄上方顯示所選字詞的注音，幫助學習發音。" +
+            "只作顯示，不影響選字或輸出。"))
+        val jyutpingHintSwitch = addSwitch(root, "顯示粵拼（粵語注音）", false) { v ->
+            lifecycleScope.launch { KeyboardSettings.setJyutpingHint(this@SettingsActivity, v) }
+        }
+        root.addView(label("粵語注音格式"))
+        val notationGroup = RadioGroup(this).apply { orientation = RadioGroup.VERTICAL }
+        var applyingNotationHydration = false
+        val notationButtons = CantoneseNotation.entries.associateWith { notation ->
+            RadioButton(this).apply {
+                id = android.view.View.generateViewId()
+                text = CantoneseNotationPreference.label(notation)
+                notationGroup.addView(this)
+            }
+        }
+        notationGroup.setOnCheckedChangeListener { _, checkedId ->
+            if (applyingNotationHydration) return@setOnCheckedChangeListener
+            val notation = notationButtons.entries.firstOrNull { it.value.id == checkedId }?.key
+                ?: return@setOnCheckedChangeListener
+            lifecycleScope.launch {
+                KeyboardSettings.setCantoneseNotation(this@SettingsActivity, notation)
+            }
+        }
+        root.addView(notationGroup)
+
+        val pinyinHintSwitch = addSwitch(root, "顯示拼音（普通話注音）", false) { v ->
+            lifecycleScope.launch { KeyboardSettings.setPinyinHint(this@SettingsActivity, v) }
+        }
+
+        root.addView(header("直接輸入"))
+        root.addView(label("終端機、SSH 及遠端桌面需要逐鍵直接輸入英文，" +
+            "不經組字緩衝。自動偵測失效時可在此強制開啟或關閉。"))
+        val directGroup = RadioGroup(this).apply { orientation = RadioGroup.VERTICAL }
+        var applyingDirectHydration = false
+        val directButtons = DirectInputMode.entries.associateWith { mode ->
+            RadioButton(this).apply {
+                id = android.view.View.generateViewId()
+                text = DirectInputPreference.label(mode)
+                directGroup.addView(this)
+            }
+        }
+        directGroup.setOnCheckedChangeListener { _, checkedId ->
+            if (applyingDirectHydration) return@setOnCheckedChangeListener
+            val mode = directButtons.entries.firstOrNull { it.value.id == checkedId }?.key
+                ?: return@setOnCheckedChangeListener
+            lifecycleScope.launch { KeyboardSettings.setDirectInput(this@SettingsActivity, mode) }
+        }
+        root.addView(directGroup)
+
         // Load current prefs and apply to switches
         lifecycleScope.launch {
             try {
@@ -151,6 +202,20 @@ class SettingsActivity : AppCompatActivity() {
                 else -> Unit
             }
             simpSwitch.isChecked  = prefs.simplifiedOutput
+            jyutpingHintSwitch.isChecked = prefs.jyutpingHint
+            pinyinHintSwitch.isChecked = prefs.pinyinHint
+            applyingNotationHydration = true
+            try {
+                notationButtons[prefs.cantoneseNotation]?.isChecked = true
+            } finally {
+                applyingNotationHydration = false
+            }
+            applyingDirectHydration = true
+            try {
+                directButtons[prefs.directInput]?.isChecked = true
+            } finally {
+                applyingDirectHydration = false
+            }
             applyingThemeHydration = true
             try {
                 themeButtons[prefs.theme]?.isChecked = true

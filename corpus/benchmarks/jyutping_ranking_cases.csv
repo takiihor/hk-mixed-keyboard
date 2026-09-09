@@ -1,0 +1,39 @@
+# Reviewed Hong Kong Cantonese exact-key ranking cases.
+# Each row asserts the expected Top-1 output for an exact Jyutping key, ranked
+# by the same frequency/dedupe policy as the Android decoder (base snapshot plus
+# jyutping_overrides.csv). Human-reviewed regression set — not a corpus-wide
+# accuracy claim. Evaluate with corpus/tools/run_jyutping_benchmark.py.
+# Fields: key, expected, category
+key,expected,category
+hai,係,char
+sik,食,char
+mou,冇,char
+zo,咗,char
+dei,哋,char
+keoi,佢,char
+gam,咁,char
+ge,嘅,char
+je,嘢,char
+di,啲,char
+me,咩,char
+ngodei,我哋,phrase
+keoidei,佢哋,phrase
+haibin,喺邊,phrase
+haido,喺度,phrase
+moumantai,冇問題,phrase
+neihou,你好,phrase
+mgoi,唔該,phrase
+dimgaai,點解,phrase
+sikfaan,食飯,phrase-synthesis-fix
+taihei,睇戲,phrase
+msai,唔使,phrase
+jigaa,而家,phrase
+kamjat,琴日,phrase
+tingjat,聽日,phrase-synthesis-fix
+mhai,唔係,phrase-synthesis-fix
+haimai,係咪,phrase-synthesis-fix
+gamjat,今日,phrase
+doze,多謝,phrase
+deoimzyu,對唔住,phrase
+dakhaan,得閒,phrase
+zungji,鍾意,phrase
