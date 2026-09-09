@@ -7,7 +7,10 @@ object KeyTouchPolicy {
         label != KeyboardLayout.KEY_BACKSPACE &&
             label != KeyboardLayout.KEY_QUESTION &&
             label != KeyboardLayout.KEY_PERIOD &&
-            label != KeyboardLayout.KEY_MODE
+            label != KeyboardLayout.KEY_MODE &&
+            // Digits now carry a long-press alternate, so they have to wait for
+            // the tap-or-hold outcome like every other key that does.
+            MainKeyboardLongPressPolicy.longPressTextFor(label) == null
 
     // The scheme key resolves through its own tap/hold gesture now that a long
     // press toggles 簡體輸出, so it must not also fire on release.
@@ -19,5 +22,6 @@ object KeyTouchPolicy {
             label == KeyboardLayout.KEY_QUESTION ||
             label == KeyboardLayout.KEY_PERIOD ||
             label == KeyboardLayout.KEY_MODE ||
-            label == KeyboardLayout.KEY_SPACE
+            label == KeyboardLayout.KEY_SPACE ||
+            MainKeyboardLongPressPolicy.longPressTextFor(label) != null
 }

@@ -26,7 +26,7 @@ class KeyboardLayoutTest {
             KeyboardLayout.rows[3].keys.map { it.label }
         )
         assertEquals(
-            listOf("符", "😊", "⌨", " ", "。", "，", "↵"),
+            listOf("符", "😊", "⌨", " ", "。", "↵"),
             KeyboardLayout.rows[4].keys.map { it.label }
         )
     }
@@ -36,7 +36,9 @@ class KeyboardLayoutTest {
         val space = KeyboardLayout.rows[4].keys.single { it.label == " " }
 
         // Trimmed 4.0 → 3.0 to make room for the dedicated 😊 emoji key.
-        assertEquals(3.0f, space.widthUnits)
+        // The dedicated ，key gave its unit to space, which was the narrowest
+        // element of the design on the key people hit most. ，lives on the 符 page.
+        assertEquals(4.0f, space.widthUnits)
     }
 
     @Test
@@ -93,7 +95,7 @@ class KeyboardLayoutTest {
 
         assertEquals(100f, q.bounds.right - q.bounds.left, 0.001f)
         assertEquals(50f, a.bounds.left, 0.001f)
-        assertEquals(300f, space.bounds.right - space.bounds.left, 0.001f)
+        assertEquals(400f, space.bounds.right - space.bounds.left, 0.001f)
     }
 
     @Test

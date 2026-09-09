@@ -59,6 +59,9 @@ class SettingsActivity : AppCompatActivity() {
         val soundSwitch = addSwitch(root, "按鍵聲音", false) { v ->
             lifecycleScope.launch { KeyboardSettings.setSound(this@SettingsActivity, v) }
         }
+        val numberRowSwitch = addSwitch(root, "顯示數字行", false) { v ->
+            lifecycleScope.launch { KeyboardSettings.setNumberRow(this@SettingsActivity, v) }
+        }
         val schemeGroup = RadioGroup(this).apply {
             orientation = RadioGroup.HORIZONTAL
         }
@@ -190,6 +193,7 @@ class SettingsActivity : AppCompatActivity() {
             rootsSwitch.isChecked = prefs.showRoots
             vibSwitch.isChecked   = prefs.vibration
             soundSwitch.isChecked = prefs.sound
+            numberRowSwitch.isChecked = prefs.numberRow
             when (val action = schemeSelection.onHydrated(prefs.inputScheme)) {
                 is InputSchemeSelectionCoordinator.Action.ApplyToUi -> {
                     applyingHydration = true

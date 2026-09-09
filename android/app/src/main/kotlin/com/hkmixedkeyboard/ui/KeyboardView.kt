@@ -37,6 +37,15 @@ class KeyboardView @JvmOverloads constructor(
 
     // Label drawn on the space bar (the active input scheme).
     var spaceLabel: String = "空格"
+    /** Whether the digits row is drawn; iOS keyboards do not have one. */
+    var showNumberRow: Boolean = true
+        set(value) {
+            if (field == value) return
+            field = value
+            if (width > 0 && height > 0) buildCells(width.toFloat(), height.toFloat())
+            requestLayout()
+            invalidate()
+        }
     /** Label and accent for the return key, from the focused field's action. */
     var enterAction: com.hkmixedkeyboard.ime.EnterKeyAction.Action =
         com.hkmixedkeyboard.ime.EnterKeyAction.Action("↵", accented = false)
@@ -163,6 +172,9 @@ class KeyboardView @JvmOverloads constructor(
             onSwipe = { keyListener?.onSpaceSwipe(it) },
             onCursorModeChanged = { active ->
                 cursorMode = active
+                // A pulse on entry is the other half of the iOS affordance: the
+                // keyboard going blank is seen, the tick is felt.
+                if (active) haptic()
                 invalidate()
             }
         )
@@ -184,7 +196,8 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val desiredHeight = KeyboardLayout.keyboardHeightPx(resources.displayMetrics.density)
+        val desiredHeight =
+            KeyboardLayout.keyboardHeightPx(resources.displayMetrics.density, showNumberRow)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
         val measuredHeight = when (heightMode) {
@@ -197,7 +210,7 @@ class KeyboardView @JvmOverloads constructor(
 
     private fun buildCells(w: Float, h: Float) {
         cells.clear()
-        for (cell in KeyboardLayout.buildCells(w, h)) {
+        for (cell in KeyboardLayout.buildCells(w, h, showNumberRow)) {
             val drawRect = RectF(
                 cell.bounds.left + keyMargin,
                 cell.bounds.top + keyMargin,
@@ -254,6 +267,11 @@ class KeyboardView @JvmOverloads constructor(
 
             val cx = cell.rect.centerX()
             val cy = cell.rect.centerY()
+
+            // iOS blanks every keycap while the space bar is acting as a trackpad,
+            // and that — not a changed space label — is what tells the user the
+            // keyboard has become a cursor surface. Only the space bar keeps text.
+            if (cursorMode && label != KEY_SPACE) continue
 
             // Letter faces follow the shift state; everything else renders verbatim.
             val shown = when {
@@ -400,12 +418,16 @@ class KeyboardView @JvmOverloads constructor(
         val label = cell.def.label
         val inside = cell.hitRect.contains(x, y)
         if (pointerId == gesturePointerId) {
-            when (label) {
-                KEY_BACKSPACE, KEY_QUESTION, KEY_PERIOD, KEY_SYMBOL ->
-                    if (inside) holdController.release() else holdController.cancel()
-                KEY_SPACE -> {
-                    spaceGestureController.release(releasedInside = inside)
-                }
+            // Every hold-gesture key except space resolves the same way, so this
+            // must not be a hard-coded list: a key added to usesHoldGesture but
+            // missed here never releases, and its pending long press fires on what
+            // the user meant as a tap.
+            if (label == KEY_SPACE) {
+                spaceGestureController.release(releasedInside = inside)
+            } else if (inside) {
+                holdController.release()
+            } else {
+                holdController.cancel()
             }
             gesturePointerId = -1
         } else if (KeyTouchPolicy.emitsOnRelease(label, releasedInside = inside)) {
@@ -448,16 +470,19 @@ class KeyboardView @JvmOverloads constructor(
                     emitKey(KEY_EXCLAIM)
                 }
             )
-            KEY_PERIOD -> holdController.pressLong(
-                tap = { emitKey(MainKeyboardLongPressPolicy.shortPressTextFor(KEY_PERIOD)) },
-                longPress = { keyListener?.onKeyLongPress(KEY_PERIOD) }
-            )
             KEY_MODE -> holdController.pressLong(
                 tap = { emitKey(KEY_MODE) },
                 longPress = { keyListener?.onKeyLongPress(KEY_MODE) }
             )
             KEY_SPACE -> {
                 spaceGestureController.press(startX = x)
+            }
+            // 。and the digits: tap commits the face, hold commits the alternate.
+            else -> if (MainKeyboardLongPressPolicy.longPressTextFor(label) != null) {
+                holdController.pressLong(
+                    tap = { emitKey(MainKeyboardLongPressPolicy.shortPressTextFor(label)) },
+                    longPress = { keyListener?.onKeyLongPress(label) }
+                )
             }
         }
     }

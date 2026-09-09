@@ -20,6 +20,7 @@ import com.hkmixedkeyboard.decoder.NextCharPredictionPolicy
 import com.hkmixedkeyboard.decoder.Scheme
 import com.hkmixedkeyboard.decoder.SourceSchema
 import com.hkmixedkeyboard.engine.CandidateDisplayPolicy
+import com.hkmixedkeyboard.engine.IdleSuggestionPolicy
 import com.hkmixedkeyboard.engine.Classifier
 import com.hkmixedkeyboard.engine.T2SConverter
 import com.hkmixedkeyboard.memory.CustomWordDao
@@ -168,6 +169,7 @@ class HkImeService : InputMethodService() {
     // Mirrors KeyboardPrefs so the first input view is built at the right height,
     // before the settings flow's first emission arrives.
     private var readingHints = ReadingHints(jyutping = true, pinyin = false)
+    private var showNumberRow = true
     // Continuations from the user's own 自訂詞庫 words. Rebuilt on the IO thread
     // whenever the table changes, read on the decode thread — the whole immutable
     // map is swapped at once.
@@ -295,6 +297,7 @@ class HkImeService : InputMethodService() {
                         vibrationEnabled = prefs.vibration
                         soundEnabled = prefs.sound
                         showCangjieRoots = prefs.showRoots
+                        applyNumberRow(prefs.numberRow)
                         applyReadingHints(
                             ReadingHints(
                                 jyutping = prefs.jyutpingHint,
@@ -471,14 +474,16 @@ class HkImeService : InputMethodService() {
     private fun buildInputView(): View {
         val density = resources.displayMetrics.density
         val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density, readingHints.any)
-        val keyboardHeight = KeyboardLayout.keyboardHeightPx(density)
+        val keyboardHeight = KeyboardLayout.keyboardHeightPx(density, showNumberRow)
         val root = LinearLayout(this).also { inputRoot = it }.apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density, readingHints.any)
+            minimumHeight = KeyboardLayout.inputViewMinHeightPx(
+                density, readingHints.any, showNumberRow
+            )
             setBackgroundColor(currentThemeColors.keyboardBackground)
         }
 
@@ -508,6 +513,7 @@ class HkImeService : InputMethodService() {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
             themeColors = currentThemeColors
+            showNumberRow = this@HkImeService.showNumberRow
             showCangjieRoots = this@HkImeService.showCangjieRoots &&
                 InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
             spaceLabel = spaceLabelText()
@@ -610,6 +616,26 @@ class HkImeService : InputMethodService() {
         if (heightChanged) resizeCandidateBar()
     }
 
+    /** Adds or removes the digits row, resizing the input view to match. */
+    private fun applyNumberRow(enabled: Boolean) {
+        if (showNumberRow == enabled) return
+        showNumberRow = enabled
+        if (!::keyboardView.isInitialized) return
+        val density = resources.displayMetrics.density
+        keyboardView.showNumberRow = enabled
+        val keyboardHeight = KeyboardLayout.keyboardHeightPx(density, enabled)
+        keyboardView.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, keyboardHeight
+        )
+        keyboardView.minimumHeight = keyboardHeight
+        if (::inputRoot.isInitialized) {
+            inputRoot.minimumHeight = KeyboardLayout.inputViewMinHeightPx(
+                density, readingHints.any, enabled
+            )
+            inputRoot.requestLayout()
+        }
+    }
+
     private fun resizeCandidateBar() {
         if (!::candidateBar.isInitialized) return
         val density = resources.displayMetrics.density
@@ -626,14 +652,16 @@ class HkImeService : InputMethodService() {
     private fun buildFallbackInputView(): View {
         val density = resources.displayMetrics.density
         val candidateBarHeight = KeyboardLayout.candidateBarHeightPx(density, readingHints.any)
-        val keyboardHeight = KeyboardLayout.keyboardHeightPx(density)
+        val keyboardHeight = KeyboardLayout.keyboardHeightPx(density, showNumberRow)
         val root = LinearLayout(this).also { inputRoot = it }.apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            minimumHeight = KeyboardLayout.inputViewMinHeightPx(density, readingHints.any)
+            minimumHeight = KeyboardLayout.inputViewMinHeightPx(
+                density, readingHints.any, showNumberRow
+            )
             setBackgroundColor(currentThemeColors.keyboardBackground)
         }
         candidateBar = CandidateBarView(this).apply {
@@ -652,6 +680,7 @@ class HkImeService : InputMethodService() {
             vibrationEnabled = this@HkImeService.vibrationEnabled
             haptics = typingHaptics
             themeColors = currentThemeColors
+            showNumberRow = this@HkImeService.showNumberRow
             showCangjieRoots = this@HkImeService.showCangjieRoots &&
                 InputSchemePreference.showsCangjieRoots(imeCtx.scheme)
             spaceLabel = spaceLabelText()
@@ -690,7 +719,7 @@ class HkImeService : InputMethodService() {
         shiftController.reset()
         refreshShiftVisual()
         if (::candidateBar.isInitialized) {
-            if (sensitive) candidateBar.showSafeMode() else candidateBar.clearSystemMessage()
+            if (sensitive) candidateBar.showSafeMode() else showNextCharPredictions()
         }
         applyEnterKeyAction(attribute)
     }
@@ -760,6 +789,20 @@ class HkImeService : InputMethodService() {
         // Composition finished (or never started): the editor's position is now the
         // truth, so re-sync the mirror instead of extrapolating from it.
         if (imeState.buffer.isEmpty()) cursorTracker.syncTo(newSelStart, newSelEnd)
+    }
+
+    /**
+     * The input view can be created after onStartInput, so the idle strip has to
+     * be filled here too — otherwise the first field of a session opens with the
+     * reserved strip empty, which is the "looks broken" case this fixes.
+     */
+    override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
+        super.onStartInputView(info, restarting)
+        applyEnterKeyAction(info)
+        if (::keyboardView.isInitialized) keyboardView.showNumberRow = showNumberRow
+        if (!::candidateBar.isInitialized) return
+        if (imeCtx.isSensitiveField) candidateBar.showSafeMode()
+        else if (imeState.buffer.isEmpty()) showNextCharPredictions()
     }
 
     override fun onFinishInput() {
@@ -1146,8 +1189,30 @@ class HkImeService : InputMethodService() {
         if (!::candidateBar.isInitialized) return
         if (imeCtx.isSensitiveField) { candidateBar.showSafeMode(); return }
         val prefix = committedPrefix
-        if (prefix.isEmpty()) { lastCandidates = emptyList(); candidateBar.clearSystemMessage(); return }
+        if (prefix.isEmpty()) { showIdleSuggestions(); return }
         schedulePredictions(prefix)
+    }
+
+    /**
+     * Fills the strip on a fresh field, where there is no prefix to predict from.
+     * Suppressed in sensitive fields along with everything else the bar reveals.
+     */
+    private fun showIdleSuggestions() {
+        candidateBar.clearSystemMessage()
+        if (imeCtx.isSensitiveField) { lastCandidates = emptyList(); return }
+        decodeHandler.post {
+            val learned = (memory ?: fallbackMemory).suggestions(
+                "", imeCtx.isSensitiveField, limit = IdleSuggestionPolicy.LIMIT * 2
+            )
+            val idle = IdleSuggestionPolicy.suggestions(learned)
+            mainThread.post {
+                if (imeState.buffer.isEmpty() && committedPrefix.isEmpty() &&
+                    !imeCtx.isSensitiveField && ::candidateBar.isInitialized) {
+                    lastCandidates = idle
+                    candidateBar.setCandidates(idle)
+                }
+            }
+        }
     }
 
     private fun handleExpandTap() {

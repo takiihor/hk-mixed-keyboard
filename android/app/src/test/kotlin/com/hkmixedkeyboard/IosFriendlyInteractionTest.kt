@@ -4,10 +4,14 @@ import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import com.hkmixedkeyboard.ime.EnterKeyAction
 import com.hkmixedkeyboard.ime.WordDeletePolicy
+import com.hkmixedkeyboard.engine.IdleSuggestionPolicy
+import com.hkmixedkeyboard.memory.MemorySuggestion
 import com.hkmixedkeyboard.ui.KeyTouchPolicy
+import com.hkmixedkeyboard.ui.MainKeyboardLongPressPolicy
 import com.hkmixedkeyboard.ui.KeyboardLayout
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -110,5 +114,116 @@ class IosFriendlyInteractionTest {
     @Test
     fun `space still owns its own gesture`() {
         assertTrue(KeyTouchPolicy.usesHoldGesture(KeyboardLayout.KEY_SPACE))
+    }
+
+    // ── Optional number row ───────────────────────────────────────────────
+
+    @Test
+    fun `dropping the number row removes a row and its height`() {
+        val withRow = KeyboardLayout.rowsFor(showNumberRow = true)
+        val without = KeyboardLayout.rowsFor(showNumberRow = false)
+
+        assertEquals(withRow.size - 1, without.size)
+        assertTrue("digits should be gone", without.none { r -> r.keys.any { it.label == "1" } })
+        assertTrue(
+            KeyboardLayout.keyboardHeightPx(2f, showNumberRow = false) <
+                KeyboardLayout.keyboardHeightPx(2f, showNumberRow = true)
+        )
+    }
+
+    @Test
+    fun `the letter and bottom rows are untouched by the number row setting`() {
+        val without = KeyboardLayout.rowsFor(showNumberRow = false)
+
+        assertEquals(listOf("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
+            without.first().keys.map { it.label })
+        assertEquals(listOf("符", "😊", "⌨", " ", "。", "↵"),
+            without.last().keys.map { it.label })
+    }
+
+    @Test
+    fun `cells are laid out for whichever row set is showing`() {
+        val cells = KeyboardLayout.buildCells(1000f, 1000f, showNumberRow = false)
+
+        assertTrue(cells.none { it.key.label == "1" })
+        assertEquals(0f, cells.first().bounds.top, 0.001f)
+    }
+
+    // ── Long-press alternates on the main layer ───────────────────────────
+
+    @Test
+    fun `digits reach their symbol on a hold`() {
+        assertEquals("!", MainKeyboardLongPressPolicy.longPressTextFor("1"))
+        assertEquals("@", MainKeyboardLongPressPolicy.longPressTextFor("2"))
+        assertEquals(")", MainKeyboardLongPressPolicy.longPressTextFor("0"))
+    }
+
+    @Test
+    fun `the full stop keeps its Latin alternate and letters have none`() {
+        assertEquals(".", MainKeyboardLongPressPolicy.longPressTextFor(KeyboardLayout.KEY_PERIOD))
+        assertNull(MainKeyboardLongPressPolicy.longPressTextFor("Q"))
+    }
+
+    @Test
+    fun `a key with an alternate waits for the tap-or-hold outcome`() {
+        // Emitting on press would commit the digit before the hold could resolve.
+        assertFalse(KeyTouchPolicy.emitsOnPress("1"))
+        assertTrue(KeyTouchPolicy.usesHoldGesture("1"))
+        assertTrue(KeyTouchPolicy.emitsOnPress("Q"))
+    }
+
+    // ── Idle strip ────────────────────────────────────────────────────────
+
+    @Test
+    fun `an empty history still fills the idle strip`() {
+        val idle = IdleSuggestionPolicy.suggestions(emptyList())
+
+        assertEquals(IdleSuggestionPolicy.LIMIT, idle.size)
+        assertEquals("唔該", idle.first().text)
+    }
+
+    @Test
+    fun `the user's own words lead the starters`() {
+        val learned = listOf(
+            MemorySuggestion(cnPhrase("香港", "haeu"), count = 9, isExactBuffer = true),
+            MemorySuggestion(cnChar("我", "hqi"), count = 4, isExactBuffer = true)
+        )
+        val idle = IdleSuggestionPolicy.suggestions(learned)
+
+        assertEquals(listOf("香港", "我"), idle.take(2).map { it.text })
+        assertEquals(IdleSuggestionPolicy.LIMIT, idle.size)
+    }
+
+    @Test
+    fun `English literals never reach the idle strip`() {
+        val learned = listOf(MemorySuggestion(enLiteralCand("send"), count = 20, isExactBuffer = true))
+        val idle = IdleSuggestionPolicy.suggestions(learned)
+
+        assertTrue(idle.none { it.text == "send" })
+    }
+
+    @Test
+    fun `every hold-gesture key can still resolve a plain tap`() {
+        // The release path used to name its keys explicitly, so a key added to
+        // usesHoldGesture but missed there fired its long press on a tap. Any key
+        // that holds must therefore either be space, or have a tap outcome.
+        val holdKeys = (KeyboardLayout.rowsFor(showNumberRow = true)
+            .flatMap { it.keys }
+            .map { it.label } + listOf(KeyboardLayout.KEY_QUESTION))
+            .filter { KeyTouchPolicy.usesHoldGesture(it) }
+
+        assertTrue("expected several hold keys, got $holdKeys", holdKeys.size >= 4)
+        holdKeys.forEach { label ->
+            // Space steers the caret; the rest name a tap outcome either in
+            // beginGesture (backspace, ？！, 符, ⌨) or through the policy map.
+            val resolvable = label in setOf(
+                KeyboardLayout.KEY_SPACE,
+                KeyboardLayout.KEY_BACKSPACE,
+                KeyboardLayout.KEY_QUESTION,
+                KeyboardLayout.KEY_SYMBOL,
+                KeyboardLayout.KEY_MODE
+            ) || MainKeyboardLongPressPolicy.longPressTextFor(label) != null
+            assertTrue("$label holds but has no tap outcome", resolvable)
+        }
     }
 }

@@ -40,6 +40,8 @@ object Keys {
     val PINYIN_HINT = booleanPreferencesKey("pinyin_hint")
     // How the Cantonese hint is spelled: 粵拼 (Jyutping) or 耶魯 (Yale).
     val CANTONESE_NOTATION = stringPreferencesKey("cantonese_notation")
+    // iOS has no number row; keeping ours costs a full 48dp row.
+    val NUMBER_ROW = booleanPreferencesKey("number_row")
 }
 
 /**
@@ -85,7 +87,8 @@ data class KeyboardPrefs(
     val pinyinHint: Boolean = false,
     // Jyutping by default: it is the standard the app's Cantonese data is built
     // on, and the one a learner ends up sharing with dictionaries.
-    val cantoneseNotation: CantoneseNotation = CantoneseNotation.JYUTPING
+    val cantoneseNotation: CantoneseNotation = CantoneseNotation.JYUTPING,
+    val numberRow: Boolean = true
 )
 
 object KeyboardSettings {
@@ -106,7 +109,8 @@ object KeyboardSettings {
                 directInput = DirectInputPreference.resolve(p[Keys.DIRECT_INPUT]),
                 jyutpingHint = p[Keys.JYUTPING_HINT] ?: true,
                 pinyinHint = p[Keys.PINYIN_HINT] ?: false,
-                cantoneseNotation = CantoneseNotationPreference.resolve(p[Keys.CANTONESE_NOTATION])
+                cantoneseNotation = CantoneseNotationPreference.resolve(p[Keys.CANTONESE_NOTATION]),
+                numberRow = p[Keys.NUMBER_ROW] ?: true
             )
         }
 
@@ -143,6 +147,9 @@ object KeyboardSettings {
         ctx.settingsDataStore.edit {
             it[Keys.CANTONESE_NOTATION] = CantoneseNotationPreference.serialize(notation)
         }
+
+    suspend fun setNumberRow(ctx: Context, v: Boolean) =
+        ctx.settingsDataStore.edit { it[Keys.NUMBER_ROW] = v }
 
     suspend fun setDirectInput(ctx: Context, mode: DirectInputMode) =
         ctx.settingsDataStore.edit { it[Keys.DIRECT_INPUT] = DirectInputPreference.serialize(mode) }

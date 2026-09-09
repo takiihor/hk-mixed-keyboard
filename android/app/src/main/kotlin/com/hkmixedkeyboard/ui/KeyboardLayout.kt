@@ -61,11 +61,26 @@ object KeyboardLayout {
     // The number, QWERTY, ZXCV and bottom rows fill the full width (0 → 10) so the
     // far-left and far-right space is used. The home row is the QWERTY stagger:
     // inset half a key each side (0.5 → 9.5) so A lands centred between Q and W.
-    val rows: List<RowDef> = listOf(
-        row(
-            labels("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"),
-            startUnits = 0f
-        ),
+    private val numberRow: RowDef = row(
+        labels("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"),
+        startUnits = 0f
+    )
+
+    /**
+     * Rows for the current preference.
+     *
+     * iOS has no number row at all — digits live behind `123` — so a permanently
+     * visible one is both the fastest way to type a digit and the first thing that
+     * looks wrong to someone arriving from an iPhone. It costs a full 48dp row, so
+     * it is a preference rather than a fixed part of the design.
+     */
+    fun rowsFor(showNumberRow: Boolean): List<RowDef> =
+        if (showNumberRow) listOf(numberRow) + letterRows else letterRows
+
+    fun totalHeightWeightFor(showNumberRow: Boolean): Float =
+        rowsFor(showNumberRow).sumOf { it.heightWeight.toDouble() }.toFloat()
+
+    private val letterRows: List<RowDef> = listOf(
         row(
             labels("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
             startUnits = 0f
@@ -82,23 +97,30 @@ object KeyboardLayout {
         ),
         row(
             // 符 (tap = symbols, long-press = emoji) sits next to a dedicated 😊 key
-            // (tap = emoji) so emoji is discoverable without the hidden gesture. Space
-            // trimmed 4.0 → 3.0 to make room; row still sums to 10 units.
+            // (tap = emoji) so emoji is discoverable without the hidden gesture.
+            //
+            // The dedicated ，key is gone and its unit went to space, which was
+            // 3.0 against roughly 4.75 on iOS — the narrowest element of the design
+            // on the key people hit most. ，remains one tap away on the 符 page,
+            // which is also where Apple's own Chinese keyboards keep it. The freed
+            // unit is what an iOS port needs for its mandatory 🌐 key.
             listOf(
                 KEY_SYMBOL to 1.5f,
                 KEY_EMOJI to 1.0f,
                 KEY_MODE to 1f,
-                KEY_SPACE to 3.0f,
+                KEY_SPACE to 4.0f,
                 KEY_PERIOD to 1f,
-                KEY_COMMA to 1f,
                 KEY_ENTER to 1.5f
             ),
             startUnits = 0f
         )
     )
 
-    val totalHeightWeight: Float =
-        rows.sumOf { it.heightWeight.toDouble() }.toFloat()
+    /** Default layout, still including the number row. */
+    val rows: List<RowDef> get() = rowsFor(showNumberRow = true)
+
+    val totalHeightWeight: Float
+        get() = totalHeightWeightFor(showNumberRow = true)
 
     fun candidateBarHeightPx(density: Float, showsReadingHint: Boolean = false): Int =
         CandidateBarLayoutPolicy.heightPx(
@@ -107,18 +129,26 @@ object KeyboardLayout {
             showsReadingHint
         )
 
-    fun keyboardHeightPx(density: Float): Int =
-        (BASE_ROW_HEIGHT_DP * totalHeightWeight * density).toInt()
+    fun keyboardHeightPx(density: Float, showNumberRow: Boolean = true): Int =
+        (BASE_ROW_HEIGHT_DP * totalHeightWeightFor(showNumberRow) * density).toInt()
 
-    fun inputViewMinHeightPx(density: Float, showsReadingHint: Boolean = false): Int =
-        keyboardHeightPx(density) + candidateBarHeightPx(density, showsReadingHint)
+    fun inputViewMinHeightPx(
+        density: Float,
+        showsReadingHint: Boolean = false,
+        showNumberRow: Boolean = true
+    ): Int = keyboardHeightPx(density, showNumberRow) +
+        candidateBarHeightPx(density, showsReadingHint)
 
-    fun buildCells(width: Float, height: Float): List<KeyCell> {
+    fun buildCells(
+        width: Float,
+        height: Float,
+        showNumberRow: Boolean = true
+    ): List<KeyCell> {
         val unitWidth = width / GRID_WIDTH_UNITS
-        val unitHeight = height / totalHeightWeight
+        val unitHeight = height / totalHeightWeightFor(showNumberRow)
         var y = 0f
         return buildList {
-            for (row in rows) {
+            for (row in rowsFor(showNumberRow)) {
                 val rowHeight = unitHeight * row.heightWeight
                 for (key in row.keys) {
                     add(

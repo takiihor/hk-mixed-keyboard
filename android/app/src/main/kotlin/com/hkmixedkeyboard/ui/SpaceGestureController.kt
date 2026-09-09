@@ -108,6 +108,8 @@ class SpaceGestureController(
     }
 
     companion object {
-        const val LONG_PRESS_DELAY_MS = 600L
+        // iOS opens its trackpad at roughly half a second. 600ms read as broken
+        // to a tester who did not know the gesture was there at all.
+        const val LONG_PRESS_DELAY_MS = 500L
     }
 }
