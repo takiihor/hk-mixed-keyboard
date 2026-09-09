@@ -48,7 +48,11 @@ data class KeyboardThemeColors(
     @ColorInt val emojiFunctionPressedBackground: Int = 0,
     @ColorInt val safeModeBackground: Int = 0,
     @ColorInt val safeModeText: Int = 0,
-    @ColorInt val symbolPressedFunctionKeyBackground: Int = 0
+    @ColorInt val symbolPressedFunctionKeyBackground: Int = 0,
+    // Return key when the field declares an action (Go / Search / Send). Zero
+    // falls back to the ordinary function-key colour.
+    @ColorInt val enterActionBackground: Int = 0,
+    @ColorInt val enterActionLabel: Int = 0
 ) {
     companion object {
         /** Compatibility default for views created before the service injects a palette. */
@@ -99,7 +103,9 @@ fun KeyboardTheme.toColors(): KeyboardThemeColors = when (this) {
         emojiFunctionPressedBackground = 0xFF5F6368.toInt(),
         safeModeBackground = 0xFF3A2E12.toInt(),
         safeModeText = 0xFFF5C26B.toInt(),
-        symbolPressedFunctionKeyBackground = 0xFF50575C.toInt()
+        symbolPressedFunctionKeyBackground = 0xFF50575C.toInt(),
+        enterActionBackground = 0xFF0B57D0.toInt(),
+        enterActionLabel = 0xFFFFFFFF.toInt()
     )
 
     KeyboardTheme.IOS_LIGHT -> KeyboardThemeColors(
@@ -144,6 +150,8 @@ fun KeyboardTheme.toColors(): KeyboardThemeColors = when (this) {
         emojiFunctionPressedBackground = 0xFF969DA7.toInt(),
         safeModeBackground = 0xFFE6D3A8.toInt(),
         safeModeText = 0xFF6B4F00.toInt(),
-        symbolPressedFunctionKeyBackground = 0xFF969DA7.toInt()
+        symbolPressedFunctionKeyBackground = 0xFF969DA7.toInt(),
+        enterActionBackground = 0xFF0A6CFF.toInt(),
+        enterActionLabel = 0xFFFFFFFF.toInt()
     )
 }

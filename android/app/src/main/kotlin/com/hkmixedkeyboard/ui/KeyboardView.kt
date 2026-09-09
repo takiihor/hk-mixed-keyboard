@@ -23,6 +23,8 @@ class KeyboardView @JvmOverloads constructor(
         fun onKey(label: String)
         fun onKeyLongPress(label: String)
         fun onSpaceSwipe(delta: Int)
+        /** A held backspace has escalated from characters to whole words. */
+        fun onBackspaceWord() {}
     }
 
     var keyListener: KeyListener? = null
@@ -35,6 +37,16 @@ class KeyboardView @JvmOverloads constructor(
 
     // Label drawn on the space bar (the active input scheme).
     var spaceLabel: String = "空格"
+    /** Label and accent for the return key, from the focused field's action. */
+    var enterAction: com.hkmixedkeyboard.ime.EnterKeyAction.Action =
+        com.hkmixedkeyboard.ime.EnterKeyAction.Action("↵", accented = false)
+        set(value) {
+            if (field == value) return
+            field = value
+            invalidate()
+        }
+    /** True while a hold-and-drag on space is steering the caret. */
+    private var cursorMode = false
 
     // Live indicator drawn on the scheme-switch key (速 = 速成, 粵 = 粵拼).
     var modeLabel: String = "速"
@@ -50,6 +62,8 @@ class KeyboardView @JvmOverloads constructor(
         const val KEY_SHIFT = KeyboardLayout.KEY_SHIFT
         const val KEY_ENTER = KeyboardLayout.KEY_ENTER
         const val KEY_SPACE = KeyboardLayout.KEY_SPACE
+        /** Shown on the space bar while hold-and-drag is steering the caret. */
+        const val CURSOR_MODE_LABEL = "◂ 移動游標 ▸"
         const val KEY_EMOJI = KeyboardLayout.KEY_EMOJI
         const val KEY_SYMBOL = KeyboardLayout.KEY_SYMBOL
         const val KEY_MODE = KeyboardLayout.KEY_MODE
@@ -146,8 +160,11 @@ class KeyboardView @JvmOverloads constructor(
             holdController = holdController,
             cursorStepPx = cursorStepPx,
             onTap = { emitKey(KEY_SPACE) },
-            onLongPress = { keyListener?.onKeyLongPress(KEY_SPACE) },
-            onSwipe = { keyListener?.onSpaceSwipe(it) }
+            onSwipe = { keyListener?.onSpaceSwipe(it) },
+            onCursorModeChanged = { active ->
+                cursorMode = active
+                invalidate()
+            }
         )
     }
 
@@ -212,6 +229,8 @@ class KeyboardView @JvmOverloads constructor(
             val bg = when {
                 pressed && isSpecial(label) -> themeColors.pressedSpecialKeyBackground
                 pressed -> themeColors.pressedKeyBackground
+                isEnter && enterAction.accented && themeColors.enterActionBackground != 0 ->
+                    themeColors.enterActionBackground
                 isEnter -> themeColors.enterKeyBackground
                 label == KEY_SHIFT && shiftActive -> themeColors.enterKeyBackground
                 label == KEY_SPACE -> themeColors.spaceKeyBackground
@@ -237,12 +256,16 @@ class KeyboardView @JvmOverloads constructor(
             val cy = cell.rect.centerY()
 
             // Letter faces follow the shift state; everything else renders verbatim.
-            val shown = if (isLetter(label) && !shiftActive) label.lowercase() else label
+            val shown = when {
+                isLetter(label) && !shiftActive -> label.lowercase()
+                isEnter -> enterAction.label
+                else -> label
+            }
 
             when {
                 label == KEY_SPACE -> {
                     paintSpace.color = themeColors.hint
-                    canvas.drawText(spaceLabel, cx,
+                    canvas.drawText(if (cursorMode) CURSOR_MODE_LABEL else spaceLabel, cx,
                         cy - (paintSpace.ascent() + paintSpace.descent()) / 2, paintSpace)
                 }
                 label == KEY_MODE -> {
@@ -273,7 +296,12 @@ class KeyboardView @JvmOverloads constructor(
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
                 }
                 else -> {
-                    paintLabel.color = if (isEnter) themeColors.enterLabel else themeColors.label
+                    paintLabel.color = when {
+                        isEnter && enterAction.accented && themeColors.enterActionLabel != 0 ->
+                            themeColors.enterActionLabel
+                        isEnter -> themeColors.enterLabel
+                        else -> themeColors.label
+                    }
                     canvas.drawText(shown, cx,
                         cy - (paintLabel.ascent() + paintLabel.descent()) / 2, paintLabel)
                 }
@@ -405,7 +433,10 @@ class KeyboardView @JvmOverloads constructor(
 
     private fun beginGesture(label: String, x: Float) {
         when (label) {
-            KEY_BACKSPACE -> holdController.pressRepeating { emitKey(KEY_BACKSPACE) }
+            KEY_BACKSPACE -> holdController.pressRepeating(
+                action = { emitKey(KEY_BACKSPACE) },
+                onEscalate = { keyListener?.onBackspaceWord() }
+            )
             KEY_SYMBOL -> holdController.pressLong(
                 tap = { emitKey(KEY_SYMBOL) },
                 longPress = { keyListener?.onKeyLongPress(KEY_SYMBOL) }
@@ -420,6 +451,10 @@ class KeyboardView @JvmOverloads constructor(
             KEY_PERIOD -> holdController.pressLong(
                 tap = { emitKey(MainKeyboardLongPressPolicy.shortPressTextFor(KEY_PERIOD)) },
                 longPress = { keyListener?.onKeyLongPress(KEY_PERIOD) }
+            )
+            KEY_MODE -> holdController.pressLong(
+                tap = { emitKey(KEY_MODE) },
+                longPress = { keyListener?.onKeyLongPress(KEY_MODE) }
             )
             KEY_SPACE -> {
                 spaceGestureController.press(startX = x)

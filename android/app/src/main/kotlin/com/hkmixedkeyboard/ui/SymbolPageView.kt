@@ -129,7 +129,9 @@ class SymbolPageView(context: Context) : View(context) {
                 selectedAlternative = null
                 selectionHaptic()
                 if (key.spec.role == SymbolKeyRole.BACKSPACE) {
-                    backspaceHold.pressRepeating { dispatchKey(key.spec) }
+                    // The symbol page has no composition to escalate into, so it
+                    // keeps the accelerating character repeat without word deletes.
+                    backspaceHold.pressRepeating(action = { dispatchKey(key.spec) })
                 } else {
                     longPress.press(
                         key.spec,

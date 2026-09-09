@@ -76,6 +76,8 @@ class HkImeService : InputMethodService() {
         // which emitted these variant forms before HK normalization (爲→為 …).
         private const val VARIANT_PURGE_FLAG = "variant_purge_v47"
         private const val READING_HINT_CONFIRMATION_MS = 1_400L
+        /** Enough context for one word; the policy never looks further back. */
+        private const val WORD_DELETE_LOOKBEHIND = 64
         private val STALE_VARIANT_CHARS =
             "僞喫嬀擡柺棱溼潙潨爲癡皁祕竈糉纔脣臺菸蔿衆覈踊鉢鍼".toSet()
     }
@@ -514,6 +516,7 @@ class HkImeService : InputMethodService() {
                 override fun onKey(label: String) = handleKey(label)
                 override fun onKeyLongPress(label: String) = handleKeyLongPress(label)
                 override fun onSpaceSwipe(delta: Int) = handleSpaceSwipe(delta)
+                override fun onBackspaceWord() = handleBackspaceWord()
             }
         }
 
@@ -657,6 +660,7 @@ class HkImeService : InputMethodService() {
                 override fun onKey(label: String) = handleKey(label)
                 override fun onKeyLongPress(label: String) = handleKeyLongPress(label)
                 override fun onSpaceSwipe(delta: Int) = handleSpaceSwipe(delta)
+                override fun onBackspaceWord() = handleBackspaceWord()
             }
         }
         root.addView(keyboardView, LinearLayout.LayoutParams(
@@ -688,12 +692,22 @@ class HkImeService : InputMethodService() {
         if (::candidateBar.isInitialized) {
             if (sensitive) candidateBar.showSafeMode() else candidateBar.clearSystemMessage()
         }
+        applyEnterKeyAction(attribute)
     }
 
     // Direct-Latin commit and the Enter policy are two faces of the same decision:
     // in a terminal or remote session letters must reach the app unbuffered AND
     // Enter must always pass through, or the first press only ends a composition and
     // the command never runs.
+    /** Dresses the return key as the focused field's action (Go / 搜尋 / 傳送 …). */
+    private fun applyEnterKeyAction(attribute: EditorInfo) {
+        if (!::keyboardView.isInitialized) return
+        keyboardView.enterAction = EnterKeyAction.forEditor(
+            imeOptions = attribute.imeOptions,
+            inputType = attribute.inputType
+        )
+    }
+
     private fun applyDirectInputPolicy(attribute: EditorInfo) {
         directLatinCommit = DirectInputPolicy.shouldUseDirectLatinCommit(
             inputType = attribute.inputType,
@@ -827,7 +841,9 @@ class HkImeService : InputMethodService() {
         }
         when (label) {
             KeyboardView.KEY_SYMBOL -> showEmojiPanel()
-            KeyboardView.KEY_SPACE -> toggleSimplifiedOutput()
+            // Was on the space bar, where it collided with the iOS hold-to-place-
+            // caret reflex; the scheme key is the natural home for an output mode.
+            KeyboardView.KEY_MODE -> toggleSimplifiedOutput()
         }
     }
 
@@ -858,6 +874,31 @@ class HkImeService : InputMethodService() {
             keyboardView.spaceLabel = spaceLabelText()
             keyboardView.invalidate()
         }
+    }
+
+    /**
+     * One escalated backspace step: delete the previous word rather than a
+     * character. A composition is still in play until it empties, so the ordinary
+     * backspace path keeps ownership of the buffer and this only takes over once
+     * committed text is what remains.
+     */
+    private fun handleBackspaceWord() {
+        if (imeState.buffer.isNotEmpty()) {
+            handleKey(KeyboardView.KEY_BACKSPACE)
+            return
+        }
+        val ic = currentInputConnection ?: return
+        val before = ic.getTextBeforeCursor(WORD_DELETE_LOOKBEHIND, 0) ?: return
+        val count = WordDeletePolicy.deleteCount(before)
+        if (count <= 0) return
+        ic.beginBatchEdit()
+        ic.finishComposingText()
+        cursorTracker.onFinishComposing()
+        ic.deleteSurroundingText(count, 0)
+        cursorTracker.onDeleteBefore(count)
+        ic.endBatchEdit()
+        committedPrefix = ""
+        showNextCharPredictions()
     }
 
     private fun handleSpaceSwipe(delta: Int) {

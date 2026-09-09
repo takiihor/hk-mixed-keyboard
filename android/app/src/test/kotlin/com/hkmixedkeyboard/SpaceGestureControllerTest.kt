@@ -18,7 +18,7 @@ class SpaceGestureControllerTest {
     }
 
     @Test
-    fun `stationary 600ms hold emits long press`() {
+    fun `stationary 600ms hold opens cursor mode`() {
         val fixture = Fixture()
 
         fixture.controller.press(startX = 100f)
@@ -27,7 +27,48 @@ class SpaceGestureControllerTest {
 
         fixture.scheduler.advanceBy(1)
 
-        assertEquals(listOf("long"), fixture.events)
+        assertEquals(listOf("cursor:on"), fixture.events)
+    }
+
+    @Test
+    fun `hold then drag steers the caret, the way iOS does`() {
+        val fixture = Fixture()
+
+        fixture.controller.press(startX = 100f)
+        fixture.scheduler.advanceBy(SpaceGestureController.LONG_PRESS_DELAY_MS)
+        fixture.controller.move(x = 136f, holdEligible = true)
+        fixture.controller.move(x = 154f, holdEligible = true)
+        fixture.controller.release(releasedInside = true)
+
+        assertEquals(
+            listOf("cursor:on", "swipe:1", "swipe:1", "swipe:1", "cursor:off"),
+            fixture.events
+        )
+    }
+
+    @Test
+    fun `a drag in cursor mode survives leaving the space bar`() {
+        // iOS keeps steering once the trackpad is open, however far the finger
+        // wanders; cancelling there would strand the caret mid-sentence.
+        val fixture = Fixture()
+
+        fixture.controller.press(startX = 100f)
+        fixture.scheduler.advanceBy(SpaceGestureController.LONG_PRESS_DELAY_MS)
+        fixture.controller.move(x = 82f, holdEligible = false)
+        fixture.controller.release(releasedInside = false)
+
+        assertEquals(listOf("cursor:on", "swipe:-1", "cursor:off"), fixture.events)
+    }
+
+    @Test
+    fun `holding never emits a space on release`() {
+        val fixture = Fixture()
+
+        fixture.controller.press(startX = 100f)
+        fixture.scheduler.advanceBy(SpaceGestureController.LONG_PRESS_DELAY_MS)
+        fixture.controller.release(releasedInside = true)
+
+        assertEquals(listOf("cursor:on", "cursor:off"), fixture.events)
     }
 
     @Test
@@ -40,29 +81,6 @@ class SpaceGestureControllerTest {
         fixture.controller.release(releasedInside = true)
 
         assertEquals(listOf("swipe:1"), fixture.events)
-    }
-
-    @Test
-    fun `release after fired hold does not emit a space`() {
-        val fixture = Fixture()
-
-        fixture.controller.press(startX = 100f)
-        fixture.scheduler.advanceBy(SpaceGestureController.LONG_PRESS_DELAY_MS)
-        fixture.controller.release(releasedInside = true)
-
-        assertEquals(listOf("long"), fixture.events)
-    }
-
-    @Test
-    fun `movement after fired hold neither swipes nor emits a space`() {
-        val fixture = Fixture()
-
-        fixture.controller.press(startX = 100f)
-        fixture.scheduler.advanceBy(SpaceGestureController.LONG_PRESS_DELAY_MS)
-        fixture.controller.move(x = 119f, holdEligible = true)
-        fixture.controller.release(releasedInside = true)
-
-        assertEquals(listOf("long"), fixture.events)
     }
 
     @Test
@@ -95,8 +113,8 @@ class SpaceGestureControllerTest {
             holdController = HoldActionController(scheduler),
             cursorStepPx = 18f,
             onTap = { events += "space" },
-            onLongPress = { events += "long" },
-            onSwipe = { events += "swipe:$it" }
+            onSwipe = { events += "swipe:$it" },
+            onCursorModeChanged = { events += if (it) "cursor:on" else "cursor:off" }
         )
     }
 

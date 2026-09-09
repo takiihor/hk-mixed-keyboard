@@ -136,6 +136,15 @@ val appVersionName = "0.$versionMinor.0"
           buildConfigField("boolean", "HAPTIC_STRONG_DEBUG", "true")
           buildConfigField("boolean", "HAPTIC_HEAVY_MODE", "false")
         }
+        // Side-by-side test build. Same code as debug, but its own applicationId
+        // and labels so it installs next to the shipping keyboard instead of
+        // replacing it — both can be enabled at once and compared from the
+        // system keyboard picker. Strings come from src/beta/res.
+        create("beta") {
+          initWith(getByName("debug"))
+          applicationIdSuffix = ".beta"
+          matchingFallbacks += listOf("debug")
+        }
         release {
           isMinifyEnabled = true
           proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

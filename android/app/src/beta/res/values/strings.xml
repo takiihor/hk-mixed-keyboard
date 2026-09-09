@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Names for the side-by-side test build. Installed alongside the shipping
+     keyboard under its own applicationId, so both can be enabled at once and
+     compared with the system keyboard picker. -->
+<resources>
+    <string name="app_name">HK Keyboard (Beta)</string>
+    <string name="ime_label">HK 速成／粵拼 Beta</string>
+    <string name="settings_label">HK Mixed Keyboard 設定（Beta）</string>
+</resources>

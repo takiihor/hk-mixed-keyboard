@@ -32,10 +32,12 @@ class KeyTouchPolicyTest {
     }
 
     @Test
-    fun `mode key is not a hold gesture and switches only on release`() {
-        assertFalse(KeyTouchPolicy.usesHoldGesture("⌨"))
+    fun `mode key resolves through its own tap-or-hold gesture`() {
+        // A long press now toggles 簡體輸出, which moved off the space bar, so the
+        // key can no longer also switch scheme on plain release.
+        assertTrue(KeyTouchPolicy.usesHoldGesture("⌨"))
         assertFalse(KeyTouchPolicy.emitsOnPress("⌨"))
-        assertTrue(KeyTouchPolicy.emitsOnRelease("⌨", releasedInside = true))
+        assertFalse(KeyTouchPolicy.emitsOnRelease("⌨", releasedInside = true))
         assertFalse(KeyTouchPolicy.emitsOnRelease("⌨", releasedInside = false))
     }
 
